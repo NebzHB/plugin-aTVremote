@@ -1,0 +1,54 @@
+{
+    "plugins\/piHole\/desktop\/php\/piHole.php": {
+        "Rechercher": "Buscar",
+        "Gestion": "Gestión",
+        "Configuration": "Configuración",
+        "Santé": "Salud",
+        "Mes serveurs piHole": "Mis servidores piHole",
+        "Sauvegarder": "Guardar",
+        "Supprimer": "Borrar",
+        "Configuration avancée": "Configuración avanzada",
+        "Equipement": "Dispositivo",
+        "Commandes": "Ordenes",
+        "Nom de l'équipement": "Nombre del dispositivo",
+        "Objet parent": "Objeto padre",
+        "Aucun": "Ninguno",
+        "Activer": "Activar",
+        "Visible": "Visible",
+        "Ip du serveur": "Ip del servidor",
+        "Ip du serveur piHole": "Ip del servidor PiHole",
+        "Apikey": "Apikey",
+        "Apikey de votre serveur": "Apikey de tu servidor",
+        "Tableau de commandes": "Tabla de comandos ",
+        "Nom": "Nombre",
+        "Options": "Opciones",
+        "Action": "Acción"
+    },
+    "plugins\/piHole\/desktop\/js\/piHole.js": {
+        "Santé piHole": "Salud piHole",
+        "Afficher": "Mostrar",
+        "Historiser": "Historizar",
+        "Tester": "Prueba"
+    },
+    "plugins\/piHole\/desktop\/modal\/health.php": {
+        "Module": "Modulo",
+        "ID": "ID",
+        "IP": "IP",
+        "Date création": "Fecha creación"
+    },
+    "plugins\/piHole\/core\/class\/piHole.class.php": {
+        "Statut": "Estado",
+        "Activer le filtrage": "Activar filtro",
+        "Désactiver le filtrage": "Desactivar el filtro",
+        "Rafraîchir": "Refrescar",
+        "Domaines bloqués": "Dominios bloqueados",
+        "Requêtes aujourd'hui": "Las peticiones de hoy",
+        "Publicités bloquées aujourd'hui": "Anuncios bloqueados hoy",
+        "Pourcentage publicités bloquées aujourd'hui": "Porcentaje de anuncios bloqueados hoy",
+        "Domaines uniques": "Dominios únicos",
+        "Requêtes transmises": "Solicitudes transmitidas",
+        "Requêtes en cache": "Solicitudes en caché",
+        "Clients vus": "Clientes vistos",
+        "Clients uniques": "Clientes Únicos"
+    }
+}
