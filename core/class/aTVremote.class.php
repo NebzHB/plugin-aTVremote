@@ -36,15 +36,15 @@ class aTVremote extends eqLogic {
 	
 		switch($name) {
 			case "cmds" :
-				return ["down"=>"Bouton Bas",
-						"up"=>"Bouton Haut",
-						"left"=>"Bouton Gauche",
-						"right"=>"Bouton Droit",
-						"previous"=>"Bouton Précédent",
-						"next"=>"Bouton Suivant",
-						"menu"=>"Bouton Menu",
-						"select"=>"Bouton Selection",
-						"top_menu"=>"Bouton Home"
+				return ["down"=>["trad"=>"Bouton Bas","icon"=>"fa-arrow-down"],
+						"up"=>["trad"=>"Bouton Haut","icon"=>"fa-arrow-up"],
+						"left"=>["trad"=>"Bouton Gauche","icon"=>"fa-arrow-left"],
+						"right"=>["trad"=>"Bouton Droit","icon"=>"fa-arrow-right"],
+						"previous"=>["trad"=>"Bouton Précédent","icon"=>"fa-step-backward"],
+						"next"=>["trad"=>"Bouton Suivant","icon"=>"fa-step-forward"],
+						"menu"=>["trad"=>"Bouton Menu","icon"=>"fa-cog"],
+						"select"=>["trad"=>"Bouton Selection","icon"=>"fa-crosshairs"],
+						"top_menu"=>["trad"=>"Bouton Home","icon"=>"fa-desktop"]
 					];
 			break;
 			case "infos" :
@@ -545,9 +545,10 @@ class aTVremote extends eqLogic {
 			if (!is_object($newCmd)) {
 				$newCmd = new aTVremoteCmd();
 				$newCmd->setLogicalId($id);
+				$newCmd->setDisplay('icon','<i class="fa '.$trad['icon'].'"></i>');
 				$newCmd->setIsVisible(1);
 				$newCmd->setOrder($order);
-				$newCmd->setName(__($trad, __FILE__));
+				$newCmd->setName(__($trad['trad'], __FILE__));
 			}
 			$newCmd->setType('action');
 			$newCmd->setSubType('other');
