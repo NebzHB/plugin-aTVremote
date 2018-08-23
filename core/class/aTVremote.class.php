@@ -53,7 +53,7 @@ class aTVremote extends eqLogic {
 						"previous"=>["trad"=>"Bouton Précédent","icon"=>"fa-step-backward"],
 						"next"=>["trad"=>"Bouton Suivant","icon"=>"fa-step-forward"],
 						"menu"=>["trad"=>"Bouton Menu","icon"=>"fa-cog"],
-						"select"=>["trad"=>"Bouton Selection","icon"=>"fa-crosshairs"],
+						"select"=>["trad"=>"Bouton Sélection","icon"=>"fa-crosshairs"],
 						"top_menu"=>["trad"=>"Bouton Home","icon"=>"fa-desktop"]
 					];
 			break;
