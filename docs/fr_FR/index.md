@@ -14,7 +14,7 @@ Veuillez Noter
 - Testé sur AppleTV 4 et il fonctionnerait sur une 4K aussi. Pour l'AppleTV 3 c'est pas sur...
 - **Le partage à Domicile DOIT être activé dans Réglages > Comptes > Partage à domicile.**
 - **Votre AppleTV DOIT avoir une ip fixée (soit par réservation DHCP soit dans les Réglages)**
-- **L'AppleTV DOIT être dans le même réseau que votre jeedom (sans routage !!, elle est découverte par le protocole Bonjour)
+- **L'AppleTV DOIT être dans le même réseau que votre jeedom (sans routage !!, elle est découverte par le protocole Bonjour)**
 - Pour l'instant, les données de lecture sont renouvellées toutes les minutes SI vous avez cliqué sur Play VIA JEEDOM (Jusqu'à avoir cliqué sur Pause ou Stop). Car si je scan ces données de lecture en permanance, votre AppleTV sort de veille :'(
 - (Il est prévu à moyen/long terme de passer par un Démon pour diminuer le temps de réaction)
 - Conseil : activez la mise en veille automatique pour contrer l'impossibilité de mettre en veille.
