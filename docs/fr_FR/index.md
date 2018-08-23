@@ -8,6 +8,7 @@ Veuillez Noter
   - Mettre en veille votre AppleTV
   - Effectuer des pressions longue sur les boutons (je vous ai vu venir...)
   - Modifier le volume (c'est votre TV qui s'en charge)
+  - Effectuer le bouton "Micro" (Siri) de la télécommande :'(
   - Savoir si votre AppleTV est en Veille ou pas (Elle continue aussi à répondre aux pings dans les deux cas)
 - Si votre AppleTV est en veille et vous cliquer sur une commande, elle sortira de veille.
 - Le partage à Domicile DOIT être activé dans Réglages > Comptes > Partage à domicile.
