@@ -25,11 +25,21 @@ class aTVremote extends eqLogic {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
 		foreach ($eqLogics as $aTVremote) {
 			try {
-				$aTVremote->getaTVremoteInfo();
+				$play_state = $aTVremote->getCmd(null, 'play_state');
+				$val=$play_state->execCmd();
+				if($val)
+					$aTVremote->getaTVremoteInfo();
 			} catch (Exception $e) {
-
+				log::add('aTVremote','error',json_encode($e));
 			}
 		}
+	}
+	
+	public static function cronDaily() {
+		// delete all artwork older than 7 days
+		$rel_folder='plugins/aTVremote/resources/images/';
+		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
+		exec("find ".$abs_folder."*.png -mtime +7 -exec rm {} \;");
 	}
 	
 	public static function getStructure ($name) {
@@ -153,14 +163,17 @@ class aTVremote extends eqLogic {
 		return $return;
     }	
 	
-	public function aTVremoteExecute($cmd) {
+	public function aTVremoteExecute($cmd,$runindir=null) {
 		if($cmd) {
 			$ip = $this->getConfiguration('ip','');
 			$credentials = $this->getConfiguration('credentials','');
 			$port = $this->getConfiguration('port','');
 			//v0.4.0
 			//$cmdToExec = "sudo atvremote --address $ip --port $port --protocol dmap --device_credentials $credentials $cmd";
-			$cmdToExec = "sudo atvremote --address $ip --login_id $credentials $cmd";
+	
+			$cmdToExec = "";
+			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
+			$cmdToExec .= "sudo atvremote --address $ip --login_id $credentials $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
 
 			return $return;
@@ -203,7 +216,11 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Media type'])) {
 				$media_type = $this->getCmd(null, 'media_type');
 				$this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
+			} else {
+				$media_type = $this->getCmd(null, 'media_type');
+				$this->checkAndUpdateCmd($media_type, '');
 			}
+			
 			$isPlaying=false;
 			if(isset($aTVremoteinfo['Play state'])) {
 
@@ -223,71 +240,128 @@ class aTVremote extends eqLogic {
 					break;
 				}
 			}
-			
+			$NEWheight=150;
+			$NEWwidth=150;
 			if($isPlaying) {
-				$artwork= 'plugins/aTVremote/resources/images/cover.png';
-				$dest = dirname(__FILE__).'/../../../../'.$artwork;
-				//$fileURL=$this->aTVremoteExecute('artwork_url > '.dirname(__FILE__).'/../../../../'.$artwork);
-				$fileURL=$this->aTVremoteExecute('artwork');
-				log::add('aTVremote','debug','recu:'.$fileURL[0]);
-				$fp=fopen($dest,'wb');
-				fwrite($fp,$fileURL[0]);
-				fclose($fp);
-				//copy($fileURL[0],dirname(__FILE__).'/../../../../'.$artwork);
-				//$data=file_get_contents($fileURL);
-				//file_put_contents(dirname(__FILE__).'/../../../../'.$artwork,$data);
+				$rel_folder='plugins/aTVremote/resources/images/';
+				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
+				
+				$hash=$this->aTVremoteExecute('hash');
+				$artwork= $rel_folder.$hash[0].'.png';
+				$dest = $abs_folder.$hash[0].'.png';
+				
+				if(!file_exists($dest)) {
+					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
+					
+					$src=$abs_folder.'/artwork.png';
+					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
+
+					if(file_exists($src)) {
+						
+						$resize=true;
+						if($resize) {
+							list($width, $height) = getimagesize($src);
+							$rapport = $height/$width;
+							
+							$NEWwidth=$NEWheight/$rapport;
+							
+							$imgSrc = imagecreatefrompng($src);
+							$imgDest= imagecreatetruecolor($NEWwidth,$NEWheight);
+
+							$resample=imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $NEWwidth, $NEWheight, $width, $height);
+
+							$ret = imagepng($imgDest,$dest);
 		
+							list($UPDATEDwidth, $UPDATEDheight) = getimagesize($dest);
+							
+							imagedestroy($imgSrc);
+							imagedestroy($imgDest);
+							//log::add('aTVremote','debug',((!$imgSrc)?'noSRC':'').' '.((!$imgDest)?'noDEST':'').' '.$resample.' '.$ret.' = resize from '.$width.'x'.$height.' to '.$UPDATEDwidth.'x'.$UPDATEDheight.' (should be '.$NEWwidth.'x'.$NEWheight.')');
+						} else {
+							log::add('aTVremote','debug','no resize');
+							//$ret=copy($src,$dest);
+							$img = file_get_contents($src);
+							$ret = file_put_contents($dest,$img);
+						}
+
+						exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
+						$img=null;
+						
+						unlink($src);
+					}
+				}
 			} else {
 				$artwork = $this->getImage();
 			}
 			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$this->checkAndUpdateCmd($artwork_url, "<img width='100' height='100' src='".$artwork."' />");
+			$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
 			
 			
 			if(isset($aTVremoteinfo['Title'])) {
 				$title = $this->getCmd(null, 'title');
 				$this->checkAndUpdateCmd($title, $aTVremoteinfo['Title']);
+			} else {
+				$title = $this->getCmd(null, 'title');
+				$this->checkAndUpdateCmd($title, '');
 			}
 			if(isset($aTVremoteinfo['Artist'])) {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']);
+			} else {
+				$artist = $this->getCmd(null, 'artist');
+				$this->checkAndUpdateCmd($artist, '');
 			}
 			if(isset($aTVremoteinfo['Album'])) {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']);
+			} else {
+				$album = $this->getCmd(null, 'album');
+				$this->checkAndUpdateCmd($album, '');
 			}
 			if(isset($aTVremoteinfo['Genre'])) {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']);
+			} else {
+				$genre = $this->getCmd(null, 'genre');
+				$this->checkAndUpdateCmd($genre, '');
 			}
 			
 			if(isset($aTVremoteinfo['Position'])) {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']);
+			} else {
+				$position = $this->getCmd(null, 'position');
+				$this->checkAndUpdateCmd($position, '');
 			}
 			if(isset($aTVremoteinfo['Total time'])) {
 				$total_time = $this->getCmd(null, 'total_time');
 				$this->checkAndUpdateCmd($total_time, $aTVremoteinfo['Total time']);
+			} else {
+				$total_time = $this->getCmd(null, 'total_time');
+				$this->checkAndUpdateCmd($total_time, '');
 			}
 			
 			if(isset($aTVremoteinfo['Repeat'])) {
 				$repeat = $this->getCmd(null, 'repeat');
-				
-				switch($aTVremoteinfo['Repeat']) {
-					case 'Off':
-						$this->checkAndUpdateCmd($repeat, 'Non');
-					break;
-					case 'Track':
-						$this->checkAndUpdateCmd($repeat, 'Piste');
-					break;
-					case 'All':
-						$this->checkAndUpdateCmd($repeat, 'Tout');
-					break;
+				if (is_object($repeat)) {
+					switch($aTVremoteinfo['Repeat']) {
+						case 'Off':
+							$this->checkAndUpdateCmd($repeat, 'Non');
+						break;
+						case 'Track':
+							$this->checkAndUpdateCmd($repeat, 'Piste');
+						break;
+						case 'All':
+							$this->checkAndUpdateCmd($repeat, 'Tout');
+						break;
+					}
 				}
 			}
 			if(isset($aTVremoteinfo['Shuffle'])) {
 				$shuffle = $this->getCmd(null, 'shuffle');
-				$this->checkAndUpdateCmd($shuffle, $aTVremoteinfo['Shuffle']);
+				if (is_object($shuffle)) {
+					$this->checkAndUpdateCmd($shuffle, $aTVremoteinfo['Shuffle']);
+				}
 			}
 			
 			
