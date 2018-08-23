@@ -205,7 +205,12 @@ class aTVremote extends eqLogic {
 				foreach($playing as $line) {
 					$elmt=explode(': ',$line);
 					$info = trim($elmt[0]);
-					$value= trim($elmt[1]);
+					if(count($elmt) > 2) {
+						array_shift($elmt);
+						$value= join('',$elmt);
+					} else {
+						$value= trim($elmt[1]);
+					}
 					$aTVremoteinfo[$info]=$value;
 				}
 			}
