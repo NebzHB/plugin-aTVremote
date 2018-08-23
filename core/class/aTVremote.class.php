@@ -390,7 +390,7 @@ class aTVremote extends eqLogic {
 			$play_state->setLogicalId('play_state');
 			$play_state->setIsVisible(1);
 			$play_state->setOrder($order);
-			$play_state->setName(__('Lecture en cours', __FILE__));
+			$play_state->setName(__('Lecture', __FILE__));
 		}
 		$play_state->setType('info');
 		$play_state->setSubType('binary');
