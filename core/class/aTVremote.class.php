@@ -197,11 +197,11 @@ class aTVremote extends eqLogic {
 			}
 		}
 	}*/
-	public function getaTVremoteInfo($data=null,$order=null) {
+	public function getaTVremoteInfo($data=null,$order=null,$hasToCheckPlaying=true) {
 		try {
-			if(!$data) {
+			$aTVremoteinfo = [];
+			if(!$data && $hasToCheckPlaying == true) {
 				$playing=$this->aTVremoteExecute('playing');
-				$aTVremoteinfo = [];
 				foreach($playing as $line) {
 					$elmt=explode(': ',$line);
 					$info = trim($elmt[0]);
@@ -652,16 +652,26 @@ class aTVremoteCmd extends cmd {
 
 		$logical = $this->getLogicalId();
 		$result=null;
+		$hasToCheckPlaying=true;
+		
 		if ($logical != 'refresh'){
 			switch ($logical) {
 				case 'play':
+					$play_state = $eqLogic->getCmd(null, 'play_state');
+					$eqLogic->checkAndUpdateCmd($play_state, "1");				
 					$eqLogic->aTVremoteExecute('play');
 				break;
 				case 'pause':
+					$play_state = $eqLogic->getCmd(null, 'play_state');
+					$eqLogic->checkAndUpdateCmd($play_state, "0");
 					$eqLogic->aTVremoteExecute('pause');
+					$hasToCheckPlaying=false;
 				break;
 				case 'stop':
+					$play_state = $eqLogic->getCmd(null, 'play_state');
+					$eqLogic->checkAndUpdateCmd($play_state, "0");
 					$eqLogic->aTVremoteExecute('stop');
+					$hasToCheckPlaying=false;
 				break;
 				case 'set_repeat_all':
 					$eqLogic->aTVremoteExecute('set_repeat=All');
@@ -709,7 +719,7 @@ class aTVremoteCmd extends cmd {
 			}
 			log::add('aTVremote','debug',$logical);
 		}
-		$eqLogic->getaTVremoteInfo();
+		$eqLogic->getaTVremoteInfo(null,null,$hasToCheckPlaying);
 	}
 
 	/************************Getteur Setteur****************************/
