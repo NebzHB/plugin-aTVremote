@@ -1,10 +1,10 @@
 {
-    "plugins\/piHole\/desktop\/php\/piHole.php": {
+    "plugins\/aTVremote\/desktop\/php\/aTVremote.php": {
         "Rechercher": "Rechercher",
         "Gestion": "Gestion",
         "Configuration": "Configuration",
         "Santé": "Santé",
-        "Mes serveurs piHole": "Mes serveurs piHole",
+        "Mes serveurs aTVremote": "Mes serveurs aTVremote",
         "Sauvegarder": "Sauvegarder",
         "Supprimer": "Supprimer",
         "Configuration avancée": "Configuration avancée",
@@ -16,7 +16,7 @@
         "Activer": "Activer",
         "Visible": "Visible",
         "Ip du serveur": "Ip du serveur",
-        "Ip du serveur piHole": "Ip du serveur piHole",
+        "Ip du serveur aTVremote": "Ip du serveur aTVremote",
         "Apikey": "Apikey",
         "Apikey de votre serveur": "Apikey de votre serveur",
         "Tableau de commandes": "Tableau de commandes",
@@ -24,19 +24,19 @@
         "Options": "Options",
         "Action": "Action"
     },
-    "plugins\/piHole\/desktop\/js\/piHole.js": {
-        "Santé piHole": "Santé piHole",
+    "plugins\/aTVremote\/desktop\/js\/aTVremote.js": {
+        "Santé aTVremote": "Santé aTVremote",
         "Afficher": "Afficher",
         "Historiser": "Historiser",
         "Tester": "Tester"
     },
-    "plugins\/piHole\/desktop\/modal\/health.php": {
+    "plugins\/aTVremote\/desktop\/modal\/health.php": {
         "Module": "Module",
         "ID": "ID",
         "IP": "IP",
         "Date création": "Date création"
     },
-    "plugins\/piHole\/core\/class\/piHole.class.php": {
+    "plugins\/aTVremote\/core\/class\/aTVremote.class.php": {
         "Statut": "Statut",
         "Activer le filtrage": "Activer le filtrage",
         "Désactiver le filtrage": "Désactiver le filtrage",

@@ -13,7 +13,7 @@ sudo apt-get update
 echo 10 > ${PROGRESS_FILE}
 echo "--10%"
 echo "Installation des dépendances apt"
-sudo apt-get -y install python3-pip python3-setuptools build-essential libssl-dev libffi-dev python-dev
+sudo apt-get -y install python3 python3-pip python3-setuptools build-essential libssl-dev libffi-dev python3-dev
 echo 50 > ${PROGRESS_FILE}
 echo "--50%"
 #sudo pip3 install aiohttp==3.0.1
