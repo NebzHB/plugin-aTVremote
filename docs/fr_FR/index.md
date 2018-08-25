@@ -2,7 +2,8 @@ Ce plugin permet de monitorer et exécuter quelques actions sur vos AppleTV.
 
 Veuillez Noter 
 ==============
-- Ce plugin n'est pas finit, il s'agit plus d'une Preuve de Concept que je vous met à dispo. Les temps de réaction sont lents car une nouvelle session est ouverte à chaque commande vers l'AppleTV. J'ai prévu de changer cela à moyen/long terme.
+- Compatible uniquement avec **Debian Stretch au minimum** !! (Pas compatible Debian Jessie, Python 3.5 minimum)
+- Ce plugin n'est pas terminé, il s'agit plus d'une Preuve de Concept que je vous met à dispo. Les temps de réaction sont lents car une nouvelle session est ouverte à chaque commande vers l'AppleTV. J'ai prévu de changer cela à moyen/long terme.
 - Ce plugin utilise le protocole DAAP pour communiquer avec votre AppleTV.
 - Il n'est pas possible avec ce protocole de :
   - Mettre en veille votre AppleTV
