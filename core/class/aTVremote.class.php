@@ -214,9 +214,10 @@ class aTVremote extends eqLogic {
 					}
 					$aTVremoteinfo[$info]=$value;
 				}
+				log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
 			}
 			
-			log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
+
 			
 			
 			if(isset($aTVremoteinfo['Media type'])) {
@@ -282,7 +283,6 @@ class aTVremote extends eqLogic {
 							
 							imagedestroy($imgSrc);
 							imagedestroy($imgDest);
-							//log::add('aTVremote','debug',((!$imgSrc)?'noSRC':'').' '.((!$imgDest)?'noDEST':'').' '.$resample.' '.$ret.' = resize from '.$width.'x'.$height.' to '.$UPDATEDwidth.'x'.$UPDATEDheight.' (should be '.$NEWwidth.'x'.$NEWheight.')');
 						} else {
 							log::add('aTVremote','debug','no resize');
 							//$ret=copy($src,$dest);
@@ -612,7 +612,7 @@ class aTVremote extends eqLogic {
 			$newInfo->setType('info');
 			$newInfo->setSubType('string');
 			$newInfo->setEqLogic_id($this->getId());
-			$newInfo->setDisplay('generic_type', 'GENERIC_INFO');
+			if(strpos($id,'artwork') === false) $newInfo->setDisplay('generic_type', 'GENERIC_INFO');
 			if(strpos($id,'position') !== false) $newInfo->setUnite( 's' );
 			$newInfo->save();		
 		}
