@@ -273,6 +273,21 @@
 			}
 		},
 		{
+			"name": "Genre",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "genre",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		},		
+		{
 			"name": "Type Media",
 			"type": "info",
 			"subtype": "string",
