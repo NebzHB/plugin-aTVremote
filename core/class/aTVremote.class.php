@@ -98,7 +98,7 @@ class aTVremote extends eqLogic {
 						//v0.4.0
 						//$res["port"]= $device[3];
 						//$res["credentials"]= $cred;
-						$res["port"]= null;
+						$res["port"]= 3689;
 						$res["credentials"]=$cred[1];
 						//v0.4.0
 						//$res["MRPport"]= $device[5];
@@ -113,12 +113,14 @@ class aTVremote extends eqLogic {
 							$eqLogic->setLogicalId($res["device_id"]);
 							$eqLogic->setEqType_name('aTVremote');
 							$eqLogic->setConfiguration('device', 'AppleTV');
+							$eqLogic->setDisplay('width','250px');
 						} else $eqLogic = $aTVremote;
 						
 						$eqLogic->setConfiguration('ip', $res["ip"]);
 						$eqLogic->setConfiguration('port', $res["port"]);
 						$eqLogic->setConfiguration('credentials',$res["credentials"]);
 						$eqLogic->setConfiguration('MRPport',$res["MRPport"]);
+						
 					
 						$eqLogic->save();
 						
@@ -159,7 +161,6 @@ class aTVremote extends eqLogic {
 		}
 		try {
 			$file = $path . '/' . $device.'.json';
-			log::add('aTVremote','debug','file:'.$file);
 			$content = file_get_contents($file);
 			$return = json_decode($content, true);
 		} catch (Exception $e) {
@@ -196,12 +197,14 @@ class aTVremote extends eqLogic {
 					$info = trim($elmt[0]);
 					if(count($elmt) > 2) {
 						array_shift($elmt);
-						$value= join('',$elmt);
+						$value= trim(join('',$elmt));
 					} else if(count($elmt) == 2){
 						$value= trim($elmt[1]);
 					}
 					$aTVremoteinfo[$info]=$value;
 				}
+				if(!$aTVremoteinfo)
+					log::add('aTVremote','debug','Résultat brut playing:'.json_encode($playing));
 				log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
 			} else {
 				$aTVremoteinfo = ((count($data))?$data:[]);
@@ -312,7 +315,7 @@ class aTVremote extends eqLogic {
 			$NEWheight=150;
 			$NEWwidth=150;
 			$artwork = $this->getImage();
-			if($isPlaying) {
+			if(isset($aTVremoteinfo['Title']) && trim($aTVremoteinfo['Title']) != "") {
 				$rel_folder='plugins/aTVremote/resources/images/';
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
