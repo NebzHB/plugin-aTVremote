@@ -9,6 +9,13 @@ echo "--0%"
 echo "********************************************************"
 echo "*             Installation des dépendances             *"
 echo "********************************************************"
+if [ $(lsb_release -c | grep 'jessie' | wc -l) -eq 1 ]; then
+    echo "ATTENTION CE PLUGIN NE FONCTIONNE PAS SOUS JESSIE, MERCI DE METTRE A JOUR VOTRE DISTRIBUTION !!!"
+	echo "********************************************************"
+	echo "*             Installation terminée                    *"
+	echo "********************************************************"
+    exit 1;
+fi
 sudo apt-get update
 echo 10 > ${PROGRESS_FILE}
 echo "--10%"
