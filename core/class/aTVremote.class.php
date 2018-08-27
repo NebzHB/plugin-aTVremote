@@ -42,34 +42,6 @@ class aTVremote extends eqLogic {
 		exec("find ".$abs_folder."*.png -mtime +7 -exec rm {} \;");
 	}
 	
-	public static function getStructure ($name) {
-	
-		switch($name) {
-			case "cmds" :
-				return ["down"=>["trad"=>"Bouton Bas","icon"=>"fa-arrow-down"],
-						"up"=>["trad"=>"Bouton Haut","icon"=>"fa-arrow-up"],
-						"left"=>["trad"=>"Bouton Gauche","icon"=>"fa-arrow-left"],
-						"right"=>["trad"=>"Bouton Droit","icon"=>"fa-arrow-right"],
-						"previous"=>["trad"=>"Bouton Précédent","icon"=>"fa-step-backward"],
-						"next"=>["trad"=>"Bouton Suivant","icon"=>"fa-step-forward"],
-						"menu"=>["trad"=>"Bouton Menu","icon"=>"fa-cog"],
-						"select"=>["trad"=>"Bouton Sélection","icon"=>"fa-crosshairs"],
-						"top_menu"=>["trad"=>"Bouton Home","icon"=>"fa-desktop"]
-					];
-			break;
-			case "infos" :
-				return ["artwork_url"=>"URL Artwork",
-						"artist"=>"Artiste",
-						"title"=>"Titre",
-						"album"=>"Album",
-						"media_type"=>"Type Media",
-						"position"=>"Position",
-						"total_time"=>"Temp total"
-					];
-			break;
-		}		
-	}
-
 	public static function dependancy_info() {
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
@@ -181,8 +153,6 @@ class aTVremote extends eqLogic {
     }	
 	
 	public static function devicesParameters($device = '') {
-        //$return = array();
-
 		$path = dirname(__FILE__) . '/../config/devices/' . $device;
 		if (!is_dir($path)) {
 			return false;
@@ -215,27 +185,10 @@ class aTVremote extends eqLogic {
 			return $return;
 		}
 	}
-	/*public function toHtml($_version = 'dashboard') {
-		$replace = $this->preToHtml($_version, array('#background-color#' => '#4a89dc'));
-		if (!is_array($replace)) {
-			return $replace;
-		}
-		$version = jeedom::versionAlias($_version);
-		
-		//COVER
-		$replace['#thumbnail#'] = 'plugins/kodi/core/template/images/kodi_icon.png?time=' . microtime();
-		$cmd_thumbnail = $this->getCmd(null, 'thumbnail');
-		if (is_object($cmd_thumbnail)) {
-			$url = $cmd_thumbnail->execCmd();
-			if ($url != '') {
-				$thumb = $url . '?time=' . microtime();
-				$replace['#thumbnail#'] = $thumb;
-			}
-		}
-	}*/
+
 	public function getaTVremoteInfo($data=null,$order=null,$hasToCheckPlaying=true) {
 		try {
-			$aTVremoteinfo = [];
+
 			if(!$data && $hasToCheckPlaying == true) {
 				$playing=$this->aTVremoteExecute('playing');
 				foreach($playing as $line) {
@@ -250,10 +203,11 @@ class aTVremote extends eqLogic {
 					$aTVremoteinfo[$info]=$value;
 				}
 				log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
+			} else {
+				$aTVremoteinfo = ((count($data))?$data:[]);
 			}
 			
-
-			
+	
 			
 			if(isset($aTVremoteinfo['Media type'])) {
 				$media_type = $this->getCmd(null, 'media_type');
@@ -282,60 +236,63 @@ class aTVremote extends eqLogic {
 					break;
 				}
 			}
-			$NEWheight=150;
-			$NEWwidth=150;
-			if($isPlaying) {
-				$rel_folder='plugins/aTVremote/resources/images/';
-				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
-				
-				$hash=$this->aTVremoteExecute('hash');
-				$artwork= $rel_folder.$hash[0].'.png';
-				$dest = $abs_folder.$hash[0].'.png';
-				
-				if(!file_exists($dest)) {
-					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
-					
-					$src=$abs_folder.'/artwork.png';
-					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
-
-					if(file_exists($src)) {
-						
-						$resize=true;
-						if($resize) {
-							list($width, $height) = getimagesize($src);
-							$rapport = $height/$width;
-							
-							$NEWwidth=$NEWheight/$rapport;
-							
-							$imgSrc = imagecreatefrompng($src);
-							$imgDest= imagecreatetruecolor($NEWwidth,$NEWheight);
-
-							$resample=imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $NEWwidth, $NEWheight, $width, $height);
-
-							$ret = imagepng($imgDest,$dest);
-		
-							list($UPDATEDwidth, $UPDATEDheight) = getimagesize($dest);
-							
-							imagedestroy($imgSrc);
-							imagedestroy($imgDest);
-						} else {
-							//$ret=copy($src,$dest);
-							$img = file_get_contents($src);
-							$ret = file_put_contents($dest,$img);
-						}
-
-						exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
-						$img=null;
-						
-						unlink($src);
-					}
-				}
-			} else {
-				$artwork = $this->getImage();
-			}
-			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
 			
+			if($hasToCheckPlaying == true) {
+				$NEWheight=150;
+				$NEWwidth=150;
+				if($isPlaying) {
+					$rel_folder='plugins/aTVremote/resources/images/';
+					$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
+					
+					$hash=$this->aTVremoteExecute('hash');
+					$artwork= $rel_folder.$hash[0].'.png';
+					$dest = $abs_folder.$hash[0].'.png';
+					
+					if(!file_exists($dest)) {
+						$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
+						
+						$src=$abs_folder.'/artwork.png';
+						exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
+
+						if(file_exists($src)) {
+							
+							$resize=true;
+							if($resize) {
+								list($width, $height) = getimagesize($src);
+								$rapport = $height/$width;
+								
+								$NEWwidth=$NEWheight/$rapport;
+								
+								$imgSrc = imagecreatefrompng($src);
+								$imgDest= imagecreatetruecolor($NEWwidth,$NEWheight);
+
+								$resample=imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $NEWwidth, $NEWheight, $width, $height);
+
+								$ret = imagepng($imgDest,$dest);
+			
+								list($UPDATEDwidth, $UPDATEDheight) = getimagesize($dest);
+								
+								imagedestroy($imgSrc);
+								imagedestroy($imgDest);
+							} else {
+								//$ret=copy($src,$dest);
+								$img = file_get_contents($src);
+								$ret = file_put_contents($dest,$img);
+							}
+
+							exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
+							$img=null;
+							
+							unlink($src);
+						}
+					}
+				} else {
+					$artwork = $this->getImage();
+				}
+			
+				$artwork_url = $this->getCmd(null, 'artwork_url');
+				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
+			}
 			
 			if(isset($aTVremoteinfo['Title'])) {
 				$title = $this->getCmd(null, 'title');
