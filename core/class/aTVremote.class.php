@@ -94,6 +94,7 @@ class aTVremote extends eqLogic {
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
         $output=shell_exec("sudo atvremote scan");
+		log::add('aTVremote','debug',$output);
 		if($output) {
 			$return = [];
 			//v0.4.0
@@ -208,7 +209,7 @@ class aTVremote extends eqLogic {
 					if(count($elmt) > 2) {
 						array_shift($elmt);
 						$value= join('',$elmt);
-					} else if($elmt == 2){
+					} else if(count($elmt) == 2){
 						$value= trim($elmt[1]);
 					}
 					$aTVremoteinfo[$info]=$value;
@@ -662,8 +663,6 @@ class aTVremoteCmd extends cmd {
 		if ($logical != 'refresh'){
 			switch ($logical) {
 				case 'play':
-					$play_state = $eqLogic->getCmd(null, 'play_state');
-					$eqLogic->checkAndUpdateCmd($play_state, "1");				
 					$eqLogic->aTVremoteExecute('play');
 				break;
 				case 'pause':
