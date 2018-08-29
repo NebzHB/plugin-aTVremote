@@ -182,6 +182,8 @@ class aTVremote extends eqLogic {
 			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
 			$cmdToExec .= "sudo atvremote --address $ip --login_id $credentials $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
+			if($val_ret)
+				log::add('aTVremote','debug','ret:'.$val_ret.'--'.$lastoutput.'--'.json_encode($return).'--'.$cmdToExec);
 
 			return $return;
 		}
@@ -216,79 +218,104 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Play state'])) {
 
 				$play_state = $this->getCmd(null, 'play_state');
+				$play_human = $this->getCmd(null, 'play_human');
 				switch($aTVremoteinfo['Play state']) {
 					case 'Idle' :
+						$this->checkAndUpdateCmd($play_state, "0");
+						$this->checkAndUpdateCmd($play_human, "Inactif");
+						break;
 					case 'Paused':
+						$this->checkAndUpdateCmd($play_state, "0");
+						$this->checkAndUpdateCmd($play_human, "En pause");
+						break;
 					case 'No media':
 						$this->checkAndUpdateCmd($play_state, "0");
-					break;
+						$this->checkAndUpdateCmd($play_human, "Aucun Media");
+						break;
 					case 'Playing':
+						$this->checkAndUpdateCmd($play_state, "1");
+						$this->checkAndUpdateCmd($play_human, "Lecture en cours");
+						$isPlaying=true;
+						break;
 					case 'Loading':
+						$this->checkAndUpdateCmd($play_state, "1");
+						$this->checkAndUpdateCmd($play_human, "Chargement en cours");
+						$isPlaying=true;
+						break;
 					case 'Fast forward':
+						$this->checkAndUpdateCmd($play_state, "1");
+						$this->checkAndUpdateCmd($play_human, "Avance rapide");
+						$isPlaying=true;
+						break;
 					case 'Fast backward':
 						$this->checkAndUpdateCmd($play_state, "1");
+						$this->checkAndUpdateCmd($play_human, "Recul rapide");
 						$isPlaying=true;
+						break;
+					default:
+						$this->checkAndUpdateCmd($play_state, "0");
+						$this->checkAndUpdateCmd($play_human, "Inconnu");
+						break;
 					break;
 				}
-			}
-			
+			} 			
 			
 			if(isset($aTVremoteinfo['Media type'])) {
 				$media_type = $this->getCmd(null, 'media_type');
 				$this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
-			} else {
+			} /*else {
 				$media_type = $this->getCmd(null, 'media_type');
 				$this->checkAndUpdateCmd($media_type, '');
-			}			
+			}			*/
 			if(isset($aTVremoteinfo['Title'])) {
 				$title = $this->getCmd(null, 'title');
 				$this->checkAndUpdateCmd($title, $aTVremoteinfo['Title']);
-			} else {
+			} /*else {
 				$title = $this->getCmd(null, 'title');
 				$this->checkAndUpdateCmd($title, '');
-			}
+			}*/
 			if(isset($aTVremoteinfo['Artist'])) {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']);
-			} else {
+			} /*else {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, '');
-			}
+			}*/
 			if(isset($aTVremoteinfo['Album'])) {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']);
-			} else {
+			} /*else {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, '');
-			}
+			}*/
 			if(isset($aTVremoteinfo['Genre'])) {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']);
-			} else {
+			} /*else {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, '');
-			}
+			}*/
 			
 			if(isset($aTVremoteinfo['Position'])) {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']);
-			} else {
+			} /*else {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, '');
-			}
-			if(isset($aTVremoteinfo['Total time'])) {
+			}*/
+			if(isset($aTVremoteinfo['Total time'])) { // no return < 0.4
 				$total_time = $this->getCmd(null, 'total_time');
 				if (is_object($total_time)) {
 					$this->checkAndUpdateCmd($total_time, $aTVremoteinfo['Total time']);
 				}
-			} else {
+			} /*else {
 				$total_time = $this->getCmd(null, 'total_time');
 				if (is_object($total_time)) {
 					$this->checkAndUpdateCmd($total_time, '');
 				}
-			}
+			}*/
 			
-			if(isset($aTVremoteinfo['Repeat'])) {
+			if(isset($aTVremoteinfo['Repeat'])) { // always return Off
 				$repeat = $this->getCmd(null, 'repeat');
 				if (is_object($repeat)) {
 					switch($aTVremoteinfo['Repeat']) {
@@ -304,7 +331,7 @@ class aTVremote extends eqLogic {
 					}
 				}
 			}
-			if(isset($aTVremoteinfo['Shuffle'])) {
+			if(isset($aTVremoteinfo['Shuffle'])) { // always return False
 				$shuffle = $this->getCmd(null, 'shuffle');
 				if (is_object($shuffle)) {
 					$this->checkAndUpdateCmd($shuffle, $aTVremoteinfo['Shuffle']);
@@ -314,8 +341,8 @@ class aTVremote extends eqLogic {
 
 			$NEWheight=150;
 			$NEWwidth=150;
-			$artwork = $this->getImage();
 			if(isset($aTVremoteinfo['Title']) && trim($aTVremoteinfo['Title']) != "") {
+				$artwork = $this->getImage();
 				$rel_folder='plugins/aTVremote/resources/images/';
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
@@ -361,12 +388,9 @@ class aTVremote extends eqLogic {
 						unlink($src);
 					}
 				}
-			}
-		
-			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
-
-			
+				$artwork_url = $this->getCmd(null, 'artwork_url');
+				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
+			}			
 			
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
@@ -459,12 +483,16 @@ class aTVremoteCmd extends cmd {
 				case 'pause':
 					$play_state = $eqLogic->getCmd(null, 'play_state');
 					$eqLogic->checkAndUpdateCmd($play_state, "0");
+					$play_human = $eqLogic->getCmd(null, 'play_human');
+					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
 					$eqLogic->aTVremoteExecute('pause');
 					$hasToCheckPlaying=false;
 				break;
 				case 'stop':
 					$play_state = $eqLogic->getCmd(null, 'play_state');
 					$eqLogic->checkAndUpdateCmd($play_state, "0");
+					$play_human = $eqLogic->getCmd(null, 'play_human');
+					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
 					$eqLogic->aTVremoteExecute('stop');
 					$hasToCheckPlaying=false;
 				break;
