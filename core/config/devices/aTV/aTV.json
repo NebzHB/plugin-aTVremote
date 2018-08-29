@@ -228,6 +228,21 @@
 			"logicalId": "set_repeat_off"
 		},		
 		{
+			"name": "Statut",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO",
+				"showNameOndashboard":0,
+				"showNameOnplan":0,
+				"showNameOnview":0,
+				"showNameOnmobile":0
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "play_human"
+		},
+		{
 			"name": "Artiste",
 			"type": "info",
 			"subtype": "string",
