@@ -1,26 +1,26 @@
 {
     "plugins\/aTVremote\/desktop\/php\/aTVremote.php": {
-        "Rechercher": "Rechercher",
+        "Rechercher": "Suchen",
         "Gestion": "Gestion",
-        "Configuration": "Configuration",
-        "Santé": "Santé",
+        "Configuration": "Einstellungen",
+        "Santé": "Gesundheit",
         "Mes serveurs aTVremote": "Mes serveurs aTVremote",
-        "Sauvegarder": "Sauvegarder",
-        "Supprimer": "Supprimer",
+        "Sauvegarder": "Speichern",
+        "Supprimer": "Löschen",
         "Configuration avancée": "Configuration avancée",
         "Equipement": "Equipement",
         "Commandes": "Commandes",
         "Nom de l'équipement": "Nom de l'équipement",
         "Objet parent": "Objet parent",
-        "Aucun": "Aucun",
+        "Aucun": "Keinen",
         "Activer": "Activer",
-        "Visible": "Visible",
-        "Ip du serveur": "Ip du serveur",
-        "Ip du serveur aTVremote": "Ip du serveur aTVremote",
-        "Apikey": "Apikey",
+        "Visible": "Sichtbar",
+        "Ip du serveur": "Server IP Adresse",
+        "Ip du serveur aTVremote": "aTVremote server IP Adresse",
+        "Apikey": "Apischlüssel",
         "Apikey de votre serveur": "Apikey de votre serveur",
         "Tableau de commandes": "Tableau de commandes",
-        "Nom": "Nom",
+        "Nom": "Name",
         "Options": "Options",
         "Action": "Action",
         "Scan AppleTV": "Scan AppleTV",
@@ -31,7 +31,7 @@
     },
     "plugins\/aTVremote\/desktop\/js\/aTVremote.js": {
         "Santé aTVremote": "Santé aTVremote",
-        "Afficher": "Afficher",
+        "Afficher": "Anzeigen",
         "Historiser": "Historiser",
         "Tester": "Tester"
     },
@@ -42,9 +42,9 @@
         "Date création": "Date création"
     },
     "plugins\/aTVremote\/core\/class\/aTVremote.class.php": {
-        "Statut": "Statut",
+        "Statut": "Status",
         "Rafraîchir": "Rafraîchir",
-        "Nouvelle AppleTV detectée ": "Nouvelle AppleTV detectée ",
+        "Nouvelle AppleTV detectée ": "Neuer AppleTV entdeckt",
         "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV": "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV",
         "Module mis à jour avec succès Salon": "Module mis à jour avec succès Salon"
     }
