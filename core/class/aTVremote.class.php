@@ -49,10 +49,8 @@ class aTVremote extends eqLogic {
 		exec($cmd, $output, $return_var);
 
 		$return['state'] = 'nok';
-		if (array_key_exists(0,$output)) {
-			if ($output[0] != "" ) {
+		if ($return_var==0) {
 				$return['state'] = 'ok';
-			}
 		}
 		return $return;
 	}
