@@ -26,7 +26,7 @@ echo "--50%"
 #sudo pip3 install aiohttp==3.0.1
 #echo 60 > ${PROGRESS_FILE}
 #echo "--60%"
-sudo pip3 install -I wheel
+sudo pip3 install -I wheel netifaces
 sudo pip3 install -I git+https://github.com/NebzHB/pyatv@fix_bugs
 echo 100 > /${PROGRESS_FILE}
 echo "--100%"
