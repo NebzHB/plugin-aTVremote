@@ -23,15 +23,15 @@
         "Nom": "Name",
         "Options": "Options",
         "Action": "Action",
-        "Scan AppleTV": "Scan AppleTV",
-        "Mes AppleTV": "Mes AppleTV",
-        "Ip de l'AppleTV": "Ip de l'AppleTV",
-        "port de l'AppleTV": "port de l'AppleTV",
+        "Scan AppleTV": "AppleTV scan",
+        "Mes AppleTV": "My AppleTV",
+        "Ip de l'AppleTV": "AppleTV IP",
+        "port de l'AppleTV": "AppleTV port",
         "Credentials": "Credentials"
     },
     "plugins\/aTVremote\/desktop\/js\/aTVremote.js": {
         "Santé aTVremote": "aTVremote Health",
-        "Afficher": "Show",
+        "Afficher": "Display",
         "Historiser": "Historize",
         "Tester": "Test"
     },
@@ -44,8 +44,8 @@
     "plugins\/aTVremote\/core\/class\/aTVremote.class.php": {
         "Statut": "Status",
         "Rafraîchir": "Refresh",
-        "Nouvelle AppleTV detectée ": "Nouvelle AppleTV detectée ",
-        "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV": "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV",
-        "Module mis à jour avec succès Salon": "Module mis à jour avec succès Salon"
+        "Nouvelle AppleTV detectée ": "New AppleTV detected",
+        "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV": "Home sharing not activated! go to Settings>Accounts>Home Sharing and restart the AppleTV",
+        "Module mis à jour avec succès Salon": "Module successfully updated Salon"
     }
 }
