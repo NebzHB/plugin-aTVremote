@@ -7,7 +7,7 @@
 	"author" : "Nebz",
 	"hasDependency" : true,
 	"hasOwnDeamon" : false,
-	"require" : "3.0",
+	"require" : "3.3.24",
 	"category" : "multimedia",
 	"issue" : "https://github.com/NebzHB/plugin-aTVremote/issues",
 	"changelog" : "https://nebzhb.github.io/plugin-aTVremote/#language#/changelog",
