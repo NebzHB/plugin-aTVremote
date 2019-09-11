@@ -53,7 +53,7 @@ $eqLogics = eqLogic::byType('aTVremote');
                     echo "<center>";
                     echo '<img src="plugins/aTVremote/plugin_info/aTVremote_icon.png" height="105" width="95" />';
                     echo "</center>";
-                    echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
+                    echo '<span class="name"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
                     echo '</div>';
                 }
                 ?>
