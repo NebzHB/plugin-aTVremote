@@ -3,7 +3,7 @@ Ce plugin permet de monitorer et exécuter quelques actions sur vos AppleTV.
 Veuillez Noter 
 ==============
 - Compatible uniquement avec **Debian Stretch au minimum** !! (Pas compatible Debian Jessie, Python 3.5 minimum)
-- Ce plugin n'est pas terminé, il s'agit plus d'une Preuve de Concept que je vous met à dispo. Les temps de réaction sont lents car une nouvelle session est ouverte à chaque commande vers l'AppleTV. J'ai prévu de changer cela à moyen/long terme.
+- Ce plugin n'est pas terminé, il s'agit plus d'une Preuve de Concept que je vous met à dispo. Les temps de réaction sont lents car une nouvelle session est ouverte à chaque commande vers l'AppleTV.
 - Ce plugin utilise le protocole DAAP pour communiquer avec votre AppleTV.
 - Il n'est pas possible avec ce protocole de :
   - Mettre en veille votre AppleTV
@@ -17,7 +17,6 @@ Veuillez Noter
 - **Votre AppleTV DOIT avoir une ip fixée (soit par réservation DHCP soit dans les Réglages)**
 - **L'AppleTV DOIT être dans le même réseau que votre jeedom (sans routage !!, elle est découverte par le protocole Bonjour)**
 - Pour l'instant, les données de lecture sont renouvellées toutes les minutes SI vous avez cliqué sur Play VIA JEEDOM (Jusqu'à avoir cliqué sur Pause ou Stop). Car si je scan ces données de lecture en permanance, votre AppleTV sort de veille :'(
-- (Il est prévu à moyen/long terme de passer par un Démon pour diminuer le temps de réaction)
 - Conseil : activez la mise en veille automatique pour contrer l'impossibilité de mettre en veille.
 
 Configuration du plugin 
@@ -30,7 +29,7 @@ Configuration des équipements
 
 Ajout Rapide :
 --------------
-SI votre AppleTV a le Partage à domicile activé, Lancez un scan. Celle-ci s'ajoutera en désactivé et invisible.
+**SI** votre AppleTV a le Partage à domicile activé, Lancez un scan. Celle-ci s'ajoutera en désactivé et invisible.
 Modifiez l'équipement créé et Activez-le + Placez le dans une pièce et visible.
 
 
