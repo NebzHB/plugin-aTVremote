@@ -4,7 +4,7 @@
 	"description" : "aTV Remote - Permet de commander votre AppleTV - restera en BETA longtemps !",
 	"usage" : "Pas de volume, pas de mise en veille, pas de bouton micro (Siri) Voir documentation.<br/>Debian Stretch au Minimum ! (pas compatible Debian Jessie !)",
 	"licence" : "AGPL",
-	"author" : "Nebz",
+	"author" : "Nebz,Wators",
 	"hasDependency" : true,
 	"hasOwnDeamon" : false,
 	"require" : "3.3.24",
