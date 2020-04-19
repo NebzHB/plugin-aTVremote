@@ -389,7 +389,7 @@ class aTVremote extends eqLogic {
                         case 'Off':                     
 					        $this->checkAndUpdateCmd($shuffle, 'Non');
                         break;
-                        case 'On':
+                        case 'Songs':
                             $this->checkAndUpdateCmd($shuffle, 'Oui');
                         break;
                     }
@@ -588,7 +588,7 @@ class aTVremoteCmd extends cmd {
 					$eqLogic->aTVremoteExecute('set_shuffle=1');
 				break;
 				case 'set_shuffle_off':
-					$eqLogic->aTVremoteExecute('set_shuffle=');
+					$eqLogic->aTVremoteExecute('set_shuffle=0');
 				break;
 				
 				case 'down':
