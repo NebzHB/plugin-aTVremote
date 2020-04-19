@@ -343,8 +343,8 @@
             		"isHistorized": 0,
             		"logicalId": "repeat",
             		"template": {
-                	"dashboard": "line",
-                	"mobile": "line"
+                		"dashboard": "line",
+                		"mobile": "line"
             		}
         	},
 		{
@@ -358,8 +358,8 @@
             		"isHistorized": 0,
             		"logicalId": "shuffle",
             		"template": {
-                	"dashboard": "line",
-                	"mobile": "line"
+                		"dashboard": "line",
+                		"mobile": "line"
             		}
         	},
 		{
