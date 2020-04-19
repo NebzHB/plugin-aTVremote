@@ -22,7 +22,12 @@
         "Tableau de commandes": "Tableau de commandes",
         "Nom": "Nom",
         "Options": "Options",
-        "Action": "Action"
+        "Action": "Action",
+        "Scan AppleTV": "Scan AppleTV",
+        "Mes AppleTV": "Mes AppleTV",
+        "Ip de l'AppleTV": "Ip de l'AppleTV",
+        "port de l'AppleTV": "port de l'AppleTV",
+        "Credentials": "Credentials"
     },
     "plugins\/aTVremote\/desktop\/js\/aTVremote.js": {
         "Santé aTVremote": "Santé aTVremote",
@@ -38,17 +43,9 @@
     },
     "plugins\/aTVremote\/core\/class\/aTVremote.class.php": {
         "Statut": "Statut",
-        "Activer le filtrage": "Activer le filtrage",
-        "Désactiver le filtrage": "Désactiver le filtrage",
         "Rafraîchir": "Rafraîchir",
-        "Domaines bloqués": "Domaines bloqués",
-        "Requêtes aujourd'hui": "Requêtes aujourd'hui",
-        "Publicités bloquées aujourd'hui": "Publicités bloquées aujourd'hui",
-        "Pourcentage publicités bloquées aujourd'hui": "Pourcentage publicités bloquées aujourd'hui",
-        "Domaines uniques": "Domaines uniques",
-        "Requêtes transmises": "Requêtes transmises",
-        "Requêtes en cache": "Requêtes en cache",
-        "Clients vus": "Clients vus",
-        "Clients uniques": "Clients uniques"
+        "Nouvelle AppleTV detectée ": "Nouvelle AppleTV detectée ",
+        "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV": "Partage à domicile non activé ! allez dans Réglages > Comptes > Partage à domicile puis redémarrez l'AppleTV",
+        "Module mis à jour avec succès Salon": "Module mis à jour avec succès Salon"
     }
 }
