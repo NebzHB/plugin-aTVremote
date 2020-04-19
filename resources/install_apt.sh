@@ -39,7 +39,7 @@ sudo make install
 echo 80 > ${PROGRESS_FILE}
 echo "--80%"
 sudo pip3 install -I wheel
-sudo pip3 install -I pyatv
+sudo pip3 install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
 sudo pip3 install --upgrade pip
 echo 100 > /${PROGRESS_FILE}
 echo "--100%"
