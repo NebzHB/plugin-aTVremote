@@ -36,13 +36,8 @@ class aTVremote extends eqLogic {
 	}
 	  
 	public static function cronDaily() {
-		// delete all artwork older than 7 days pour aTV
-		$rel_folder='plugins/aTVremote/resources/images/aTV/';
-		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
-		exec("find ".$abs_folder."*.png -mtime +7 -exec rm {} \;");
-      
-      	// delete all artwork older than 7 days tvOS
-		$rel_folder='plugins/aTVremote/resources/images/tvOS/';
+		// delete all artwork older than 7 days 
+		$rel_folder='plugins/aTVremote/resources/images/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 		exec("find ".$abs_folder."*.png -mtime +7 -exec rm {} \;");
 	}
@@ -405,22 +400,14 @@ class aTVremote extends eqLogic {
 			$NEWheight=150;
 			$NEWwidth=150;
 			if(isset($aTVremoteinfo['Title']) && trim($aTVremoteinfo['Title']) != "") {
-				//$artwork = $this->getImage();
-              
-				$rel_folder='plugins/aTVremote/resources/images/'.$type.'/';
+				$artwork = $this->getImage();
+				$rel_folder='plugins/aTVremote/resources/images/';
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
-				$hash=$this->aTVremoteExecute('artwork_save',$abs_folder);
-              	
+				$hash=$this->aTVremoteExecute('hash');
+              	$artwork= $rel_folder.$hash[0].'.png';
+				$dest = $abs_folder.$hash[0].'.png';
 
-				$artwork= $rel_folder.'artwork.png';
-              	log::add('aTVremote','debug','Artwork :'.$artwork);
-              	
-              
-				/*$dest = $abs_folder.'artwork.png';
-              	
-				//log::add('aTVremote','debug','Dest :'.$dest);
-				
 				if(!file_exists($dest)) {
 					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
 					
@@ -458,23 +445,11 @@ class aTVremote extends eqLogic {
 						
 						unlink($src);
 					}
-				}*/
+				}
 				$artwork_url = $this->getCmd(null, 'artwork_url');             
-				$this->checkAndUpdateCmd($artwork_url, "<img width='90' height='90' src='".$artwork."' />");
+				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEW' src='".$artwork."' />");
              
-			}else{
-              $rel_folder='plugins/aTVremote/resources/images/';
-				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
-				
-				//$hash=$this->aTVremoteExecute('artwork_save',$abs_folder);
-
-              	$artworkoff= $rel_folder.'Unknown.png';
-              	log::add('aTVremote','debug','Artwork :'.$artworkoff);
-              
-				$artwork_url = $this->getCmd(null, 'artwork_url');             
-				$this->checkAndUpdateCmd($artwork_url, "<img width='90' height='90' src='".$artworkoff."' />");
-            }			
-			
+			}		
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
