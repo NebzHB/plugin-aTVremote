@@ -52,6 +52,7 @@ class aTVremote extends eqLogic {
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
 		$cmd = "pip3 list | grep pyatv";
 		$cmd2 = "python --version";
+
 		exec($cmd, $output, $return_var);
 		exec($cmd2, $output2, $return_var2);
 
@@ -77,8 +78,8 @@ class aTVremote extends eqLogic {
 		
 		if($output) {
 			$return = [];
-
 			$toMatch = '#Name: (.*)\s* Model/SW: (.*)\s* Address: (.*)\s* MAC: (.*)\s*#';
+
 
 			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
 				foreach($matches as $device) {
@@ -112,6 +113,7 @@ class aTVremote extends eqLogic {
 						$res["name"] = $device[1];
 						$res["device_id"] = $cred;//$device_id;
 						$res["ip"]= $device[3];
+
 						//v0.4.0
 						//$res["port"]= $device[3];
 						//$res["credentials"]= $cred;
@@ -138,7 +140,8 @@ class aTVremote extends eqLogic {
 						$eqLogic->setConfiguration('port', $res["port"]);
 						$eqLogic->setConfiguration('credentials',$res["credentials"]);
 						$eqLogic->setConfiguration('MRPport',$res["MRPport"]);
-                        $eqLogic->setConfiguration('model',$res["model"]);
+            $eqLogic->setConfiguration('model',$res["model"]);
+
 						
 					
 						$eqLogic->save();
@@ -248,7 +251,7 @@ class aTVremote extends eqLogic {
 				}
 				if(!$aTVremoteinfo)
 					log::add('aTVremote','debug','Résultat brut playing:'.json_encode($playing));
-              
+
 				log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
 			} else {
 				$aTVremoteinfo = ((count($data))?$data:[]);
@@ -262,6 +265,7 @@ class aTVremote extends eqLogic {
 				$play_state = $this->getCmd(null, 'play_state');
 				$play_human = $this->getCmd(null, 'play_human');
 				switch($aTVremoteinfo['Device state']) {
+
 					case 'Idle' :
 						$this->checkAndUpdateCmd($play_state, "0");
 						$this->checkAndUpdateCmd($play_human, "Inactif");
@@ -305,10 +309,10 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Media type'])) {
               	if($aTVremoteinfo['Media type']=='Unknown'){
                   	$media_type = $this->getCmd(null, 'media_type');
-					$this->checkAndUpdateCmd($media_type, '');    
+					          $this->checkAndUpdateCmd($media_type, '');    
                 } else {
-					$media_type = $this->getCmd(null, 'media_type');
-					$this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
+                    $media_type = $this->getCmd(null, 'media_type');
+                    $this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
                 }
 			} 
 
@@ -319,36 +323,37 @@ class aTVremote extends eqLogic {
 				$title = $this->getCmd(null, 'title');
 				$this->checkAndUpdateCmd($title, '');
 			}
-          
+
 			if(isset($aTVremoteinfo['Artist'])) {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']);
-			} else {
+			} /*else {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, '');
-			}
+			}*/
 			if(isset($aTVremoteinfo['Album'])) {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']);
-			} else {
+			} /*else {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, '');
-			}
+			}*/
 			if(isset($aTVremoteinfo['Genre'])) {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']);
-			} else {
+			} /*else {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, '');
-			}
+			}*/
 			
 			if(isset($aTVremoteinfo['Position'])) {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']);
-			} else {
+			} /*else {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, '');
 			}
+
 			if(isset($aTVremoteinfo['Total time'])) { // no return < 0.4
 				$total_time = $this->getCmd(null, 'total_time');
 				if (is_object($total_time)) {
