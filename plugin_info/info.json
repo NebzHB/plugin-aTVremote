@@ -10,8 +10,8 @@
 	"require" : "3.3.24",
 	"category" : "multimedia",
 	"issue" : "https://github.com/NebzHB/plugin-aTVremote/issues",
-	"changelog" : "https://nebzhb.github.io/plugin-aTVremote/#language#/changelog",
-	"documentation" : "https://nebzhb.github.io/plugin-aTVremote/#language#/",
+	"changelog" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/#language#/changelog",
+	"documentation" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/#language#/",
 	"forum_link" : "https://www.jeedom.com/forum/viewtopic.php?f=142&t=39196",
 	"link" : {
 		"forum":"https://www.jeedom.com/forum/viewtopic.php?f=142&t=39196"
