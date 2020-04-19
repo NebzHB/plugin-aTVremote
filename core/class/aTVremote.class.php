@@ -405,9 +405,9 @@ class aTVremote extends eqLogic {
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
 				$hash=$this->aTVremoteExecute('hash');
-              	$artwork= $rel_folder.$hash[0].'.png';
+				$artwork= $rel_folder.$hash[0].'.png';
 				$dest = $abs_folder.$hash[0].'.png';
-
+				
 				if(!file_exists($dest)) {
 					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
 					
@@ -415,8 +415,9 @@ class aTVremote extends eqLogic {
 					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
 
 					if(file_exists($src)) {
-						
-						$resize=true;
+						$resize=false;
+						list($width, $height) = getimagesize($src);
+						//if($width != $NEWwidth && $height != $NEWheight) $resize=true;
 						if($resize) {
 							list($width, $height) = getimagesize($src);
 							$rapport = $height/$width;
@@ -446,10 +447,9 @@ class aTVremote extends eqLogic {
 						unlink($src);
 					}
 				}
-				$artwork_url = $this->getCmd(null, 'artwork_url');             
-				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEW' src='".$artwork."' />");
-             
-			}		
+				$artwork_url = $this->getCmd(null, 'artwork_url');
+				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
+			}	
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
