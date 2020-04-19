@@ -355,36 +355,36 @@
 				"mobile": "line"
 			}
 		},
-        {
-            "name": "Repeat",
-            "type": "info",
-            "subtype": "string",
-            "display": {
-                "generic_type": "GENERIC_INFO"
-            },
-            "isVisible": 1,
-            "isHistorized": 0,
-            "logicalId": "repeat",
-            "template": {
-                "dashboard": "line",
-                "mobile": "line"
-            }
-        },
-        {
-            "name": "Shuffle",
-            "type": "info",
-            "subtype": "string",
-            "display": {
-                "generic_type": "GENERIC_INFO"
-            },
-            "isVisible": 1,
-            "isHistorized": 0,
-            "logicalId": "shuffle",
-            "template": {
-                "dashboard": "line",
-                "mobile": "line"
-            }
-        },
+        	{
+            		"name": "Repeat",
+            		"type": "info",
+            		"subtype": "string",
+            		"display": {
+            		    "generic_type": "GENERIC_INFO"
+            		},
+            		"isVisible": 1,
+            		"isHistorized": 0,
+            		"logicalId": "repeat",
+            		"template": {
+                	"dashboard": "line",
+                	"mobile": "line"
+            		}
+        	},
+        	{
+            		"name": "Shuffle",
+            		"type": "info",
+            		"subtype": "string",
+            		"display": {
+            	    		"generic_type": "GENERIC_INFO"
+            		},
+            		"isVisible": 1,
+            		"isHistorized": 0,
+            		"logicalId": "shuffle",
+			"template": {
+            	    		"dashboard": "line",
+            	    		"mobile": "line"
+            		}
+        	},
 		{
 			"name": "Rafraichir",
 			"type": "action",
