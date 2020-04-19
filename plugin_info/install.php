@@ -29,4 +29,8 @@ function aTVremote_update() {
     }
 }
 
+function aTVremote_remove() {
+ 
+}
+
 ?>

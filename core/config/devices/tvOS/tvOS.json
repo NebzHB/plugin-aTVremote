@@ -29,6 +29,28 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
+		},
+		{
+			"name": "Bouton On",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_ON",
+				"icon": "<i class=\"icon jeedom-on\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "turn_on"
+		},
+		{
+			"name": "Bouton Off",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_OFF",
+				"icon": "<i class=\"icon jeedom-off\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "turn_off"
 		},		
 		{
 			"name": "Bouton Lecture",
@@ -36,7 +58,8 @@
 			"subtype": "other",
 			"display": {
 				"generic_type": "SWITCH_ON",
-				"icon": "<i class=\"fa fa-play\"><\/i>"
+				"icon": "<i class=\"fa fa-play\"><\/i>",
+              	"forceReturnLineBefore": 1
 			},
 			"value": "play_state",
 			"isVisible": 1,
