@@ -27,6 +27,7 @@ $eqLogics = aTVremote::byType('aTVremote');
 			<th>{{Module}}</th>
 			<th>{{ID}}</th>
 			<th>{{IP}}</th>
+  			<th>{{MAC}}</th>
 			<th>{{Date création}}</th>
 		</tr>
 	</thead>
@@ -36,6 +37,7 @@ foreach ($eqLogics as $eqLogic) {
 	echo '<tr><td><a href="' . $eqLogic->getLinkToConfiguration() . '" style="text-decoration: none;">' . $eqLogic->getHumanName(true) . '</a></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em;">' . $eqLogic->getId() . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em;">' . $eqLogic->getConfiguration('ip') . '</span></td>';
+	echo '<td><span class="label label-info" style="font-size : 1em;">' . $eqLogic->getConfiguration('credentials') . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
 }
 ?>
