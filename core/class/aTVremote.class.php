@@ -71,7 +71,7 @@ class aTVremote extends eqLogic {
 	
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
-        $output=shell_exec("sudo atvremote scan");
+        	$output=shell_exec("sudo atvremote scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
 
 		
@@ -95,9 +95,13 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','MAC :'.json_encode($device[4]));
 					//v0.4.0
 					//if($device[4] != 'home sharing disabled') {
+					if($device[4] == "None") {
+						log::add('aTVremote','debug','Pas de MAC : on ignore');
+						continue;
+					}
 					if($device[4] != 'home sharing disabled') {
 						//v0.4.0
-                        $mod = $device[2];
+                        			$mod = $device[2];
                         
 						$cred = $device[4];
                       
@@ -122,7 +126,7 @@ class aTVremote extends eqLogic {
 						//v0.4.0
 						//$res["MRPport"]= $device[5];
 						$res["MRPport"]= null;
-                        $res["model"]=$mod;
+                        			$res["model"]=$mod;
 						
 						$aTVremote = aTVremote::byLogicalId($res["device_id"], 'aTVremote');
 						if (!is_object($aTVremote)) {
@@ -140,7 +144,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setConfiguration('port', $res["port"]);
 						$eqLogic->setConfiguration('credentials',$res["credentials"]);
 						$eqLogic->setConfiguration('MRPport',$res["MRPport"]);
-            $eqLogic->setConfiguration('model',$res["model"]);
+            					$eqLogic->setConfiguration('model',$res["model"]);
 
 						
 					
