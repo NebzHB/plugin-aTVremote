@@ -83,11 +83,7 @@ class aTVremote extends eqLogic {
 
 			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
 				foreach($matches as $device) {
-					event::add('jeedom::alert', array(
-						'level' => 'warning',
-						'page' => 'aTVremote',
-						'message' => __('Nouvelle AppleTV detectée ', __FILE__),
-					));
+					
 
 					log::add('aTVremote','debug','Name :'.json_encode($device[1]));
 					log::add('aTVremote','debug','Model/SW :'.json_encode($device[2]));
@@ -100,6 +96,11 @@ class aTVremote extends eqLogic {
 						continue;
 					}
 					if($device[4] != 'home sharing disabled') {
+						event::add('jeedom::alert', array(
+							'level' => 'warning',
+							'page' => 'aTVremote',
+							'message' => __('Nouvelle AppleTV detectée ', __FILE__),
+						));
 						//v0.4.0
                         			$mod = $device[2];
                         
