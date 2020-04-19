@@ -27,7 +27,7 @@ echo "--50%"
 #echo 60 > ${PROGRESS_FILE}
 #echo "--60%"
 sudo pip3 install -I wheel
-sudo pip3 install -I git+https://github.com/NebzHB/pyatv@release_0_3_x
+sudo pip3 install -I git+https://github.com/NebzHB/pyatv@master
 echo 100 > /${PROGRESS_FILE}
 echo "--100%"
 echo "********************************************************"
