@@ -449,7 +449,11 @@ class aTVremote extends eqLogic {
 				}
 				$artwork_url = $this->getCmd(null, 'artwork_url');
 				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
-			}	
+			}else {
+				$artwork = $this->getImage();
+              			$artwork_url = $this->getCmd(null, 'artwork_url');
+				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
+            		}		
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
