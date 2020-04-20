@@ -223,13 +223,18 @@ class aTVremote extends eqLogic {
       	//$type='aTV';
   		// Teste si la chaîne contient le mot
   		if(strpos($model, $testmodel) !== false){
-          	$type = 'aTV';
-          	log::add('aTVremote','debug','type : '.$type);
+          		$type = 'aTV';
+          		log::add('aTVremote','debug','type : '.$type);
     		
   		} else{
-          	$type = 'tvOS';
-          	log::add('aTVremote','debug','type : '.$type);
-    		
+          		$type = 'tvOS';
+          		log::add('aTVremote','debug','type : '.$type);
+			
+			$power_state=$this->aTVremoteExecute('power_state');
+			log::add('aTVremote','debug','power_state : '.($power_state[0]));
+              
+            		$power_state=$this->aTVremoteExecute('app');
+            		log::add('aTVremote','debug','app : '.($app[0]));
   		}
 		
       	try {
