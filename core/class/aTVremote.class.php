@@ -233,8 +233,9 @@ class aTVremote extends eqLogic {
 			$power_state=$this->aTVremoteExecute('power_state');
 			log::add('aTVremote','debug','power_state : '.($power_state[0]));
               
-            		$power_state=$this->aTVremoteExecute('app');
-            		log::add('aTVremote','debug','app : '.($app[0]));
+            		$app=$this->aTVremoteExecute('app');
+         		$app = explode(': ',$app[0]);
+            		log::add('aTVremote','debug','app : '.($app[1]));
   		}
 		
       	try {
