@@ -398,6 +398,9 @@ class aTVremote extends eqLogic {
                         case 'Songs':
                             			$this->checkAndUpdateCmd($shuffle, 'Oui');
                         break;
+                        case 'Albums':
+                            			$this->checkAndUpdateCmd($shuffle, 'Oui');
+                        break;
                     }
 				}
 			}
