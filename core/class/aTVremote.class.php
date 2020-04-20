@@ -309,7 +309,7 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Media type'])) {
               	if($aTVremoteinfo['Media type']=='Unknown'){
                   	$media_type = $this->getCmd(null, 'media_type');
-					          $this->checkAndUpdateCmd($media_type, '');    
+					          $this->checkAndUpdateCmd($media_type, '-');    
                 } else {
                     $media_type = $this->getCmd(null, 'media_type');
                     $this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
@@ -321,40 +321,40 @@ class aTVremote extends eqLogic {
 				$this->checkAndUpdateCmd($title, $aTVremoteinfo['Title']);         
 			} else {
 				$title = $this->getCmd(null, 'title');
-				$this->checkAndUpdateCmd($title, '');
+				$this->checkAndUpdateCmd($title, '-');
 			}
 
 			if(isset($aTVremoteinfo['Artist'])) {
 				$artist = $this->getCmd(null, 'artist');
 				$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']);
-			} /*else {
+			} else {
 				$artist = $this->getCmd(null, 'artist');
-				$this->checkAndUpdateCmd($artist, '');
-			}*/
+				$this->checkAndUpdateCmd($artist, '-');
+			}
 			if(isset($aTVremoteinfo['Album'])) {
 				$album = $this->getCmd(null, 'album');
 				$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']);
-			} /*else {
+			} else {
 				$album = $this->getCmd(null, 'album');
-				$this->checkAndUpdateCmd($album, '');
-			}*/
+				$this->checkAndUpdateCmd($album, '-');
+			}
 			if(isset($aTVremoteinfo['Genre'])) {
 				$genre = $this->getCmd(null, 'genre');
 				$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']);
-			} /*else {
+			} else {
 				$genre = $this->getCmd(null, 'genre');
-				$this->checkAndUpdateCmd($genre, '');
-			}*/
+				$this->checkAndUpdateCmd($genre, '-');
+			}
 			
 			if(isset($aTVremoteinfo['Position'])) {
 				$position = $this->getCmd(null, 'position');
 				$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']);
-			} /*else {
+			} else {
 				$position = $this->getCmd(null, 'position');
-				$this->checkAndUpdateCmd($position, '');
+				$this->checkAndUpdateCmd($position, '-');
 			}
 
-			if(isset($aTVremoteinfo['Total time'])) { // no return < 0.4
+			/*if(isset($aTVremoteinfo['Total time'])) { // no return < 0.4
 				$total_time = $this->getCmd(null, 'total_time');
 				if (is_object($total_time)) {
 					$this->checkAndUpdateCmd($total_time, $aTVremoteinfo['Total time']);
@@ -390,7 +390,7 @@ class aTVremote extends eqLogic {
 					        $this->checkAndUpdateCmd($shuffle, 'Non');
                         break;
                         case 'Songs':
-                            $this->checkAndUpdateCmd($shuffle, 'Oui');
+                            			$this->checkAndUpdateCmd($shuffle, 'Oui');
                         break;
                     }
 				}
