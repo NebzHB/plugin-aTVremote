@@ -46,13 +46,13 @@ class aTVremote extends eqLogic {
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
 		$cmd = "pip3 list | grep pyatv";
-		$cmd2 = "python --version";
+		#$cmd2 = "python --version";
 
 		exec($cmd, $output, $return_var);
-		exec($cmd2, $output2, $return_var2);
+		#exec($cmd2, $output2, $return_var2);
 
 		$return['state'] = 'nok';
-		if ($return_var==0 ||$return_var2=="Python 3.6.9") {
+		if ($return_var==0){# ||$return_var2=="Python 3.6.9") {
 				$return['state'] = 'ok';
 		}
 		return $return;
