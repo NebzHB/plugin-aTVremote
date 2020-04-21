@@ -57,7 +57,7 @@ class aTVremote extends eqLogic {
 
 		$return['state'] = 'nok';
 		#if ($return_var==0){# ||$return_var2=="Python 3.6.9") {
-		if (file_exists(aTVremote::getaTVremote()) {
+		if (file_exists(aTVremote::getaTVremote())) {
 				$return['state'] = 'ok';
 		}
 		return $return;
