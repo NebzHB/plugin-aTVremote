@@ -58,7 +58,7 @@ fi
 echo 80 > ${PROGRESS_FILE}
 echo "--80%"
 
-sudo virtualenv -p /usr/bin/python3.7 ${BASEDIR}/atvremote/
+sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
 source ${BASEDIR}/atvremote/bin/activate
 
 sudo pip3 install -I wheel
