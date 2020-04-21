@@ -66,7 +66,7 @@ class aTVremote extends eqLogic {
 	
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
-        	$output=shell_exec("sudo ".dirname(__FILE__)."/../../resources/atvremote/bin/atvremote scan");
+        	$output=shell_exec("sudo atvremote scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
 
 		
@@ -107,7 +107,7 @@ class aTVremote extends eqLogic {
 												
 						//v0.4.0
 						//$cmdToExec="atvremote --address ".$device[2]." --port ".$device[3]." --protocol dmap --device_credentials ".$cred." device_id";
-						$cmdToExec="sudo ".dirname(__FILE__)."/../../resources/atvremote/bin/atvremote --address ".$device[3];
+						$cmdToExec="sudo atvremote --address ".$device[3];
 						$device_id=trim(shell_exec($cmdToExec));
 						$res = [];
 						$res["name"] = $device[1];
@@ -204,7 +204,7 @@ class aTVremote extends eqLogic {
 			$cmdToExec = "";
 			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
 			//$cmdToExec .= "sudo atvremote --address $ip  $cmd";
-			$cmdToExec .= "sudo ".dirname(__FILE__)."/../../resources/atvremote/bin/atvremote -i $credentials $cmd";
+			$cmdToExec .= "sudo atvremote -i $credentials $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
 			if($val_ret)
 				log::add('aTVremote','debug','ret:'.$val_ret.' -- '.$lastoutput.' -- '.json_encode($return).' -- '.$cmdToExec);
