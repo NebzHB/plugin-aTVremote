@@ -247,9 +247,31 @@ class aTVremote extends eqLogic {
 				$this->checkAndUpdateCmd($power, 'Marche');
                 	}
               
+            		// Retour App Active 
+          
             		$app=$this->aTVremoteExecute('app');
          		$app = explode(': ',$app[0]);
             		log::add('aTVremote','debug','app : '.($app[1]));
+          		$app = explode(' (',$app[1]);
+          		$app_active = $app[0];
+          		log::add('aTVremote','debug','app active : '.($app_active));
+          		$app = explode(')',$app[1]);
+          		$app = explode('.',$app[0]);
+          		$app_secour = $app[2];
+          		log::add('aTVremote','debug','app active secour : '.($app_secour));
+          
+          		if(isset($app_active)){
+                		if($app_active!='None'){
+                      			$app_run = $this->getCmd(null, 'app_run');
+					$this->checkAndUpdateCmd($app_run, $app_active);
+                    		} else {
+                      			$app_run = $this->getCmd(null, 'app_run');
+					$this->checkAndUpdateCmd($app_run, $app_secour);
+                    		}
+                	} else {
+                		$app_run = $this->getCmd(null, 'app_run');
+				$this->checkAndUpdateCmd($app_run, '-');
+                	}
   		}
 		
       		try {
