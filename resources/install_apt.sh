@@ -63,7 +63,7 @@ sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
 deactivate
 
 sudo pip3 install --upgrade pip
-echo 100 > /${PROGRESS_FILE}
+echo 100 > ${PROGRESS_FILE}
 echo "--100%"
 echo "********************************************************"
 echo "*             Installation terminée                    *"
