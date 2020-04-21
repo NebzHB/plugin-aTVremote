@@ -400,6 +400,21 @@
             	    		"mobile": "line"
             		}
         	},
+        	{
+            		"name": "App",
+            		"type": "info",
+            		"subtype": "string",
+            		"display": {
+            			"generic_type": "GENERIC_INFO"
+            		},
+            		"isVisible": 1,
+            		"isHistorized": 0,
+            		"logicalId": "app_run",
+			"template": {
+                		"dashboard": "line",
+           	    		"mobile": "line"
+           		}
+        	},
 		{
 			"name": "Rafraichir",
 			"type": "action",
