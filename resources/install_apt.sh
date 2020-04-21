@@ -58,8 +58,8 @@ sudo pip3 install virtualenv
 sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
 source <(sudo cat /var/www/html/plugins/aTVremote/resources/atvremote/bin/activate)
 
-sudo pip3 install -I wheel
-sudo pip3 install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
+sudo `which pip3` install -I wheel
+sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
 deactivate
 
 sudo pip3 install --upgrade pip
