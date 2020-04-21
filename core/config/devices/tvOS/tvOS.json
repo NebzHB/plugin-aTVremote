@@ -385,6 +385,21 @@
             	    		"mobile": "line"
             		}
         	},
+        	{
+            		"name": "Etat",
+            		"type": "info",
+            		"subtype": "string",
+            		"display": {
+            	    		"generic_type": "GENERIC_INFO"
+            		},
+            		"isVisible": 1,
+            		"isHistorized": 0,
+            		"logicalId": "etat",
+			"template": {
+            	    		"dashboard": "line",
+            	    		"mobile": "line"
+            		}
+        	},
 		{
 			"name": "Rafraichir",
 			"type": "action",
