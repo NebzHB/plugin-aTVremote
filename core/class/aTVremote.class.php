@@ -45,14 +45,15 @@ class aTVremote extends eqLogic {
 	public static function dependancy_info() {
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
-		$cmd = "pip3 list | grep pyatv";
+		#$cmd = "pip3 list | grep pyatv";
 		#$cmd2 = "python --version";
 
-		exec($cmd, $output, $return_var);
+		#exec($cmd, $output, $return_var);
 		#exec($cmd2, $output2, $return_var2);
 
 		$return['state'] = 'nok';
-		if ($return_var==0){# ||$return_var2=="Python 3.6.9") {
+		#if ($return_var==0){# ||$return_var2=="Python 3.6.9") {
+		if (file_exists(dirname(__FILE__) . '/../../resources/atvremote/bin/atrvremote')) {
 				$return['state'] = 'ok';
 		}
 		return $return;
