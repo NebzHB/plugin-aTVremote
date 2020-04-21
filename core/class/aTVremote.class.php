@@ -43,7 +43,8 @@ class aTVremote extends eqLogic {
 	}
 	
 	public static function getaTVremote($withSudo=false) {
-		return (($withSudo)?system::getCmdSudo():'').dirname(__FILE__) . '/../../resources/atvremote/bin/atrvremote';
+		$cmd=(($withSudo)?system::getCmdSudo():'').dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote';
+		return $cmd;
 	}
 	
 	public static function dependancy_info() {
