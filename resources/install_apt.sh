@@ -29,12 +29,7 @@ sudo apt-get -y install python3 python3-pip python3-setuptools build-essential p
 echo 20 > ${PROGRESS_FILE}
 echo "--20%"
 cd ${BASEDIR};
-sudo rm -fR ${BASEDIR}/atvremote
-sudo pip3 install virtualenv
-sudo virtualenv ${BASEDIR}/atvremote
 
-echo 30 > ${PROGRESS_FILE}
-echo "--30%"
 lsb_release -c | grep stretch
 if [ $? -eq 0 ]
 then
@@ -58,6 +53,8 @@ fi
 echo 80 > ${PROGRESS_FILE}
 echo "--80%"
 
+sudo rm -fR ${BASEDIR}/atvremote &>/dev/null
+sudo pip3 install virtualenv
 sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
 source ${BASEDIR}/atvremote/bin/activate
 
