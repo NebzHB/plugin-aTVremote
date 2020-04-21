@@ -56,7 +56,7 @@ echo "--80%"
 sudo rm -fR ${BASEDIR}/atvremote &>/dev/null
 sudo pip3 install virtualenv
 sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
-source ${BASEDIR}/atvremote/bin/activate
+source <(sudo cat /var/www/html/plugins/aTVremote/resources/atvremote/bin/activate)
 
 sudo pip3 install -I wheel
 sudo pip3 install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
