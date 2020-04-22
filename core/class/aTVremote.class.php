@@ -98,15 +98,22 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Model/SW :'.$res["model"]);
 					log::add('aTVremote','debug','Address :'.$res["ip"]);
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
+					
+					$res['device']="AppleTV";
 					$modElmt=explode(' ',$res['model']);
 					$res['version']=$modElmt[0];
 					$res['os']=$modElmt[1];
 					if($res['version'] == '3') {
 						$res['osVersion']=$modElmt[3];
 						$res['build']='Unknown';
-					} else {
+					} elseif($res['version'] == '4' || $res['version'] == '4K') {
 						$res['osVersion']=$modElmt[2];
 						$res['build']=$modElmt[4];
+					} else {
+						$res['os']=$modElmt[2];
+						$res['osVersion']=$modElmt[3];
+						$res['build']=$modElmt[5];
+						$res['device']=$modElmt[0];
 					}
 					
 					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
@@ -120,7 +127,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setDisplay('width','250px');
 					} else $eqLogic = $aTVremote;
 					
-					$eqLogic->setConfiguration('device', 'AppleTV');
+					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
 					$eqLogic->setConfiguration('port', $res["port"]);
 					$eqLogic->setConfiguration('mac',$res["mac"]);
