@@ -26,6 +26,9 @@ $eqLogics = eqLogic::byType('aTVremote');
 				<span>{{Santé}}</span>
 			</div>
 		</div>
+		<?php
+			if(count($eqLogics)) :
+		?>
 		<legend><i class="fab fa-apple"></i>  {{Mes AppleTV}}</legend>
 		<div class="input-group" style="margin-bottom:5px;">
 			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
@@ -50,6 +53,9 @@ $eqLogics = eqLogic::byType('aTVremote');
 				</div>
 			</div>
 		</div>
+		<?php
+			endif;
+		?>
 	</div>
 	<div class="col-lg-12 eqLogic" style="display: none;">
 		<div class="input-group pull-right" style="display:inline-flex">
