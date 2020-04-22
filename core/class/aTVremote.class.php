@@ -415,26 +415,27 @@ class aTVremote extends eqLogic {
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
 				$hash=$this->aTVremoteExecute('hash');
-				$artwork= $rel_folder.$hash[0].'.png';
-				$dest = $abs_folder.$hash[0].'.png';
+				$hash=md5($hash[0]);
+				$artwork= $rel_folder.$hash.'.png';
+				$dest = $abs_folder.$hash.'.png';
 				
 				if(!file_exists($dest)) {
 					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
 					
-					$src=$abs_folder.'artwork.png';
+					$src=$abs_folder.'artwork.jpg';
 					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
 
 					if(file_exists($src)) {
 						$resize=false;
 						list($width, $height) = getimagesize($src);
-						//if($width != $NEWwidth && $height != $NEWheight) $resize=true;
+						if($width != $NEWwidth && $height != $NEWheight) $resize=true;
 						if($resize) {
 							list($width, $height) = getimagesize($src);
 							$rapport = $height/$width;
 							
 							$NEWwidth=$NEWheight/$rapport;
 							
-							$imgSrc = imagecreatefrompng($src);
+							$imgSrc = imagecreatefromjpeg($src);
 							$imgDest= imagecreatetruecolor($NEWwidth,$NEWheight);
 
 							$resample=imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $NEWwidth, $NEWheight, $width, $height);
@@ -446,15 +447,12 @@ class aTVremote extends eqLogic {
 							imagedestroy($imgSrc);
 							imagedestroy($imgDest);
 						} else {
-							//$ret=copy($src,$dest);
-							$img = file_get_contents($src);
-							$ret = file_put_contents($dest,$img);
+							rename($src,$dest);
 						}
 
 						exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
 						$img=null;
 						if($src=realpath($src)) {
-							log::add('aTVremote','debug','delete of old src: '.$src);
 							unlink($src);
 						}
 					}
