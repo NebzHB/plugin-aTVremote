@@ -197,7 +197,7 @@ class aTVremote extends eqLogic {
 
 	public function getaTVremoteInfo($data=null,$order=null,$hasToCheckPlaying=true) {
       	try {
-			
+			$changed = false;
 			
 			if($this->getConfiguration('version',0) != '3'){
 				$oneQuery=$this->aTVremoteExecute('power_state app playing');
@@ -208,10 +208,10 @@ class aTVremote extends eqLogic {
 				
 				if($power_state=="PowerState.Off"){
 					$power = $this->getCmd(null, 'power_state');
-					$this->checkAndUpdateCmd($power, '0');
+					$changed=$this->checkAndUpdateCmd($power, '0') || $changed;
 				} else {
 					$power = $this->getCmd(null, 'power_state');
-					$this->checkAndUpdateCmd($power, '1');
+					$changed=$this->checkAndUpdateCmd($power, '1') || $changed;
 				}
 			  
 				// Retour App Active 		  
@@ -230,14 +230,14 @@ class aTVremote extends eqLogic {
 				if(isset($app_active)){
 						if($app_active!='None'){
 							$app_run = $this->getCmd(null, 'app');
-							$this->checkAndUpdateCmd($app_run, $app_active);
+							$changed=$this->checkAndUpdateCmd($app_run, $app_active) || $changed;
 						} else {
 							$app_run = $this->getCmd(null, 'app');
-							$this->checkAndUpdateCmd($app_run, $app_secour);
+							$changed=$this->checkAndUpdateCmd($app_run, $app_secour) || $changed;
 						}
 				} else {
 					$app_run = $this->getCmd(null, 'app');
-					$this->checkAndUpdateCmd($app_run, '-');
+					$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
 				}
 			} else {
 					$oneQuery=$this->aTVremoteExecute('playing');
@@ -277,40 +277,40 @@ class aTVremote extends eqLogic {
 				switch($aTVremoteinfo['Device state']) {
 
 					case 'Idle' :
-						$this->checkAndUpdateCmd($play_state, "0");
-						$this->checkAndUpdateCmd($play_human, "Inactif");
+						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Inactif") || $changed;
 						break;
 					case 'Paused':
-						$this->checkAndUpdateCmd($play_state, "0");
-						$this->checkAndUpdateCmd($play_human, "En pause");
+						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "En pause") || $changed;
 						break;
 					case 'No media':
-						$this->checkAndUpdateCmd($play_state, "0");
-						$this->checkAndUpdateCmd($play_human, "Aucun Media");
+						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Aucun Media") || $changed;
 						break;
 					case 'Playing':
-						$this->checkAndUpdateCmd($play_state, "1");
-						$this->checkAndUpdateCmd($play_human, "Lecture en cours");
+						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Lecture en cours") || $changed;
 						$isPlaying=true;
 						break;
 					case 'Loading':
-						$this->checkAndUpdateCmd($play_state, "1");
-						$this->checkAndUpdateCmd($play_human, "Chargement en cours");
+						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Chargement en cours") || $changed;
 						$isPlaying=true;
 						break;
 					case 'Fast forward':
-						$this->checkAndUpdateCmd($play_state, "1");
-						$this->checkAndUpdateCmd($play_human, "Avance rapide");
+						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Avance rapide") || $changed;
 						$isPlaying=true;
 						break;
 					case 'Fast backward':
-						$this->checkAndUpdateCmd($play_state, "1");
-						$this->checkAndUpdateCmd($play_human, "Recul rapide");
+						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Recul rapide") || $changed;
 						$isPlaying=true;
 						break;
 					default:
-						$this->checkAndUpdateCmd($play_state, "0");
-						$this->checkAndUpdateCmd($play_human, "Inconnu");
+						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, "Inconnu") || $changed;
 						break;
 					break;
 				}
@@ -319,49 +319,49 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Media type'])) {
 				if($aTVremoteinfo['Media type']=='Unknown'){
 					$media_type = $this->getCmd(null, 'media_type');
-					$this->checkAndUpdateCmd($media_type, '-');    
+					$changed=$this->checkAndUpdateCmd($media_type, '-') || $changed;    
 				} else {
-				    $media_type = $this->getCmd(null, 'media_type');
-				    $this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
+					$media_type = $this->getCmd(null, 'media_type');
+					$changed=$this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']) || $changed;
 				}
 			} 
 
 			if(isset($aTVremoteinfo['Title'])) {
 				$title = $this->getCmd(null, 'title');
-				$this->checkAndUpdateCmd($title, $aTVremoteinfo['Title']);         
+				$changed=$this->checkAndUpdateCmd($title, $aTVremoteinfo['Title']) || $changed;         
 			} else {
 				$title = $this->getCmd(null, 'title');
-				$this->checkAndUpdateCmd($title, '-');
+				$changed=$this->checkAndUpdateCmd($title, '-') || $changed;
 			}
 
 			if(isset($aTVremoteinfo['Artist'])) {
 				$artist = $this->getCmd(null, 'artist');
-				$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']);
+				$changed=$this->checkAndUpdateCmd($artist, $aTVremoteinfo['Artist']) || $changed;
 			} else {
 				$artist = $this->getCmd(null, 'artist');
-				$this->checkAndUpdateCmd($artist, '-');
+				$changed=$this->checkAndUpdateCmd($artist, '-') || $changed;
 			}
 			if(isset($aTVremoteinfo['Album'])) {
 				$album = $this->getCmd(null, 'album');
-				$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']);
+				$changed=$this->checkAndUpdateCmd($album, $aTVremoteinfo['Album']) || $changed;
 			} else {
 				$album = $this->getCmd(null, 'album');
-				$this->checkAndUpdateCmd($album, '-');
+				$changed=$this->checkAndUpdateCmd($album, '-') || $changed;
 			}
 			if(isset($aTVremoteinfo['Genre'])) {
 				$genre = $this->getCmd(null, 'genre');
-				$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']);
+				$changed=$this->checkAndUpdateCmd($genre, $aTVremoteinfo['Genre']) || $changed;
 			} else {
 				$genre = $this->getCmd(null, 'genre');
-				$this->checkAndUpdateCmd($genre, '-');
+				$changed=$this->checkAndUpdateCmd($genre, '-') || $changed;
 			}
 			
 			if(isset($aTVremoteinfo['Position'])) {
 				$position = $this->getCmd(null, 'position');
-				$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']);
+				$changed=$this->checkAndUpdateCmd($position, $aTVremoteinfo['Position']) || $changed;
 			} else {
 				$position = $this->getCmd(null, 'position');
-				$this->checkAndUpdateCmd($position, '-');
+				$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
 			}
 
 			/*if(isset($aTVremoteinfo['Total time'])) { // no return < 0.4
@@ -381,13 +381,13 @@ class aTVremote extends eqLogic {
 				if (is_object($repeat)) {
 					switch($aTVremoteinfo['Repeat']) {
 						case 'Off':
-							$this->checkAndUpdateCmd($repeat, 'Non');
+							$changed=$this->checkAndUpdateCmd($repeat, 'Non') || $changed;
 						break;
 						case 'Track':
-							$this->checkAndUpdateCmd($repeat, 'Piste');
+							$changed=$this->checkAndUpdateCmd($repeat, 'Piste') || $changed;
 						break;
 						case 'All':
-							$this->checkAndUpdateCmd($repeat, 'Tout');
+							$changed=$this->checkAndUpdateCmd($repeat, 'Tout') || $changed;
 						break;
 					}
 				}
@@ -397,13 +397,13 @@ class aTVremote extends eqLogic {
 				if (is_object($shuffle)) {
 				    switch($aTVremoteinfo['Shuffle']) {
 					case 'Off':                     
-								$this->checkAndUpdateCmd($shuffle, 'Non');
+								$changed=$this->checkAndUpdateCmd($shuffle, 'Non') || $changed;
 					break;
 					case 'Songs':
-								$this->checkAndUpdateCmd($shuffle, 'Oui');
+								$changed=$this->checkAndUpdateCmd($shuffle, 'Oui') || $changed;
 					break;
 					case 'Albums':
-								$this->checkAndUpdateCmd($shuffle, 'Oui');
+								$changed=$this->checkAndUpdateCmd($shuffle, 'Oui') || $changed;
 					break;
 				    }
 				}
@@ -472,7 +472,9 @@ class aTVremote extends eqLogic {
 				$artwork = $this->getImage();
             }		
 			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
+			$changed=$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />") || $changed;
+			if ($changed) 
+				$this->refreshWidget();
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
