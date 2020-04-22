@@ -62,7 +62,6 @@ function addCmdToTable(_cmd) {
 		tr += '</div>';
     tr += '</td>'; 
    tr += '<td>';
-		tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">';
 		tr += '<div class="row">';
 			tr += '<div class="col-sm-6">';
 			tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fas fa-flag"></i> Icone</a>';
