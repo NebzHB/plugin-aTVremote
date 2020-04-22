@@ -97,11 +97,7 @@ class aTVremote extends eqLogic {
 						continue;
 					}
 					if($device[4] != 'home sharing disabled') {
-						event::add('jeedom::alert', array(
-							'level' => 'warning',
-							'page' => 'aTVremote',
-							'message' => __('Nouvelle AppleTV detectée ', __FILE__),
-						));
+						
 						//v0.4.0
                         			$mod = $device[2];
                         
@@ -146,7 +142,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setConfiguration('port', $res["port"]);
 						$eqLogic->setConfiguration('credentials',$res["credentials"]);
 						$eqLogic->setConfiguration('MRPport',$res["MRPport"]);
-            					$eqLogic->setConfiguration('model',$res["model"]);
+            			$eqLogic->setConfiguration('model',$res["model"]);
 
 						
 					
@@ -156,13 +152,13 @@ class aTVremote extends eqLogic {
 							event::add('jeedom::alert', array(
 								'level' => 'warning',
 								'page' => 'aTVremote',
-								'message' => __('Module inclu avec succès ' .$res["name"], __FILE__),
+								'message' => __('Nouvelle AppleTV detectée ' .$res["name"], __FILE__),
 							));
 						} else { // UPDATED
 							event::add('jeedom::alert', array(
 								'level' => 'warning',
 								'page' => 'aTVremote',
-								'message' => __('Module mis à jour avec succès ' .$res["name"], __FILE__),
+								'message' => __('AppleTV mise à jour avec succès ' .$res["name"], __FILE__),
 							));
 						}
 						$return[] = $res;
@@ -221,58 +217,58 @@ class aTVremote extends eqLogic {
 
 	public function getaTVremoteInfo($data=null,$order=null,$hasToCheckPlaying=true) {
       	
-	      //Type d'appleTV
-      		$model = $this->getConfiguration('model','');
-            	//log::add('aTVremote','debug','model : '.$model);
-      		$testmodel = "ATV";
-   
-      		//$type='aTV';
+		//Type d'appleTV
+		$model = $this->getConfiguration('model','');
+		//log::add('aTVremote','debug','model : '.$model);
+		$testmodel = "ATV";
+
+		//$type='aTV';
+			
   		// Teste si la chaîne contient le mot
   		if(strpos($model, $testmodel) !== false){
           		$type = 'aTV';
           		log::add('aTVremote','debug','type : '.$type);
-    		
   		} else{
           		$type = 'tvOS';
           		log::add('aTVremote','debug','type : '.$type);
 			
-			$power_state=$this->aTVremoteExecute('power_state');
+				$power_state=$this->aTVremoteExecute('power_state');
           		log::add('aTVremote','debug','power_state : '.($power_state[0]));
 				
           		if($power_state[0]=="PowerState.Off"){
-                		$power = $this->getCmd(null, 'etat');
-				$this->checkAndUpdateCmd($power, 'Arrêt');
-                	} else {
-                		$power = $this->getCmd(null, 'etat');
-				$this->checkAndUpdateCmd($power, 'Marche');
-                	}
+                	$power = $this->getCmd(null, 'power_state');
+					$this->checkAndUpdateCmd($power, '0');
+				} else {
+					$power = $this->getCmd(null, 'power_state');
+					$this->checkAndUpdateCmd($power, '1');
+				}
               
             		// Retour App Active 
           
-            		$app=$this->aTVremoteExecute('app');
+            	$app=$this->aTVremoteExecute('app');
          		$app = explode(': ',$app[0]);
-            		log::add('aTVremote','debug','app : '.($app[1]));
+            	log::add('aTVremote','debug','app : '.$app[1]);
           		$app = explode(' (',$app[1]);
           		$app_active = $app[0];
-          		log::add('aTVremote','debug','app active : '.($app_active));
+          		log::add('aTVremote','debug','app active : '.$app_active);
           		$app = explode(')',$app[1]);
           		$app = explode('.',$app[0]);
           		$app_secour = $app[2];
-          		log::add('aTVremote','debug','app active secour : '.($app_secour));
+          		log::add('aTVremote','debug','app active secour : '.$app_secour);
           
           		if(isset($app_active)){
                 		if($app_active!='None'){
-                      			$app_run = $this->getCmd(null, 'app_run');
-					$this->checkAndUpdateCmd($app_run, $app_active);
-                    		} else {
-                      			$app_run = $this->getCmd(null, 'app_run');
-					$this->checkAndUpdateCmd($app_run, $app_secour);
-                    		}
-                	} else {
-                		$app_run = $this->getCmd(null, 'app_run');
-				$this->checkAndUpdateCmd($app_run, '-');
-                	}
-  		}
+                      		$app_run = $this->getCmd(null, 'app');
+							$this->checkAndUpdateCmd($app_run, $app_active);
+						} else {
+							$app_run = $this->getCmd(null, 'app');
+							$this->checkAndUpdateCmd($app_run, $app_secour);
+						}
+				} else {
+					$app_run = $this->getCmd(null, 'app');
+					$this->checkAndUpdateCmd($app_run, '-');
+				}
+			}
 		
       		try {
 
