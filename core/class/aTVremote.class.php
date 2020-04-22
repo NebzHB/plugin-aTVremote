@@ -46,23 +46,18 @@ class aTVremote extends eqLogic {
 		exec("find ".$abs_folder."*.png -mtime +7 -exec rm {} \;");
 	}
 	
-	public static function getaTVremote($withSudo=false) {
-		$cmd=(($withSudo)?system::getCmdSudo():'').realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote');
+	public static function getaTVremote($withSudo=false,$realpath=false) {
+		$cmd=(($withSudo)?system::getCmdSudo():''). (($realpath)?realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote'):dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote');
 		return $cmd;
 	}
 	
 	public static function dependancy_info() {
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
-		#$cmd = "pip3 list | grep pyatv";
-		#$cmd2 = "python --version";
-
-		#exec($cmd, $output, $return_var);
-		#exec($cmd2, $output2, $return_var2);
-
 		$return['state'] = 'nok';
-		#if ($return_var==0){# ||$return_var2=="Python 3.6.9") {
-		if (file_exists(aTVremote::getaTVremote())) {
+
+		$path=aTVremote::getaTVremote();
+		if (file_exists($path)) {
 				$return['state'] = 'ok';
 		}
 		return $return;
@@ -76,7 +71,7 @@ class aTVremote extends eqLogic {
 	
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
-        $output=shell_exec(aTVremote::getaTVremote(true)." scan");
+        $output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
 
 		if($output) {
@@ -184,7 +179,7 @@ class aTVremote extends eqLogic {
 			$cmdToExec = "";
 			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
 			
-			$cmdToExec .= aTVremote::getaTVremote(true)." -i $mac $cmd";
+			$cmdToExec .= aTVremote::getaTVremote(true,true)." -i $mac $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
 			if($val_ret)
 				log::add('aTVremote','debug','ret:'.$val_ret.' -- '.$lastoutput.' -- '.json_encode($return).' -- '.$cmdToExec);
