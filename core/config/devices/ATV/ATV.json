@@ -1,0 +1,347 @@
+{
+	"commands": [{
+			"name": "Lecture en cours",
+			"type": "info",
+			"subtype": "binary",
+			"display": {
+				"generic_type": "SWITCH_STATE"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "play_state"
+		}, {
+			"name": "URL Artwork",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT",
+				"showNameOndashboard": 0,
+				"showNameOnplan": 0,
+				"showNameOnview": 0,
+				"showNameOnmobile": 0
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "artwork_url",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Bouton Lecture",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_ON",
+				"icon": "<i class=\"fa fa-play\"><\/i>"
+			},
+			"value": "play_state",
+			"isVisible": 1,
+			"logicalId": "play"
+		}, {
+			"name": "Bouton Pause",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_OFF",
+				"icon": "<i class=\"fa fa-pause\"><\/i>"
+			},
+			"value": "play_state",
+			"isVisible": 1,
+			"logicalId": "pause"
+		}, {
+			"name": "Bouton Stop",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-stop\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "stop"
+		}, {
+			"name": "Bouton Précédent",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-step-backward\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "previous"
+		}, {
+			"name": "Bouton Suivant",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-step-forward\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "next"
+		}, {
+			"name": "Bouton Haut",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-arrow-up\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "up"
+		},
+		{
+			"name": "Bouton Gauche",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-arrow-left\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "left"
+		}, {
+			"name": "Bouton Sélection",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-crosshairs\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "select"
+		}, {
+			"name": "Bouton Droit",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-arrow-right\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "right"
+		}, {
+			"name": "Bouton Bas",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-arrow-down\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "down"
+		}, {
+			"name": "Bouton Menu",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-cog\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "menu"
+		}, {
+			"name": "Bouton Home",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-desktop\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "top_menu"
+		}, {
+			"name": "Bouton Aléatoire ON",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-random\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "set_shuffle_on"
+		}, {
+			"name": "Bouton Aléatoire OFF",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-random\" style=\"opacity:0.5\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "set_shuffle_off"
+		}, {
+			"name": "Bouton Répétition Tout",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"icon jeedomapp-reload\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_all"
+		}, {
+			"name": "Bouton Répétition Piste",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"icon jeedomapp-rond01\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_track"
+		}, {
+			"name": "Bouton Répétition OFF",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"icon jeedomapp-reload-fail\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_off"
+		}, {
+			"name": "Statut",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO",
+				"showNameOndashboard": 0,
+				"showNameOnplan": 0,
+				"showNameOnview": 0,
+				"showNameOnmobile": 0
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "play_human"
+		}, {
+			"name": "Artiste",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "artist",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Titre",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "title",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Album",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "album",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Genre",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "genre",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Type Media",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "media_type",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Position",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "position",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Repeat",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Shuffle",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Rafraichir",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"logicalId": "refresh"
+		}
+	]
+}
