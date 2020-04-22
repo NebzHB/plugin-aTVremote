@@ -124,19 +124,18 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="credentials" placeholder="{{Mac}}"/>
 									</div>
 								</div>
-								</br>
-								</br>
-								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Model}}</label>
-									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="model" placeholder="{{Model}}"/>
-									</div>
-								</div>
 							</fieldset>
 						</form>
 					</div>
+					<br/>
 					<div class="form-horizontal col-sm-3">
 						<fieldset>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{Modèle}}</label>
+								<div class="col-sm-3">
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="model" id="model_field"></span>
+								</div>
+							</div>
 							<div class="form-group">
 								<img src="plugins/aTVremote/plugin_info/aTVremote_icon.png" style="height : 200px;margin-top:5px" />
 							</div>
