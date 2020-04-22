@@ -27,9 +27,11 @@ class aTVremote extends eqLogic {
 			try {
 				if(is_object($aTVremote)) {
 					$play_state = $aTVremote->getCmd(null, 'play_state');
-					$val=$play_state->execCmd();
-					if($val)
-						$aTVremote->getaTVremoteInfo();
+					if(is_object($play_state)) {
+						$val=$play_state->execCmd();
+						if($val)
+							$aTVremote->getaTVremoteInfo();
+					}
 				}
 			} catch (Exception $e) {
 				log::add('aTVremote','error',json_encode($e));
@@ -409,7 +411,6 @@ class aTVremote extends eqLogic {
 			$NEWheight=150;
 			$NEWwidth=150;
 			if(isset($aTVremoteinfo['Title']) && trim($aTVremoteinfo['Title']) != "") {
-				$artwork = $this->getImage();
 				$rel_folder='plugins/aTVremote/resources/images/';
 				$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 				
@@ -458,13 +459,11 @@ class aTVremote extends eqLogic {
 						}
 					}
 				}
-				$artwork_url = $this->getCmd(null, 'artwork_url');
-				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
 			} else {
 				$artwork = $this->getImage();
-              			$artwork_url = $this->getCmd(null, 'artwork_url');
-				$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
             }		
+			$artwork_url = $this->getCmd(null, 'artwork_url');
+			$this->checkAndUpdateCmd($artwork_url, "<img width='$NEWwidth' height='$NEWheight' src='".$artwork."' />");
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
@@ -485,10 +484,6 @@ class aTVremote extends eqLogic {
 		$order=0;
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
-		log::add('aTVremote','info',"postSave");
-		log::add('aTVremote','info',"os is : ".$os);
-		log::add('aTVremote','info',"device is : ".$device);
-		log::add('aTVremote','info',"device is : ".json_encode($device));
 	
 		if($device) {
 			foreach($device['commands'] as $cmd) {
@@ -526,7 +521,7 @@ class aTVremote extends eqLogic {
 					$linkStatus = $this->getCmd(null, $cmd['value']);
 					$newCmd->setValue($linkStatus->getId());
 				}
-				$newCmd->save();		
+				$newCmd->save();				
 			}
 		
 		}
