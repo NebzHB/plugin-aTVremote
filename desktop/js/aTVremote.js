@@ -20,7 +20,7 @@
     $('#md_modal').load('index.php?v=d&plugin=aTVremote&modal=health').dialog('open');
 });
 
-$('.discover').on('click', function () {
+$('.eqLogicAction[data-action=scanAppleTV]').on('click', function () {
 	$('#div_alert').showAlert({message: '{{Détection en cours}}', level: 'warning'});
 	$.showLoading();
 	$.ajax({
@@ -54,18 +54,21 @@ function addCmdToTable(_cmd) {
     }
     var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
     tr += '<td>';
-    tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">';
-    tr += '<div class="row">';
-	tr += '<div class="col-sm-6">';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="name">';
-	tr += '</div>';
-	tr += '<div class="col-sm-6">';
-	tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fa fa-flag"></i> Icone</a>';
-	tr += '<span class="cmdAttr" data-l1key="display" data-l2key="icon" style="margin-left : 10px;"></span>';
-	tr += '</div>';
-	tr += '</div>';
-	tr += '<td>';
-    tr += '<span class="cmdAttr" data-l1key="configuration" data-l2key="parameters"></span>';
+		tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">';
+		tr += '<div class="row">';
+			tr += '<div class="col-sm-6">';
+			tr += '<input class="cmdAttr form-control input-sm" data-l1key="name">';
+			tr += '</div>';
+		tr += '</div>';
+    tr += '</td>'; 
+   tr += '<td>';
+		tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">';
+		tr += '<div class="row">';
+			tr += '<div class="col-sm-6">';
+			tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fas fa-flag"></i> Icone</a>';
+			tr += '<span class="cmdAttr" data-l1key="display" data-l2key="icon" style="margin-left : 10px;"></span>';
+			tr += '</div>';
+		tr += '</div>';
     tr += '</td>'; 
 	tr += '<td>';
 	if (_cmd.logicalId != 'refresh'){
@@ -82,10 +85,10 @@ function addCmdToTable(_cmd) {
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="type" style="display : none;">';
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="subType" style="display : none;">';
     if (is_numeric(_cmd.id)) {
-        tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
-        tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
+        tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fas fa-cogs"></i></a> ';
+        tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>';
     }
-	tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
+	tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
     tr += '</tr>';
     $('#table_cmd tbody').append(tr);
     $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
