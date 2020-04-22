@@ -1,7 +1,6 @@
 {
-	"commands": [
-		{
-			"name": "Lecture",
+	"commands": [{
+			"name": "Lecture en cours",
 			"type": "info",
 			"subtype": "binary",
 			"display": {
@@ -10,17 +9,16 @@
 			"isVisible": 1,
 			"isHistorized": 0,
 			"logicalId": "play_state"
-		},
-		{
+		}, {
 			"name": "URL Artwork",
 			"type": "info",
 			"subtype": "string",
 			"display": {
 				"generic_type": "DONT",
-				"showNameOndashboard":0,
-				"showNameOnplan":0,
-				"showNameOnview":0,
-				"showNameOnmobile":0
+				"showNameOndashboard": 0,
+				"showNameOnplan": 0,
+				"showNameOnview": 0,
+				"showNameOnmobile": 0
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
@@ -29,8 +27,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},		
-		{
+		}, {
 			"name": "Bouton Lecture",
 			"type": "action",
 			"subtype": "other",
@@ -41,8 +38,7 @@
 			"value": "play_state",
 			"isVisible": 1,
 			"logicalId": "play"
-		},
-		{
+		}, {
 			"name": "Bouton Pause",
 			"type": "action",
 			"subtype": "other",
@@ -53,8 +49,7 @@
 			"value": "play_state",
 			"isVisible": 1,
 			"logicalId": "pause"
-		},
-		{
+		}, {
 			"name": "Bouton Stop",
 			"type": "action",
 			"subtype": "other",
@@ -64,8 +59,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "stop"
-		},
-		{
+		}, {
 			"name": "Bouton Précédent",
 			"type": "action",
 			"subtype": "other",
@@ -76,8 +70,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "previous"
-		},
-		{
+		}, {
 			"name": "Bouton Suivant",
 			"type": "action",
 			"subtype": "other",
@@ -87,8 +80,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "next"
-		},
-		{
+		}, {
 			"name": "Bouton Haut",
 			"type": "action",
 			"subtype": "other",
@@ -100,7 +92,6 @@
 			"isVisible": 1,
 			"logicalId": "up"
 		},
-
 		{
 			"name": "Bouton Gauche",
 			"type": "action",
@@ -112,8 +103,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "left"
-		},
-		{
+		}, {
 			"name": "Bouton Sélection",
 			"type": "action",
 			"subtype": "other",
@@ -123,8 +113,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "select"
-		},		
-		{
+		}, {
 			"name": "Bouton Droit",
 			"type": "action",
 			"subtype": "other",
@@ -134,8 +123,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "right"
-		},
-		{
+		}, {
 			"name": "Bouton Bas",
 			"type": "action",
 			"subtype": "other",
@@ -146,8 +134,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "down"
-		},		
-		{
+		}, {
 			"name": "Bouton Menu",
 			"type": "action",
 			"subtype": "other",
@@ -158,8 +145,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "menu"
-		},
-		{
+		}, {
 			"name": "Bouton Home",
 			"type": "action",
 			"subtype": "other",
@@ -169,8 +155,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "top_menu"
-		},
-		{
+		}, {
 			"name": "Bouton Aléatoire ON",
 			"type": "action",
 			"subtype": "other",
@@ -181,8 +166,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_shuffle_on"
-		},
-		{
+		}, {
 			"name": "Bouton Aléatoire OFF",
 			"type": "action",
 			"subtype": "other",
@@ -192,8 +176,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_shuffle_off"
-		},		
-		{
+		}, {
 			"name": "Bouton Répétition Tout",
 			"type": "action",
 			"subtype": "other",
@@ -204,8 +187,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_all"
-		},
-		{
+		}, {
 			"name": "Bouton Répétition Piste",
 			"type": "action",
 			"subtype": "other",
@@ -215,8 +197,7 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_track"
-		},	
-		{
+		}, {
 			"name": "Bouton Répétition OFF",
 			"type": "action",
 			"subtype": "other",
@@ -226,23 +207,21 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_off"
-		},		
-		{
+		}, {
 			"name": "Statut",
 			"type": "info",
 			"subtype": "string",
 			"display": {
 				"generic_type": "GENERIC_INFO",
-				"showNameOndashboard":0,
-				"showNameOnplan":0,
-				"showNameOnview":0,
-				"showNameOnmobile":0
+				"showNameOndashboard": 0,
+				"showNameOnplan": 0,
+				"showNameOnview": 0,
+				"showNameOnmobile": 0
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
 			"logicalId": "play_human"
-		},
-		{
+		}, {
 			"name": "Artiste",
 			"type": "info",
 			"subtype": "string",
@@ -256,8 +235,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},
-		{
+		}, {
 			"name": "Titre",
 			"type": "info",
 			"subtype": "string",
@@ -271,8 +249,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},
-		{
+		}, {
 			"name": "Album",
 			"type": "info",
 			"subtype": "string",
@@ -286,8 +263,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},
-		{
+		}, {
 			"name": "Genre",
 			"type": "info",
 			"subtype": "string",
@@ -301,8 +277,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},		
-		{
+		}, {
 			"name": "Type Media",
 			"type": "info",
 			"subtype": "string",
@@ -316,8 +291,7 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},
-		{
+		}, {
 			"name": "Position",
 			"type": "info",
 			"subtype": "string",
@@ -331,38 +305,35 @@
 				"dashboard": "line",
 				"mobile": "line"
 			}
-		},
-        	{
-            		"name": "Repeat",
-            		"type": "info",
-            		"subtype": "string",
-            		"display": {
-                		"generic_type": "GENERIC_INFO"
-            		},
-            		"isVisible": 1,
-            		"isHistorized": 0,
-            		"logicalId": "repeat",
-            		"template": {
-                		"dashboard": "line",
-                		"mobile": "line"
-            		}
-        	},
-		{
-            		"name": "Shuffle",
-            		"type": "info",
-            		"subtype": "string",
-            		"display": {
+		}, {
+			"name": "Repeat",
+			"type": "info",
+			"subtype": "string",
+			"display": {
 				"generic_type": "GENERIC_INFO"
-            		},
-            		"isVisible": 1,
-            		"isHistorized": 0,
-            		"logicalId": "shuffle",
-            		"template": {
-                		"dashboard": "line",
-                		"mobile": "line"
-            		}
-        	},
-		{
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
+			"name": "Shuffle",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle",
+			"template": {
+				"dashboard": "line",
+				"mobile": "line"
+			}
+		}, {
 			"name": "Rafraichir",
 			"type": "action",
 			"subtype": "other",
@@ -371,6 +342,6 @@
 			},
 			"isVisible": 1,
 			"logicalId": "refresh"
-		}		
+		}
 	]
 }
