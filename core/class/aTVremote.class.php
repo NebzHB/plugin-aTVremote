@@ -477,27 +477,7 @@ class aTVremote extends eqLogic {
 	public function postSave() {
 		$order=0;
       
-      		//Type d'appleTV
-		$model = $this->getConfiguration('fullModel','');
-		    log::add('aTVremote','debug','model : '.$model);
-		$testmodel = "ATV";
-
-		//$type='aTV';
-   
-  		// Teste si la chaîne contient le mot
-  		if(strpos($model, $testmodel) !== false){
-          	$type = 'aTV';
-          	log::add('aTVremote','debug','type : '.$type);
-    		
-  		} else{
-          	$type = 'tvOS';
-          	log::add('aTVremote','debug','type : '.$type);
-    		
-  		}
-      
-      
-		$device = self::devicesParameters($type);
-        
+		$device = self::devicesParameters($this->getConfiguration('os',''));
 	
 		if($device) {
 			foreach($device['commands'] as $cmd) {
