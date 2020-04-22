@@ -24,7 +24,7 @@ if [ $(lsb_release -c | grep 'jessie' | wc -l) -eq 1 ]; then
 	echo "********************************************************"
     exit 1;
 fi
-sudo apt-get -y install python3 python3-pip python3-setuptools build-essential python3-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev curl
+sudo apt-get -y install python3 python3-pip python3-setuptools build-essential python3-dev libssl-dev libffi-dev
 
 echo 20 > ${PROGRESS_FILE}
 echo "--20%"
@@ -35,6 +35,7 @@ if [ $? -eq 0 ]
 then
   python3.7 --version &>/dev/null
   if [ $? -ne 0 ]; then
+	sudo apt-get -y install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libreadline-dev curl
     sudo curl -O https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
     sudo tar -xf Python-3.7.3.tar.xz
     #Clean tar file
