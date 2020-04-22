@@ -416,13 +416,13 @@ class aTVremote extends eqLogic {
 				
 				$hash=$this->aTVremoteExecute('hash');
 				$hash=md5($hash[0]);
-				$artwork= $rel_folder.$hash.'.png';
-				$dest = $abs_folder.$hash.'.png';
+				$artwork= $rel_folder.$hash.'.jpg';
+				$dest = $abs_folder.$hash.'.jpg';
 				
 				if(!file_exists($dest)) {
 					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
 					
-					$src=$abs_folder.'artwork.jpg';
+					$src=$abs_folder.'artwork.png';
 					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
 
 					if(file_exists($src)) {
@@ -430,17 +430,21 @@ class aTVremote extends eqLogic {
 						list($width, $height) = getimagesize($src);
 						if($width != $NEWwidth && $height != $NEWheight) $resize=true;
 						if($resize) {
-							list($width, $height) = getimagesize($src);
 							$rapport = $height/$width;
 							
 							$NEWwidth=$NEWheight/$rapport;
-							
-							$imgSrc = imagecreatefromjpeg($src);
+							$exif=exif_imagetype($src);
+							log::add('aTVremote','debug','artwork is format :'.$exif);
+							if($exif == IMAGETYPE_JPEG) {
+								$imgSrc = imagecreatefromjpeg($src);
+							} elseif($exif == IMAGETYPE_PNG) {
+								$imgSrc = imagecreatefrompng($src);
+							}
 							$imgDest= imagecreatetruecolor($NEWwidth,$NEWheight);
 
 							$resample=imagecopyresampled($imgDest, $imgSrc, 0, 0, 0, 0, $NEWwidth, $NEWheight, $width, $height);
 
-							$ret = imagepng($imgDest,$dest);
+							$ret = imagejpeg($imgDest,$dest);
 		
 							list($UPDATEDwidth, $UPDATEDheight) = getimagesize($dest);
 							
@@ -455,7 +459,12 @@ class aTVremote extends eqLogic {
 						if($src=realpath($src)) {
 							unlink($src);
 						}
+					} else {
+						$artwork = $this->getImage();
+						log::add('aTVremote','debug',$src.' doesnt exists, display default image...');
 					}
+				} else {
+					log::add('aTVremote','debug',$dest.' already exists, just display it...');
 				}
 			} else {
 				$artwork = $this->getImage();
