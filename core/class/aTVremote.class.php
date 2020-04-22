@@ -25,10 +25,12 @@ class aTVremote extends eqLogic {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
 		foreach ($eqLogics as $aTVremote) {
 			try {
-				$play_state = $aTVremote->getCmd(null, 'play_state');
-				$val=$play_state->execCmd();
-				if($val)
-					$aTVremote->getaTVremoteInfo();
+				if(is_object($aTVremote)) {
+					$play_state = $aTVremote->getCmd(null, 'play_state');
+					$val=$play_state->execCmd();
+					if($val)
+						$aTVremote->getaTVremoteInfo();
+				}
 			} catch (Exception $e) {
 				log::add('aTVremote','error',json_encode($e));
 			}
@@ -75,8 +77,6 @@ class aTVremote extends eqLogic {
         $output=shell_exec(aTVremote::getaTVremote(true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
 
-		
-		
 		if($output) {
 			$return = [];
 			$toMatch = '#Name: (.*)\s* Model/SW: (.*)\s* Address: (.*)\s* MAC: (.*)\s*#';
@@ -156,7 +156,7 @@ class aTVremote extends eqLogic {
 			log::add('aTVremote','info','Ajouté : '.json_encode($return));
 		}
 		return $return;
-    	}	
+    }	
 	
 	public static function devicesParameters($device = '') {
 		$path = dirname(__FILE__) . '/../config/devices/' . $device;
@@ -235,6 +235,8 @@ class aTVremote extends eqLogic {
 					$app_run = $this->getCmd(null, 'app');
 					$this->checkAndUpdateCmd($app_run, '-');
 				}
+			} else {
+					$oneQuery=$this->aTVremoteExecute('playing');
 			}
 		
       	
@@ -313,7 +315,7 @@ class aTVremote extends eqLogic {
 			if(isset($aTVremoteinfo['Media type'])) {
 				if($aTVremoteinfo['Media type']=='Unknown'){
 					$media_type = $this->getCmd(null, 'media_type');
-								  $this->checkAndUpdateCmd($media_type, '-');    
+					$this->checkAndUpdateCmd($media_type, '-');    
 				} else {
 				    $media_type = $this->getCmd(null, 'media_type');
 				    $this->checkAndUpdateCmd($media_type, $aTVremoteinfo['Media type']);
@@ -418,7 +420,7 @@ class aTVremote extends eqLogic {
 				if(!file_exists($dest)) {
 					$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
 					
-					$src=$abs_folder.'/artwork.png';
+					$src=$abs_folder.'artwork.png';
 					exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
 
 					if(file_exists($src)) {
@@ -450,8 +452,10 @@ class aTVremote extends eqLogic {
 
 						exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
 						$img=null;
-						
-						unlink($src);
+						if($src=realpath($src)) {
+							log::add('aTVremote','debug','delete of old src: '.$src);
+							unlink($src);
+						}
 					}
 				}
 				$artwork_url = $this->getCmd(null, 'artwork_url');
@@ -479,8 +483,12 @@ class aTVremote extends eqLogic {
 	
 	public function postSave() {
 		$order=0;
-      
-		$device = self::devicesParameters($this->getConfiguration('os',''));
+		$os=$this->getConfiguration('os','');
+		$device = self::devicesParameters($os);
+		log::add('aTVremote','info',"postSave");
+		log::add('aTVremote','info',"os is : ".$os);
+		log::add('aTVremote','info',"device is : ".$device);
+		log::add('aTVremote','info',"device is : ".json_encode($device));
 	
 		if($device) {
 			foreach($device['commands'] as $cmd) {
