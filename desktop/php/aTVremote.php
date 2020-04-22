@@ -121,7 +121,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Mac}}</label>
 									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="credentials" placeholder="{{Mac}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}"/>
 									</div>
 								</div>
 							</fieldset>
@@ -131,9 +131,29 @@ $eqLogics = eqLogic::byType('aTVremote');
 					<div class="form-horizontal col-sm-3">
 						<fieldset>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">{{Modèle}}</label>
+								<label class="col-sm-2 control-label">{{Périph}}</label>
 								<div class="col-sm-3">
-									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="model" id="model_field"></span>
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="device"></span>
+								</div>
+								<label class="col-sm-3 control-label">{{Version}}</label>
+								<div class="col-sm-3">
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="version"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{OS}}</label>
+								<div class="col-sm-3">
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="os"></span>
+								</div>
+								<label class="col-sm-3 control-label">{{osVersion}}</label>
+								<div class="col-sm-3">
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="osVersion"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{Build}}</label>
+								<div class="col-sm-3">
+									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="build"></span>
 								</div>
 							</div>
 							<div class="form-group">
