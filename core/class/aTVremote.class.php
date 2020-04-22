@@ -196,11 +196,13 @@ class aTVremote extends eqLogic {
 			
 			
 			if($this->getConfiguration('version',0) != '3'){
-			
-				$power_state=$this->aTVremoteExecute('power_state');
-				log::add('aTVremote','debug','power_state : '.($power_state[0]));
+				$oneQuery=$this->aTVremoteExecute('power_state app playing');
 				
-				if($power_state[0]=="PowerState.Off"){
+				$power_state=$oneQuery[0];
+				array_shift($oneQuery);
+				log::add('aTVremote','debug','power_state : '.$power_state);
+				
+				if($power_state=="PowerState.Off"){
 					$power = $this->getCmd(null, 'power_state');
 					$this->checkAndUpdateCmd($power, '0');
 				} else {
@@ -209,8 +211,9 @@ class aTVremote extends eqLogic {
 				}
 			  
 				// Retour App Active 		  
-				$app=$this->aTVremoteExecute('app');
-				$app = explode(': ',$app[0]);
+				$app=$oneQuery[0];
+				array_shift($oneQuery);
+				$app = explode(': ',$app);
 				log::add('aTVremote','debug','app : '.$app[1]);
 				$app = explode(' (',$app[1]);
 				$app_active = $app[0];
@@ -237,7 +240,7 @@ class aTVremote extends eqLogic {
       	
 
 			if(!$data && $hasToCheckPlaying == true) {
-				$playing=$this->aTVremoteExecute('playing');
+				$playing=$oneQuery;
 
 				foreach($playing as $line) {
 					$elmt=explode(': ',$line);
