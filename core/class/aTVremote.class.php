@@ -508,6 +508,7 @@ class aTVremote extends eqLogic {
 		if($device) {
 			foreach($device['commands'] as $cmd) {
 				$order++;
+				
 				$newCmd = $this->getCmd(null, $cmd['logicalId']);
 				if (!is_object($newCmd)) {
 					$newCmd = new aTVremoteCmd();
@@ -604,7 +605,6 @@ class aTVremoteCmd extends cmd {
 				case 'set_shuffle_off':
 					$eqLogic->aTVremoteExecute('set_shuffle=0');
 				break;
-				
 				case 'down':
 					$eqLogic->aTVremoteExecute('down');
 				break;
@@ -638,8 +638,12 @@ class aTVremoteCmd extends cmd {
 				case 'turn_off':
 					$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 				break;
+				case 'chain':
+					$cmds = $_options['title'];
+					$eqLogic->aTVremoteExecute($cmds);
+				break;
 			}
-			log::add('aTVremote','debug','Command : '.$logical);
+			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		}
 		$eqLogic->getaTVremoteInfo(null,null,$hasToCheckPlaying);
 	}
