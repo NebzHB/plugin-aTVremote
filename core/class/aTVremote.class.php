@@ -636,7 +636,7 @@ class aTVremoteCmd extends cmd {
 					$eqLogic->aTVremoteExecute('turn_on');
 				break;
 				case 'turn_off':
-					$eqLogic->aTVremoteExecute('turn_off set_repeat=0');
+					$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 				break;
 			}
 			log::add('aTVremote','debug','Command : '$logical);
