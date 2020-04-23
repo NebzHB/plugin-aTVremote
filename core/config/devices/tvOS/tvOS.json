@@ -381,6 +381,17 @@
 				"mobile": "line"
 			}
 		}, {
+			"name": "Enchainement",
+			"type": "action",
+			"subtype": "message",
+			"display": {
+				"title_disable": 0,
+				"title_placeholder": "ex: up down select menu",
+				"message_disable":1
+			},
+			"isVisible": 1,
+			"logicalId": "chain"
+		}, {
 			"name": "Rafraichir",
 			"type": "action",
 			"subtype": "other",
