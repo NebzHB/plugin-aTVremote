@@ -227,17 +227,26 @@ class aTVremote extends eqLogic {
 				$app_secour = $app[2];
 				log::add('aTVremote','debug','app active secour : '.$app_secour);
 		  
+				
+		  
 				if(isset($app_active)){
-						if($app_active!='None'){
-							$app_run = $this->getCmd(null, 'app');
-							$changed=$this->checkAndUpdateCmd($app_run, $app_active) || $changed;
-						} else {
-							$app_run = $this->getCmd(null, 'app');
-							$changed=$this->checkAndUpdateCmd($app_run, $app_secour) || $changed;
-						}
+					if($app_active!='None'&&$app_active!='Unknown'){
+						$app_run = $this->getCmd(null, 'app');
+						$changed=$this->checkAndUpdateCmd($app_run, $app_active) || $changed;
+                          
+                        		} elseif($app_active!='Unknown') {
+						$app_run = $this->getCmd(null, 'app');
+						$changed=$this->checkAndUpdateCmd($app_run, $app_secour) || $changed;
+                          
+					} else {
+						$app_run = $this->getCmd(null, 'app');
+						$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
+                  				log::add('aTVremote','debug','test3: test3');
+					}
 				} else {
 					$app_run = $this->getCmd(null, 'app');
 					$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
+                  			log::add('aTVremote','debug','test3: test3');
 				}
 			} else {
 					$oneQuery=$this->aTVremoteExecute('playing');
@@ -627,10 +636,10 @@ class aTVremoteCmd extends cmd {
 					$eqLogic->aTVremoteExecute('turn_on');
 				break;
 				case 'turn_off':
-					$eqLogic->aTVremoteExecute('turn_off');
+					$eqLogic->aTVremoteExecute('turn_off set_repeat=0');
 				break;
 			}
-			log::add('aTVremote','debug',$logical);
+			log::add('aTVremote','debug','Command : '$logical);
 		}
 		$eqLogic->getaTVremoteInfo(null,null,$hasToCheckPlaying);
 	}
