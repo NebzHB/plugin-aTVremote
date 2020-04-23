@@ -640,7 +640,10 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'chain':
 					$cmds = $_options['title'];
-					$eqLogic->aTVremoteExecute($cmds);
+					$subCmds=explode(' wait ',$cmds);
+					foreach($subCmds as $subCmd) {
+						$eqLogic->aTVremoteExecute($subCmd);
+					}
 				break;
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
