@@ -241,12 +241,12 @@ class aTVremote extends eqLogic {
 					} else {
 						$app_run = $this->getCmd(null, 'app');
 						$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
-                  				log::add('aTVremote','debug','test3: test3');
+                  				
 					}
 				} else {
 					$app_run = $this->getCmd(null, 'app');
 					$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
-                  			log::add('aTVremote','debug','test3: test3');
+                  			
 				}
 			} else {
 					$oneQuery=$this->aTVremoteExecute('playing');
