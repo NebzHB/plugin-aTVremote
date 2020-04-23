@@ -639,7 +639,7 @@ class aTVremoteCmd extends cmd {
 					$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 				break;
 			}
-			log::add('aTVremote','debug','Command : '$logical);
+			log::add('aTVremote','debug','Command : '.$logical);
 		}
 		$eqLogic->getaTVremoteInfo(null,null,$hasToCheckPlaying);
 	}
