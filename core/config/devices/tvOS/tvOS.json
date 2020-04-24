@@ -32,8 +32,7 @@
 			"type": "info",
 			"subtype": "binary",
 			"display": {
-				"generic_type": "SWITCH_STATE",
-				"forceReturnLineBefore": 1
+				"generic_type": "SWITCH_STATE"
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
@@ -47,7 +46,8 @@
 			"subtype": "other",
 			"display": {
 				"generic_type": "SWITCH_ON",
-				"icon": "<i class=\"icon jeedom-on\"><\/i>"
+				"icon": "<i class=\"icon jeedom-on\"><\/i>",
+				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
 			"logicalId": "turn_on",
