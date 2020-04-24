@@ -6,7 +6,7 @@
 	"licence" : "AGPL",
 	"author" : "Nebz,Wators",
 	"hasDependency" : true,
-	"hasOwnDeamon" : false,
+	"hasOwnDeamon" : true,
 	"require" : "3.3.24",
 	"category" : "multimedia",
 	"issue" : "https://github.com/NebzHB/plugin-aTVremote/issues",
