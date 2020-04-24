@@ -37,8 +37,7 @@ class aTVremote extends eqLogic {
 				log::add('aTVremote','error',json_encode($e));
 			}
 		}
-	}
-	  
+	}	  
 	public static function cronDaily() {
 		// delete all artwork older than 7 days 
 		$rel_folder='plugins/aTVremote/resources/images/';
@@ -68,6 +67,104 @@ class aTVremote extends eqLogic {
 		log::remove(__CLASS__ . '_dep');
 		return array('script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder('aTVremote') . '/dependance', 'log' => log::getPathToLog(__CLASS__ . '_dep'));
 	}
+
+	public static function deamon_info() {
+		$return = array();
+		$return['log'] = 'aTVremote_deamon';
+		$return['state'] = 'nok';
+		$pid = trim( shell_exec ('ps ax | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') );
+		if ($pid != '' && $pid != '0') {
+			$return['state'] = 'ok';
+		}
+		$return['launchable'] = 'ok';
+		return $return;
+	}
+	
+
+	public static function deamon_start() {
+		self::deamon_stop();
+
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['launchable'] != 'ok') {
+			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
+		}
+		log::add('aTVremote', 'info', 'Lancement du démon aTVremote');
+		$socketport = config::byKey('socketport', 'aTVremote');
+		$url  = network::getNetworkAccess('internal').'/core/api/jeeApi.php' ;
+
+		$logLevel = log::convertLogLevel(log::getLogLevel('aTVremote'));
+		$deamonPath = realpath(dirname(__FILE__) . '/../../resources');
+		
+		$eqLogics = eqLogic::byType('aTVremote');
+		$arrATV=[];
+		foreach ($eqLogics as $eqLogic) {
+			array_push($arrATV,$eqLogic->getConfiguration('mac',''));
+		}
+		
+		$cmd = 'nice -n 19 nodejs ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . join('|',$arrATV);
+
+		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
+
+		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('aTVremote_deamon') . ' 2>&1 &');
+		if (strpos(strtolower($result), 'error') !== false || strpos(strtolower($result), 'traceback') !== false) {
+			log::add('aTVremote', 'error', $result);
+			return false;
+		}
+
+		$i = 0;
+		while ($i < 30) {
+			$deamon_info = self::deamon_info();
+			if ($deamon_info['state'] == 'ok') break;
+			sleep(1);
+			$i++;
+		}
+		if ($i >= 30) {
+			log::add('aTVremote', 'error', 'Impossible de lancer le démon aTVremote, relancer le démon en debug et vérifiez la log', 'unableStartDeamon');
+			return false;
+		}
+		message::removeAll('aTVremote', 'unableStartDeamon');
+		log::add('aTVremote', 'info', 'Démon aTVremote lancé');
+		return true;
+
+	}
+
+	public static function deamon_stop() {
+		@file_get_contents("http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop");
+		sleep(3);
+		if(shell_exec('ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') == '1')
+			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+		log::add('aTVremote', 'info', 'Arrêt du démon aTVremote');
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['state'] == 'ok') {
+			sleep(1);
+			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+		}
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['state'] == 'ok') {
+			sleep(1);
+			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+		}
+	}	
+
+
+	public static function event() {
+		$eventType = init('eventType');
+		log::add('aTVremote', 'debug', 'Passage dans la fonction event ' . $eventType);
+		if ($eventType == 'error'){
+			log::add('aTVremote', 'error', init('description'));
+			return;
+		}
+		
+		switch ($eventType)
+		{
+			case 'playing':
+
+			break;
+		}
+	}
+
+
+
 	
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
@@ -193,6 +290,18 @@ class aTVremote extends eqLogic {
 				log::add('aTVremote','debug','ret:'.$val_ret.' -- '.$lastoutput.' -- '.json_encode($return).' -- '.$cmdToExec);
 
 			return $return;
+		}
+	}
+	public function aTVdaemonExecute($cmd,$params=[]) {
+		if($cmd) {
+			$mac = $this->getConfiguration('mac','');
+			
+			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/cmd?cmd=";
+			$url.=urlencode($cmd).'&mac='.$mac.((count($params))?"&".http_build_query($params):'');
+			$json = @file_get_contents($url);
+			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
+			log::add('aTVremote','debug',ucfirst($cmd).' brut : '.$json);
+			return json_decode($json, true);
 		}
 	}
 
@@ -573,14 +682,14 @@ class aTVremoteCmd extends cmd {
 		if ($logical != 'refresh'){
 			switch ($logical) {
 				case 'play':
-					$eqLogic->aTVremoteExecute('play');
+					$eqLogic->aTVdaemonExecute('play');
 				break;
 				case 'pause':
 					$play_state = $eqLogic->getCmd(null, 'play_state');
 					$eqLogic->checkAndUpdateCmd($play_state, "0");
 					$play_human = $eqLogic->getCmd(null, 'play_human');
 					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
-					$eqLogic->aTVremoteExecute('pause');
+					$eqLogic->aTVdaemonExecute('pause');
 					$hasToCheckPlaying=false;
 				break;
 				case 'stop':
@@ -588,56 +697,57 @@ class aTVremoteCmd extends cmd {
 					$eqLogic->checkAndUpdateCmd($play_state, "0");
 					$play_human = $eqLogic->getCmd(null, 'play_human');
 					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
-					$eqLogic->aTVremoteExecute('stop');
+					$eqLogic->aTVdaemonExecute('stop');
 					$hasToCheckPlaying=false;
 				break;
 				case 'set_repeat_all':
-					$eqLogic->aTVremoteExecute('set_repeat=2');
+					$eqLogic->aTVdaemonExecute('set_repeat=2');
 				break;
 				case 'set_repeat_track':
-					$eqLogic->aTVremoteExecute('set_repeat=1');
+					$eqLogic->aTVdaemonExecute('set_repeat=1');
 				break;
 				case 'set_repeat_off':
-					$eqLogic->aTVremoteExecute('set_repeat=0');
+					$eqLogic->aTVdaemonExecute('set_repeat=0');
 				break;
 				case 'set_shuffle_on':
-					$eqLogic->aTVremoteExecute('set_shuffle=1');
+					$eqLogic->aTVdaemonExecute('set_shuffle=1');
 				break;
 				case 'set_shuffle_off':
-					$eqLogic->aTVremoteExecute('set_shuffle=0');
+					$eqLogic->aTVdaemonExecute('set_shuffle=0');
 				break;
 				case 'down':
-					$eqLogic->aTVremoteExecute('down');
+					$eqLogic->aTVdaemonExecute('down');
 				break;
 				case 'up':
-					$eqLogic->aTVremoteExecute('up');
+					$eqLogic->aTVdaemonExecute('up');
 				break;
 				case 'left':
-					$eqLogic->aTVremoteExecute('left');
+					$eqLogic->aTVdaemonExecute('left');
 				break;
 				case 'right':
-					$eqLogic->aTVremoteExecute('right');
+					$eqLogic->aTVdaemonExecute('right');
 				break;
 				case 'previous':
-					$eqLogic->aTVremoteExecute('previous');
+					$eqLogic->aTVdaemonExecute('previous');
 				break;
 				case 'next':
-					$eqLogic->aTVremoteExecute('next');
+					$eqLogic->aTVdaemonExecute('next');
 				break;
 				case 'menu':
-					$eqLogic->aTVremoteExecute('menu');
+					$eqLogic->aTVdaemonExecute('menu');
 				break;
 				case 'select':
-					$eqLogic->aTVremoteExecute('select');
+					$eqLogic->aTVdaemonExecute('select');
 				break;
 				case 'top_menu':
-					$eqLogic->aTVremoteExecute('top_menu');
+					$eqLogic->aTVdaemonExecute('top_menu');
 				break;
 				case 'turn_on':
-					$eqLogic->aTVremoteExecute('turn_on');
+					$eqLogic->aTVdaemonExecute('turn_on');
 				break;
 				case 'turn_off':
-					$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
+					//$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
+					$eqLogic->aTVdaemonExecute('turn_off');
 				break;
 				case 'chain':
 					$cmds = $_options['title'];
