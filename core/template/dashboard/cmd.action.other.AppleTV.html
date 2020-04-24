@@ -1,0 +1,10 @@
+<div style="width:40px;height:40px;"  class="cmd tooltips cmd-widget cursor aTVremote" data-type="action" data-subtype="other" data-cmd_id="#id#">
+  <span style="font-size:1em;" class="Bouton#id#" id="iconCmd#id#"></span>
+    <script>
+          	 	$('#iconCmd#id#').append('<img src="plugins/aTVremote/core/template/dashboard/cmd.action.other.AppleTV/#name#.png" width="35" title="#name#"/>')
+
+        $('.cmd[data-cmd_id=#id#] .Bouton#id#').on('click', function () {
+            jeedom.cmd.execute({id: '#id#'});
+        });
+    </script>
+</div>
