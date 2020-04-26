@@ -58,23 +58,35 @@ var server = null;
 var isReady=false;
 var lastErrorMsg="";
 
-function connectToCli(mac) {
+function connectATV(mac) {
 	if(!aTVs.cmd[mac]) {
 		aTVs.cmd[mac] = spawn('/var/www/html/plugins/aTVremote/resources/atvremote/bin/atvremote', ['cli','-i',mac]);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
+			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
 				if(!isReady) {
-					server = app.listen(1122, () => {
+					server = app.listen(conf.serverPort, () => {
 						Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
 						isReady=true;
 					});
 				}
-				Logger.log(mac+' est connectée au canal de cmd !',LogType.INFO);
+				Logger.log('Connecté au canal des commandes de '+mac+' !',LogType.INFO);
 				return;
 			}
-			if(data.toString() != "pyatv> ") {
-				data=data.toString().replace('\npyatv> ','');
-				Logger.log('cmd |'+data.toString(),LogType.INFO);
+			if(data != "pyatv> ") {
+				data=data.replace('\npyatv> ','');
+				
+				if(data.includes('PowerState.')) {
+					jsend({eventType: 'powerstate', data : data, mac: mac});
+				}
+				if(data.includes('App: ')) {
+					jsend({eventType: 'app', data : data, mac: mac});
+				}
+				if(data[0] == '+') {
+					jsend({eventType: 'hash', data : data, mac: mac});
+				}
+				
+				Logger.log('cmd |'+data,LogType.INFO);
 			}
 		});
 
@@ -85,14 +97,19 @@ function connectToCli(mac) {
 
 		aTVs.cmd[mac].on('exit', function(code) {
 			let mac=this.spawnargs[3];
-			Logger.log('exit code: ' + code,LogType.WARNING);
-			if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
-				Logger.log('removing '+mac+' from aTVs...',LogType.WARNING);
-				delete aTVs.cmd[mac];
+			if(code != 0) {
+				Logger.log('exit code: ' + code,LogType.WARNING);
+				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
+					Logger.log('removing '+mac+' from aTVs...',LogType.WARNING);
+					delete aTVs.cmd[mac];
+					Logger.log('Déconnecté du canal des commandes de '+mac,LogType.INFO);
+				} else {
+					delete aTVs.cmd[mac];
+					Logger.log('Reconnection au canal des commandes...',LogType.WARNING);
+					setTimeout(connectATV,100,mac);
+				}
 			} else {
-				delete aTVs.cmd[mac];
-				Logger.log('reconnection...',LogType.WARNING);
-				setTimeout(connectToCli,100,mac);
+				Logger.log('Déconnecté du canal des commandes de '+mac,LogType.INFO);
 			}
 			lastErrorMsg="";
 		});
@@ -102,17 +119,25 @@ function connectToCli(mac) {
 	if(!aTVs.msg[mac]) {
 		aTVs.msg[mac] = spawn('/var/www/html/plugins/aTVremote/resources/atvremote/bin/atvremote', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
+			data=data.toString();
 			if(data.includes("Press ENTER to stop")) {
 				if(!isReady) {
-					server = app.listen(1122, () => {
+					server = app.listen(conf.serverPort, () => {
 						Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
 						isReady=true;
 					});
 				}
-				Logger.log(mac+' est connectée au canal des msg !',LogType.INFO);
-				data=data.toString().replace('Press ENTER to stop','');
+				Logger.log('Connecté au canal des messages de '+mac+' !',LogType.INFO);
+				data=data.replace('Press ENTER to stop','');
 			}
-			Logger.log('msg |'+data.toString(),LogType.INFO);
+			
+			if(data.includes('Media type:')) {
+				data = data.split("\n").filter(function (el) {
+					return el != null && el != '' && el != '--------------------';
+				});
+				jsend({eventType: 'playing', data : data, mac: mac});
+			}
+			Logger.log('msg |'+data,LogType.INFO);
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
@@ -122,20 +147,39 @@ function connectToCli(mac) {
 
 		aTVs.msg[mac].on('exit', function(code) {
 			let mac=this.spawnargs[3];
-			Logger.log('exit code: ' + code,LogType.WARNING);
-			if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
-				Logger.log('removing '+mac+' from aTVs...',LogType.WARNING);
-				delete aTVs.msg[mac];
+			if(code != 0) {
+				Logger.log('exit code: ' + code,LogType.WARNING);
+				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
+					Logger.log('removing '+mac+' from aTVs...',LogType.WARNING);
+					delete aTVs.msg[mac];
+					Logger.log('Déconnecté du canal des messages de '+mac,LogType.INFO);
+				} else {
+					delete aTVs.msg[mac];
+					Logger.log('Reconnection au canal des messages...',LogType.WARNING);
+					setTimeout(connectATV,100,mac);
+				}
 			} else {
-				delete aTVs.msg[mac];
-				Logger.log('reconnection...',LogType.WARNING);
-				setTimeout(connectToCli,100,mac);
+				Logger.log('Déconnecté du canal des messages de '+mac,LogType.INFO);
 			}
 			lastErrorMsg="";
 		});
 	}
 }
 
+function removeATV(mac) {
+	var hasRemoved=false;
+	if(aTVs.cmd[mac]) {
+		aTVs.cmd[mac].stdin.write('exit\n');
+		delete aTVs.cmd[mac];
+		hasRemoved=true;
+	}
+	if(aTVs.msg[mac]) {
+		aTVs.msg[mac].stdin.write('\n');
+		delete aTVs.msg[mac];
+		hasRemoved=true;
+	}
+	if(hasRemoved) Logger.log('Déconnecté de '+mac,LogType.INFO);
+}
 
 app.get('/cmd', function(req,res){
 	if(req.query.cmd=="push_updates") {
@@ -150,31 +194,44 @@ app.get('/cmd', function(req,res){
 app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
-		Logger.log("Connexion sur "+mac,LogType.DEBUG);
-		connectToCli(mac);
+		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
+		connectATV(mac);
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Déjà connecté sur "+mac,LogType.DEBUG);
+		Logger.log("Déjà connecté sur "+mac,LogType.WARNING);
 		res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
 	}
 });
-
+app.get('/disconnect', function(req,res){
+	var mac=req.query.mac.toUpperCase();
+	if(aTVs.cmd[mac] || aTVs.msg[mac]) {
+		Logger.log("Déconnexion de "+mac+"...",LogType.INFO);
+		removeATV(mac);
+		res.status(200).json({'result':'ok'});		
+	} else {
+		Logger.log("Pas connecté sur "+mac,LogType.WARNING);
+		res.status(200).json({'result':'ko','msg':'notConnected'});		
+	}
+});
+app.get('/test', function(req,res){
+		res.status(200).json({'result':'ok'});	
+});
 var stop=function(req, res) {
 	isReady=false;
 	Logger.log('Recu de jeedom: Demande d\'arret',LogType.INFO);
 	
-	for(var atv of aTVs.cmd) {
-		atv.stdin.write('exit\n');
+	for(var atvc of aTVs.cmd) {
+		atvc.stdin.write('exit\n');
 	}
-	for(var atv of aTVs.msg) {
-		atv.stdin.write('\n');
+	for(var atvm of aTVs.msg) {
+		atvm.stdin.write('\n');
 	}
 	server.close(() => {
 		process.exit(0);
 	});
 	if(res)
 		res.status(200).json({'result':'stopped'});	
-}
+};
 app.get('/stop', stop);
 app.use(function(err, req, res, _next) {
   Logger.log(err,LogType.ERROR);
@@ -183,7 +240,7 @@ app.use(function(err, req, res, _next) {
 
 
 for(const mac of conf.preConnect) {
-	connectToCli(mac);
+	connectATV(mac);
 }
 if(conf.preConnect.length==0) {
 	if(!isReady) {
