@@ -36,18 +36,25 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "power_state"
+			"logicalId": "power_state",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton On",
 			"type": "action",
 			"subtype": "other",
 			"display": {
 				"generic_type": "SWITCH_ON",
-				"icon": "<i class=\"icon jeedom-on\"><\/i>"
+				"icon": "<i class=\"icon jeedom-on\"><\/i>",
+				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
 			"logicalId": "turn_on",
-			"value": "power_state"
+			"value": "power_state",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Off",
 			"type": "action",
@@ -58,7 +65,10 @@
 			},
 			"isVisible": 1,
 			"logicalId": "turn_off",
-			"value": "power_state"
+			"value": "power_state",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Lecture",
 			"type": "action",
@@ -70,7 +80,10 @@
 			},
 			"value": "play_state",
 			"isVisible": 1,
-			"logicalId": "play"
+			"logicalId": "play",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Pause",
 			"type": "action",
@@ -81,7 +94,10 @@
 			},
 			"value": "play_state",
 			"isVisible": 1,
-			"logicalId": "pause"
+			"logicalId": "pause",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Stop",
 			"type": "action",
@@ -91,7 +107,10 @@
 				"icon": "<i class=\"fa fa-stop\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "stop"
+			"logicalId": "stop",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Précédent",
 			"type": "action",
@@ -102,7 +121,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "previous"
+			"logicalId": "previous",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Suivant",
 			"type": "action",
@@ -112,7 +134,10 @@
 				"icon": "<i class=\"fa fa-step-forward\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "next"
+			"logicalId": "next",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Haut",
 			"type": "action",
@@ -123,7 +148,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "up"
+			"logicalId": "up",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		},
 		{
 			"name": "Bouton Gauche",
@@ -135,7 +163,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "left"
+			"logicalId": "left",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Sélection",
 			"type": "action",
@@ -145,7 +176,10 @@
 				"icon": "<i class=\"fa fa-crosshairs\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "select"
+			"logicalId": "select",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Droit",
 			"type": "action",
@@ -155,7 +189,10 @@
 				"icon": "<i class=\"fa fa-arrow-right\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "right"
+			"logicalId": "right",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Bas",
 			"type": "action",
@@ -166,7 +203,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "down"
+			"logicalId": "down",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Menu",
 			"type": "action",
@@ -177,7 +217,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "menu"
+			"logicalId": "menu",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Home",
 			"type": "action",
@@ -187,7 +230,10 @@
 				"icon": "<i class=\"fa fa-desktop\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "top_menu"
+			"logicalId": "top_menu",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Aléatoire ON",
 			"type": "action",
@@ -198,7 +244,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "set_shuffle_on"
+			"logicalId": "set_shuffle_on",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Aléatoire OFF",
 			"type": "action",
@@ -208,7 +257,10 @@
 				"icon": "<i class=\"fa fa-random\" style=\"opacity:0.5\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "set_shuffle_off"
+			"logicalId": "set_shuffle_off",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Répétition Tout",
 			"type": "action",
@@ -219,7 +271,10 @@
 				"forceReturnLineBefore": 1
 			},
 			"isVisible": 1,
-			"logicalId": "set_repeat_all"
+			"logicalId": "set_repeat_all",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Répétition Piste",
 			"type": "action",
@@ -229,7 +284,10 @@
 				"icon": "<i class=\"icon jeedomapp-rond01\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "set_repeat_track"
+			"logicalId": "set_repeat_track",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Bouton Répétition OFF",
 			"type": "action",
@@ -239,7 +297,10 @@
 				"icon": "<i class=\"icon jeedomapp-reload-fail\"><\/i>"
 			},
 			"isVisible": 1,
-			"logicalId": "set_repeat_off"
+			"logicalId": "set_repeat_off",
+			"template": {
+				"dashboard": "aTVremote::AppleTV"
+			}
 		}, {
 			"name": "Statut",
 			"type": "info",

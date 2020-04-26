@@ -1,0 +1,14 @@
+<div style="width:90px;min-height:20px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="binary" data-cmd_id="#id#" >
+    <center>
+        <span style="font-size: 3.5em;" id="iconCmd#id#"></span>
+    </center>
+    <script>
+      
+        if ('#state#' == '0' || '#state#' == 0) {
+          $('#iconCmd#id#').append('<img src="plugins/aTVremote/core/template/dashboard/cmd.info.binary.AppleTV/AppleTV_Off.png" title="En veille"/>');
+        }
+        if ('#state#' == '1' || '#state#' == 1) {
+            $('#iconCmd#id#').append('<img src="plugins/aTVremote/core/template/dashboard/cmd.info.binary.AppleTV/AppleTV_On.png" title="Allumée"/>');
+        }
+    </script>
+</div>
