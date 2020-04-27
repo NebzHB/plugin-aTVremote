@@ -1,0 +1,32 @@
+{
+  "name": "aTVremote",
+  "version": "v0.5.0",
+  "cust_serial": "0000",
+  "description": "AppleTV remote",
+  "main": "aTVremoted.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "echo \"Error: configure and run hkControl to start\" && exit 1"
+  },
+  "engines": {
+    "node": ">=4.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NebzHB/plugin-aTVremote.git"
+  },
+  "keywords": [
+    "Jeedom"
+  ],
+  "dependencies": {
+	"express": "^4.16.4",
+	"request": "^2.88.0"
+  },
+  "devDependencies": {
+	"eslint": "*"
+  },
+  "author": "Benjamin RENARD <nebz@nebz.be>",
+  "contributors": [
+  ],
+  "license": "AGPL"
+}
