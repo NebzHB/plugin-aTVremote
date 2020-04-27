@@ -426,7 +426,7 @@ class aTVremote extends eqLogic {
 		$dest = $abs_folder.$hash.'.jpg';
 		
 		if(!file_exists($dest)) {
-			$this->aTVremoteExecute('artwork_save',$abs_folder);//artwork.png
+			$this->aTVdaemonExecute('artwork_save');//artwork.png
 			
 			$src=$abs_folder.'artwork.png';
 			exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
