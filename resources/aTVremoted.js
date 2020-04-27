@@ -75,14 +75,14 @@ function connectATV(mac) {
 			}
 			if(data != "pyatv> ") {
 				data=data.replace('\npyatv> ','');
-				
+				/*
 				if(data.includes('PowerState.')) {
 					jsend({eventType: 'powerstate', data : data, mac: mac});
 				} else if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
 				} else {
 					jsend({eventType: 'hash', data : data, mac: mac});
-				}
+				}*/
 				
 				Logger.log('cmd |'+data,LogType.INFO);
 			}
@@ -115,11 +115,11 @@ function connectATV(mac) {
 	
 		
 	if(!aTVs.msg[mac]) {
-		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['push_updates','-i',mac]);
-		//aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/python3.7', [__dirname+'/atvscriptNew.py','push_updates','-i',mac]);
+		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
-			data=data.toString();
-			if(data.includes("Press ENTER to stop")) {
+			var origData=data.toString();
+			data=origData;
+			/*if(data.includes("Press ENTER to stop")) {
 				if(!isReady) {
 					server = app.listen(conf.serverPort, () => {
 						Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
@@ -135,8 +135,13 @@ function connectATV(mac) {
 					return el != null && el != '' && el != '--------------------';
 				});
 				jsend({eventType: 'playing', data : data, mac: mac});
+			}*/
+			if(data.includes('power_state')) {
+				jsend({eventType: 'powerstate', data : data, mac: mac});
+			} else if(data.includes('media_type')) {
+				jsend({eventType: 'playing', data : data, mac: mac});	
 			}
-			Logger.log('msg |'+data,LogType.INFO);
+			Logger.log('msg |'+origData,LogType.INFO);
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
