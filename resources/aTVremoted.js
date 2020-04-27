@@ -60,7 +60,7 @@ var lastErrorMsg="";
 
 function connectATV(mac) {
 	if(!aTVs.cmd[mac]) {
-		aTVs.cmd[mac] = spawn('/var/www/html/plugins/aTVremote/resources/atvremote/bin/atvremote', ['cli','-i',mac]);
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images'});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -117,7 +117,7 @@ function connectATV(mac) {
 	
 		
 	if(!aTVs.msg[mac]) {
-		aTVs.msg[mac] = spawn('/var/www/html/plugins/aTVremote/resources/atvremote/bin/atvremote', ['push_updates','-i',mac]);
+		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Press ENTER to stop")) {
