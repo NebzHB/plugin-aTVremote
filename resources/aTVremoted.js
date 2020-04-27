@@ -78,11 +78,9 @@ function connectATV(mac) {
 				
 				if(data.includes('PowerState.')) {
 					jsend({eventType: 'powerstate', data : data, mac: mac});
-				}
-				if(data.includes('App: ')) {
+				} else if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
-				}
-				if(data[0] == '+' || data[0] == 'v') {
+				} else {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}
 				
