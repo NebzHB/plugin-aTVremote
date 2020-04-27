@@ -82,7 +82,7 @@ function connectATV(mac) {
 				if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
 				}
-				if(data[0] == '+') {
+				if(data[0] == '+' || data[0] == 'v') {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}
 				
