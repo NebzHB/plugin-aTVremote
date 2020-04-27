@@ -118,6 +118,7 @@ function connectATV(mac) {
 		
 	if(!aTVs.msg[mac]) {
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['push_updates','-i',mac]);
+		//aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/python3.7', [__dirname+'/atvscriptNew.py','push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Press ENTER to stop")) {
