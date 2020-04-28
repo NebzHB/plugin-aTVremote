@@ -5,6 +5,7 @@ wget https://raw.githubusercontent.com/NebzHB/dependance.lib/master/dependance.l
 PLUGIN=$(basename "$(realpath $BASEDIR/..)")
 . ${BASEDIR}/dependance.lib
 ##################################################################
+TIMED=1
 
 installVer='12' 	#NodeJS major version to be installed
 minVer='12'	#min NodeJS major version to be accepted
