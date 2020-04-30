@@ -107,7 +107,7 @@ class aTVremote extends eqLogic {
 			array_push($arrATV,$eqLogic->getConfiguration('mac',''));
 		}
 		
-		$cmd = 'nice -n 19 nodejs ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . join('|',$arrATV);
+		$cmd = 'nice -n 19 nodejs ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . join(' ',$arrATV);
 
 		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
 
