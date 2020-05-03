@@ -647,6 +647,30 @@ class aTVremote extends eqLogic {
 	public function preRemove() {
 		$this->aTVdaemonDisconnectATV();
 	}
+  	public function toHtml($_version = 'dashboard') {
+        $replace = $this->preToHtml($_version);
+ 		if (!is_array($replace)) {
+ 			return $replace;
+  		}
+		$version = jeedom::versionAlias($_version);
+		foreach ($this->getCmd('info') as $cmd) {
+			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
+			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			if ($cmd->getIsHistorized() == 1) {
+				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
+			}
+		}
+      
+		foreach ($this->getCmd('action') as $cmd) {
+			$replace['#cmd_' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+		}
+		/**$lentocheck = 24;
+		if ($version == 'mobile'){
+			$lentocheck = 17;
+		}**/
+
+		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'aTVremote')));
+	}  
 }
 
 class aTVremoteCmd extends cmd {
