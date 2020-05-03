@@ -1,0 +1,228 @@
+.haut_aTVremote_widget{
+	max-height: 830px;
+  	height: 830px;
+	width: 250px;
+	background-color: #000000;
+	z-index: 1;
+  	border-radius:30px;
+  	color : #FFFFFF;
+  	opacity:0.9;
+}
+.titre_haut_aTVremote_widget{
+	width: 250px;
+	font-size : 1em;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+    color : #FFFFFF;
+}
+.power{
+  	position : absolute;
+  	left : 14px;
+  	top : 3px;
+  	font-size : 1em; 
+  	z-index:4;
+  	opacity:1;
+}
+.power:hover{
+    opacity:0.7;
+}
+.jaquette2_aTVremote{
+	width: 250px;
+	height: 200px;
+}
+.affiche2_premiere_aTVremote{
+	max-width: 110px;
+	max-height: 150px;
+	position: absolute;
+	margin-left: 50px;
+	margin-top: 25px;
+	z-index: 7;
+	cursor:pointer;
+	border-radius: 10%;
+}
+.affiche2_deuxieme_aTVremote{
+	max-width: 110px;
+	max-height: 150px;
+	position: absolute;
+	margin-left: 30px;
+	margin-top: 40px;
+	z-index: 6;
+	opacity: 0.4;
+	border-radius: 10%;
+}
+.affiche2_troisieme_aTVremote{
+	max-width: 110px;
+	max-height: 150px;
+	position: absolute;
+	margin-left: 70px;
+	margin-top: 10px;
+	z-index: 6;
+	opacity: 0.4;
+	border-radius: 10%;
+}
+.titre_aTVremote{
+	text-align: center;
+	width: 250px;
+	height: 25px;
+	overflow:hidden;
+	position: absolute;
+}
+.Statut_aTVremote{
+  	width: 250px;
+	text-align:center;
+	position: absolute;
+	z-index: 2;
+	font-size:12px;
+}
+
+.titre_titre_aTVremote{
+  	width: 250px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:19px;
+}
+.gros_titre_aTVremote{
+  	width: 250px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+	font-size:18px;
+}
+.artist_titre_aTVremote{
+  	width: 250px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:19px;
+}
+.petit_titre_aTVremote{
+	font-size:14px;
+  	width: 250px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+}
+.album_titre_aTVremote{
+	font-size:14px;
+  	width: 250px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+}     
+.app_aTVremote{
+	font-size:14px;
+  	width: 250px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+  	text-transform: capitalize;
+}
+.last_titre_aTVremote{
+	font-size:14px;
+  	width: 250px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+}
+.btn_aTVremote_up{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_up:hover{
+	opacity: 0.5;
+}
+.aTVremote_up{
+	-ms-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+}
+.btn_aTVremote_left{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_left:hover{
+	opacity: 0.5;
+}
+.aTVremote_left{
+	-ms-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.btn_aTVremote_right{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_right:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_down{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_down:hover{
+	opacity: 0.5;
+}
+.aTVremote_down{
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+.btn_aTVremote_shuffle{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_shuffle:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_repeat{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_repeat:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_select{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_select:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_menu:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_top_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_top_menu:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_playback{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_playback:hover{
+	opacity: 0.5;
+}
