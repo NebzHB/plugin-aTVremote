@@ -396,7 +396,7 @@ class aTVremote extends eqLogic {
 
 	public function setArtwork($hash) {
 		$NEWheight=150;
-		$NEWwidth=-1;
+		$NEWwidth=150;
 		$changed=false;
 		
 		$rel_folder='plugins/aTVremote/resources/images/';
@@ -494,7 +494,7 @@ class aTVremote extends eqLogic {
 
 			if(isset($aTVremoteinfo['title'])) {
 				$title = $this->getCmd(null, 'title');
-				$changed=$this->checkAndUpdateCmd($title, $aTVremoteinfo['title']) || $changed;         
+				$changed=$this->checkAndUpdateCmd($title, htmlentities($aTVremoteinfo['title'],ENT_QUOTES)) || $changed;         
 			} else {
 				$title = $this->getCmd(null, 'title');
 				$changed=$this->checkAndUpdateCmd($title, '-') || $changed;
@@ -502,14 +502,14 @@ class aTVremote extends eqLogic {
 
 			if(isset($aTVremoteinfo['artist'])) {
 				$artist = $this->getCmd(null, 'artist');
-				$changed=$this->checkAndUpdateCmd($artist, $aTVremoteinfo['artist']) || $changed;
+				$changed=$this->checkAndUpdateCmd($artist, htmlentities($aTVremoteinfo['artist'],ENT_QUOTES)) || $changed;
 			} else {
 				$artist = $this->getCmd(null, 'artist');
 				$changed=$this->checkAndUpdateCmd($artist, '-') || $changed;
 			}
 			if(isset($aTVremoteinfo['album'])) {
 				$album = $this->getCmd(null, 'album');
-				$changed=$this->checkAndUpdateCmd($album, $aTVremoteinfo['album']) || $changed;
+				$changed=$this->checkAndUpdateCmd($album, htmlentities($aTVremoteinfo['album'],ENT_QUOTES)) || $changed;
 			} else {
 				$album = $this->getCmd(null, 'album');
 				$changed=$this->checkAndUpdateCmd($album, '-') || $changed;
@@ -554,10 +554,10 @@ class aTVremote extends eqLogic {
 								$changed=$this->checkAndUpdateCmd($shuffle, 'Non') || $changed;
 					break;
 					case 'Songs':
-								$changed=$this->checkAndUpdateCmd($shuffle, 'Oui') || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle, 'Songs') || $changed;
 					break;
 					case 'Albums':
-								$changed=$this->checkAndUpdateCmd($shuffle, 'Oui') || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle, 'Albums') || $changed;
 					break;
 				    }
 				}
