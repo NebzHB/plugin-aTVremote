@@ -13,7 +13,7 @@
 		<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;"><i class='fab fa-apple'></i>&nbsp;#name_display#</a>
 
       	<br>
-  		<br>
+  		<center><a>&nbsp;<img class='image-clignote' style='width:10px;display:none; 'src='plugins/aTVremote/core/template/dashboard/images/apple_red.png'/>&nbsp;</a></center>
 		<div class="jaquette2_aTVremote">
 			<a class="affiche2_premiere_aTVremote" ><center>#artwork_url#</center></a>
            	<a class="affiche2_deuxieme_aTVremote" ><center>#artwork_url#</center></a>
@@ -72,31 +72,35 @@
         }
 		      
         if('#power_state#' == 1){
-			$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
-		}else if('#power_state#' == 0){
-			$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
-		}else{
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
+	}else if('#power_state#' == 0){
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
+	}else{
           	$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
-            $('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
+        	$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           	//$('.app_aTVremote').remove();
           	$('.app_aTVremote').slideToggle(1);
         };
+	    
         if("#artist#"!='-'){}else{$('.artist_hide').slideToggle(1);};
+	    
         if("#album#"!='-'){}else{$('.album_hide').slideToggle(1);};
+	    
       	if('#title#'!='-'){}else{$('.titre_hide').slideToggle(1);};
       	
       	//if(("#title#"=='-')&&("#album#"=='-')&&("#artist#"=='-')){$('.hide').slideToggle(1);}
       
+      	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){$('.image-clignote').hide(200);$('.image-clignote').show(200);$('.image-clignote').hide(200);$('.image-clignote').show(200);$('.image-clignote').hide(100);});
+		
+	if('#play_state#' == 1){
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+	}else{
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+	};
       
-		if('#play_state#' == 1){
-			$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
-		}else{
-			$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
-		};
-      
-		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
-			jeedom.cmd.execute({id: $(this).data('cmd_id')});
-		});
+	$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+		jeedom.cmd.execute({id: $(this).data('cmd_id')});
+	});
       
       	if('#repeat#'== 'Piste'){
         	$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
@@ -119,7 +123,7 @@
       
       	var str_app = '#app#';
       	//document.getElementById("sum").innerHTML=somme;
-		var app_split = str_app.split(['.']);
+	var app_split = str_app.split(['.']);
       	var app_final = app_split[2];
       	if ('#app#' != "-"){document.getElementById("sum").innerHTML=app_final;}else{$('.app_hide').slideToggle(1);};
       	
