@@ -443,7 +443,7 @@ class aTVremote extends eqLogic {
 
 	public function setaTVremoteInfo($aTVremoteinfo=null) {
       	try {
-			if($aTVremoteinfo == null) { // is aTV3, fetch info
+			if($aTVremoteinfo == null && $aTVremote->getConfiguration('version',0) == '3') { // is aTV3, fetch info
 				$playing=$this->aTVremoteExecute('playing');
 				foreach($playing as $line) {
 					$elmt=explode(': ',$line);
