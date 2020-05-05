@@ -134,9 +134,11 @@
       	var app_final = app_split[2];
 	    
       	if ('#app#' != "-"){
-          document.getElementById("sum").innerHTML=app_final;
-        }else if('#app#' === undefined){
-          $('.app_hide').slideToggle(1);
+          if('#app#' === undefined){
+          		$('.app_hide').slideToggle(1);
+        	}else{
+          		document.getElementById("sum").innerHTML=app_final;
+        	};
         }else{
           $('.app_hide').slideToggle(1);
         };
