@@ -7,7 +7,8 @@ const spawn = require('child_process').spawn;
 
 Logger.setLogLevel(LogType.DEBUG);
 var conf={};
-conf.preConnect=[];
+conf.preConnect3=[];
+conf.preConnect4=[];
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 // Logger.log("env : "+process.env.NODE_ENV,LogType.DEBUG);
@@ -27,11 +28,14 @@ process.argv.forEach(function(val, index) {
 			else if (conf.logLevel == 'warning') {Logger.setLogLevel(LogType.WARNING);}
 			else {Logger.setLogLevel(LogType.ERROR);}
 		break;
-		default:
-			if(val.includes('|')) {
-				conf.preConnect = val.split('|');
-			} else {
-				conf.preConnect.push(val);
+		case 6: // atv3
+			if(val != "None") {
+				conf.preConnect3 = val.split(',');
+			}
+		break;
+		case 7: // other atv
+			if(val != "None") {
+				conf.preConnect4 = val.split(',');
 			}
 		break;
 	}
@@ -58,7 +62,8 @@ var server = null;
 var isReady=false;
 var lastErrorMsg="";
 
-function connectATV(mac) {
+function connectATV(mac,version) {
+	version=parseInt(version);
 	if(!aTVs.cmd[mac]) {
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images'});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
@@ -104,7 +109,7 @@ function connectATV(mac) {
 				} else {
 					delete aTVs.cmd[mac];
 					Logger.log('Reconnection au canal des commandes...',LogType.WARNING);
-					setTimeout(connectATV,100,mac);
+					setTimeout(connectATV,100,mac,version);
 				}
 			} else {
 				Logger.log('Déconnecté du canal des commandes de '+mac,LogType.INFO);
@@ -114,7 +119,7 @@ function connectATV(mac) {
 	}
 	
 		
-	if(!aTVs.msg[mac]) {
+	if(!aTVs.msg[mac] && version != 3) {
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			var origData=data.toString();
@@ -160,7 +165,7 @@ function connectATV(mac) {
 				} else {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.WARNING);
-					setTimeout(connectATV,100,mac);
+					setTimeout(connectATV,100,mac,version);
 				}
 			} else {
 				Logger.log('Déconnecté du canal des messages de '+mac,LogType.INFO);
@@ -199,7 +204,7 @@ app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
 		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
-		connectATV(mac);
+		connectATV(mac,req.query.version);
 		res.status(200).json({'result':'ok'});		
 	} else {
 		Logger.log("Déjà connecté sur "+mac,LogType.WARNING);
@@ -243,10 +248,13 @@ app.use(function(err, req, res, _next) {
 });
 
 
-for(const mac of conf.preConnect) {
-	connectATV(mac);
+for(const mac of conf.preConnect3) {
+	connectATV(mac,3);
 }
-if(conf.preConnect.length==0) {
+for(const mac of conf.preConnect4) {
+	connectATV(mac,4);
+}
+if(conf.preConnect3.length==0 && conf.preConnect4.length==0) {
 	if(!isReady) {
 		/** Listen **/
 		server = app.listen(conf.serverPort, () => {
