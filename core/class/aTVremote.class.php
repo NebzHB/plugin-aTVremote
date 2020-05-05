@@ -26,18 +26,15 @@ class aTVremote extends eqLogic {
 		foreach ($eqLogics as $aTVremote) {
 			try {
 				if(is_object($aTVremote)) {
-					/*
-					$play_state = $aTVremote->getCmd(null, 'play_state');
-					if(is_object($play_state)) {
-						$val=$play_state->execCmd();
-						if($val) {
-						if($aTVremote->getConfiguration('version',0) != '3'){
-							$aTVremote->aTVdaemonExecute('app');
-							sleep(1);
-							$aTVremote->aTVdaemonExecute('power_state');
+					if($aTVremote->getConfiguration('version',0) == '3'){
+						$play_state = $aTVremote->getCmd(null, 'play_state');
+						if(is_object($play_state)) {
+							$val=$play_state->execCmd();
+							if($val) {
+								$aTVremote->setaTVremoteInfo();
+							}
 						}
-						}
-					}*/
+					}
 				}
 			} catch (Exception $e) {
 				log::add('aTVremote','error',json_encode($e));
@@ -102,12 +99,27 @@ class aTVremote extends eqLogic {
 		$deamonPath = realpath(dirname(__FILE__) . '/../../resources');
 		
 		$eqLogics = eqLogic::byType('aTVremote');
-		$arrATV=[];
+		$arrATV3=[];
+		$arrATV4=[];
 		foreach ($eqLogics as $eqLogic) {
-			array_push($arrATV,$eqLogic->getConfiguration('mac',''));
+			if($eqLogic->getConfiguration('version',0) == '3') {
+				array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
+			} else {
+				array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
+			}
+		}
+		if(count($arrATV3) == 0) {
+			$arrATV3="None";
+		} else {
+			$arrATV3=join(',',$arrATV3);
+		}
+		if(count($arrATV4) == 0) {
+			$arrATV4="None";
+		} else {
+			$arrATV4=join(',',$arrATV4);
 		}
 		
-		$cmd = 'nice -n 19 nodejs ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . join(' ',$arrATV);
+		$cmd = 'nice -n 19 nodejs ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
 
 		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
 
@@ -321,9 +333,10 @@ class aTVremote extends eqLogic {
 	public function aTVdaemonConnectATV($params=[]) {
 
 		$mac = $this->getConfiguration('mac','');
+		$version = $this->getConfiguration('version',0);
 		
 		$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
-		$url.='mac='.$mac.((count($params))?"&".http_build_query($params):'');
+		$url.='mac='.$mac.'&version='.$version.((count($params))?"&".http_build_query($params):'');
 		$json = @file_get_contents($url);
 		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
 		log::add('aTVremote','debug','connect brut : '.$json);
@@ -430,7 +443,26 @@ class aTVremote extends eqLogic {
 
 	public function setaTVremoteInfo($aTVremoteinfo=null) {
       	try {
-			if($aTVremoteinfo == null) return false;
+			if($aTVremoteinfo == null) { // is aTV3, fetch info
+				$playing=$this->aTVremoteExecute('playing');
+				foreach($playing as $line) {
+					$elmt=explode(': ',$line);
+					$info = trim($elmt[0]);
+					if(count($elmt) > 2) {
+						array_shift($elmt);
+						$value= trim(join('',$elmt));
+					} else if(count($elmt) == 2){
+						$value= trim($elmt[1]);
+					}
+					$info=str_replace(' ','_',strtolower($info));
+					$aTVremoteinfo[$info]=$value;
+				}
+				$hash=$this->aTVremoteExecute('hash');
+				$aTVremoteinfo['hash']=$hash[0];
+			}
+			
+			
+			
 			$changed = false;
 			
 			log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
@@ -522,9 +554,14 @@ class aTVremote extends eqLogic {
 				$changed=$this->checkAndUpdateCmd($genre, '-') || $changed;
 			}
 			
-			if(isset($aTVremoteinfo['total_time']) && isset($aTVremoteinfo['position'])) {
-				$position = $this->getCmd(null, 'position');
-				$changed=$this->checkAndUpdateCmd($position, (($aTVremoteinfo['position']=='')?'0':$aTVremoteinfo['position']).'/'.$aTVremoteinfo['total_time']) || $changed;
+			if(isset($aTVremoteinfo['position'])) {
+				if(isset($aTVremoteinfo['total_time'])) { //aTV4+
+					$position = $this->getCmd(null, 'position');
+					$changed=$this->checkAndUpdateCmd($position, (($aTVremoteinfo['position']=='')?'0':$aTVremoteinfo['position']).'/'.$aTVremoteinfo['total_time']) || $changed;
+				} else {
+					$position = $this->getCmd(null, 'position');
+					$changed=$this->checkAndUpdateCmd($position, $aTVremoteinfo['position']) || $changed;
+				}
 			} else {
 				$position = $this->getCmd(null, 'position');
 				$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
@@ -563,11 +600,13 @@ class aTVremote extends eqLogic {
 				}
 			}
 			
-			if(isset($aTVremoteinfo['app_id'])) {
-				$changed=$this->setApp($aTVremoteinfo['app'],$aTVremoteinfo['app_id']) || $changed;
-			} else {
-				$app = $this->getCmd(null, 'app');
-				$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
+			if($this->getConfiguration('version',0) != '3') {
+				if(isset($aTVremoteinfo['app_id'])) {
+					$changed=$this->setApp($aTVremoteinfo['app'],$aTVremoteinfo['app_id']) || $changed;
+				} else {
+					$app = $this->getCmd(null, 'app');
+					$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
+				}
 			}
 			
 			if(isset($aTVremoteinfo['hash']) && isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "") {
@@ -640,8 +679,8 @@ class aTVremote extends eqLogic {
 			}
 		
 		}
-
-		//$this->getaTVremoteInfo(null,$order);
+		if($this->getConfiguration('version',0) == '3')
+			$this->setaTVremoteInfo();
 	}
 	
 	public function preRemove() {
@@ -769,7 +808,8 @@ class aTVremoteCmd extends cmd {
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		}
-		//$eqLogic->getaTVremoteInfo();
+		if($eqLogic->getConfiguration('version',0) == '3')
+			$eqLogic->setaTVremoteInfo();
 	}
 
 	/************************Getteur Setteur****************************/
