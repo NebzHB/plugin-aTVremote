@@ -73,8 +73,10 @@
 		      
         if('#power_state#' == 1){
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
+          	$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
 	}else if('#power_state#' == 0){
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
+          	$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
 	}else{
           	$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
         	$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
