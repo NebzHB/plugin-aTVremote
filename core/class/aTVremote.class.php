@@ -408,7 +408,7 @@ class aTVremote extends eqLogic {
 	}
 
 	public function setArtwork($hash) {
-		$NEWheight=150;
+		$NEWheight=-1;
 		$NEWwidth=150;
 		$changed=false;
 		
