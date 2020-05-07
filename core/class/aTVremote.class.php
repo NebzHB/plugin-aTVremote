@@ -457,8 +457,6 @@ class aTVremote extends eqLogic {
 					$info=str_replace(' ','_',strtolower($info));
 					$aTVremoteinfo[$info]=$value;
 				}
-				$hash=$this->aTVremoteExecute('hash');
-				$aTVremoteinfo['hash']=$hash[0];
 			}
 			
 			
@@ -607,15 +605,19 @@ class aTVremote extends eqLogic {
 					$app = $this->getCmd(null, 'app');
 					$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 				}
+				
+				$hash=$this->aTVremoteExecute('hash');
+				$aTVremoteinfo['hash']=$hash[0];
 			}
 			
+
 			if(isset($aTVremoteinfo['hash']) && isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "") {
 				$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
 			} else {
 				$artwork = $this->getImage();
 				$artwork_url = $this->getCmd(null, 'artwork_url');
 				$changed=$this->checkAndUpdateCmd($artwork_url, "<img width='150' height='150' src='".$artwork."' />") || $changed;
-            }	
+           		}	
 
 			
 			
