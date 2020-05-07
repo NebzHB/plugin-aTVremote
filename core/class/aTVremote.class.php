@@ -414,7 +414,10 @@ class aTVremote extends eqLogic {
 		
 		$rel_folder='plugins/aTVremote/resources/images/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
-		
+		if($this->getConfiguration('version',0) == '3') {
+			$hash=$this->aTVremoteExecute('hash');
+			$aTVremoteinfo['hash']=$hash[0];	
+		}
 		$hash=md5($hash);
 		$artwork= $rel_folder.$hash.'.jpg';
 		$dest = $abs_folder.$hash.'.jpg';
@@ -423,20 +426,23 @@ class aTVremote extends eqLogic {
 			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);//artwork.png
 			
 			$src=$abs_folder.'artwork.png';
-			exec("sudo chown www-data:www-data $src;sudo chmod 775 $src"); // force rights
+			exec("sudo chown www-data:www-data $src &>/dev/null;sudo chmod 775 $src &>/dev/null"); // force rights
+			
 			if(file_exists($src)) {
 				rename($src,$dest);
-				exec("sudo chown www-data:www-data $dest;sudo chmod 775 $dest"); // force rights
+				exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
+				log::add('aTVremote','debug','--displaying '.$dest.'...');
 			} else {
-				$artwork = $this->getImage();
-				log::add('aTVremote','debug',$src.' doesnt exists, display default image...');
+				$artwork=null;
 			}
 		} else {
-			log::add('aTVremote','debug',$dest.' already exists, just display it...');
+			log::add('aTVremote','debug','--dest already exists, just display it...'.$dest);
 		}
 		
-		$artwork_url = $this->getCmd(null, 'artwork_url');
-		$changed=$this->checkAndUpdateCmd($artwork_url, "<img ".(($NEWwidth!=-1)?"width='$NEWwidth' ":'').(($NEWheight!=-1)?"height='$NEWheight' ":'')."src='".$artwork."' />") || $changed;
+		if($artwork) {
+			$artwork_url = $this->getCmd(null, 'artwork_url');
+			$changed=$this->checkAndUpdateCmd($artwork_url, "<img ".(($NEWwidth!=-1)?"width='$NEWwidth' ":'').(($NEWheight!=-1)?"height='$NEWheight' ":'')."src='".$artwork."' />") || $changed;
+		}
 		
 		return $changed;
 	}
@@ -467,10 +473,10 @@ class aTVremote extends eqLogic {
 
 			$isPlaying=false;
 			if(isset($aTVremoteinfo['device_state'])) {
-
+				$aTVremoteinfo['device_state']=ucfirst($aTVremoteinfo['device_state']);
 				$play_state = $this->getCmd(null, 'play_state');
 				$play_human = $this->getCmd(null, 'play_human');
-				switch(ucfirst($aTVremoteinfo['device_state'])) {
+				switch($aTVremoteinfo['device_state']) {
 
 					case 'Idle' :
 						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
@@ -605,19 +611,16 @@ class aTVremote extends eqLogic {
 					$app = $this->getCmd(null, 'app');
 					$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 				}
-			} else {
-				$hash=$this->aTVremoteExecute('hash');
-				$aTVremoteinfo['hash']=$hash[0];
 			}
 			
 
-			if(isset($aTVremoteinfo['hash']) && isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "") {
+			if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && isset($aTVremoteinfo['device_state']) && $aTVremoteinfo['device_state'] != "Paused") {
 				$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
-			} else {
+			} else if($aTVremoteinfo['device_state'] != "Paused") {
 				$artwork = $this->getImage();
 				$artwork_url = $this->getCmd(null, 'artwork_url');
 				$changed=$this->checkAndUpdateCmd($artwork_url, "<img width='150' height='150' src='".$artwork."' />") || $changed;
-           		}	
+           	}	
 
 			
 			
