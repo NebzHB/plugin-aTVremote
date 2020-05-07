@@ -416,7 +416,7 @@ class aTVremote extends eqLogic {
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
 		if($this->getConfiguration('version',0) == '3') {
 			$hash=$this->aTVremoteExecute('hash');
-			$aTVremoteinfo['hash']=$hash[0];	
+			$hash=$hash[0];	
 		}
 		$hash=md5($hash);
 		$artwork= $rel_folder.$hash.'.jpg';
