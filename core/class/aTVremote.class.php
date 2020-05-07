@@ -552,7 +552,7 @@ class aTVremote extends eqLogic {
 			}
 			if(isset($aTVremoteinfo['genre'])) {
 				$genre = $this->getCmd(null, 'genre');
-				$changed=$this->checkAndUpdateCmd($genre, $aTVremoteinfo['genre']) || $changed;
+				$changed=$this->checkAndUpdateCmd($genre, htmlentities($aTVremoteinfo['genre'],ENT_QUOTES)) || $changed;
 			} else {
 				$genre = $this->getCmd(null, 'genre');
 				$changed=$this->checkAndUpdateCmd($genre, '-') || $changed;
