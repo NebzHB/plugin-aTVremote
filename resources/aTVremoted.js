@@ -57,7 +57,7 @@ for(var name in conf) {
 var aTVs = {};
 aTVs.cmd = [];
 aTVs.msg = [];
-aTVs.previousMsg= [];
+//aTVs.previousMsg= [];
 const app = express();
 var server = null;
 var isReady=false;
@@ -121,36 +121,29 @@ function connectATV(mac,version) {
 	
 		
 	if(!aTVs.msg[mac] && version != 3) {
-		aTVs.previousMsg[mac]="";
+		//aTVs.previousMsg[mac]="";
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
-			data=data.toString();
-			
-			if(data == aTVs.previousMsg[mac]) return false; // Ignore same message than the previous one
-			/*if(data.includes("Press ENTER to stop")) {
-				if(!isReady) {
-					server = app.listen(conf.serverPort, () => {
-						Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
-						isReady=true;
-					});
+			//var comparingData;
+			var sent;
+			for(var stringData of data.toString().split("\n")) {
+				if(stringData == '') continue;
+				
+				/*comparingData=stringData.replace(/"datetime": "[^"]*", /gi,'').replace(/"position": [^,]*, /gi,'');
+				if(comparingData == aTVs.previousMsg[mac]) {
+					return true; // Ignore same message than the previous one
+				}*/
+				sent="";
+				if(stringData.includes('power_state')) {
+					sent="sent ";
+					jsend({eventType: 'powerstate', data : stringData, mac: mac});
+				} else if(stringData.includes('media_type')) {
+					//aTVs.previousMsg[mac]=comparingData;
+					sent="sent ";
+					jsend({eventType: 'playing', data : stringData, mac: mac});	
 				}
-				Logger.log('Connecté au canal des messages de '+mac+' !',LogType.INFO);
-				data=data.replace('Press ENTER to stop','');
+				Logger.log('msg '+sent+'|'+stringData,LogType.INFO);
 			}
-			
-			if(data.includes('Media type:')) {
-				data = data.split("\n").filter(function (el) {
-					return el != null && el != '' && el != '--------------------';
-				});
-				jsend({eventType: 'playing', data : data, mac: mac});
-			}*/
-			if(data.includes('power_state')) {
-				jsend({eventType: 'powerstate', data : data, mac: mac});
-			} else if(data.includes('media_type')) {
-				aTVs.previousMsg[mac]=data;
-				jsend({eventType: 'playing', data : data, mac: mac});	
-			}
-			Logger.log('msg |'+data,LogType.INFO);
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
