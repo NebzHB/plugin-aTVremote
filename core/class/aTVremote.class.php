@@ -605,7 +605,7 @@ class aTVremote extends eqLogic {
 					$app = $this->getCmd(null, 'app');
 					$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 				}
-				
+			} else {
 				$hash=$this->aTVremoteExecute('hash');
 				$aTVremoteinfo['hash']=$hash[0];
 			}
