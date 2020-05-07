@@ -150,7 +150,7 @@ function connectATV(mac,version) {
 				aTVs.previousMsg[mac]=data;
 				jsend({eventType: 'playing', data : data, mac: mac});	
 			}
-			Logger.log('msg |'+origData,LogType.INFO);
+			Logger.log('msg |'+data,LogType.INFO);
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
