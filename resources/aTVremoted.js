@@ -57,6 +57,7 @@ for(var name in conf) {
 var aTVs = {};
 aTVs.cmd = [];
 aTVs.msg = [];
+aTVs.previousMsg= [];
 const app = express();
 var server = null;
 var isReady=false;
@@ -120,10 +121,12 @@ function connectATV(mac,version) {
 	
 		
 	if(!aTVs.msg[mac] && version != 3) {
+		aTVs.previousMsg[mac]="";
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['push_updates','-i',mac]);
 		aTVs.msg[mac].stdout.on('data', function(data) {
-			var origData=data.toString();
-			data=origData;
+			data=data.toString();
+			
+			if(data == aTVs.previousMsg[mac]) return false; // Ignore same message than the previous one
 			/*if(data.includes("Press ENTER to stop")) {
 				if(!isReady) {
 					server = app.listen(conf.serverPort, () => {
@@ -144,6 +147,7 @@ function connectATV(mac,version) {
 			if(data.includes('power_state')) {
 				jsend({eventType: 'powerstate', data : data, mac: mac});
 			} else if(data.includes('media_type')) {
+				aTVs.previousMsg[mac]=data;
 				jsend({eventType: 'playing', data : data, mac: mac});	
 			}
 			Logger.log('msg |'+origData,LogType.INFO);
