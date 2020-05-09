@@ -441,7 +441,7 @@ class aTVremote extends eqLogic {
 		
 		if($artwork) {
 			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$changed=$this->checkAndUpdateCmd($artwork_url, "<img ".(($NEWwidth!=-1)?"width='$NEWwidth' ":'').(($NEWheight!=-1)?"height='$NEWheight' ":'')."src='".$artwork."' />") || $changed;
+			$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
 		}
 		
 		return $changed;
@@ -619,7 +619,7 @@ class aTVremote extends eqLogic {
 			} else if($aTVremoteinfo['device_state'] != "Paused") {
 				$artwork = $this->getImage();
 				$artwork_url = $this->getCmd(null, 'artwork_url');
-				$changed=$this->checkAndUpdateCmd($artwork_url, "<img width='150' height='150' src='".$artwork."' />") || $changed;
+				$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
            	}	
 
 			
@@ -635,7 +635,7 @@ class aTVremote extends eqLogic {
 	} 
 	
 	public function getImage(){
-		return 'plugins/aTVremote/plugin_info/aTVremote_icon.png';
+		return 'plugins/aTVremote/core/template/aTVremote.png';
 	}
 	
 	public function postSave() {
