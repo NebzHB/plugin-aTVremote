@@ -141,7 +141,7 @@ function connectATV(mac,version) {
 					//aTVs.previousMsg[mac]=comparingData;
 					sent="sent ";
 					jsend({eventType: 'playing', data : stringData, mac: mac});	
-				} else if(stringData.includes('"push_updates": "finished"')) {
+				} else if(stringData.includes('connection": "closed')) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.WARNING);
 					setTimeout(connectATV,100,mac,version);
