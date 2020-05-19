@@ -66,6 +66,9 @@ var lastErrorMsg="";
 function connectATV(mac,version) {
 	version=parseInt(version);
 	if(!aTVs.cmd[mac]) {
+		if (!fs.existsSync(__dirname+'/images/'+mac)) {
+		    fs.mkdirSync(__dirname+'/images/'+mac)
+		}
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
