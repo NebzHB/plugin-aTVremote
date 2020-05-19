@@ -166,6 +166,20 @@ class aTVremote extends eqLogic {
 		}
 	}	
 
+	public static function reinstallNodeJS() { // Reinstall NODEJS from scratch (to use if there is errors in dependancy install)
+		$pluginaTVremote = plugin::byId('aTVremote');
+		log::add('aTVremote', 'info', 'Suppression du Code NodeJS');
+		$cmd = system::getCmdSudo() . 'rm -rf ' . dirname(__FILE__) . '/../../resources/node_modules &>/dev/null';
+		exec($cmd);
+		log::add('aTVremote', 'info', 'Suppression de NodeJS');
+		$cmd = system::getCmdSudo() . 'apt-get -y --purge autoremove npm';
+		exec($cmd);
+		$cmd = system::getCmdSudo() . 'apt-get -y --purge autoremove nodejs';
+		exec($cmd);
+		log::add('aTVremote', 'info', 'Réinstallation des dependances');
+		$pluginaTVremote->dependancy_install();
+		return true;
+	}
 
 	public static function event() {
 		$eventType = init('eventType');
