@@ -43,11 +43,10 @@ class aTVremote extends eqLogic {
 	}	  
 	public static function cronDaily() {
 		// delete all artwork older than 7 days 
-		$id=$this->getLogicalId();
 		$rel_folder='plugins/aTVremote/resources/images/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
       		//$finale_folder= $abs_folder.$id.'/'; // no need to go to subfolder, find does it ;)
-		exec(system::getCmdSudo()."find ".$abs_folder."*.jpg -mtime +7 -delete;");
+		exec(system::getCmdSudo()."find ".$abs_folder." -name *.jpg -mtime +7 -delete;");
 	}
 	
 	public static function getaTVremote($withSudo=false,$realpath=false) {
