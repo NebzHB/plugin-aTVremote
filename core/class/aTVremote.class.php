@@ -47,7 +47,7 @@ class aTVremote extends eqLogic {
 		$rel_folder='plugins/aTVremote/resources/images/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
       		//$finale_folder= $abs_folder.$id.'/'; // no need to go to subfolder, find does it ;)
-		exec("find ".$abs_folder."*.jpg -mtime +7 -exec rm {} \;");
+		exec(system::getCmdSudo()."find ".$abs_folder."*.jpg -mtime +7 -delete;");
 	}
 	
 	public static function getaTVremote($withSudo=false,$realpath=false) {
