@@ -408,33 +408,59 @@ class aTVremote extends eqLogic {
 	}
 
 	public function setArtwork($hash) {
+        	
+		$id=$this->getLogicalId();
+        	//log::add('aTVremote','debug',$id);
+      
 		$NEWheight=-1;
 		$NEWwidth=150;
 		$changed=false;
 		
 		$rel_folder='plugins/aTVremote/resources/images/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
+      		$finale_folder= $abs_folder.$id.'/';
+      	
+      		if (!file_exists($finale_folder)) {
+      			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data $finale_folder &>/dev/null;sudo chmod 775 $finale_folder &>/dev/null");
+          		log::add('aTVremote','debug','Création répertoire pour '.$id);
+        	}
+		
 		if($this->getConfiguration('version',0) == '3') {
 			$hash=$this->aTVremoteExecute('hash');
 			$hash=$hash[0];	
 		}
 		$hash=md5($hash);
-		$artwork= $rel_folder.$hash.'.jpg';
-		$dest = $abs_folder.$hash.'.jpg';
+		
+		$rel_folder2='plugins/aTVremote/resources/images/'.$id.'/';
+		$artwork= $rel_folder2.$hash.'.jpg';
+		$dest = $finale_folder.$hash.'.jpg';
 		
 		if(!file_exists($dest)) {
 			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);//artwork.png
 			
-			$src=$abs_folder.'artwork.png';
-			exec("sudo chown www-data:www-data $src &>/dev/null;sudo chmod 775 $src &>/dev/null"); // force rights
-			
-			if(file_exists($src)) {
-				rename($src,$dest);
-				exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
-				log::add('aTVremote','debug','--displaying '.$dest.'...');
-			} else {
-				$artwork=null;
-			}
+			$src=$finale_folder.'artwork.png';
+
+            		exec("sudo chown www-data:www-data $src &>/dev/null;sudo chmod 775 $src &>/dev/null"); // force rights
+			if($this->getConfiguration('version',0) == '3') { 
+              			
+              			sleep(5);
+				
+            			if(file_exists($src)) {
+					rename($src,$dest);
+					exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
+					log::add('aTVremote','debug','--displaying '.$dest.'...');				
+            			} else {
+					$artwork=null;
+				}
+            		} else {
+              			if(file_exists($src)) {
+					rename($src,$dest);
+					exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
+					log::add('aTVremote','debug','--displaying '.$dest.'...');				
+            			} else {
+					$artwork=null;
+				}
+            		}
 		} else {
 			log::add('aTVremote','debug','--dest already exists, just display it...'.$dest);
 		}
