@@ -66,7 +66,7 @@ var lastErrorMsg="";
 function connectATV(mac,version) {
 	version=parseInt(version);
 	if(!aTVs.cmd[mac]) {
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images'});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
