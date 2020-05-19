@@ -25,6 +25,46 @@ if (!isConnect()) {
 ?>
 <style>
 pre#pre_eventlog {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace !important;
+    font-family: "CamingoCode", monospace !important;
 }
 </style>
+	<legend><i class="fa fa-wrench"></i> {{Réparations}}</legend>
+	<center>
+		<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fa fa-recycle"></i> {{Réparation de NodeJS}} </a>
+	</center>
+	
+<script>
+
+  $('#bt_reinstallNodeJS').off('click').on('click', function() {
+		bootbox.confirm('{{Etes-vous sûr de vouloir supprimer et reinstaller NodeJS ? <br /> Merci de patienter 10-20 secondes quand vous aurez cliqué...}}', function(result) {
+			if (result) {
+				$.showLoading();
+				$.ajax({
+					type : 'POST',
+					url : 'plugins/aTVremote/core/ajax/aTVremote.ajax.php',
+					data : {
+						action : 'reinstallNodeJS',
+					},
+					dataType : 'json',
+					global : false,
+					error : function(request, status, error) {
+						$.hideLoading();
+						$('#div_alert').showAlert({
+							message : error.message,
+							level : 'danger'
+						});
+					},
+					success : function(data) {
+						$.hideLoading();
+						$('li.li_plugin.active').click();
+						$('#div_alert').showAlert({
+							message : "{{Réinstallation NodeJS effectuée, merci de patienter jusqu'à la fin de l'installation des dépendances}}",
+							level : 'success'
+						});
+					}
+				});
+			}
+		});
+	});	
+
+</script>
