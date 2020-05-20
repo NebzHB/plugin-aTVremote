@@ -34,7 +34,7 @@ pre#pre_eventlog {
 			<i class="fas fa-wrench"></i> {{Réparations}}
 		</legend>
 		<center>
-			<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fa fa-recycle"></i> {{Réparation de NodeJS}} </a>
+			<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fas fa-recycle"></i> {{Réparation de NodeJS}} </a>
 		</center>
 		<legend>
 			<i class="fas fa-palette"></i> {{Personnalisation Widget}}
