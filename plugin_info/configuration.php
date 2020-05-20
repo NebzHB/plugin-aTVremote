@@ -32,7 +32,13 @@ pre#pre_eventlog {
 	<center>
 		<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fa fa-recycle"></i> {{Réparation de NodeJS}} </a>
 	</center>
-	
+	<legend><i class="fa fa-wrench"></i> {{Mode de défilement des Titres, Artiste et nom Album}}</legend>
+  	</div>
+     		<label class="col-lg-5 control-label">{{Cocher pour défilement en boucle (scroll). Non cocher en va et vient (alternate mais pas compatible avec tous les navigateurs)}}</label>
+      		<div class="col-lg-5">
+        		<input type="checkbox" class="configKey" data-l1key="marquee" />
+      		</div>
+    	</div>
 <script>
 
   $('#bt_reinstallNodeJS').off('click').on('click', function() {
