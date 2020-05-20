@@ -733,7 +733,7 @@ class aTVremote extends eqLogic {
 		$this->aTVdaemonDisconnectATV();
 	}
   	public function toHtml($_version = 'dashboard') {
-        $replace = $this->preToHtml($_version);
+        	$replace = $this->preToHtml($_version);
  		if (!is_array($replace)) {
  			return $replace;
   		}
@@ -745,6 +745,14 @@ class aTVremote extends eqLogic {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
 		}
+      
+      		$marquee = config::byKey('marquee', 'aTVremote');
+      		if ($marquee == 1){
+      			$replace["#marquee#"] = "scroll";
+      			//log::add('aTVremote','debug','--dest already exists, just display it...'.$marquee);
+        	} else {
+          		$replace["#marquee#"] = "alternate";
+        	};
       
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#cmd_' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
