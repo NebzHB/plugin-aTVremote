@@ -746,7 +746,7 @@ class aTVremote extends eqLogic {
 			}
 		}
       
-      		$marquee = config::byKey('marquee', 'aTVremote');
+      		$marquee = config::byKey('marquee', 'aTVremote', 0);
       		if ($marquee == 1){
       			$replace["#marquee#"] = "scroll";
       			//log::add('aTVremote','debug','--dest already exists, just display it...'.$marquee);
