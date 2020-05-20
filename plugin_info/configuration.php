@@ -28,17 +28,29 @@ pre#pre_eventlog {
     font-family: "CamingoCode", monospace !important;
 }
 </style>
-	<legend><i class="fa fa-wrench"></i> {{Réparations}}</legend>
-	<center>
-		<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fa fa-recycle"></i> {{Réparation de NodeJS}} </a>
-	</center>
-	<legend><i class="fa fa-wrench"></i> {{Mode de défilement des Titres, Artiste et nom Album}}</legend>
-  	</div>
-     		<label class="col-lg-5 control-label">{{Cocher pour défilement en boucle (scroll). Non cocher en va et vient (alternate mais pas compatible avec tous les navigateurs)}}</label>
-      		<div class="col-lg-5">
-        		<input type="checkbox" class="configKey" data-l1key="marquee" />
-      		</div>
-    	</div>
+<form class="form-horizontal">
+	<fieldset>
+		<legend>
+			<i class="fas fa-wrench"></i> {{Réparations}}
+		</legend>
+		<center>
+			<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fa fa-recycle"></i> {{Réparation de NodeJS}} </a>
+		</center>
+		<legend>
+			<i class="fas fa-palette"></i> {{Personnalisation Widget}}
+		</legend>
+		<br />
+		<div class="form-group">
+			<label class="col-lg-6 control-label">{{Mode de défilement des champs Titre, Artiste et Album}}</label>
+			<div class="col-lg-3">
+				<select class="configKey form-control" data-l1key="marquee">
+					<option value="0">Alterné (Pas compatible certains navigateurs)</option>
+					<option value="1">Défilement</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+</form>
 <script>
 
   $('#bt_reinstallNodeJS').off('click').on('click', function() {
