@@ -27,6 +27,9 @@ try {
 	if (init('action') == 'discover') {
 		aTVremote::discover(init('mode'));
 		ajax::success();
+	} elseif (init('action') == 'reinstallNodeJS') {
+		$ret=aTVremote::reinstallNodeJS();
+		ajax::success($ret);
 	}
 
     throw new Exception(__('{{Aucune méthode correspondante à}} : ', __FILE__) . init('action'));
