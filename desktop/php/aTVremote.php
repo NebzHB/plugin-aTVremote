@@ -175,7 +175,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>
-							<th>{{Icone}}</th>
+							<!--<th>{{Icone}}</th>-->
 							<th>{{Paramètres}}</th>
 							<th>&nbsp;</th>
 						</tr>
