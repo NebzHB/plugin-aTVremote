@@ -745,7 +745,9 @@ class aTVremote extends eqLogic {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
 		}
-      
+      		
+		$replace["#ATV#"] = $this->getConfiguration('version',0);
+		
       		$marquee = config::byKey('marquee', 'aTVremote', 0);
       		if ($marquee == 1){
       			$replace["#marquee#"] = "scroll";
