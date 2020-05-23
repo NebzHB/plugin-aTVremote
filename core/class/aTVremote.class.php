@@ -478,6 +478,8 @@ class aTVremote extends eqLogic {
             		}
 		} else {
 			log::add('aTVremote','debug','--dest already exists, just display it...'.$dest);
+			$src=$finale_folder.'artwork.png';
+			exec("sudo rm $src");
 		}
 		
 		if($artwork) {
