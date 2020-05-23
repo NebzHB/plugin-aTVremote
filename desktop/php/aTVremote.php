@@ -170,7 +170,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<legend><i class="fas fa-list-alt"></i>  {{Tableau de commandes}}</legend>
+				<!--<legend><i class="fas fa-list-alt"></i>  {{Tableau de commandes}}</legend>-->
 				<table id="table_cmd" class="table table-bordered table-condensed">
 					<thead>
 						<tr>
