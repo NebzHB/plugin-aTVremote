@@ -61,14 +61,14 @@ function addCmdToTable(_cmd) {
 			tr += '</div>';
 		tr += '</div>';
     tr += '</td>'; 
-   tr += '<td>';
+  /* tr += '<td>';
 		tr += '<div class="row">';
 			tr += '<div class="col-sm-6">';
 			tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fas fa-flag"></i> Icone</a>';
 			tr += '<span class="cmdAttr" data-l1key="display" data-l2key="icon" style="margin-left : 10px;"></span>';
 			tr += '</div>';
 		tr += '</div>';
-    tr += '</td>'; 
+    tr += '</td>'; */
 	tr += '<td>';
 	if (_cmd.logicalId != 'refresh'){
     tr += '<span><label class="checkbox-inline" style="display : none;"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
