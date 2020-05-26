@@ -748,6 +748,10 @@ class aTVremote extends eqLogic {
 			}
 		}
       		
+      		$replace["#os#"] = $this->getConfiguration('os',0);
+      		$replace["#osVersion#"] = $this->getConfiguration('osVersion',0);
+      		$replace["#build#"] = $this->getConfiguration('build',0);
+		
 		$replace["#ATV#"] = $this->getConfiguration('version',0);
 		
       		$marquee = config::byKey('marquee', 'aTVremote', 0);
