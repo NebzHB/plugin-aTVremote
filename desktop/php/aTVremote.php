@@ -15,21 +15,16 @@ $eqLogics = eqLogic::byType('aTVremote');
 				<br />
         		<span>{{Scan AppleTV}}</span>
       		</div>
-			<div class="cursor logoSecondary eqLogicAction" data-action="add">
-				<i class="fas fa-plus-circle"></i>
-				<br>
-				<span>{{Ajout Manuel}}</span>
-			</div>
-  			<div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
-				<i class="fas fa-wrench"></i>
-				<br />
-				<span>{{Configuration}}</span>
-			</div>
-			<div class="cursor logoSecondary" id="bt_healthaTVremote">
-				<i class="fas fa-medkit"></i>
-				</br />
-				<span>{{Santé}}</span>
-			</div>
+		<div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
+			<i class="fas fa-wrench"></i>
+			<br />
+			<span>{{Configuration}}</span>
+		</div>
+		<div class="cursor logoSecondary" id="bt_healthaTVremote">
+			<i class="fas fa-medkit"></i>
+			</br />
+			<span>{{Santé}}</span>
+		</div>
 		</div>
 		<?php
 			if(count($eqLogics)) :
