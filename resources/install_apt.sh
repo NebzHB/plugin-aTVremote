@@ -67,7 +67,7 @@ if [ $(lsb_release -c | grep 'jessie' | wc -l) -eq 1 ]; then
 	echo "== ATTENTION CE PLUGIN NE FONCTIONNE PAS SOUS JESSIE, MERCI DE METTRE A JOUR VOTRE DISTRIBUTION !!!"
     exit 1;
 fi
-try sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip python3-setuptools build-essential python3-dev libssl-dev libffi-dev
+try sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-setuptools build-essential python3-dev libssl-dev libffi-dev
 
 step 30 "Vérification de la version de NodeJS installée"
 silent type nodejs
