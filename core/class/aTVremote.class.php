@@ -151,24 +151,24 @@ class aTVremote extends eqLogic {
 		@file_get_contents("http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop");
 		sleep(3);
 		if(shell_exec('ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') == '1')
-			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
 		log::add('aTVremote', 'info', 'Arrêt du démon aTVremote');
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
 			sleep(1);
-			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
 		}
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
 			sleep(1);
-			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') &>/dev/null');
+			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
 		}
 	}	
 
 	public static function reinstallNodeJS() { // Reinstall NODEJS from scratch (to use if there is errors in dependancy install)
 		$pluginaTVremote = plugin::byId('aTVremote');
 		log::add('aTVremote', 'info', 'Suppression du Code NodeJS');
-		$cmd = system::getCmdSudo() . 'rm -rf ' . dirname(__FILE__) . '/../../resources/node_modules &>/dev/null';
+		$cmd = system::getCmdSudo() . 'rm -rf ' . dirname(__FILE__) . '/../../resources/node_modules >/dev/null 2>&1';
 		exec($cmd);
 		log::add('aTVremote', 'info', 'Suppression de NodeJS');
 		$cmd = system::getCmdSudo() . 'apt-get -y --purge autoremove npm';
@@ -436,7 +436,7 @@ class aTVremote extends eqLogic {
       		$finale_folder= $abs_folder.$id.'/';
       	
       		if (!file_exists($finale_folder)) {
-      			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data $finale_folder &>/dev/null;sudo chmod 775 $finale_folder &>/dev/null");
+      			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data $finale_folder >/dev/null 2>&1;sudo chmod 775 $finale_folder >/dev/null 2>&1");
           		log::add('aTVremote','debug','Création répertoire pour '.$id);
         	}
 		
@@ -455,32 +455,32 @@ class aTVremote extends eqLogic {
 			
 			$src=$finale_folder.'artwork.png';
 
-            		exec("sudo chown www-data:www-data $src &>/dev/null;sudo chmod 775 $src &>/dev/null"); // force rights
+            exec("sudo chown www-data:www-data $src >/dev/null 2>&1;sudo chmod 775 $src >/dev/null 2>&1"); // force rights
 			if($this->getConfiguration('version',0) == '3') { 
-              			
-              			sleep(5);
-				
-            			if(file_exists($src)) {
+					
+				sleep(5);
+		
+				if(file_exists($src)) {
 					rename($src,$dest);
-					exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
+					exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
 					log::add('aTVremote','debug','--displaying '.$dest.'...');				
-            			} else {
+				} else {
 					$artwork=null;
 				}
-            		} else {
-              			if(file_exists($src)) {
+			} else {
+				if(file_exists($src)) {
 					rename($src,$dest);
-					exec("sudo chown www-data:www-data $dest &>/dev/null;sudo chmod 775 $dest &>/dev/null"); // force rights
+					exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
 					log::add('aTVremote','debug','--displaying '.$dest.'...');				
-            			} else {
+				} else {
 					$artwork=null;
 				}
-            		}
+			}
 		} else {
 			log::add('aTVremote','debug','--dest already exists, just display it...'.$dest);
 			touch($dest); // update mtime
 			$src=$finale_folder.'artwork.png';
-			exec("sudo rm $src &>/dev/null");
+			exec("sudo rm $src >/dev/null 2>&1");
 		}
 		
 		if($artwork) {
