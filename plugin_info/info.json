@@ -18,5 +18,5 @@
 		"forum":"https://www.jeedom.com/forum/viewtopic.php?f=142&t=39196"
 	},
 	"languages" : ["fr_FR"],
-	"compatibility" : ["smart","rpi","diy"]
+	"compatibility" : ["smart","rpi","diy","v4"]
 }
