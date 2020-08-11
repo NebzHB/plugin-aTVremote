@@ -75,27 +75,25 @@ if [ $? -eq 0 ]; then actual=`nodejs -v`; fi
 echo "Version actuelle : ${actual}"
 arch=`arch`;
 
-#jeedom mini and rpi 1 2, 12 does not support arm6l
+#jeedom mini and rpi 1 2, NodeJS 12 does not support arm6l
 if [[ $arch == "armv6l" ]]
 then
-  installVer='8' 	#NodeJS major version to be installed
-  minVer='8'	#min NodeJS major version to be accepted  
-fi
-
-#jessie as libstdc++ > 4.9 needed for nodejs 12
-lsb_release -c | grep jessie
-if [ $? -eq 0 ]
-then
-  installVer='8' 	#NodeJS major version to be installed
-  minVer='8'	#min NodeJS major version to be accepted  
+  echo "$HR"
+  echo "== KO == Erreur d'Installation"
+  echo "$HR"
+  echo "== ATTENTION Vous possédez une Jeedom mini ou Raspberry zero/1/2 (arm6l) et NodeJS 12 n'y est pas supporté, merci d'utiliser du matériel récent !!!"
+  exit 1
 fi
 
 bits=$(getconf LONG_BIT)
 vers=$(lsb_release -c | grep stretch | wc -l)
 if { [ "$arch" = "i386" ] || [ "$arch" = "i686" ]; } && [ "$bits" -eq "32" ] && [ "$vers" -eq "1" ]
 then 
-  installVer='8' 	#NodeJS major version to be installed
-  minVer='8'	#min NodeJS major version to be accepted  
+  echo "$HR"
+  echo "== KO == Erreur d'Installation"
+  echo "$HR"
+  echo "== ATTENTION Votre système est x86 en 32bits et NodeJS 12 n'y est pas supporté, merci de passer en 64bits !!!"
+  exit 1 
 fi
 
 testVer=$(php -r "echo version_compare('${actual}','v${minVer}','>=');")
