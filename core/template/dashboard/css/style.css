@@ -10,9 +10,7 @@
     background-repeat:no-repeat;
     margin:0;
 }
-p{
-	margin: -6px 0 8px;
-}
+
 /* Partie supérieure */
 .haut{
     width: 138px;
@@ -216,14 +214,15 @@ marquee {
 	opacity: 0;
     width: 30px;
     position:absolute;
-}
-.btn_aTVremote_up:hover{
-	opacity: 0.8;
-}
-.aTVremote_up{
-	-ms-transform: rotate(270deg);
+  	-ms-transform: rotate(270deg);
 	-webkit-transform: rotate(270deg);
 	transform: rotate(270deg);
+}
+.btn_aTVremote_up:hover{
+	opacity: 1;
+}
+a > img:hover {
+  opacity:1;
 }
 .btn_aTVremote_left{
   	left:1px;
@@ -235,7 +234,7 @@ marquee {
     position:absolute;
 }
 .btn_aTVremote_left:hover{
-	opacity: 0.8;
+	opacity: 1;
 }
 .aTVremote_left{
 	-ms-transform: rotate(180deg);
@@ -252,7 +251,7 @@ marquee {
     position:absolute;
 }
 .btn_aTVremote_select:hover{
-	opacity: 0.8;
+	opacity: 1;
 }
 .btn_aTVremote_right{
   	left:107px;
@@ -264,7 +263,7 @@ marquee {
     position:absolute;
 }
 .btn_aTVremote_right:hover{
-	opacity: 0.8;
+	opacity: 1;
 }
 .btn_aTVremote_down{
   	left:54px;
@@ -276,7 +275,7 @@ marquee {
     position:absolute;
 }
 .btn_aTVremote_down:hover{
-	opacity: 0.8;
+	opacity: 1;
 }
 .aTVremote_down{
 	-ms-transform: rotate(90deg);
