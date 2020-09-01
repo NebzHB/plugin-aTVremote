@@ -428,7 +428,7 @@ class aTVremote extends eqLogic {
         	//log::add('aTVremote','debug',$id);
       
 		$NEWheight=-1;
-		$NEWwidth=150;
+		$NEWwidth=138;
 		$changed=false;
 		
 		$rel_folder='plugins/aTVremote/resources/images/';
