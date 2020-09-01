@@ -298,6 +298,24 @@ a > img:hover {
 .btn_aTVremote_repeat:hover{
 	opacity: 0.5;
 }
+.btn_aTVremote_plus{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_plus:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_moins{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_moins:hover{
+	opacity: 0.5;
+}
+
+
 
 
 /*Back to the futur
