@@ -65,8 +65,9 @@
 <!--  Statut & Info -->
 		<div class="info" style="height:80px;">
           	<br>
-			<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut"></a></p><br>          
-          	<p class="app_hide" style='margin: -3px 0 4px'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>
+			<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut"></a></p>
+          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2">#play_human#</a></p><br><br>          
+          	<p class="app_hide" style='margin: -20px 0 0px'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>
           
 			<!--<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Artiste"> #artist# </a></p></center>
           		<p class="artist2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:19px">#artist#</marquee></a><br></p>-->
@@ -74,8 +75,8 @@
 			<!--<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Album"> #album# </a></p></center>
           		<p class="album2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Album"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();">#album#</marquee></a><br></p>-->
 			
-			<center><p class="titre_hide" style="margin: -8px 0 8px;"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
-          	<p class="titre2_hide" style="margin: -8px 0 6px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
+			<center><p class="titre_hide" style="margin: -5px 0 8px;"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
+          	<p class="titre2_hide" style="margin: -5px 0 5px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
 
 			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position" id="pos"></span></marquee></a><br></p>
           	
@@ -138,6 +139,7 @@
 //ATV 4 ou 4K - Power + Statut
           
           	var statut = '#play_human#';
+          	$('.eqLogic[data-eqLogic_id=#id#] #statut2').slideToggle(1);
           
         	if('#power_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
@@ -166,6 +168,7 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
         		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
+	          	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);              
         	};
           	        	
 //ATV 4 ou 4K - App
@@ -267,8 +270,8 @@
 
 //ATV 3 - Statut
           
-          	var statut = '#play_human#';
-          	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);
+          	
+          	$('.eqLogic[data-eqLogic_id=#id#] #statut').slideToggle(1);
            
 //ATV 3 - Play_state
                    
