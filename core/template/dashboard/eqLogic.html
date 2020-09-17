@@ -111,8 +111,8 @@
         <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
               	
-				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_plus#" title='Vol +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
-				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_moins#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
+				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" title='Vol +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
             </div>
         
         
@@ -261,7 +261,7 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);        
         	};
           
-          	if('#cmd_plus#'=="#cmd_plus#"){
+          	if('#'+'cmd_volume_up_id#'=="#cmd_volume_up_id#"){
             	$('.eqLogic[data-eqLogic_id=#id#] .cmd.plus').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.moins').hide(1);
             };
