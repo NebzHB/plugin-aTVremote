@@ -382,6 +382,26 @@
 				"mobile": "line"
 			}
 		}, {
+			"name": "Bouton Plus",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-stop\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_up"
+		}, {
+			"name": "Bouton Moins",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fa fa-stop\"><\/i>"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_down"
+		}, {
 			"name": "Rafraichir",
 			"type": "action",
 			"subtype": "other",
