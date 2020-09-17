@@ -868,6 +868,12 @@ class aTVremoteCmd extends cmd {
 						$eqLogic->aTVremoteExecute($subCmd);
 					}*/
 				break;
+              	case 'volume_down' :
+					$eqLogic->aTVdaemonExecute('volume_down');
+				break;
+                case 'volume_up' :
+					$eqLogic->aTVdaemonExecute('volume_up');
+				break;
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		}
