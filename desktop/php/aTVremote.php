@@ -130,6 +130,28 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}"/>
 									</div>
 								</div>
+								<div class="form-group">
+								  <label class="col-sm-3 control-label">{{Volume +}}</label>
+								  <div class="col-sm-4">
+									<div class="input-group">
+									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="MoreVol" />
+									  <span class="input-group-btn">
+										<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolMoreCmd"><i class="fas fa-list-alt"></i></a>
+									  </span>
+									</div>
+								  </div>
+								</div>
+								<div class="form-group">
+								  <label class="col-sm-3 control-label">{{Volume -}}</label>
+								  <div class="col-sm-4">
+									<div class="input-group">
+									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="LessVol" />
+									  <span class="input-group-btn">
+										<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolLessCmd"><i class="fas fa-list-alt"></i></a>
+									  </span>
+									</div>
+								  </div>
+								</div>
 							</fieldset>
 						</form>
 					</div>
