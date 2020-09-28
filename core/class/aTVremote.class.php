@@ -869,10 +869,20 @@ class aTVremoteCmd extends cmd {
 					}*/
 				break;
               	case 'volume_down' :
-					$eqLogic->aTVdaemonExecute('volume_down');
+					#$eqLogic->aTVdaemonExecute('volume_down');
+					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $this->getConfiguration('LessVol'))));
+					if (!is_object($cmdLessVol)) {
+						return;
+					}
+					$cmdLessVol->execCmd();
 				break;
                 case 'volume_up' :
-					$eqLogic->aTVdaemonExecute('volume_up');
+					#$eqLogic->aTVdaemonExecute('volume_up');
+					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $this->getConfiguration('MoreVol'))));
+					if (!is_object($cmdMoreVol)) {
+						return;
+					}
+					$cmdMoreVol->execCmd();
 				break;
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
