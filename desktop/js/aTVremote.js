@@ -20,6 +20,17 @@
     $('#md_modal').load('index.php?v=d&plugin=aTVremote&modal=health').dialog('open');
 });
 
+$('#bt_VolMoreCmd').on('click', function () {
+    jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
+        $('.eqLogicAttr[data-l2key=MoreVol]').atCaret('insert', result.human);
+    });
+});
+$('#bt_VolLessCmd').on('click', function () {
+    jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
+        $('.eqLogicAttr[data-l2key=LessVol]').atCaret('insert', result.human);
+    });
+});
+
 $('.eqLogicAction[data-action=scanAppleTV]').on('click', function () {
 	$('#div_alert').showAlert({message: '{{Détection en cours}}', level: 'warning'});
 	$.showLoading();
