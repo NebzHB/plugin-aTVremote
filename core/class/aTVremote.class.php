@@ -261,8 +261,8 @@ class aTVremote extends eqLogic {
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
-						$eqLogic->setDisplay('width','250px');
-                      	$eqLogic->setDisplay('height','810px');
+						$eqLogic->setDisplay('width','138px');
+                      	$eqLogic->setDisplay('height','500px');
 					} else $eqLogic = $aTVremote;
 					
 					$eqLogic->setConfiguration('device', $res['device']);
@@ -428,7 +428,7 @@ class aTVremote extends eqLogic {
         	//log::add('aTVremote','debug',$id);
       
 		$NEWheight=-1;
-		$NEWwidth=150;
+		$NEWwidth=138;
 		$changed=false;
 		
 		$rel_folder='plugins/aTVremote/resources/images/';
@@ -867,6 +867,24 @@ class aTVremoteCmd extends cmd {
 					foreach($subCmds as $subCmd) {
 						$eqLogic->aTVremoteExecute($subCmd);
 					}*/
+				break;
+              			case 'volume_down' :
+					#$eqLogic->aTVdaemonExecute('volume_down');
+					$cmds=$eqLogic->getConfiguration('LessVol');
+					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+					if (!is_object($cmdLessVol)) {
+						return;
+					}
+					$cmdLessVol->execCmd();
+				break;
+                		case 'volume_up' :
+					#$eqLogic->aTVdaemonExecute('volume_up');
+					$cmds=$eqLogic->getConfiguration('MoreVol');
+					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+					if (!is_object($cmdMoreVol)) {
+						return;
+					}
+					$cmdMoreVol->execCmd();
 				break;
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
