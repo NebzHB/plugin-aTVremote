@@ -868,17 +868,19 @@ class aTVremoteCmd extends cmd {
 						$eqLogic->aTVremoteExecute($subCmd);
 					}*/
 				break;
-              	case 'volume_down' :
+              			case 'volume_down' :
 					#$eqLogic->aTVdaemonExecute('volume_down');
-					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $this->getConfiguration('LessVol'))));
+					$cmds=$this->getConfiguration('LessVol');
+					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 					if (!is_object($cmdLessVol)) {
 						return;
 					}
 					$cmdLessVol->execCmd();
 				break;
-                case 'volume_up' :
+                		case 'volume_up' :
 					#$eqLogic->aTVdaemonExecute('volume_up');
-					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $this->getConfiguration('MoreVol'))));
+					$cmds=$this->getConfiguration('MoreVol');
+					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 					if (!is_object($cmdMoreVol)) {
 						return;
 					}
