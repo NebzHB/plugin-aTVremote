@@ -22,12 +22,12 @@
 
 $('#bt_VolMoreCmd').on('click', function () {
     jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
-        $('.eqLogicAttr[data-l2key=MoreVol]').atCaret('insert', result.human);
+        $('.eqLogicAttr[data-l2key=MoreVol]').value(result.human);
     });
 });
 $('#bt_VolLessCmd').on('click', function () {
     jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
-        $('.eqLogicAttr[data-l2key=LessVol]').atCaret('insert', result.human);
+        $('.eqLogicAttr[data-l2key=LessVol]').value(result.human);
     });
 });
 
