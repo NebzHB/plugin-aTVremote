@@ -91,8 +91,8 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
 											<option value="">{{Aucun}}</option>
 											<?php
-											foreach (jeeObject::all() as $object) {
-												echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+											foreach ((jeeObject::buildTree(null, false)) as $object) {
+												echo '<option value="' . $object->getId() . '">' . str_repeat('&nbsp;&nbsp;', $object->getConfiguration('parentNumber')) . $object->getName() . '</option>';
 											}
 											?>
 										</select>
