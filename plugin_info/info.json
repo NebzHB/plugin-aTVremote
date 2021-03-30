@@ -2,7 +2,7 @@
 	"id" : "aTVremote",
 	"name" : "aTV Remote",
 	"description" : "aTV Remote - Permet de commander votre AppleTV - restera en BETA longtemps !",
-	"usage" : "Pas de volume, pas de mise en veille, pas de bouton micro (Siri) Voir documentation.<br/>Debian Stretch au Minimum ! (pas compatible Debian Jessie !)",
+	"utilization" : "ATTENTION : Non supporté : Jessie & Docker & Jeedom Mini+ & Raspberry Pi 1-2 & Raspberry Zéro (armv6) & i386 (32bits)\n\nPas de volume, pas de mise en veille, pas de bouton micro (Siri) Voir documentation.",
 	"licence" : "AGPL",
 	"author" : "Nebz,Wators",
 	"hasDependency" : true,
