@@ -244,10 +244,11 @@ class aTVremote extends eqLogic {
 					$modElmt=explode(' ',$res['model']);
 					$res['version']=$modElmt[0];
 					$res['os']=$modElmt[1];
-					if($res['version'] == '3') {
+					if($res['version'] == 'Gen3') {
 						$res['osVersion']=$modElmt[3];
-						$res['build']='Unknown';
-					} elseif($res['version'] == '4' || $res['version'] == '4K') {
+						$res['build']=$modElmt[5];
+						$res['version'] = '3';
+					} elseif($res['version'] == 'Gen4' || $res['version'] == 'AppleTV4KGen2' || $res['version'] == 'Gen4K') {
 						$res['osVersion']=$modElmt[2];
 						$res['build']=$modElmt[4];
 					} else {
