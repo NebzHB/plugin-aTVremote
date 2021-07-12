@@ -21,7 +21,7 @@ class Logger {
   log(message,level) {
     level = typeof level !== 'undefined' ? level : logType.INFO;
     if ( level.value > this._logLevel.value ) {return;}
-    console.log((new CustomDate()).toString() + " | " + level.txt + " | " + message);
+    console.log("[" + (new CustomDate()).toString() + "][" + level.txt.toUpperCase() + "] : " + message);
   }
 }
 
