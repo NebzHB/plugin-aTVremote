@@ -64,7 +64,8 @@ try sudo pip3 install virtualenv
 try sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo sh
+try sudo rustup update
 try sudo `which pip3` install -I wheel
 #try sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
 try sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@master
