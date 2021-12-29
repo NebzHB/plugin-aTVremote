@@ -61,7 +61,12 @@ fi
 step 90 "Installation librairie atvremote"
 silent sudo rm -fR ${BASEDIR}/atvremote
 try sudo pip3 install virtualenv
-try sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
+silent which python3.7
+if[ $? -eq 0 ];then
+	try sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
+else
+	try sudo virtualenv -p `which python3.9` ${BASEDIR}/atvremote/
+fi
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
 try sudo `which pip3` install -I wheel
