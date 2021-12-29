@@ -62,7 +62,7 @@ step 90 "Installation librairie atvremote"
 silent sudo rm -fR ${BASEDIR}/atvremote
 try sudo pip3 install virtualenv
 silent which python3.7
-if[ $? -eq 0 ];then
+if [ $? -eq 0 ];then
 	try sudo virtualenv -p `which python3.7` ${BASEDIR}/atvremote/
 else
 	try sudo virtualenv -p `which python3.9` ${BASEDIR}/atvremote/
