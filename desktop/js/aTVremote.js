@@ -30,6 +30,12 @@ $('#bt_VolLessCmd').on('click', function () {
         $('.eqLogicAttr[data-l2key=LessVol]').value(result.human);
     });
 });
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
+	if($(this).val()) {
+	console.log("changed !",$(this).val());
+	$('#SSHcmd').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
+	}
+});
 
 $('.eqLogicAction[data-action=scanAppleTV]').on('click', function () {
 	$('#div_alert').showAlert({message: '{{Détection en cours}}', level: 'warning'});
