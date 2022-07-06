@@ -43,7 +43,7 @@ class aTVremote extends eqLogic {
 	}	  
 	public static function cronDaily() {
 		// delete all artwork older than 30 days 
-		$rel_folder='plugins/aTVremote/resources/images/';
+		$rel_folder='plugins/aTVremote/core/img/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
       		//$finale_folder= $abs_folder.$id.'/'; // no need to go to subfolder, find does it ;)
 		exec(system::getCmdSudo()."find ".$abs_folder." -name *.jpg -mtime +30 -delete;");
@@ -94,6 +94,9 @@ class aTVremote extends eqLogic {
 		}
 		log::add('aTVremote', 'info', 'Lancement du démon aTVremote');
 		$socketport = config::byKey('socketport', 'aTVremote');
+		$eq=eqLogic::byId('2046');
+		$pairingKey=$eq->getConfiguration('pairingKey');
+		//$pairingKey = config::byKey('pairingKey', 'aTVremote');
 		$url  = network::getNetworkAccess('internal').'/core/api/jeeApi.php' ;
 
 		$logLevel = log::convertLogLevel(log::getLogLevel('aTVremote'));
@@ -120,7 +123,7 @@ class aTVremote extends eqLogic {
 			$arrATV4=join(',',$arrATV4);
 		}
 		
-		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
+		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $pairingKey .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
 
 		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
 
@@ -228,10 +231,20 @@ class aTVremote extends eqLogic {
 					$res["model"]=$device[2];
 					$res["ip"]=$device[3];
 					$res["mac"]=$device[4];
-					$res["port"]= 3689;
+					$res["port"]= 7000;
 					
 					if(strpos($res["model"],"HomePod") !== false) {
 						log::add('aTVremote','debug','Ignore HomePod');
+						continue;
+					}
+					
+					if(strpos($res["model"],"AirPort") !== false) {
+						log::add('aTVremote','debug','Ignore AirPort Express');
+						continue;
+					}
+					
+					if(strpos($res["model"],"iTunes") !== false) {
+						log::add('aTVremote','debug','Ignore Music/iTunes');
 						continue;
 					}
 					
@@ -241,22 +254,13 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
 					
 					$res['device']="AppleTV";
-					$modElmt=explode(' ',$res['model']);
+					$modElmt=explode(', ',$res['model']);
 					$res['version']=$modElmt[0];
-					$res['os']=$modElmt[1];
-					if($res['version'] == 'Gen3') {
-						$res['osVersion']=$modElmt[3];
-						$res['build']=$modElmt[5];
-						$res['version'] = '3';
-					} elseif($res['version'] == 'Gen4' || $res['version'] == 'AppleTV4KGen2' || $res['version'] == 'Gen4K') {
-						$res['osVersion']=$modElmt[2];
-						$res['build']=$modElmt[4];
-					} else {
-						$res['os']=$modElmt[2];
-						$res['osVersion']=$modElmt[3];
-						$res['build']=$modElmt[5];
-						$res['device']=$modElmt[0];
-					}
+					if($res['version'] == 'Apple TV 3') $res['version']=3;
+					
+					$subModElmt=explode(' ',$modElmt[1]);
+					$res['os']=$subModElmt[0];
+					$res['osVersion']=$subModElmt[1];
 					
 					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
 					if (!is_object($aTVremote)) {
@@ -279,7 +283,6 @@ class aTVremote extends eqLogic {
 					$eqLogic->setConfiguration('version',$res["version"]);
 					$eqLogic->setConfiguration('os',$res["os"]);
 					$eqLogic->setConfiguration('osVersion',$res["osVersion"]);
-					$eqLogic->setConfiguration('build',$res["build"]);
 
 					$eqLogic->save();
 					
@@ -436,7 +439,7 @@ class aTVremote extends eqLogic {
 		$NEWwidth=138;
 		$changed=false;
 		
-		$rel_folder='plugins/aTVremote/resources/images/';
+		$rel_folder='plugins/aTVremote/core/img/';
 		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
       		$finale_folder= $abs_folder.$id.'/';
       	
@@ -451,7 +454,7 @@ class aTVremote extends eqLogic {
 		}
 		$hash=md5($hash);
 		
-		$rel_folder2='plugins/aTVremote/resources/images/'.$id.'/';
+		$rel_folder2='plugins/aTVremote/core/img/'.$id.'/';
 		$artwork= $rel_folder2.$hash.'.jpg';
 		$dest = $finale_folder.$hash.'.jpg';
 		
@@ -691,6 +694,9 @@ class aTVremote extends eqLogic {
 		$order=0;
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
+		
+		$pairingKey=$this->getConfiguration('pairingKey','');
+		// todo : save it to a file on disk to read it with the daemon.
 	
 		if($device) {
 			foreach($device['commands'] as $cmd) {
@@ -731,7 +737,6 @@ class aTVremote extends eqLogic {
 				}
 				$newCmd->save();				
 			}
-		
 		}
 		if($this->getConfiguration('version',0) == '3')
 			$this->setaTVremoteInfo();
