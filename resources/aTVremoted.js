@@ -20,20 +20,21 @@ process.argv.forEach(function(val, index) {
 		case 1:break;
 		case 2: conf.urlJeedom = val; break;
 		case 3: conf.apiKey = val; break;
-		case 4: conf.serverPort = val; break;
-		case 5:
+		case 4: conf.pairingKey = val; break;
+		case 5: conf.serverPort = val; break;
+		case 6:
 			conf.logLevel = val;
 			if (conf.logLevel == 'debug') {Logger.setLogLevel(LogType.DEBUG);}
 			else if (conf.logLevel == 'info') {Logger.setLogLevel(LogType.INFO);}
 			else if (conf.logLevel == 'warning') {Logger.setLogLevel(LogType.WARNING);}
 			else {Logger.setLogLevel(LogType.ERROR);}
 		break;
-		case 6: // atv3
+		case 7: // atv3
 			if(val != "None") {
 				conf.preConnect3 = val.split(',');
 			}
 		break;
-		case 7: // other atv
+		case 8: // other atv
 			if(val != "None") {
 				conf.preConnect4 = val.split(',');
 			}
@@ -41,7 +42,7 @@ process.argv.forEach(function(val, index) {
 	}
 });
 
-const jsend = require('./utils/jeedom.js')('aTVremote',conf.urlJeedom,conf.apiKey);
+const jsend = require('./utils/jeedom.js')('aTVremote',conf.urlJeedom,conf.apiKey,'1',conf.logLevel);
 
 
 // display starting
@@ -66,10 +67,10 @@ var lastErrorMsg="";
 function connectATV(mac,version) {
 	version=parseInt(version);
 	if(!aTVs.cmd[mac]) {
-		if (!fs.existsSync(__dirname+'/images/'+mac)) {
-		    fs.mkdirSync(__dirname+'/images/'+mac)
+		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
+		    fs.mkdirSync(__dirname+'/../core/img/'+mac)
 		}
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['cli','-i',mac],{cwd:__dirname+'/images/'+mac});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['-i',mac,'--protocol','airplay','--airplay-credentials',conf.pairingKey,'cli'],{cwd:__dirname+'/../core/img/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -125,7 +126,7 @@ function connectATV(mac,version) {
 		
 	if(!aTVs.msg[mac] && version != 3) {
 		//aTVs.previousMsg[mac]="";
-		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['push_updates','-i',mac]);
+		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['-i',mac,'--protocol','airplay','--airplay-credentials',conf.pairingKey,'push_updates']);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			//var comparingData;
 			var sent;
