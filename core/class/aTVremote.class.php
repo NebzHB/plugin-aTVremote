@@ -84,6 +84,18 @@ class aTVremote extends eqLogic {
 		return $return;
 	}
 	
+	public static function getFreePort() {
+		$freePortFound = false;
+		while (!$freePortFound) {
+			$port = mt_rand(1024, 65535);
+			exec('sudo fuser '.$port.'/tcp',$out,$return);
+			if ($return==1) {
+				$freePortFound = true;
+			}
+		}
+		config::save('socketport',$port,'aTVremote');
+		return $port;
+	}
 
 	public static function deamon_start() {
 		self::deamon_stop();
@@ -93,10 +105,7 @@ class aTVremote extends eqLogic {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}
 		log::add('aTVremote', 'info', 'Lancement du démon aTVremote');
-		$socketport = config::byKey('socketport', 'aTVremote');
-		$eq=eqLogic::byId('2046');
-		$pairingKey=$eq->getConfiguration('pairingKey');
-		//$pairingKey = config::byKey('pairingKey', 'aTVremote');
+		$socketport = self::getFreePort();
 		$url  = network::getNetworkAccess('internal').'/core/api/jeeApi.php' ;
 
 		$logLevel = log::convertLogLevel(log::getLogLevel('aTVremote'));
@@ -106,10 +115,12 @@ class aTVremote extends eqLogic {
 		$arrATV3=[];
 		$arrATV4=[];
 		foreach ($eqLogics as $eqLogic) {
-			if($eqLogic->getConfiguration('version',0) == '3') {
-				array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
-			} else {
-				array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
+			if($eqLogic->getConfiguration('pairingKey',0) != 0) {
+				if($eqLogic->getConfiguration('version',0) == '3') {
+					array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
+				} else {
+					array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
+				}
 			}
 		}
 		if(count($arrATV3) == 0) {
@@ -123,7 +134,7 @@ class aTVremote extends eqLogic {
 			$arrATV4=join(',',$arrATV4);
 		}
 		
-		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $pairingKey .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
+		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
 
 		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
 
@@ -287,7 +298,6 @@ class aTVremote extends eqLogic {
 					$eqLogic->save();
 					
 					if(!is_object($aTVremote)) { // NEW
-						$eqLogic->aTVdaemonConnectATV();
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
@@ -359,7 +369,7 @@ class aTVremote extends eqLogic {
 		$version = $this->getConfiguration('version',0);
 		
 		$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
-		$url.='mac='.$mac.'&version='.$version.((count($params))?"&".http_build_query($params):'');
+		$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
 		$json = @file_get_contents($url);
 		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
 		log::add('aTVremote','debug','connect brut : '.$json);
@@ -695,9 +705,19 @@ class aTVremote extends eqLogic {
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
 		
-		$pairingKey=$this->getConfiguration('pairingKey','');
-		// todo : save it to a file on disk to read it with the daemon.
-	
+		$pairingKey=trim($this->getConfiguration('pairingKey',''));
+		$pairingKey=str_replace('You may now use these credentials: ','',$pairingKey);
+		if($pairingKey != $this->getConfiguration('pairingKey','')) {
+			$this->setConfiguration('pairingKey',$pairingKey);
+			$this->save(true);
+		}
+		if($pairingKey != '') {
+			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
+			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
+			@file_put_contents(dirname(__FILE__) . '/../../data/'.$this->getConfiguration('mac','unknown').'.key',$pairingKey);
+			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
+			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
+		}
 		if($device) {
 			foreach($device['commands'] as $cmd) {
 				$order++;
@@ -736,6 +756,13 @@ class aTVremote extends eqLogic {
 					$newCmd->setValue($linkStatus->getId());
 				}
 				$newCmd->save();				
+			}
+		}
+		if($pairingKey != '') {
+			if($this->getIsEnable() == "1") {
+				$this->aTVdaemonConnectATV();
+			} else {
+				$this->aTVdaemonDisconnectATV();
 			}
 		}
 		if($this->getConfiguration('version',0) == '3')
