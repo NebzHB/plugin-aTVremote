@@ -578,7 +578,7 @@ class aTVremote extends eqLogic {
 			
 			// if hash changed
 				$media_type = $this->getCmd(null, 'media_type');
-				if(is_object($album)) {
+				if(is_object($media_type)) {
 					if(isset($aTVremoteinfo['media_type'])) {
 						if(strtolower($aTVremoteinfo['media_type'])=='unknown'){
 							$changed=$this->checkAndUpdateCmd($media_type, '-') || $changed;
@@ -590,7 +590,7 @@ class aTVremote extends eqLogic {
 					}
 				}
 				$title = $this->getCmd(null, 'title');
-				if(is_object($album)) {
+				if(is_object($title)) {
 					if(isset($aTVremoteinfo['title'])) {
 						$changed=$this->checkAndUpdateCmd($title, htmlentities($aTVremoteinfo['title'],ENT_QUOTES)) || $changed;         
 					} else {
@@ -598,7 +598,7 @@ class aTVremote extends eqLogic {
 					}
 				}
 				$artist = $this->getCmd(null, 'artist');
-				if(is_object($album)) {
+				if(is_object($artist)) {
 					if(isset($aTVremoteinfo['artist'])) {
 						$changed=$this->checkAndUpdateCmd($artist, htmlentities($aTVremoteinfo['artist'],ENT_QUOTES)) || $changed;
 					} else {
