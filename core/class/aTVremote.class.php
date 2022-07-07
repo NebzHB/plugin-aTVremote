@@ -115,8 +115,8 @@ class aTVremote extends eqLogic {
 		$arrATV3=[];
 		$arrATV4=[];
 		foreach ($eqLogics as $eqLogic) {
-			if($eqLogic->getConfiguration('pairingKey',0) != 0) {
-				if($eqLogic->getConfiguration('version',0) == '3') {
+			if($eqLogic->getConfiguration('pairingKey','0') != '0') {
+				if($eqLogic->getConfiguration('version','0') == '3') {
 					array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
 				} else {
 					array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
