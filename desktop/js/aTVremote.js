@@ -78,17 +78,18 @@ function addCmdToTable(_cmd) {
 			tr += '</div>';
 		tr += '</div>';
     tr += '</td>'; 
-  /* tr += '<td>';
-		tr += '<div class="row">';
-			tr += '<div class="col-sm-6">';
-			tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fas fa-flag"></i> Icone</a>';
-			tr += '<span class="cmdAttr" data-l1key="display" data-l2key="icon" style="margin-left : 10px;"></span>';
-			tr += '</div>';
-		tr += '</div>';
-    tr += '</td>'; */
+	if(init(_cmd.type) == 'info') {
+		tr += '<td>';
+		tr += '<input class="form-control input-sm" type="text" data-key="value" placeholder="{{Valeur}}" readonly=true>';
+		tr += '</td>';
+	} else {
+		tr += '<td>';
+		tr += '&nbsp;';
+		tr += '</td>'; 	
+	}
 	tr += '<td>';
 	if (_cmd.logicalId != 'refresh'){
-    tr += '<span><label class="checkbox-inline" style="display : none;"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
+		tr += '<span><label class="checkbox-inline" style="display : none;"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
     }
 	if (_cmd.subType == "numeric") {
         tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> ';
@@ -109,4 +110,32 @@ function addCmdToTable(_cmd) {
     $('#table_cmd tbody').append(tr);
     $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
+		
+	function refreshValue(val,show=true) {
+		$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').value(val);
+		if(show){
+			$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','background-color:#ffff99 !important;');
+			setTimeout(function(){
+				$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','');
+			},200);
+		}
+	}
+
+	if (_cmd.id != undefined) {
+		if(init(_cmd.type) == 'info') {
+			jeedom.cmd.execute({
+				id: _cmd.id,
+				cache: 0,
+				notify: false,
+				success: function(result) {
+					refreshValue(result,false);
+			}});
+		
+		
+			// Set the update value callback
+			jeedom.cmd.update[_cmd.id] = function(_options) {
+				refreshValue(_options.display_value);
+			}
+		}
+	}	
 }
