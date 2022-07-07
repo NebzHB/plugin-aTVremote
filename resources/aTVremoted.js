@@ -104,14 +104,14 @@ function connectATV(mac,version) {
 		});
 
 		aTVs.cmd[mac].stderr.on('data', function(data) {
-		  Logger.log(data.toString(),LogType.ERROR);
+		  Logger.log("CMD CHAN ERR :"+data.toString(),LogType.ERROR);
 		  lastErrorMsg=data;
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
 			let mac=this.spawnargs[2];
+			Logger.log('Exit code: ' + code,LogType.DEBUG);
 			if(code != 0) {
-				Logger.log('Exit code: ' + code,LogType.DEBUG);
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
 					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
 					delete aTVs.cmd[mac];
@@ -123,6 +123,7 @@ function connectATV(mac,version) {
 				}
 			} else {
 				Logger.log('Déconnecté du canal des commandes de '+mac,LogType.DEBUG);
+				setTimeout(connectATV,100,mac,version);
 			}
 			lastErrorMsg="";
 		});
@@ -160,14 +161,14 @@ function connectATV(mac,version) {
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
-		  Logger.log(data.toString(),LogType.ERROR);
+		  Logger.log("MSG CHAN ERR :"+data.toString(),LogType.ERROR);
 		  lastErrorMsg=data;
 		});
 
 		aTVs.msg[mac].on('exit', function(code) {
 			let mac=this.spawnargs[2];
+			Logger.log('Exit code: ' + code,LogType.DEBUG);
 			if(code != 0) {
-				Logger.log('Exit code: ' + code,LogType.DEBUG);
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
 					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
 					delete aTVs.msg[mac];
@@ -179,6 +180,7 @@ function connectATV(mac,version) {
 				}
 			} else {
 				Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+				setTimeout(connectATV,100,mac,version);
 			}
 			lastErrorMsg="";
 		});
