@@ -20,21 +20,20 @@ process.argv.forEach(function(val, index) {
 		case 1:break;
 		case 2: conf.urlJeedom = val; break;
 		case 3: conf.apiKey = val; break;
-		case 4: conf.pairingKey = val; break;
-		case 5: conf.serverPort = val; break;
-		case 6:
+		case 4: conf.serverPort = val; break;
+		case 5:
 			conf.logLevel = val;
 			if (conf.logLevel == 'debug') {Logger.setLogLevel(LogType.DEBUG);}
 			else if (conf.logLevel == 'info') {Logger.setLogLevel(LogType.INFO);}
 			else if (conf.logLevel == 'warning') {Logger.setLogLevel(LogType.WARNING);}
 			else {Logger.setLogLevel(LogType.ERROR);}
 		break;
-		case 7: // atv3
+		case 6: // atv3
 			if(val != "None") {
 				conf.preConnect3 = val.split(',');
 			}
 		break;
-		case 8: // other atv
+		case 7: // other atv
 			if(val != "None") {
 				conf.preConnect4 = val.split(',');
 			}
@@ -66,11 +65,17 @@ var lastErrorMsg="";
 
 function connectATV(mac,version) {
 	version=parseInt(version);
+	if (fs.existsSync(__dirname+'/../data/'+mac+'.key')) {
+		var pairingKey=fs.readFileSync(__dirname+'/../data/'+mac+'.key')
+	} else {
+		Logger.log("Pas de clé trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		var pairingKey="";
+	}
 	if(!aTVs.cmd[mac]) {
 		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
 		    fs.mkdirSync(__dirname+'/../core/img/'+mac)
 		}
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['-i',mac,'--protocol','airplay','--airplay-credentials',conf.pairingKey,'cli'],{cwd:__dirname+'/../core/img/'+mac});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['-i',mac,'--protocol','airplay','--airplay-credentials',pairingKey,'cli'],{cwd:__dirname+'/../core/img/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -126,7 +131,7 @@ function connectATV(mac,version) {
 		
 	if(!aTVs.msg[mac] && version != 3) {
 		//aTVs.previousMsg[mac]="";
-		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['-i',mac,'--protocol','airplay','--airplay-credentials',conf.pairingKey,'push_updates']);
+		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['-i',mac,'--protocol','airplay','--airplay-credentials',pairingKey,'push_updates']);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			//var comparingData;
 			var sent;
@@ -212,7 +217,7 @@ app.get('/connect', function(req,res){
 		connectATV(mac,req.query.version);
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Déjà connecté sur "+mac,LogType.WARNING);
+		Logger.log("Déjà connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
 	}
 });
@@ -223,7 +228,7 @@ app.get('/disconnect', function(req,res){
 		removeATV(mac);
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Pas connecté sur "+mac,LogType.WARNING);
+		Logger.log("Pas connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'notConnected'});		
 	}
 });
