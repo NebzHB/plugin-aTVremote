@@ -204,7 +204,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>
-							<!--<th>{{Icone}}</th>-->
+							<th>{{Valeur}}</th>
 							<th>{{Paramètres}}</th>
 							<th>&nbsp;</th>
 						</tr>
