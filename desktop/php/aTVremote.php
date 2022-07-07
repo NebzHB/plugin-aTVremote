@@ -140,7 +140,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Clé d'appairage}}</label>
 									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKey" placeholder="{{Longue chaine de caractères}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKey" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 									</div>
 								</div>
 								<div class="form-group">
