@@ -109,7 +109,7 @@ function connectATV(mac,version) {
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
-			let mac=this.spawnargs[3];
+			let mac=this.spawnargs[2];
 			if(code != 0) {
 				Logger.log('exit code: ' + code,LogType.WARNING);
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
@@ -165,7 +165,7 @@ function connectATV(mac,version) {
 		});
 
 		aTVs.msg[mac].on('exit', function(code) {
-			let mac=this.spawnargs[3];
+			let mac=this.spawnargs[2];
 			if(code != 0) {
 				Logger.log('exit code: ' + code,LogType.WARNING);
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
