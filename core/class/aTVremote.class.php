@@ -527,10 +527,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 			
-			
-			
 			$changed = false;
-			
 			log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
 
 			$isPlaying=false;
@@ -539,7 +536,6 @@ class aTVremote extends eqLogic {
 				$play_state = $this->getCmd(null, 'play_state');
 				$play_human = $this->getCmd(null, 'play_human');
 				switch($aTVremoteinfo['device_state']) {
-
 					case 'Idle' :
 						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
 						$changed=$this->checkAndUpdateCmd($play_human, "Inactif") || $changed;
@@ -578,61 +574,89 @@ class aTVremote extends eqLogic {
 						break;
 					break;
 				}
-			} 			
+			}
 			
-			if(isset($aTVremoteinfo['media_type'])) {
-				if($aTVremoteinfo['media_type']=='unknown'){
-					$media_type = $this->getCmd(null, 'media_type');
-					$changed=$this->checkAndUpdateCmd($media_type, '-') || $changed;    
-				} else {
-					$media_type = $this->getCmd(null, 'media_type');
-					$changed=$this->checkAndUpdateCmd($media_type, ucfirst($aTVremoteinfo['media_type'])) || $changed;
+			// if hash changed
+				$media_type = $this->getCmd(null, 'media_type');
+				if(is_object($album)) {
+					if(isset($aTVremoteinfo['media_type'])) {
+						if(strtolower($aTVremoteinfo['media_type'])=='unknown'){
+							$changed=$this->checkAndUpdateCmd($media_type, '-') || $changed;
+						} else {
+							$changed=$this->checkAndUpdateCmd($media_type, ucfirst($aTVremoteinfo['media_type'])) || $changed;
+						}
+					}  else {
+						$changed=$this->checkAndUpdateCmd($media_type, '-') || $changed;
+					}
 				}
-			} 
-
-			if(isset($aTVremoteinfo['title'])) {
 				$title = $this->getCmd(null, 'title');
-				$changed=$this->checkAndUpdateCmd($title, htmlentities($aTVremoteinfo['title'],ENT_QUOTES)) || $changed;         
-			} else {
-				$title = $this->getCmd(null, 'title');
-				$changed=$this->checkAndUpdateCmd($title, '-') || $changed;
-			}
-
-			if(isset($aTVremoteinfo['artist'])) {
-				$artist = $this->getCmd(null, 'artist');
-				$changed=$this->checkAndUpdateCmd($artist, htmlentities($aTVremoteinfo['artist'],ENT_QUOTES)) || $changed;
-			} else {
-				$artist = $this->getCmd(null, 'artist');
-				$changed=$this->checkAndUpdateCmd($artist, '-') || $changed;
-			}
-			if(isset($aTVremoteinfo['album'])) {
-				$album = $this->getCmd(null, 'album');
-				$changed=$this->checkAndUpdateCmd($album, htmlentities($aTVremoteinfo['album'],ENT_QUOTES)) || $changed;
-			} else {
-				$album = $this->getCmd(null, 'album');
-				$changed=$this->checkAndUpdateCmd($album, '-') || $changed;
-			}
-			if(isset($aTVremoteinfo['genre'])) {
-				$genre = $this->getCmd(null, 'genre');
-				$changed=$this->checkAndUpdateCmd($genre, htmlentities($aTVremoteinfo['genre'],ENT_QUOTES)) || $changed;
-			} else {
-				$genre = $this->getCmd(null, 'genre');
-				$changed=$this->checkAndUpdateCmd($genre, '-') || $changed;
-			}
-			
-			if(isset($aTVremoteinfo['position'])) {
-				if(isset($aTVremoteinfo['total_time'])) { //aTV4+
-					$position = $this->getCmd(null, 'position');
-					$changed=$this->checkAndUpdateCmd($position, (($aTVremoteinfo['position']=='')?'0':$aTVremoteinfo['position']).'/'.$aTVremoteinfo['total_time']) || $changed;
-				} else {
-					$position = $this->getCmd(null, 'position');
-					$changed=$this->checkAndUpdateCmd($position, $aTVremoteinfo['position']) || $changed;
+				if(is_object($album)) {
+					if(isset($aTVremoteinfo['title'])) {
+						$changed=$this->checkAndUpdateCmd($title, htmlentities($aTVremoteinfo['title'],ENT_QUOTES)) || $changed;         
+					} else {
+						$changed=$this->checkAndUpdateCmd($title, '-') || $changed;
+					}
 				}
-			} else {
-				$position = $this->getCmd(null, 'position');
-				$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
-			}
+				$artist = $this->getCmd(null, 'artist');
+				if(is_object($album)) {
+					if(isset($aTVremoteinfo['artist'])) {
+						$changed=$this->checkAndUpdateCmd($artist, htmlentities($aTVremoteinfo['artist'],ENT_QUOTES)) || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($artist, '-') || $changed;
+					}
+				}
+				$album = $this->getCmd(null, 'album');
+				if(is_object($album)) {
+					if(isset($aTVremoteinfo['album'])) {
+						$changed=$this->checkAndUpdateCmd($album, htmlentities($aTVremoteinfo['album'],ENT_QUOTES)) || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($album, '-') || $changed;
+					}
+				}
+				$genre = $this->getCmd(null, 'genre');
+				if(is_object($genre)) {
+					if(isset($aTVremoteinfo['genre'])) {
+						$changed=$this->checkAndUpdateCmd($genre, htmlentities($aTVremoteinfo['genre'],ENT_QUOTES)) || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($genre, '-') || $changed;
+					}
+				}
 			
+
+				if($this->getConfiguration('version',0) != '3') {
+					if(isset($aTVremoteinfo['app_id'])) {
+						$changed=$this->setApp($aTVremoteinfo['app'],$aTVremoteinfo['app_id']) || $changed;
+					} else {
+						$app = $this->getCmd(null, 'app');
+						if(is_object($app)) {
+							$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
+						}
+					}
+				}
+			
+				if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
+					$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
+				} else if($isPlaying) { // if not paused but no Title...
+					$artwork = $this->getImage();
+					$artwork_url = $this->getCmd(null, 'artwork_url');
+					if (is_object($artwork_url)) {
+						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+					}
+				}
+			// end if changed hash
+			
+			$position = $this->getCmd(null, 'position');
+			if (is_object($position)) {
+				if(isset($aTVremoteinfo['position'])) {
+					if(isset($aTVremoteinfo['total_time'])) { //aTV4+
+						$changed=$this->checkAndUpdateCmd($position, (($aTVremoteinfo['position']=='')?'0':$aTVremoteinfo['position']).'/'.$aTVremoteinfo['total_time']) || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($position, $aTVremoteinfo['position']) || $changed;
+					}
+				} else {
+					$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
+				}
+			}
 			if(isset($aTVremoteinfo['repeat'])) { // always return Off
 				$repeat = $this->getCmd(null, 'repeat');
 				if (is_object($repeat)) {
@@ -666,28 +690,9 @@ class aTVremote extends eqLogic {
 				}
 			}
 			
-			if($this->getConfiguration('version',0) != '3') {
-				if(isset($aTVremoteinfo['app_id'])) {
-					$changed=$this->setApp($aTVremoteinfo['app'],$aTVremoteinfo['app_id']) || $changed;
-				} else {
-					$app = $this->getCmd(null, 'app');
-					$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
-				}
-			}
-			
-
-			if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && isset($aTVremoteinfo['device_state']) && $aTVremoteinfo['device_state'] != "Paused") {
-				$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
-			} else if($aTVremoteinfo['device_state'] != "Paused") {
-				$artwork = $this->getImage();
-				$artwork_url = $this->getCmd(null, 'artwork_url');
-				$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
-           	}	
-
-			
-			
-			if ($changed) 
+			if ($changed) {
 				$this->refreshWidget();
+			}
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
