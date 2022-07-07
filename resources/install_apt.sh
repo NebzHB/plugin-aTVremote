@@ -16,7 +16,7 @@ DIRECTORY="/var/www"
 if [ ! -d "$DIRECTORY" ]; then
 	silent sudo mkdir $DIRECTORY
 fi
-silent sudo chown -R www-data $DIRECTORY
+silent sudo chown -R www-data $(realpath $BASEDIR/..)
 
 step 5 "Mise à jour APT et installation des packages nécessaires"
 try sudo apt-get update

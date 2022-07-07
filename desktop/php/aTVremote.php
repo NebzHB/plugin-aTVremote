@@ -131,6 +131,19 @@ $eqLogics = eqLogic::byType('aTVremote');
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage}}</label>
+									<div class="col-sm-7">
+										<input type="text" id="SSHcmd" readonly class="form-control" value=""/>
+										<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">{{Clé d'appairage}}</label>
+									<div class="col-sm-4">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKey" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
+									</div>
+								</div>
+								<div class="form-group">
 								  <label class="col-sm-3 control-label">{{Volume +}}</label>
 								  <div class="col-sm-4">
 									<div class="input-group">
@@ -179,12 +192,6 @@ $eqLogics = eqLogic::byType('aTVremote');
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">{{Build}}</label>
-								<div class="col-sm-3">
-									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="build"></span>
-								</div>
-							</div>
-							<div class="form-group">
 								<img src="plugins/aTVremote/plugin_info/aTVremote_icon.png" style="height : 200px;margin-top:5px" />
 							</div>
 						</fieldset>
@@ -197,7 +204,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 					<thead>
 						<tr>
 							<th>{{Nom}}</th>
-							<!--<th>{{Icone}}</th>-->
+							<th>{{Valeur}}</th>
 							<th>{{Paramètres}}</th>
 							<th>&nbsp;</th>
 						</tr>

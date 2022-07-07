@@ -9,6 +9,8 @@ var jeedomSendQueue = [];
 var thisUrl="";
 var thisApikey="";
 var thisType="";
+var this42="";
+var thislogLevel="";
 
 var processJeedomSendQueue = function()
 {
@@ -20,20 +22,17 @@ var processJeedomSendQueue = function()
 		return;
 	}
 	// console.log('Traitement du message : ' + JSON.stringify(nextMessage));
-	request.post({url:thisUrl, form:nextMessage.data}, function(err, _response, _body) {
+	request.post({url:thisUrl, form:nextMessage.data}, function(err, response, body) {
 		if(err)
 		{
-			// console.log(err);
+			if(thislogLevel == 'debug') { console.error("Erreur communication avec Jeedom (retry "+nextMessage.tryCount+"/5): ",err,response,body); }
 			if (nextMessage.tryCount < 5)
 			{
 				nextMessage.tryCount++;
 				jeedomSendQueue.unshift(nextMessage);
 			}
 		}
-		else {
-			// console.log("Response from Jeedom: " + response.statusCode);
-			// console.log("Full Response: " + JSON.stringify(response));
-		}
+		else if(thislogLevel == 'debug' && response.body.trim() != '') { console.log("Réponse de Jeedom : ", response.body); }
 		setTimeout(processJeedomSendQueue, 0.01*1000);
 	});
 };
@@ -41,8 +40,14 @@ var processJeedomSendQueue = function()
 var sendToJeedom = function(data)
 {
 	// console.log("sending with "+thisUrl+" and "+thisApikey);
-	data.type = thisType;
-	data.apikey= thisApikey;
+	if(this42 == '0') {
+		data.type = thisType;
+		data.apikey= thisApikey;
+	} else {
+		data.type = 'event';
+		data.apikey= thisApikey;
+		data.plugin= thisType;
+	}
 	var message = {};
 	message.data = data;
 	message.tryCount = 0;
@@ -54,10 +59,12 @@ var sendToJeedom = function(data)
 };
 
 
-module.exports = ( type, url, apikey ) => { 
+module.exports = ( type, url, apikey, jeedom42, logLevel ) => { 
 	// console.log("importing jeedom with "+url+" and "+apikey);
 	thisUrl=url;
 	thisApikey=apikey;
 	thisType=type;
+	this42=jeedom42;
+	thislogLevel=logLevel;
 	return sendToJeedom;
 };
