@@ -33,7 +33,7 @@ $('#bt_VolLessCmd').on('click', function () {
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
 	if($(this).val()) {
 	console.log("changed !",$(this).val());
-	$('#SSHcmd').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
+	$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
 	}
 });
 
