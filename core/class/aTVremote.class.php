@@ -214,12 +214,35 @@ class aTVremote extends eqLogic {
 				$aTVremote = aTVremote::byLogicalId(init('mac'), 'aTVremote');
 				$aTVremote->setPowerstate(json_decode(init('data'),true));
 			break;
+			case 'app':
+				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
+				$eqLogic=aTVremote::byLogicalId(init('mac'), 'aTVremote');
+				$apps = explode(', App: ',init('data'));
+				$apps[0]=str_replace('App: ','',$apps[0]);
+				$order=$eqLogic->getConfiguration('orderLastCmd');
+				foreach($apps as $app) {
+					$order++;
+					$lib = explode(' (',str_replace(')','',$app));
+					$newCmd = $eqLogic->getCmd(null, 'launch_app='.$lib[1]);
+					if (!is_object($newCmd)) {
+						$newCmd = new aTVremoteCmd();
+						$newCmd->setLogicalId('launch_app='.$lib[1]);
+						$newCmd->setType('action');
+					}
+					$newCmd->setSubType('other');
+					$newCmd->setIsVisible('1');
+					$newCmd->setOrder($order);
+					$newCmd->setName(__('Lancer App ', __FILE__).$lib[0]);
+					$newCmd->setEqLogic_id($eqLogic->getId());
+					$newCmd->save();
+				}
+				$eqLogic->setConfiguration('orderLastCmd',$order);
+				$eqLogic->save(true);
+			break;
 		}
 	}
 
 
-
-	
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
         $output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
@@ -334,7 +357,7 @@ class aTVremote extends eqLogic {
 		}
 		
         	return $return;
-    	}
+    }
 	
 	public function aTVremoteExecute($cmd,$runindir=null) {
 		if($cmd) {
@@ -707,6 +730,7 @@ class aTVremote extends eqLogic {
 	
 	public function postSave() {
 		$order=0;
+		$resave=false;
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
 		
@@ -714,7 +738,7 @@ class aTVremote extends eqLogic {
 		$pairingKeyAirplay=str_replace('You may now use these credentials: ','',$pairingKeyAirplay);
 		if($pairingKeyAirplay != $this->getConfiguration('pairingKeyAirplay','')) {
 			$this->setConfiguration('pairingKeyAirplay',$pairingKeyAirplay);
-			$this->save(true);
+			$resave=true;
 		}
 		if($pairingKeyAirplay != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
@@ -728,7 +752,7 @@ class aTVremote extends eqLogic {
 		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
 		if($pairingKeyCompanion != $this->getConfiguration('pairingKeyCompanion','')) {
 			$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
-			$this->save(true);
+			$resave=true;
 		}
 		if($pairingKeyCompanion != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
@@ -746,31 +770,30 @@ class aTVremote extends eqLogic {
 				if (!is_object($newCmd)) {
 					$newCmd = new aTVremoteCmd();
 					$newCmd->setLogicalId($cmd['logicalId']);
-					$newCmd->setIsVisible($cmd['isVisible']);
-					$newCmd->setOrder($order);
-					$newCmd->setName(__($cmd['name'], __FILE__));
+					$newCmd->setType($cmd['type']);
 				}
+				$newCmd->setSubType($cmd['subtype']);
+				$newCmd->setIsVisible($cmd['isVisible']);
+				$newCmd->setOrder($order);
+				$newCmd->setName(__($cmd['name'], __FILE__));
+				$newCmd->setEqLogic_id($this->getId());
 				
-				$newCmd->setType($cmd['type']);
 				if(isset($cmd['configuration'])) {
 					foreach($cmd['configuration'] as $configuration_type=>$configuration_value) {
 						$newCmd->setConfiguration($configuration_type, $configuration_value);
 					}
-
 				} 
 				if(isset($cmd['template'])) {
 					foreach($cmd['template'] as $template_type=>$template_value) {
 						$newCmd->setTemplate($template_type, $template_value);
 					}
-
 				} 
 				if(isset($cmd['display'])) {
 					foreach($cmd['display'] as $display_type=>$display_value) {
 						$newCmd->setDisplay($display_type, $display_value);
 					}
 				}
-				$newCmd->setSubType($cmd['subtype']);
-				$newCmd->setEqLogic_id($this->getId());
+				
 				if(isset($cmd['value'])) {
 					$linkStatus = $this->getCmd(null, $cmd['value']);
 					$newCmd->setValue($linkStatus->getId());
@@ -778,6 +801,7 @@ class aTVremote extends eqLogic {
 				$newCmd->save();				
 			}
 		}
+		
 		if($pairingKeyAirplay != '') {
 			if($this->getIsEnable() == "1") {
 				$this->aTVdaemonConnectATV();
@@ -785,8 +809,24 @@ class aTVremote extends eqLogic {
 				$this->aTVdaemonDisconnectATV();
 			}
 		}
-		if($this->getConfiguration('version',0) == '3')
+
+		$this->setConfiguration('orderLastCmd',$order);
+		$resave=true;
+		
+		if($resave) {
+			$this->save(true);
+		}
+		
+		if($this->getConfiguration('version',0) == '3') {
 			$this->setaTVremoteInfo();
+		} else {
+			if($this->getIsEnable() == '1') {
+				$app_list=$this->getCmd(null,'app_list');
+				if(is_object($app_list)) {
+					$app_list->execCmd();
+				}
+			}
+		}
 	}
 	
 	public function preRemove() {
@@ -849,7 +889,7 @@ class aTVremoteCmd extends cmd {
 		$logical = $this->getLogicalId();
 		$result=null;
 		
-		if ($logical != 'refresh'){
+		if ($logical != 'refresh' && strpos($logical,'launch_app=') === false){
 			switch ($logical) {
 				case 'play':
 					$eqLogic->aTVdaemonExecute('play');
@@ -939,7 +979,13 @@ class aTVremoteCmd extends cmd {
 					if(!is_object($cmdMoreVol)) {return;}
 					$cmdMoreVol->execCmd();
 				break;
+				case 'app_list' :
+					$eqLogic->aTVdaemonExecute('app_list');
+				break;
 			}
+			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
+		} elseif(strpos($logical,'launch_app=') !== false) {
+			$eqLogic->aTVdaemonExecute($logical);
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		}
 		if($eqLogic->getConfiguration('version',0) == '3')

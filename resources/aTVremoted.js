@@ -91,6 +91,7 @@ function connectATV(mac,version) {
 		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
+		Logger.log('SPAWN CMD : '+__dirname+'/atvremote/bin/atvremote '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -106,6 +107,10 @@ function connectATV(mac,version) {
 				} else {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}*/
+				
+				if(data.includes('App: ')) {
+					jsend({eventType: 'app', data : data, mac: mac});
+				}
 				
 				Logger.log('cmd | '+data,LogType.DEBUG);
 			}
@@ -152,6 +157,7 @@ function connectATV(mac,version) {
 		//if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); } // crash when added
 		atvremoteParams.push('push_updates');
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', atvremoteParams);
+		Logger.log('SPAWN MSG : '+__dirname+'/atvremote/bin/atvscript '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			//var comparingData;
 			var sent;
@@ -174,11 +180,11 @@ function connectATV(mac,version) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
-				} else if(stringData.includes('push_updates": "finished')) {
+				} /*else if(stringData.includes('push_updates": "finished')) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
-				} else if(stringData.includes('error": "device_not_found')) {
+				}*/ else if(stringData.includes('error": "device_not_found')) {
 					delete aTVs.msg[mac];
 					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
 				}
