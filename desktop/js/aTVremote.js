@@ -15,9 +15,13 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
- $('#bt_healthaTVremote').on('click', function () {
+$('#bt_healthaTVremote').on('click', function () {
     $('#md_modal').dialog({title: "{{Santé aTVremote}}"});
     $('#md_modal').load('index.php?v=d&plugin=aTVremote&modal=health').dialog('open');
+});
+$('#bt_Help').on('click', function () {
+	$('#md_modal').dialog({title: "{{Aidez-moi}}"});
+	$('#md_modal').load('index.php?v=d&plugin=aTVremote&modal=help').dialog('open');
 });
 
 $('#bt_VolMoreCmd').on('click', function () {
