@@ -135,7 +135,12 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="form-group">
 									<label class="col-sm-3 control-label help" data-help="{{Commande à taper en ssh pour appairage Airplay}}">{{Commande Airplay}}</label>
 									<div class="col-sm-7">
-										<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/><a class="btn" data-clipboard-target="#SSHcmdAirplay"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+										<div class="input-group">
+											<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
+											<span class="input-group-btn">
+												<a class="btn" data-clipboard-target="#SSHcmdAirplay"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+											</span>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -149,7 +154,12 @@ $eqLogics = eqLogic::byType('aTVremote');
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="Commande à taper en ssh pour appairage Companion">{{Commande Companion}}</label>
 										<div class="col-sm-7">
-											<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/><a class="btn" data-clipboard-target="#SSHcmdCompanion"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+											<div class="input-group">
+												<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
+												<span class="input-group-btn">
+													<a class="btn" data-clipboard-target="#SSHcmdCompanion"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+												</span>
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -241,7 +251,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 	var clipboard = new ClipboardJS('.btn');
 	
 	clipboard.on('success', function(e) {
-		e.clearSelection();
+		//e.clearSelection();
 	});
 	clipboard.on('error', function(e) {
 		console.error('Action:', e.action);
