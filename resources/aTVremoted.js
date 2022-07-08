@@ -65,18 +65,30 @@ var lastErrorMsg="";
 
 function connectATV(mac,version) {
 	version=parseInt(version);
+	
+	var pairingKeyAirplay=null;
 	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
-		var pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key')
+		pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key')
 	} else {
 		Logger.log("Pas de clé airplay trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-		var pairingKeyAirplay=null;
 	}
+	if(version != 3) {
+		var pairingKeyCompanion=null;
+		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
+			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key')
+		} else {
+			Logger.log("Pas de clé companion trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		}
+	}
+	
+	// création canal des commandes
 	if(!aTVs.cmd[mac]) {
 		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
 		    fs.mkdirSync(__dirname+'/../core/img/'+mac)
 		}
 		let atvremoteParams = ['-i',mac];
-		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay);}
+		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
+		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
@@ -102,7 +114,7 @@ function connectATV(mac,version) {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}*/
 				
-				Logger.log('cmd |'+data,LogType.INFO);
+				Logger.log('cmd | '+data,LogType.INFO);
 			}
 		});
 
@@ -132,11 +144,12 @@ function connectATV(mac,version) {
 		});
 	}
 	
-		
+	// création canal des messages
 	if(!aTVs.msg[mac] && version != 3) {
 		//aTVs.previousMsg[mac]="";
 		let atvremoteParams = ['-i',mac];
 		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
+		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('push_updates');
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', atvremoteParams);
 		aTVs.msg[mac].stdout.on('data', function(data) {
