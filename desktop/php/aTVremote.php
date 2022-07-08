@@ -81,7 +81,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 									<label class="col-sm-3 control-label">{{Nom de l'appleTV}}</label>
 									<div class="col-sm-4">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" readonly />
 										
 									</div>
 								</div>
@@ -121,20 +121,20 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Ip appleTV}}</label>
 									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ip" placeholder="{{Ip appleTV}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ip" placeholder="{{Ip appleTV}}" readonly />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Mac}}</label>
 									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}" readonly />
 									</div>
 								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
 								<div id="Airplay" style="display:none">
 								<br />
 									<div class="form-group">
-										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay}}">{{Commande Airplay}}</label>
+										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Airplay}}</label>
 										<div class="col-sm-8">
 											<div class="input-group">
 												<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
@@ -154,7 +154,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div id="Companion" style="display:none">
 								<br />
 									<div class="form-group">
-										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion}}">{{Commande Companion}}</label>
+										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Companion}}</label>
 										<div class="col-sm-8">
 											<div class="input-group">
 												<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
@@ -173,7 +173,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								</div>
 								<br />
 								<div class="form-group">
-								  <label class="col-sm-3 control-label">{{Volume +}}</label>
+								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume +}}</label>
 								  <div class="col-sm-4">
 									<div class="input-group">
 									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="MoreVol" />
@@ -184,7 +184,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								  </div>
 								</div>
 								<div class="form-group">
-								  <label class="col-sm-3 control-label">{{Volume -}}</label>
+								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume -}}</label>
 								  <div class="col-sm-4">
 									<div class="input-group">
 									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="LessVol" />
