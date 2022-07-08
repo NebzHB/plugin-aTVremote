@@ -108,6 +108,10 @@ function connectATV(mac,version) {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}*/
 				
+				if(data.includes('App: ')) {
+					jsend({eventType: 'app', data : data, mac: mac});
+				}
+				
 				Logger.log('cmd | '+data,LogType.DEBUG);
 			}
 		});
@@ -176,11 +180,11 @@ function connectATV(mac,version) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
-				} else if(stringData.includes('push_updates": "finished')) {
+				} /*else if(stringData.includes('push_updates": "finished')) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
-				} else if(stringData.includes('error": "device_not_found')) {
+				}*/ else if(stringData.includes('error": "device_not_found')) {
 					delete aTVs.msg[mac];
 					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
 				}
