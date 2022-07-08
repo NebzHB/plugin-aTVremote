@@ -28,6 +28,17 @@
 				"mobile": "line"
 			}
 		}, {
+			"name": "MàJ Liste App",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION",
+				"icon": "<i class=\"fas fa-recycle\"><\/i>",
+				"forceReturnLineBefore": 1
+			},
+			"isVisible": 1,
+			"logicalId": "app_list"
+		}, {
 			"name": "Hors Veille",
 			"type": "info",
 			"subtype": "binary",
