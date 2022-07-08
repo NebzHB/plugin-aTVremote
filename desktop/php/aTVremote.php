@@ -130,19 +130,36 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}"/>
 									</div>
 								</div>
+								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
+								<br />
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage}}</label>
+									<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage Airplay}}</label>
 									<div class="col-sm-7">
-										<input type="text" id="SSHcmd" readonly class="form-control" value=""/>
-										<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
+										<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Clé d'appairage}}</label>
+									<label class="col-sm-3 control-label">{{Clé d'appairage Airplay}}</label>
 									<div class="col-sm-4">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKey" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 									</div>
 								</div>
+								<div id="Companion" class="hidden">
+								<br />
+									<div class="form-group">
+										<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage Companion}}</label>
+										<div class="col-sm-7">
+											<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">{{Clé d'appairage Companion}}</label>
+										<div class="col-sm-4">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
+										</div>
+									</div>
+								</div>
+								<br />
 								<div class="form-group">
 								  <label class="col-sm-3 control-label">{{Volume +}}</label>
 								  <div class="col-sm-4">
