@@ -778,7 +778,7 @@ class aTVremote extends eqLogic {
 				$newCmd->save();				
 			}
 		}
-		if($pairingKey != '') {
+		if($pairingKeyAirplay != '') {
 			if($this->getIsEnable() == "1") {
 				$this->aTVdaemonConnectATV();
 			} else {
