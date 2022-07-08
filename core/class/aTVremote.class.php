@@ -820,7 +820,7 @@ class aTVremote extends eqLogic {
 		if($this->getConfiguration('version',0) == '3') {
 			$this->setaTVremoteInfo();
 		} else {
-			if($this->getIsEnable() == '1') {
+			if($this->getIsEnable() == '1' && $this->getConfiguration('pairingKeyCompanion','') != '') {
 				$app_list=$this->getCmd(null,'app_list');
 				if(is_object($app_list)) {
 					$app_list->execCmd();
@@ -985,8 +985,12 @@ class aTVremoteCmd extends cmd {
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		} elseif(strpos($logical,'launch_app=') !== false) {
-			$eqLogic->aTVdaemonExecute($logical);
-			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
+			if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
+				$eqLogic->aTVdaemonExecute($logical);
+				log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
+			} else {
+				log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.' car pas d\'appairage Companion'.(($cmds)?' -> '.$cmds:''));
+			}
 		}
 		if($eqLogic->getConfiguration('version',0) == '3')
 			$eqLogic->setaTVremoteInfo();
