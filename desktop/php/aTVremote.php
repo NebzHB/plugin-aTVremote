@@ -133,28 +133,38 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
 								<br />
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage Airplay}}</label>
+									<label class="col-sm-3 control-label help" data-help="{{Commande à taper en ssh pour appairage Airplay}}">{{Commande Airplay}}</label>
 									<div class="col-sm-7">
-										<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
+										<div class="input-group">
+											<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
+											<span class="input-group-btn">
+												<a class="btn" data-clipboard-target="#SSHcmdAirplay"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+											</span>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Clé d'appairage Airplay}}</label>
-									<div class="col-sm-4">
+									<div class="col-sm-7">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 									</div>
 								</div>
-								<div id="Companion" class="hidden">
+								<div id="Companion" style="display:none">
 								<br />
 									<div class="form-group">
-										<label class="col-sm-3 control-label">{{Commande à taper en ssh pour appairage Companion}}</label>
+										<label class="col-sm-3 control-label help" data-help="Commande à taper en ssh pour appairage Companion">{{Commande Companion}}</label>
 										<div class="col-sm-7">
-											<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
+											<div class="input-group">
+												<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
+												<span class="input-group-btn">
+													<a class="btn" data-clipboard-target="#SSHcmdCompanion"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+												</span>
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label">{{Clé d'appairage Companion}}</label>
-										<div class="col-sm-4">
+										<div class="col-sm-7">
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 										</div>
 									</div>
@@ -235,3 +245,16 @@ $eqLogics = eqLogic::byType('aTVremote');
 </div>
 <?php include_file('desktop', 'aTVremote', 'js', 'aTVremote'); ?>
 <?php include_file('core', 'plugin.template', 'js'); ?>
+<script src="plugins/aTVremote/3rdparty/clipboard.min.js"></script>
+<script>
+
+	var clipboard = new ClipboardJS('.btn');
+	
+	clipboard.on('success', function(e) {
+		//e.clearSelection();
+	});
+	clipboard.on('error', function(e) {
+		console.error('Action:', e.action);
+		console.error('Trigger:', e.trigger);
+	});
+</script>

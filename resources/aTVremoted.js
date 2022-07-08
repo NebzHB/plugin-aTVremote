@@ -65,30 +65,35 @@ var lastErrorMsg="";
 
 function connectATV(mac,version) {
 	version=parseInt(version);
+	
+	var pairingKeyAirplay=null;
 	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
-		var pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key')
+		pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key')
 	} else {
 		Logger.log("Pas de clé airplay trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-		var pairingKeyAirplay=null;
 	}
+	var pairingKeyCompanion=null;
+	if(version != 3) {
+		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
+			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key')
+		} else {
+			Logger.log("Pas de clé companion trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		}
+	}
+	
+	// création canal des commandes
 	if(!aTVs.cmd[mac]) {
 		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
 		    fs.mkdirSync(__dirname+'/../core/img/'+mac)
 		}
 		let atvremoteParams = ['-i',mac];
-		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay);}
+		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
+		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
-				if(!isReady) {
-					server = app.listen(conf.serverPort, () => {
-						Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
-						isReady=true;
-					});
-				}
-				Logger.log('Connecté au canal des commandes de '+mac+' !',LogType.INFO);
 				return;
 			}
 			if(data != "pyatv> ") {
@@ -102,7 +107,7 @@ function connectATV(mac,version) {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				}*/
 				
-				Logger.log('cmd |'+data,LogType.INFO);
+				Logger.log('cmd | '+data,LogType.DEBUG);
 			}
 		});
 
@@ -113,10 +118,9 @@ function connectATV(mac,version) {
 
 		aTVs.cmd[mac].on('exit', function(code) {
 			let mac=this.spawnargs[2];
-			Logger.log('Exit code: ' + code,LogType.DEBUG);
+			Logger.log('Exit code CMD : ' + code,LogType.DEBUG);
 			if(code != 0) {
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
-					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
 					delete aTVs.cmd[mac];
 					Logger.log('Déconnecté du canal des commandes de '+mac,LogType.DEBUG);
 				} else {
@@ -126,17 +130,26 @@ function connectATV(mac,version) {
 				}
 			} else {
 				Logger.log('Déconnecté du canal des commandes de '+mac,LogType.DEBUG);
-				setTimeout(connectATV,100,mac,version);
 			}
 			lastErrorMsg="";
 		});
+		aTVs.cmd[mac].on('spawn', function() {
+			if(!isReady) {
+				server = app.listen(conf.serverPort, () => {
+					Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
+					isReady=true;
+				});
+			}
+			Logger.log('Connecté au canal des commandes de '+mac+' !',LogType.INFO);
+		});
 	}
 	
-		
+	// création canal des messages
 	if(!aTVs.msg[mac] && version != 3) {
 		//aTVs.previousMsg[mac]="";
 		let atvremoteParams = ['-i',mac];
 		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
+		//if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); } // crash when added
 		atvremoteParams.push('push_updates');
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', atvremoteParams);
 		aTVs.msg[mac].stdout.on('data', function(data) {
@@ -161,8 +174,11 @@ function connectATV(mac,version) {
 					delete aTVs.msg[mac];
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
+				} else if(stringData.includes('error": "device_not_found')) {
+					delete aTVs.msg[mac];
+					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
 				}
-				Logger.log('msg '+sent+'|'+stringData,LogType.INFO);
+				Logger.log('msg '+sent+'|'+stringData,LogType.DEBUG);
 			}
 		});
 
@@ -173,7 +189,7 @@ function connectATV(mac,version) {
 
 		aTVs.msg[mac].on('exit', function(code) {
 			let mac=this.spawnargs[2];
-			Logger.log('Exit code: ' + code,LogType.DEBUG);
+			Logger.log('Exit code MSG : ' + code,LogType.DEBUG);
 			if(code != 0) {
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
 					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
@@ -186,9 +202,11 @@ function connectATV(mac,version) {
 				}
 			} else {
 				Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
-				setTimeout(connectATV,100,mac,version);
 			}
 			lastErrorMsg="";
+		});
+		aTVs.msg[mac].on('spawn', function() {
+			Logger.log('Connecté au canal des messages de '+mac+' !',LogType.INFO);
 		});
 	}
 }

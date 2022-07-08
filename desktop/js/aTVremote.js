@@ -32,8 +32,13 @@ $('#bt_VolLessCmd').on('click', function () {
 });
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
 	if($(this).val()) {
-	console.log("changed !",$(this).val());
-	$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
+		$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
+		if($('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').val() != "3") {
+			$('#Companion').show();
+			$('#SSHcmdCompanion').val($('#SSHcmdPath').val()+" --protocol companion -i "+$(this).val()+" pair");
+		} else {
+			$('#Companion').hide();
+		}
 	}
 });
 
