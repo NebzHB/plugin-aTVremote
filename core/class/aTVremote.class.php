@@ -710,19 +710,20 @@ class aTVremote extends eqLogic {
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
 		
-		$pairingKey=trim($this->getConfiguration('pairingKey',''));
-		$pairingKey=str_replace('You may now use these credentials: ','',$pairingKey);
-		if($pairingKey != $this->getConfiguration('pairingKey','')) {
-			$this->setConfiguration('pairingKey',$pairingKey);
+		$pairingKeyAirplay=trim($this->getConfiguration('pairingKeyAirplay',''));
+		$pairingKeyAirplay=str_replace('You may now use these credentials: ','',$pairingKeyAirplay);
+		if($pairingKeyAirplay != $this->getConfiguration('pairingKeyAirplay','')) {
+			$this->setConfiguration('pairingKeyAirplay',$pairingKeyAirplay);
 			$this->save(true);
 		}
-		if($pairingKey != '') {
+		if($pairingKeyAirplay != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
-			@file_put_contents(dirname(__FILE__) . '/../../data/'.$this->getConfiguration('mac','unknown').'.key',$pairingKey);
+			@file_put_contents(dirname(__FILE__) . '/../../data/'.$this->getConfiguration('mac','unknown').'-airplay.key',$pairingKeyAirplay);
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
 		}
+		
 		if($device) {
 			foreach($device['commands'] as $cmd) {
 				$order++;
@@ -910,22 +911,18 @@ class aTVremoteCmd extends cmd {
 						$eqLogic->aTVremoteExecute($subCmd);
 					}*/
 				break;
-              			case 'volume_down' :
+              	case 'volume_down' :
 					#$eqLogic->aTVdaemonExecute('volume_down');
 					$cmds=$eqLogic->getConfiguration('LessVol');
 					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
-					if (!is_object($cmdLessVol)) {
-						return;
-					}
+					if(!is_object($cmdLessVol)) {return;}
 					$cmdLessVol->execCmd();
 				break;
-                		case 'volume_up' :
+                case 'volume_up' :
 					#$eqLogic->aTVdaemonExecute('volume_up');
 					$cmds=$eqLogic->getConfiguration('MoreVol');
 					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
-					if (!is_object($cmdMoreVol)) {
-						return;
-					}
+					if(!is_object($cmdMoreVol)) {return;}
 					$cmdMoreVol->execCmd();
 				break;
 			}
