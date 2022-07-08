@@ -65,17 +65,20 @@ var lastErrorMsg="";
 
 function connectATV(mac,version) {
 	version=parseInt(version);
-	if (fs.existsSync(__dirname+'/../data/'+mac+'.key')) {
-		var pairingKey=fs.readFileSync(__dirname+'/../data/'+mac+'.key')
+	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
+		var pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key')
 	} else {
-		Logger.log("Pas de clé trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-		var pairingKey="";
+		Logger.log("Pas de clé airplay trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		var pairingKeyAirplay=null;
 	}
 	if(!aTVs.cmd[mac]) {
 		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
 		    fs.mkdirSync(__dirname+'/../core/img/'+mac)
 		}
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', ['-i',mac,'--protocol','airplay','--airplay-credentials',pairingKey,'cli'],{cwd:__dirname+'/../core/img/'+mac});
+		let atvremoteParams = ['-i',mac];
+		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay);}
+		atvremoteParams.push('cli');
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -132,7 +135,10 @@ function connectATV(mac,version) {
 		
 	if(!aTVs.msg[mac] && version != 3) {
 		//aTVs.previousMsg[mac]="";
-		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', ['-i',mac,'--protocol','airplay','--airplay-credentials',pairingKey,'push_updates']);
+		let atvremoteParams = ['-i',mac];
+		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
+		atvremoteParams.push('push_updates');
+		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', atvremoteParams);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			//var comparingData;
 			var sent;
