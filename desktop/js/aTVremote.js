@@ -32,6 +32,7 @@ $('#bt_VolLessCmd').on('click', function () {
 });
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
 	if($(this).val()) {
+		$('#Airplay').show();
 		$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
 		if($('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').val() != "3") {
 			$('#Companion').show();
