@@ -91,6 +91,7 @@ function connectATV(mac,version) {
 		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
 		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
+		Logger.log('SPAWN CMD : '+__dirname+'/atvremote/bin/atvremote '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
@@ -152,6 +153,7 @@ function connectATV(mac,version) {
 		//if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); } // crash when added
 		atvremoteParams.push('push_updates');
 		aTVs.msg[mac] = spawn(__dirname+'/atvremote/bin/atvscript', atvremoteParams);
+		Logger.log('SPAWN MSG : '+__dirname+'/atvremote/bin/atvscript '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.msg[mac].stdout.on('data', function(data) {
 			//var comparingData;
 			var sent;
