@@ -724,6 +724,20 @@ class aTVremote extends eqLogic {
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
 		}
 		
+		$pairingKeyCompanion=trim($this->getConfiguration('pairingKeyCompanion',''));
+		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
+		if($pairingKeyCompanion != $this->getConfiguration('pairingKeyCompanion','')) {
+			$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
+			$this->save(true);
+		}
+		if($pairingKeyCompanion != '') {
+			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
+			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
+			@file_put_contents(dirname(__FILE__) . '/../../data/'.$this->getConfiguration('mac','unknown').'-companion.key',$pairingKeyCompanion);
+			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
+			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
+		}
+		
 		if($device) {
 			foreach($device['commands'] as $cmd) {
 				$order++;
