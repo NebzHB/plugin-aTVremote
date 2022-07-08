@@ -139,7 +139,8 @@ $eqLogics = eqLogic::byType('aTVremote');
 											<div class="input-group">
 												<input type="text" id="SSHcmdAirplay" readonly class="form-control" value=""/>
 												<span class="input-group-btn">
-													<a class="btn" data-clipboard-target="#SSHcmdAirplay"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+													<a class="btn btnCopy" data-clipboard-target="#SSHcmdAirplay"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+													<a class="btn btn-warning cursor" title="Comment faire ?" id="bt_Help"><i class="fas fa-medkit"> Aidez-moi</i></a>
 												</span>
 											</div>
 										</div>
@@ -159,7 +160,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 											<div class="input-group">
 												<input type="text" id="SSHcmdCompanion" readonly class="form-control" value=""/>
 												<span class="input-group-btn">
-													<a class="btn" data-clipboard-target="#SSHcmdCompanion"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
+													<a class="btn btnCopy" data-clipboard-target="#SSHcmdCompanion"><i class="far fa-copy" alt="{{Copier dans le presse-papier}}" title="{{Copier dans le presse-papier}}"></i></a>
 												</span>
 											</div>
 										</div>
@@ -250,7 +251,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 <script src="plugins/aTVremote/3rdparty/clipboard.min.js"></script>
 <script>
 
-	var clipboard = new ClipboardJS('.btn');
+	var clipboard = new ClipboardJS('.btnCopy');
 	
 	clipboard.on('success', function(e) {
 		//e.clearSelection();
