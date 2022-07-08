@@ -72,8 +72,8 @@ function connectATV(mac,version) {
 	} else {
 		Logger.log("Pas de clé airplay trouvée pour l\'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
 	}
+	var pairingKeyCompanion=null;
 	if(version != 3) {
-		var pairingKeyCompanion=null;
 		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
 			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key')
 		} else {
