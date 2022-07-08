@@ -343,7 +343,7 @@ class aTVremote extends eqLogic {
 			$cmdToExec = "";
 			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
 			
-			$cmdToExec .= aTVremote::getaTVremote(true,true)." -i $mac $cmd";
+			$cmdToExec .= aTVremote::getaTVremote(true,true)." -i $mac --protocol airplay --airplay-credentials ".$this->getConfiguration('pairingKey')." $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
 			if($val_ret)
 				log::add('aTVremote','debug','ret:'.$val_ret.' -- '.$lastoutput.' -- '.json_encode($return).' -- '.$cmdToExec);
