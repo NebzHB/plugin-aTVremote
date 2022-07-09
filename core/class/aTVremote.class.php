@@ -840,7 +840,7 @@ class aTVremote extends eqLogic {
 		$this->aTVdaemonDisconnectATV();
 	}
   	public function toHtml($_version = 'dashboard') {
-        	$replace = $this->preToHtml($_version);
+        $replace = $this->preToHtml($_version);
  		if (!is_array($replace)) {
  			return $replace;
   		}
@@ -853,22 +853,33 @@ class aTVremote extends eqLogic {
 			}
 		}
       		
-      		$replace["#os#"] = $this->getConfiguration('os',0);
-      		$replace["#osVersion#"] = $this->getConfiguration('osVersion',0);
-      		$replace["#build#"] = $this->getConfiguration('build',0);
+		$replace["#os#"] = $this->getConfiguration('os',0);
+		$replace["#osVersion#"] = $this->getConfiguration('osVersion',0);
+		$replace["#build#"] = $this->getConfiguration('build',0);
 		
 		$replace["#ATV#"] = $this->getConfiguration('version',0);
 		
-      		$marquee = config::byKey('marquee', 'aTVremote', 0);
-      		if ($marquee == 1){
-      			$replace["#marquee#"] = "scroll";
-      			//log::add('aTVremote','debug','--dest already exists, just display it...'.$marquee);
-        	} else {
-          		$replace["#marquee#"] = "alternate";
-        	};
-      
+		$marquee = config::byKey('marquee', 'aTVremote', 0);
+		if ($marquee == 1){
+			$replace["#marquee#"] = "scroll";
+			//log::add('aTVremote','debug','--dest already exists, just display it...'.$marquee);
+		} else {
+			$replace["#marquee#"] = "alternate";
+		};
+		
+		
+		
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#cmd_' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			if($cmd->getLogicalId() == 'launch_app') {
+				$optList=[];
+				foreach(explode(';',$cmd->getConfiguration('listValue')) as $value) {
+					$temp=explode('|',$value);
+					log::add('aTVremote','debug','val:'.$temp[0].'|disp:'.$temp[1]);
+					array_push($optList,'<option value="'.$temp[0].'">'.$temp[1].'</option>');
+				}
+				$replace['#cmd_' . $cmd->getLogicalId() . '_opt#'] = join('',$optList);;
+			}
 		}
 		/**$lentocheck = 24;
 		if ($version == 'mobile'){
