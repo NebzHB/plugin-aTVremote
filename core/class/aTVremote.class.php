@@ -220,28 +220,34 @@ class aTVremote extends eqLogic {
 				$apps = explode(', App: ',init('data'));
 				$apps[0]=str_replace('App: ','',$apps[0]);
 				$order=$eqLogic->getConfiguration('orderLastCmd');
+				
+				$AppList=[];
 				foreach($apps as $app) {
-					$order++;
 					$lib = explode(' (',str_replace(')','',$app));
-					$newCmd = $eqLogic->getCmd(null, 'launch_app='.$lib[1]);
-					if (!is_object($newCmd)) {
-						$newCmd = new aTVremoteCmd();
-						$newCmd->setLogicalId('launch_app='.$lib[1]);
-						$newCmd->setType('action');
-					}
-					$newCmd->setSubType('other');
-					$newCmd->setIsVisible('1');
-					$newCmd->setOrder($order);
-					$newCmd->setName(__('Lancer App ', __FILE__).$lib[0]);
-					$newCmd->setEqLogic_id($eqLogic->getId());
-					$newCmd->save();
+					array_push($AppList,$lib[1].'|'.$lib[0]);
 				}
+				$AppList=join(';',$AppList);
+				
+				$order++;
+				$newCmd = $eqLogic->getCmd(null, 'launch_app');
+				if (!is_object($newCmd)) {
+					$newCmd = new aTVremoteCmd();
+					$newCmd->setLogicalId('launch_app');
+					$newCmd->setType('action');
+				}
+				$newCmd->setSubType('select');
+				$newCmd->setIsVisible('1');
+				$newCmd->setOrder($order);
+				$newCmd->setName(__('Lancer App', __FILE__));
+				$newCmd->setEqLogic_id($eqLogic->getId());
+				$newCmd->setConfiguration('listValue', $AppList);
+				$newCmd->save();
+				
 				$eqLogic->setConfiguration('orderLastCmd',$order);
 				$eqLogic->save(true);
 			break;
 		}
 	}
-
 
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
@@ -889,7 +895,7 @@ class aTVremoteCmd extends cmd {
 		$logical = $this->getLogicalId();
 		$result=null;
 		
-		if ($logical != 'refresh' && strpos($logical,'launch_app=') === false){
+		if ($logical != 'refresh'){
 			switch ($logical) {
 				case 'play':
 					$eqLogic->aTVdaemonExecute('play');
@@ -982,15 +988,15 @@ class aTVremoteCmd extends cmd {
 				case 'app_list' :
 					$eqLogic->aTVdaemonExecute('app_list');
 				break;
+				case 'launch_app' :
+					if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
+						$eqLogic->aTVdaemonExecute($logical.'='.$_options['select']);
+					} else {
+						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.(($cmds)?' -> '.$cmds:''));
+					}
+				break;
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
-		} elseif(strpos($logical,'launch_app=') !== false) {
-			if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
-				$eqLogic->aTVdaemonExecute($logical);
-				log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
-			} else {
-				log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.' car pas d\'appairage Companion'.(($cmds)?' -> '.$cmds:''));
-			}
 		}
 		if($eqLogic->getConfiguration('version',0) == '3')
 			$eqLogic->setaTVremoteInfo();
