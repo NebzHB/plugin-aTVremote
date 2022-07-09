@@ -174,7 +174,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								</div>
 								<br />
 								<div class="form-group">
-								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume +}}</label>
+								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony par ex)}}">{{Volume +}}</label>
 								  <div class="col-sm-4">
 									<div class="input-group">
 									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="MoreVol" />
@@ -185,7 +185,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								  </div>
 								</div>
 								<div class="form-group">
-								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume -}}</label>
+								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony par ex)}}">{{Volume -}}</label>
 								  <div class="col-sm-4">
 									<div class="input-group">
 									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="LessVol" />
