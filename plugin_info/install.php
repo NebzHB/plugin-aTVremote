@@ -20,7 +20,9 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function aTVremote_install() {
 	if(trim(shell_exec("lsb_release -c | grep 'jessie' | wc -l")) == "1")
-		message::add('aTVremote', 'Attention, votre version de Debian est Jessie (8) et ce plugin n\'est compatible que avec Stretch (9) et au delà');
+		message::add('aTVremote', 'Attention, votre version de Debian est Jessie (8) et ce plugin n\'est compatible que avec Buster (10) et au delà');
+	if(trim(shell_exec("lsb_release -c | grep 'stretch' | wc -l")) == "1")
+		message::add('aTVremote', 'Attention, votre version de Debian est Stretch (9) et ce plugin n\'est compatible que avec Buster (10) et au delà');
 }
 
 function aTVremote_update() {
