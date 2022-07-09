@@ -548,7 +548,7 @@ class aTVremote extends eqLogic {
 					if(count($elmt) > 2) {
 						array_shift($elmt);
 						$value= trim(join('',$elmt));
-					} else if(count($elmt) == 2){
+					} elseif(count($elmt) == 2){
 						$value= trim($elmt[1]);
 					}
 					$info=str_replace(' ','_',strtolower($info));
@@ -665,7 +665,7 @@ class aTVremote extends eqLogic {
 			
 				if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
 					$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
-				} else if($isPlaying) { // if not paused but no Title...
+				} elseif($isPlaying) { // if not paused but no Title...
 					$artwork = $this->getImage();
 					$artwork_url = $this->getCmd(null, 'artwork_url');
 					if (is_object($artwork_url)) {
