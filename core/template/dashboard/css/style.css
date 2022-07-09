@@ -59,7 +59,7 @@
 	cursor:pointer;
 	/*border-radius: 10%;*/
 }
-#i{
+.infoBox{
     top:157px;
     left:117px;
     position:absolute;
@@ -67,7 +67,15 @@
     opacity: 0.8;
     cursor:pointer;
 }
-#i:hover{
+.appBox{
+	top:10px;
+    left:100px;
+    position:absolute;
+    z-index: 8;
+    opacity: 0.8;
+    cursor:pointer;
+}
+.infoBox:hover{
     opacity:0.4;
 }
 .oModal {
