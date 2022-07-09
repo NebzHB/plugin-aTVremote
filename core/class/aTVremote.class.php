@@ -115,7 +115,7 @@ class aTVremote extends eqLogic {
 		$arrATV3=[];
 		$arrATV4=[];
 		foreach ($eqLogics as $eqLogic) {
-			if($eqLogic->getConfiguration('pairingKey','0') != '0') {
+			if($eqLogic->getConfiguration('pairingKeyAirplay','0') != '0') {
 				if($eqLogic->getConfiguration('version','0') == '3') {
 					array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
 				} else {
@@ -366,7 +366,7 @@ class aTVremote extends eqLogic {
 			$cmdToExec = "";
 			if($runindir) $cmdToExec.='runindir() { (cd "$1" && shift && eval "$@"); };runindir '.$runindir.' ';
 			
-			$cmdToExec .= aTVremote::getaTVremote(true,true)." -i $mac --protocol airplay --airplay-credentials ".$this->getConfiguration('pairingKey')." $cmd";
+			$cmdToExec .= aTVremote::getaTVremote(true,true)." -i $mac --protocol airplay --airplay-credentials ".$this->getConfiguration('pairingKeyAirplay')." $cmd";
 			$lastoutput=exec($cmdToExec,$return,$val_ret);
 			if($val_ret)
 				log::add('aTVremote','debug','ret:'.$val_ret.' -- '.$lastoutput.' -- '.json_encode($return).' -- '.$cmdToExec);
