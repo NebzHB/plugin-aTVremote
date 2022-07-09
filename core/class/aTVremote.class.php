@@ -245,8 +245,6 @@ class aTVremote extends eqLogic {
 				
 				$eqLogic->setConfiguration('orderLastCmd',$order);
 				$eqLogic->save(true);
-				
-				sleep(2);
 			break;
 		}
 	}
@@ -832,6 +830,7 @@ class aTVremote extends eqLogic {
 				$app_list=$this->getCmd(null,'app_list');
 				if(is_object($app_list)) {
 					$app_list->execCmd();
+					sleep(2);
 				}
 			}
 		}
