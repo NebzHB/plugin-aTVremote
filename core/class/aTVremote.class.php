@@ -273,18 +273,8 @@ class aTVremote extends eqLogic {
 					$res["mac"]=$device[4];
 					$res["port"]= 7000;
 					
-					if(strpos($res["model"],"HomePod") !== false) {
-						log::add('aTVremote','debug','Ignore HomePod');
-						continue;
-					}
-					
-					if(strpos($res["model"],"AirPort") !== false) {
-						log::add('aTVremote','debug','Ignore AirPort Express');
-						continue;
-					}
-					
-					if(strpos($res["model"],"iTunes") !== false) {
-						log::add('aTVremote','debug','Ignore Music/iTunes');
+					if(strpos($res['model'],'Apple TV') === false) {
+						log::add('aTVremote','debug','Ignore '.$res['model']);
 						continue;
 					}
 					
