@@ -295,14 +295,16 @@ class aTVremote extends eqLogic {
 					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
 					if (!is_object($aTVremote)) {
 						$eqLogic = new aTVremote();
-						$eqLogic->setName($res["name"]);
+						
 						$eqLogic->setIsEnable(0);
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
 						$eqLogic->setDisplay('width','138px');
-                      				$eqLogic->setDisplay('height','500px');
+                      	$eqLogic->setDisplay('height','500px');
 					} else $eqLogic = $aTVremote;
+					
+					$eqLogic->setName($res["name"]);
 					
 					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
