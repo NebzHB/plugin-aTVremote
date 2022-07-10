@@ -725,19 +725,20 @@ class aTVremote extends eqLogic {
 	public function getImage(){
 		return 'plugins/aTVremote/core/template/aTVremote.png';
 	}
-	
+	public function preSave() {
+		$pairingKeyAirplay=trim($this->getConfiguration('pairingKeyAirplay',''));
+		$pairingKeyAirplay=str_replace('You may now use these credentials: ','',$pairingKeyAirplay);
+		$this->setConfiguration('pairingKeyAirplay',$pairingKeyAirplay);
+		
+		$pairingKeyCompanion=trim($this->getConfiguration('pairingKeyCompanion',''));
+		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
+		$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
+	}
 	public function postSave() {
 		$order=0;
-		$resave=false;
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
 		
-		$pairingKeyAirplay=trim($this->getConfiguration('pairingKeyAirplay',''));
-		$pairingKeyAirplay=str_replace('You may now use these credentials: ','',$pairingKeyAirplay);
-		if($pairingKeyAirplay != $this->getConfiguration('pairingKeyAirplay','')) {
-			$this->setConfiguration('pairingKeyAirplay',$pairingKeyAirplay);
-			$resave=true;
-		}
 		if($pairingKeyAirplay != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
@@ -746,12 +747,6 @@ class aTVremote extends eqLogic {
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
 		}
 		
-		$pairingKeyCompanion=trim($this->getConfiguration('pairingKeyCompanion',''));
-		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
-		if($pairingKeyCompanion != $this->getConfiguration('pairingKeyCompanion','')) {
-			$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
-			$resave=true;
-		}
 		if($pairingKeyCompanion != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
@@ -809,11 +804,7 @@ class aTVremote extends eqLogic {
 		}
 
 		$this->setConfiguration('orderLastCmd',$order);
-		$resave=true;
-		
-		if($resave) {
-			$this->save(true);
-		}
+		$this->save(true);
 		
 		if($this->getConfiguration('version',0) == '3') {
 			$this->setaTVremoteInfo();
