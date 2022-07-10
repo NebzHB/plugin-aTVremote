@@ -83,8 +83,16 @@ else
 fi
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
-try sudo `which pip` install -I wheel
-try sudo `which pip` install -I git+https://github.com/NebzHB/pyatv@master
+#try sudo `which pip` install -I wheel
+#try sudo `which pip` install -I git+https://github.com/NebzHB/pyatv@master
+#try sudo `which pip` uninstall -y miniaudio
+#try sudo `which pip` install --no-binary :all: miniaudio==1.40
+
+sudo `which python3` -m pip install -I wheel
+sudo `which python3` -m pip install -I git+https://github.com/NebzHB/pyatv@master
+sudo `which python3` -m pip uninstall -y miniaudio
+sudo `which python3` -m pip install --no-binary :all: miniaudio==1.40
+sudo `which python3` -m pip list
 
 deactivate
 
