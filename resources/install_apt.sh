@@ -79,6 +79,7 @@ else
 		try sudo virtualenv -p `which python3.9` ${BASEDIR}/atvremote/
 	else
 		try sudo virtualenv -p `which python3` ${BASEDIR}/atvremote/
+	fi
 fi
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
