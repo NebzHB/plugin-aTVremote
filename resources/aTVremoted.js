@@ -139,12 +139,6 @@ function connectATV(mac,version) {
 			lastErrorMsg="";
 		});
 		aTVs.cmd[mac].on('spawn', function() {
-			if(!isReady) {
-				server = app.listen(conf.serverPort, () => {
-					Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
-					isReady=true;
-				});
-			}
 			Logger.log('Connecté au canal des commandes de '+mac+' !',LogType.INFO);
 		});
 	}
