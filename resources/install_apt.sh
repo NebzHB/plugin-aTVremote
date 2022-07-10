@@ -100,6 +100,8 @@ fi
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
 try sudo `which pip3` install -I wheel
+try sudo `which pip3` uninstall miniaudio
+try sudo `which pip3` install --no-binary :all: miniaudio==1.40
 #try sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@release_0_5_x
 try sudo `which pip3` install -I git+https://github.com/NebzHB/pyatv@master
 deactivate
