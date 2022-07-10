@@ -295,16 +295,14 @@ for(const mac of conf.preConnect3) {
 for(const mac of conf.preConnect4) {
 	connectATV(mac,4);
 }
-if(conf.preConnect3.length==0 && conf.preConnect4.length==0) {
-	if(!isReady) {
-		/** Listen **/
-		server = app.listen(conf.serverPort, () => {
-			Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
-			isReady=true;
-		});
-	}
-}
 
+if(!isReady) {
+	/** Listen **/
+	server = app.listen(conf.serverPort, () => {
+		Logger.log("Démon prêt et à l'écoute !",LogType.INFO);
+		isReady=true;
+	});
+}
 
 /**
  * Restarts the workers.
