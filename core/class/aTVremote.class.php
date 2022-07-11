@@ -219,7 +219,6 @@ class aTVremote extends eqLogic {
 				$eqLogic=aTVremote::byLogicalId(init('mac'), 'aTVremote');
 				$apps = explode(', App: ',init('data'));
 				$apps[0]=str_replace('App: ','',$apps[0]);
-				$order=$eqLogic->getConfiguration('orderLastCmd');
 				
 				$AppList=[];
 				foreach($apps as $app) {
@@ -228,23 +227,12 @@ class aTVremote extends eqLogic {
 				}
 				$AppList=join(';',$AppList);
 				
-				$order++;
-				$newCmd = $eqLogic->getCmd(null, 'launch_app');
-				if (!is_object($newCmd)) {
-					$newCmd = new aTVremoteCmd();
-					$newCmd->setLogicalId('launch_app');
-					$newCmd->setType('action');
+
+				$launch_app = $eqLogic->getCmd(null, 'launch_app');
+				if (is_object($launch_app)) {
+					$launch_app->setConfiguration('listValue', $AppList);
+					$launch_app->save();
 				}
-				$newCmd->setSubType('select');
-				$newCmd->setIsVisible('1');
-				$newCmd->setOrder($order);
-				$newCmd->setName(__('Lancer App', __FILE__));
-				$newCmd->setEqLogic_id($eqLogic->getId());
-				$newCmd->setConfiguration('listValue', $AppList);
-				$newCmd->save();
-				
-				$eqLogic->setConfiguration('orderLastCmd',$order);
-				$eqLogic->save(true);
 			break;
 		}
 	}
@@ -803,9 +791,6 @@ class aTVremote extends eqLogic {
 				$this->aTVdaemonDisconnectATV();
 			}
 		}
-
-		$this->setConfiguration('orderLastCmd',$order);
-		$this->save(true);
 		
 		if($this->getConfiguration('version',0) == '3') {
 			$this->setaTVremoteInfo();
@@ -814,7 +799,6 @@ class aTVremote extends eqLogic {
 				$app_list=$this->getCmd(null,'app_list');
 				if(is_object($app_list)) {
 					$app_list->execCmd();
-					sleep(2);
 				}
 			}
 		}
@@ -980,6 +964,12 @@ class aTVremoteCmd extends cmd {
 					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 					if(!is_object($cmdMoreVol)) {return;}
 					$cmdMoreVol->execCmd();
+				break;
+				case 'channel_up':
+					$eqLogic->aTVdaemonExecute('channel_up');
+				break;
+				case 'channel_down':
+					$eqLogic->aTVdaemonExecute('channel_down');
 				break;
 				case 'app_list' :
 					$eqLogic->aTVdaemonExecute('app_list');
