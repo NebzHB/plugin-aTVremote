@@ -54,7 +54,7 @@ class aTVremote extends eqLogic {
 		return $cmd;
 	}
 	
-	public static function dependancy_info() {
+	public static function dependancy_info() {erreur
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
 		$return['state'] = 'nok';
