@@ -59,6 +59,20 @@
 	cursor:pointer;
 	/*border-radius: 10%;*/
 }
+.repeatBox{
+    top:156px;
+    left:0px;
+    position:absolute;
+    z-index: 8;
+    opacity: 0.8;
+    cursor:pointer;
+}
+
+.repeatBox:hover{
+    opacity:0.4;
+}
+
+
 .infoBox{
     top:157px;
     left:117px;
@@ -67,15 +81,21 @@
     opacity: 0.8;
     cursor:pointer;
 }
-.appBox{
-	top:10px;
-    left:100px;
+
+.appsBox{
+    top:7px;
+    left:114px;
     position:absolute;
     z-index: 8;
     opacity: 0.8;
     cursor:pointer;
 }
+
 .infoBox:hover{
+    opacity:0.4;
+}
+
+.appsBox:hover{
     opacity:0.4;
 }
 .oModal {
