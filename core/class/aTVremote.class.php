@@ -77,7 +77,7 @@ class aTVremote extends eqLogic {
 		$return['log'] = 'aTVremote_deamon';
 		$return['state'] = 'nok';
 		$pid = trim( shell_exec ('ps ax | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') );
-		if($pid != '' && $pid != '0') {
+		if ($pid != '' && $pid != '0') {
 			$return['state'] = 'ok';
 		}
 		$return['launchable'] = 'ok';
@@ -738,7 +738,8 @@ class aTVremote extends eqLogic {
 		$order=0;
 		$os=$this->getConfiguration('os','');
 		$device = self::devicesParameters($os);
-		
+		$pairingKeyAirplay=$this->getConfiguration('pairingKeyAirplay','');
+		$pairingKeyCompanion=$this->getConfiguration('pairingKeyCompanion','');
 		if($pairingKeyAirplay != '') {
 			exec(system::getCmdSudo() . 'chown -R www-data:www-data ' . dirname(__FILE__) . '/../../data');
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
