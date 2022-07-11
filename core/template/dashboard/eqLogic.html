@@ -13,6 +13,43 @@
   			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
       	
 			<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;" title="ATV#ATV# #os# #osVersion# #build#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>
+          	
+          	<a href="#aModal#id#" id="a#id#" class="appsBox" title='Apps'><img src='plugins/aTVremote/core/template/dashboard/images/database.png' style="width:20px;"/></a>
+				
+				<div id="aModal#id#" class="oModal">
+					<div>
+						<section style="text-align: center;"> 
+							<a href="#fermer" title="Fermer la fenêtre" class="droite"><img src='plugins/aTVremote/core/template/dashboard/images/X.png' style="width:30px;"/></a>
+							<br/>
+							Lance App :
+							<div class="cmd-widget" data-type="action" data-subtype="select" data-template="default" data-cmd_id="#cmd_launch_app_id#"><div class="content-xs"><select class="selectCmd"><option value="">Aucune</option>#cmd_launch_app_opt#</select></div></div>
+							<br>
+						</section>
+						<!--<footer class="cf">
+							<a href="#fermer" class="btn droite" title="Fermer la fenêtre">Fermer</a>
+						</footer>-->
+					</div>
+				</div>
+				<script>
+					
+					$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").on('change', function () {
+					  jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: $(this).value()}})
+					})
+
+					jeedom.cmd.update['#cmd_launch_app_id#'] = function(_options) {
+					  $(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").val(_options.display_value)
+					}
+  
+				</script>
+          
+          		
+          	<div id="a#id#" class="repeatBox">
+              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:20px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:20px;"/>&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:20px;;"/></a>
+            </div>
 <!--  Partie Supérieure -->
 
   			<a style='position:absolute;margin-top:10px;left:47px;z-index:5;'>&nbsp;<img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/>&nbsp;</a>
@@ -59,33 +96,7 @@
 					</div>
 				</div>
 				
-				<a class="btn appBox" href="#aModal#id#" id="a#id#" title='Apps'>Apps<!--<img src='plugins/aTVremote/core/template/dashboard/images/info.png' style="width:20px;"/>--></a>
 				
-				<div id="aModal#id#" class="oModal">
-					<div>
-						<section style="text-align: center;"> 
-							<a href="#fermer" title="Fermer la fenêtre" class="droite"><img src='plugins/aTVremote/core/template/dashboard/images/X.png' style="width:30px;"/></a>
-							<br/>
-							Lance App :
-							<div class="cmd-widget" data-type="action" data-subtype="select" data-template="default" data-cmd_id="#cmd_launch_app_id#"><div class="content-xs"><select class="selectCmd"><option value="">Aucune</option>#cmd_launch_app_opt#</select></div></div>
-							<br>
-						</section>
-						<!--<footer class="cf">
-							<a href="#fermer" class="btn droite" title="Fermer la fenêtre">Fermer</a>
-						</footer>-->
-					</div>
-				</div>
-				<script>
-					
-					$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").on('change', function () {
-					  jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: $(this).value()}})
-					})
-
-					jeedom.cmd.update['#cmd_launch_app_id#'] = function(_options) {
-					  $(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").val(_options.display_value)
-					}
-  
-				</script>
 		</div>
 <!--  Artwork -->
       
@@ -127,19 +138,25 @@
               			<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:40px"/></a>
 			</div>
-        <br>
+<!--        <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="fonction">
               			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
 				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:40px;"/></a>
 				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:40px;"/></a>
 				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:40px;;"/></a>
-            </div>
+            </div>-->
         <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
               	
 				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" title='Vol +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
 				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
+            </div>
+        <br>
+          	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
+              	
+				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_channel_up_id#" title='CH +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_channel_down_id#" title='CH -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
             </div>
         
         
