@@ -721,6 +721,10 @@ class aTVremote extends eqLogic {
 		$pairingKeyCompanion=trim($this->getConfiguration('pairingKeyCompanion',''));
 		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
 		$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
+		
+		/*if($pairingKeyCompanion || $pairingKeyAirplay) {
+			$this->setIsEnable(1);
+		}*/
 	}
 	public function postSave() {
 		$order=0;
