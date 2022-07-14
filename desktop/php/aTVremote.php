@@ -132,6 +132,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
 								<div id="Airplay" style="display:none">
+								<input type="text" id="needAirplayPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needAirplayPairing" />
 								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Airplay}}</label>
@@ -159,6 +160,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 									</div>
 								</div>
 								<div id="Companion" style="display:none">
+								<input type="text" id="needCompanionPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needCompanionPairing" />
 								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Companion}}</label>
