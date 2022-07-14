@@ -713,19 +713,24 @@ class aTVremote extends eqLogic {
 	public function getImage(){
 		return 'plugins/aTVremote/core/template/aTVremote.png';
 	}
+	
 	public function preSave() {
-		$pairingKeyAirplay=trim($this->getConfiguration('pairingKeyAirplay',''));
-		$pairingKeyAirplay=str_replace('You may now use these credentials: ','',$pairingKeyAirplay);
-		$this->setConfiguration('pairingKeyAirplay',$pairingKeyAirplay);
+		$pairingKeyAirplay=$this->getConfiguration('pairingKeyAirplay','');
+		if($this->getConfiguration('needAirplayPairing','') == '1' && $pairingKeyAirplay == '') {
+			throw new Exception("Vous devez faire l'appairage Airplay !");
+		} elseif ($pairingKeyAirplay != '') {
+			$this->setConfiguration('pairingKeyAirplay', trim(str_replace('You may now use these credentials: ','',$pairingKeyAirplay)) );
+		}
 		
-		$pairingKeyCompanion=trim($this->getConfiguration('pairingKeyCompanion',''));
-		$pairingKeyCompanion=str_replace('You may now use these credentials: ','',$pairingKeyCompanion);
-		$this->setConfiguration('pairingKeyCompanion',$pairingKeyCompanion);
+		$pairingKeyCompanion=$this->getConfiguration('pairingKeyCompanion','');
+		if($this->getConfiguration('needCompanionPairing','') == '1' && $pairingKeyCompanion == '') {
+			throw new Exception("Vous devez faire l'appairage Companion !");
+		} elseif ($pairingKeyCompanion != '') {
+			$this->setConfiguration('pairingKeyCompanion', trim(str_replace('You may now use these credentials: ','',$pairingKeyCompanion)) );
+		}
 		
-		/*if($pairingKeyCompanion || $pairingKeyAirplay) {
-			$this->setIsEnable(1);
-		}*/
 	}
+	
 	public function postSave() {
 		$order=0;
 		$os=$this->getConfiguration('os','');
