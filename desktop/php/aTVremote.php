@@ -152,11 +152,13 @@ $eqLogics = eqLogic::byType('aTVremote');
 										</div>
 									</div>
 								</div>
-								<br />
-								<div class="form-group">
-									<label class="col-sm-3 control-label"></label>
-									<div class="col-sm-4">
-										<a class="btn btn-warning cursor" title="Comment faire ?" id="bt_Help"><i class="fas fa-medkit"></i> {{Aidez-moi}} <i class="fas fa-ambulance"></i></a>
+								<div id="HelpMe" style="display:none">
+									<br />
+									<div class="form-group">
+										<label class="col-sm-3 control-label"></label>
+										<div class="col-sm-4">
+											<a class="btn btn-warning cursor" title="Comment faire ?" id="bt_Help"><i class="fas fa-medkit"></i> {{Aidez-moi}} <i class="fas fa-ambulance"></i></a>
+										</div>
 									</div>
 								</div>
 								<div id="Companion" style="display:none">
