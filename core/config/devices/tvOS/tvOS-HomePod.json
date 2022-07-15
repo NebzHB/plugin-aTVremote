@@ -230,24 +230,6 @@
 			"isVisible": 1,
 			"logicalId": "volume_down"
 		}, {
-			"name": "Bouton Chaîne Haut",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "channel_up"
-		}, {
-			"name": "Bouton Chaîne Bas",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "channel_down"
-		}, {
 			"name": "Rafraichir",
 			"type": "action",
 			"subtype": "other",
