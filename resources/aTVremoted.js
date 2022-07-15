@@ -9,6 +9,7 @@ Logger.setLogLevel(LogType.DEBUG);
 var conf={};
 conf.preConnect3=[];
 conf.preConnect4=[];
+conf.preConnectHP=[];
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 // Logger.log("env : "+process.env.NODE_ENV,LogType.DEBUG);
@@ -38,6 +39,11 @@ process.argv.forEach(function(val, index) {
 				conf.preConnect4 = val.split(',');
 			}
 		break;
+		case 8: // other
+			if(val != "None") {
+				conf.preConnectHP = val.split(',');
+			}
+		break;
 	}
 });
 
@@ -64,20 +70,21 @@ var isReady=false;
 var lastErrorMsg="";
 
 function connectATV(mac,version) {
-	version=parseInt(version);
-	
 	var pairingKeyAirplay=null;
-	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
-		pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
-	} else {
-		Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-	}
 	var pairingKeyCompanion=null;
-	if(version != 3) {
-		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
-			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+	if(version == 3 || version == 4) {
+		
+		if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
+			pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
 		} else {
-			Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		}
+		if(version != 3) {
+			if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
+				pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+			} else {
+				Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			}
 		}
 	}
 	
@@ -244,7 +251,7 @@ app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
 		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
-		connectATV(mac,req.query.version);
+		connectATV(mac,parseInt(req.query.version));
 		res.status(200).json({'result':'ok'});		
 	} else {
 		Logger.log("Déjà connecté sur "+mac,LogType.INFO);
@@ -294,6 +301,9 @@ for(const mac of conf.preConnect3) {
 }
 for(const mac of conf.preConnect4) {
 	connectATV(mac,4);
+}
+for(const mac of conf.preConnectHP) {
+	connectATV(mac,'HP');
 }
 
 if(!isReady) {
