@@ -114,13 +114,16 @@ class aTVremote extends eqLogic {
 		$eqLogics = eqLogic::byType('aTVremote');
 		$arrATV3=[];
 		$arrATV4=[];
+		$arrHP=[];
 		foreach ($eqLogics as $eqLogic) {
-			if($eqLogic->getConfiguration('pairingKeyAirplay','0') != '0') {
+			if($eqLogic->getConfiguration('device','0') == 'Apple TV' && $eqLogic->getConfiguration('pairingKeyAirplay','0') != '0') {
 				if($eqLogic->getConfiguration('version','0') == '3') {
 					array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
 				} else {
 					array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
 				}
+			} elseif($eqLogic->getConfiguration('device','0') == 'HomePod') {
+				array_push($arrHP,$eqLogic->getConfiguration('mac',''));
 			}
 		}
 		if(count($arrATV3) == 0) {
@@ -133,8 +136,13 @@ class aTVremote extends eqLogic {
 		} else {
 			$arrATV4=join(',',$arrATV4);
 		}
+		if(count($arrHP) == 0) {
+			$arrHP="None";
+		} else {
+			$arrHP=join(',',$arrHP);
+		}
 		
-		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4;
+		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4 . ' ' . $arrHP;
 
 		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
 
@@ -261,7 +269,7 @@ class aTVremote extends eqLogic {
 					$res["mac"]=$device[4];
 					$res["port"]= 7000;
 					
-					if(strpos($res['model'],'Apple TV') === false) {
+					if(strpos($res['model'],'Apple TV') === false/* && strpos($res['model'],'HomePod') === false*/) {
 						log::add('aTVremote','debug','Ignore '.$res['model']);
 						continue;
 					}
@@ -271,10 +279,24 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Address :'.$res["ip"]);
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
 					
-					$res['device']="AppleTV";
+					
+					
+					
 					$modElmt=explode(', ',$res['model']);
-					$res['version']=$modElmt[0];
-					if($res['version'] == 'Apple TV 3') $res['version']=3;
+					//$res['version']=$modElmt[0];
+					//if($res['version'] == 'Apple TV 3') $res['version']=3;
+					
+					if(strpos($res['model'],'Apple TV') !== false) {
+						$res['device']="Apple TV";
+						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
+					} elseif(strpos($res['model'],'HomePod') !== false) {
+						$res['device']="HomePod";
+						if(strpos($res['model'],'Mini') !== false) {
+							$res['version']="Mini";
+						} else {
+							$res['version']="Original";
+						}
+					}
 					
 					$subModElmt=explode(' ',$modElmt[1]);
 					$res['os']=$subModElmt[0];
@@ -328,14 +350,14 @@ class aTVremote extends eqLogic {
 		return $return;
     }	
 	
-	public static function devicesParameters($device = '') {
-		$path = dirname(__FILE__) . '/../config/devices/' . $device;
+	public static function devicesParameters($os,$device='') {
+		$path = dirname(__FILE__) . '/../config/devices/' . $os;
 
 		if (!is_dir($path)) {
 			return false;
 		}
 		try {
-			$file = $path . '/' . $device.'.json';
+			$file = $path . '/' . $os.(($device)?'-'.$device:'').'.json';
 			$content = file_get_contents($file);
 			$return = json_decode($content, true);
 		} catch (Exception $e) {
@@ -734,7 +756,12 @@ class aTVremote extends eqLogic {
 	public function postSave() {
 		$order=0;
 		$os=$this->getConfiguration('os','');
-		$device = self::devicesParameters($os);
+		$device=$this->getConfiguration('device','');
+		if($device=="HomePod") {
+			$cmds = self::devicesParameters($os,$device);
+		} else {
+			$cmds = self::devicesParameters($os);
+		}
 		$pairingKeyAirplay=$this->getConfiguration('pairingKeyAirplay','');
 		$pairingKeyCompanion=$this->getConfiguration('pairingKeyCompanion','');
 		if($pairingKeyAirplay != '') {
@@ -753,8 +780,8 @@ class aTVremote extends eqLogic {
 			exec(system::getCmdSudo() . 'chmod -R 775 ' . dirname(__FILE__) . '/../../data');
 		}
 		
-		if($device) {
-			foreach($device['commands'] as $cmd) {
+		if($cmds) {
+			foreach($cmds['commands'] as $cmd) {
 				$order++;
 				
 				$newCmd = $this->getCmd(null, $cmd['logicalId']);
