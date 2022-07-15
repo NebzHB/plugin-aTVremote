@@ -50,7 +50,7 @@
 }
 .artwork_un_aTVremote{
 	width: 138px !important;
-	/*max-height: 150px;*/
+	max-height: 150px;
 	position: absolute;
 	margin-left: 50%;
 	margin-top: 50%;
@@ -64,13 +64,9 @@
     left:0px;
     position:absolute;
     z-index: 8;
-    opacity: 0.8;
     cursor:pointer;
 }
 
-.repeatBox:hover{
-    opacity:0.4;
-}
 
 
 .infoBox{
@@ -312,7 +308,7 @@ a > img:hover {
 }
 .btn_aTVremote_shuffle{
 	cursor:pointer;
-	z-index: 4;
+	z-index: 10;
 	opacity: 1;
 }
 .btn_aTVremote_shuffle:hover{
@@ -320,7 +316,7 @@ a > img:hover {
 }
 .btn_aTVremote_repeat{
 	cursor:pointer;
-	z-index: 4;
+	z-index: 10;
 	opacity: 1;
 }
 .btn_aTVremote_repeat:hover{
@@ -341,6 +337,30 @@ a > img:hover {
 }
 .btn_aTVremote_moins:hover{
 	opacity: 0.5;
+}
+.btn_aTVremote_up2{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}  
+.aTVremote_up2{
+  	-ms-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+.btn_aTVremote_up2:hover{
+	opacity: 1;
+}
+.btn_aTVremote_down2{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+
+.aTVremote_down2{
+  	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 
