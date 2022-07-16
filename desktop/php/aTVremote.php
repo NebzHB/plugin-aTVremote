@@ -78,10 +78,10 @@ $eqLogics = eqLogic::byType('aTVremote');
 							<fieldset>
 								<div class="form-group">
 									<br/>
-									<label class="col-sm-3 control-label help" data-help="{{Renommez dans l'AppleTV > Réglages > Général > A Propos puis relancez une Découverte}}">{{Nom de l'appleTV}}</label>
+									<label class="col-sm-3 control-label">{{Nom de l'appleTV}}</label>
 									<div class="col-sm-4">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" readonly />
+										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" />
 										
 									</div>
 								</div>
