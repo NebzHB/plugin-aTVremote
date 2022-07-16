@@ -53,6 +53,10 @@ class aTVremote extends eqLogic {
 		$cmd=(($withSudo)?system::getCmdSudo():''). (($realpath)?realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote'):dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote');
 		return $cmd;
 	}
+	public static function getaTVscript($withSudo=false,$realpath=false) {
+		$cmd=(($withSudo)?system::getCmdSudo():''). (($realpath)?realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvscript'):dirname(__FILE__) . '/../../resources/atvremote/bin/atvscript');
+		return $cmd;
+	}
 	
 	public static function dependancy_info() {
 		$return = array();
@@ -249,101 +253,79 @@ class aTVremote extends eqLogic {
 
     public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
-        $output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
+        $output=shell_exec(aTVremote::getaTVscript(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
+		$output=json_decode($output,true);
+		if($output['result'] == 'success') {
 
-		if($output) {
-			$return = [];
-			$toMatch = '#Name: (.*)\s* Model/SW: (.*)\s* Address: (.*)\s* MAC: (.*)\s*#';
-
-
-			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
-				foreach($matches as $device) {
-					if($device[4] == "None") {
-						log::add('aTVremote','debug','Pas de MAC : on ignore');
-						continue;
-					}
-					
-					$res = [];
-					$res["name"]=$device[1];
-					$res["model"]=$device[2];
-					$res["ip"]=$device[3];
-					$res["mac"]=$device[4];
-					$res["port"]= 7000;
-					
-					if(strpos($res['model'],'Apple TV') === false && strpos($res['model'],'HomePod') === false) {
-						log::add('aTVremote','debug','Ignore '.$res['model']);
-						continue;
-					}
-					
-					log::add('aTVremote','debug','Name :'.$res["name"]);
-					log::add('aTVremote','debug','Model/SW :'.$res["model"]);
-					log::add('aTVremote','debug','Address :'.$res["ip"]);
-					log::add('aTVremote','debug','MAC :'.$res["mac"]);
-					
-					
-					
-					
-					$modElmt=explode(', ',$res['model']);
-					//$res['version']=$modElmt[0];
-					//if($res['version'] == 'Apple TV 3') $res['version']=3;
-					
-					if(strpos($res['model'],'Apple TV') !== false) {
-						$res['device']="Apple TV";
-						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
-					} elseif(strpos($res['model'],'HomePod') !== false) {
-						$res['device']="HomePod";
-						if(strpos($res['model'],'Mini') !== false) {
-							$res['version']="Mini";
-						} else {
-							$res['version']="Original";
-						}
-					}
-					
-					$subModElmt=explode(' ',$modElmt[1]);
-					$res['os']=$subModElmt[0];
-					$res['osVersion']=$subModElmt[1];
-					
-					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
-					if (!is_object($aTVremote)) {
-						$eqLogic = new aTVremote();
-						$eqLogic->setName($res["name"]);
-						$eqLogic->setIsEnable(0);
-						$eqLogic->setIsVisible(0);
-						$eqLogic->setLogicalId($res["mac"]);
-						$eqLogic->setEqType_name('aTVremote');
-						$eqLogic->setDisplay('width','138px');
-                      	$eqLogic->setDisplay('height','500px');
-					} else $eqLogic = $aTVremote;
-					
-					$eqLogic->setConfiguration('device', $res['device']);
-					$eqLogic->setConfiguration('ip', $res["ip"]);
-					$eqLogic->setConfiguration('port', $res["port"]);
-					$eqLogic->setConfiguration('mac',$res["mac"]);
-					
-					$eqLogic->setConfiguration('fullModel',$res["model"]);
-					$eqLogic->setConfiguration('version',$res["version"]);
-					$eqLogic->setConfiguration('os',$res["os"]);
-					$eqLogic->setConfiguration('osVersion',$res["osVersion"]);
-
-					$eqLogic->save();
-					
-					if(!is_object($aTVremote)) { // NEW
-						event::add('jeedom::alert', array(
-							'level' => 'warning',
-							'page' => 'aTVremote',
-							'message' => __('Nouvelle AppleTV detectée ' .$res["name"], __FILE__),
-						));
-					} else { // UPDATED
-						event::add('jeedom::alert', array(
-							'level' => 'warning',
-							'page' => 'aTVremote',
-							'message' => __('AppleTV mise à jour avec succès ' .$res["name"], __FILE__),
-						));
-					}
-					$return[] = $res;
+			
+			foreach($output['devices'] as $device) {
+				if($device['identifier'] == "None") {
+					log::add('aTVremote','debug','Pas de MAC : on ignore');
+					continue;
 				}
+				if(strpos($device['device_info']['model_str'],'Apple TV') === false && strpos($device['device_info']['model_str'],'HomePod') === false) {
+					log::add('aTVremote','debug','Ignore '.$device['device_info']['model_str']);
+					continue;
+				}
+				
+				log::add('aTVremote','debug','Name :'.$device["name"]);
+				log::add('aTVremote','debug','Model :'.$device['device_info']['model_str']);
+				log::add('aTVremote','debug','OS & Version :'.$device['device_info']['operating_system'].' '.$device['device_info']['version']);
+				log::add('aTVremote','debug','Address :'.$device['address']);
+				log::add('aTVremote','debug','MAC :'.$device["identifier"]);
+				
+				if(strpos($device['device_info']['model_str'],'Apple TV') !== false) {
+					$deviceName="Apple TV";
+					$version=str_replace('Apple TV ','',$device['device_info']['model_str']);
+				} elseif(strpos($device['device_info']['model_str'],'HomePod') !== false) {
+					$deviceName="HomePod";
+					if(strpos($device['device_info']['model_str'],'Mini') !== false) {
+						$version="Mini";
+					} else {
+						$version="Original";
+					}
+				}				
+				
+				$aTVremote = aTVremote::byLogicalId($device["identifier"], 'aTVremote');
+				if (!is_object($aTVremote)) {
+					$eqLogic = new aTVremote();
+					$eqLogic->setName($device["name"]);
+					$eqLogic->setIsEnable(0);
+					$eqLogic->setIsVisible(0);
+					$eqLogic->setLogicalId($device["identifier"]);
+					$eqLogic->setEqType_name('aTVremote');
+					$eqLogic->setDisplay('width','138px');
+					$eqLogic->setDisplay('height','500px');
+				} else $eqLogic = $aTVremote;
+				
+				$eqLogic->setConfiguration('device', $deviceName);
+				$eqLogic->setConfiguration('ip', $device['address']);
+				$eqLogic->setConfiguration('mac',$device["identifier"]);
+				
+				$eqLogic->setConfiguration('fullModel',$device['device_info']['model_str']);
+				$eqLogic->setConfiguration('version',$version);
+				$eqLogic->setConfiguration('os',$device['device_info']['operating_system']);
+				$eqLogic->setConfiguration('osVersion',$device['device_info']['version']);
+
+				$eqLogic->save();
+				
+				if(!is_object($aTVremote)) { // NEW
+					event::add('jeedom::alert', array(
+						'level' => 'warning',
+						'page' => 'aTVremote',
+						'message' => __('Nouvelle AppleTV detectée ' .$device["name"], __FILE__),
+					));
+				} else { // UPDATED
+					event::add('jeedom::alert', array(
+						'level' => 'warning',
+						'page' => 'aTVremote',
+						'message' => __('AppleTV mise à jour avec succès ' .$device["name"], __FILE__),
+					));
+				}
+				$return[] = $device;
 			}
+
 
 			log::add('aTVremote','info','Ajouté : '.json_encode($return));
 		}
