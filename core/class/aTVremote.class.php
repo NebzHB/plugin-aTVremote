@@ -116,14 +116,16 @@ class aTVremote extends eqLogic {
 		$arrATV4=[];
 		$arrHP=[];
 		foreach ($eqLogics as $eqLogic) {
-			if($eqLogic->getConfiguration('device','0') == 'Apple TV' && $eqLogic->getConfiguration('pairingKeyAirplay','0') != '0') {
-				if($eqLogic->getConfiguration('version','0') == '3') {
-					array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
-				} else {
-					array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
+			if($eqLogic->getIsEnable() == '1') {
+				if($eqLogic->getConfiguration('device','0') == 'Apple TV' && $eqLogic->getConfiguration('pairingKeyAirplay','0') != '0') {
+					if($eqLogic->getConfiguration('version','0') == '3') {
+						array_push($arrATV3,$eqLogic->getConfiguration('mac',''));
+					} else {
+						array_push($arrATV4,$eqLogic->getConfiguration('mac',''));
+					}
+				} elseif($eqLogic->getConfiguration('device','0') == 'HomePod') {
+					array_push($arrHP,$eqLogic->getConfiguration('mac',''));
 				}
-			} elseif($eqLogic->getConfiguration('device','0') == 'HomePod') {
-				array_push($arrHP,$eqLogic->getConfiguration('mac',''));
 			}
 		}
 		if(count($arrATV3) == 0) {
@@ -818,12 +820,10 @@ class aTVremote extends eqLogic {
 			}
 		}
 		
-		if($pairingKeyAirplay != '') {
-			if($this->getIsEnable() == "1") {
-				$this->aTVdaemonConnectATV();
-			} else {
-				$this->aTVdaemonDisconnectATV();
-			}
+		if($this->getIsEnable() == "1") {
+			$this->aTVdaemonConnectATV();
+		} else {
+			$this->aTVdaemonDisconnectATV();
 		}
 		
 		if($this->getConfiguration('version',0) == '3') {
@@ -986,18 +986,24 @@ class aTVremoteCmd extends cmd {
 					}*/
 				break;
               	case 'volume_down' :
-					#$eqLogic->aTVdaemonExecute('volume_down');
-					$cmds=$eqLogic->getConfiguration('LessVol');
-					$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
-					if(!is_object($cmdLessVol)) {return;}
-					$cmdLessVol->execCmd();
+					if($eqLogic->getConfiguration('device','') == 'HomePod') {
+						$eqLogic->aTVdaemonExecute('volume_down');
+					} else {
+						$cmds=$eqLogic->getConfiguration('LessVol');
+						$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+						if(!is_object($cmdLessVol)) {return;}
+						$cmdLessVol->execCmd();
+					}
 				break;
                 case 'volume_up' :
-					#$eqLogic->aTVdaemonExecute('volume_up');
-					$cmds=$eqLogic->getConfiguration('MoreVol');
-					$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
-					if(!is_object($cmdMoreVol)) {return;}
-					$cmdMoreVol->execCmd();
+					if($eqLogic->getConfiguration('device','') == 'HomePod') {
+						$eqLogic->aTVdaemonExecute('volume_up');
+					} else {
+						$cmds=$eqLogic->getConfiguration('MoreVol');
+						$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+						if(!is_object($cmdMoreVol)) {return;}
+						$cmdMoreVol->execCmd();
+					}
 				break;
 				case 'channel_up':
 					$eqLogic->aTVdaemonExecute('channel_up');
