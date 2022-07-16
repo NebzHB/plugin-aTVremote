@@ -269,7 +269,7 @@ class aTVremote extends eqLogic {
 					$res["mac"]=$device[4];
 					$res["port"]= 7000;
 					
-					if(strpos($res['model'],'Apple TV') === false/* && strpos($res['model'],'HomePod') === false*/) {
+					if(strpos($res['model'],'Apple TV') === false && strpos($res['model'],'HomePod') === false) {
 						log::add('aTVremote','debug','Ignore '.$res['model']);
 						continue;
 					}
@@ -305,7 +305,7 @@ class aTVremote extends eqLogic {
 					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
 					if (!is_object($aTVremote)) {
 						$eqLogic = new aTVremote();
-						
+						$eqLogic->setName($res["name"]);
 						$eqLogic->setIsEnable(0);
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
@@ -313,8 +313,6 @@ class aTVremote extends eqLogic {
 						$eqLogic->setDisplay('width','138px');
                       	$eqLogic->setDisplay('height','500px');
 					} else $eqLogic = $aTVremote;
-					
-					$eqLogic->setName($res["name"]);
 					
 					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
