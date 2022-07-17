@@ -258,12 +258,14 @@ class aTVremote extends eqLogic {
 		$output=json_decode($output,true);
 		if($output && $output['result'] == 'success') {
 			foreach($output['devices'] as $device) {
+				log::add('aTVremote','info','---------------------');
+				
 				if($device['identifier'] == "None") {
-					log::add('aTVremote','debug','--Ignore '.$device['name'].' -> Pas de MAC');
+					log::add('aTVremote','info','--Ignore '.$device['name'].' -> Pas de MAC');
 					continue;
 				}
 				if(strpos($device['device_info']['model_str'],'Apple TV') === false && strpos($device['device_info']['model_str'],'HomePod') === false) {
-					log::add('aTVremote','debug','--Ignore '.$device['device_info']['model_str']);
+					log::add('aTVremote','info','--Ignore '.$device['device_info']['model_str']);
 					continue;
 				}
 				
@@ -279,9 +281,8 @@ class aTVremote extends eqLogic {
 					}
 				}				
 				
-				log::add('aTVremote','info','---------------------');
 				log::add('aTVremote','info','-Name :'.$device["name"]);
-				log::add('aTVremote','info','-Model :'.$device['device_info']['model_str']);
+				log::add('aTVremote','info','-Model :'.$deviceName.' '.$version);
 				log::add('aTVremote','info','-OS & Version :'.$device['device_info']['operating_system'].' '.$device['device_info']['version']);
 				log::add('aTVremote','info','-Address :'.$device['address']);
 				log::add('aTVremote','info','-MAC :'.$device["identifier"]);
