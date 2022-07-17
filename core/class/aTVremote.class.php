@@ -279,12 +279,12 @@ class aTVremote extends eqLogic {
 					}
 				}				
 				
-				log::add('aTVremote','debug','---------------------');
-				log::add('aTVremote','debug','-Name :'.$device["name"]);
-				log::add('aTVremote','debug','-Model :'.$device['device_info']['model_str']);
-				log::add('aTVremote','debug','-OS & Version :'.$device['device_info']['operating_system'].' '.$device['device_info']['version']);
-				log::add('aTVremote','debug','-Address :'.$device['address']);
-				log::add('aTVremote','debug','-MAC :'.$device["identifier"]);
+				log::add('aTVremote','info','---------------------');
+				log::add('aTVremote','info','-Name :'.$device["name"]);
+				log::add('aTVremote','info','-Model :'.$device['device_info']['model_str']);
+				log::add('aTVremote','info','-OS & Version :'.$device['device_info']['operating_system'].' '.$device['device_info']['version']);
+				log::add('aTVremote','info','-Address :'.$device['address']);
+				log::add('aTVremote','info','-MAC :'.$device["identifier"]);
 				
 				$aTVremote = aTVremote::byLogicalId($device["identifier"], 'aTVremote');
 				if (!is_object($aTVremote)) {
@@ -310,14 +310,14 @@ class aTVremote extends eqLogic {
 				$eqLogic->save();
 				
 				if(!is_object($aTVremote)) { // NEW
-					log::add('aTVremote','debug','--'.$device["name"].'-Ajouté');
+					log::add('aTVremote','info','--'.$device["name"].'-Ajouté');
 					event::add('jeedom::alert', array(
 						'level' => 'warning',
 						'page' => 'aTVremote',
 						'message' => __('Nouvelle AppleTV detectée ' .$device["name"], __FILE__),
 					));
 				} else { // UPDATED
-					log::add('aTVremote','debug','--'.$device["name"].'-Modifié');
+					log::add('aTVremote','info','--'.$device["name"].'-Modifié');
 					event::add('jeedom::alert', array(
 						'level' => 'warning',
 						'page' => 'aTVremote',
@@ -386,7 +386,7 @@ class aTVremote extends eqLogic {
 		$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
 		$json = @file_get_contents($url);
 		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-		log::add('aTVremote','debug','connect brut : '.$json);
+		log::add('aTVremote','debug','Connect brut : '.$json);
 		return json_decode($json, true);
 
 	}
@@ -398,7 +398,7 @@ class aTVremote extends eqLogic {
 		$url.='mac='.$mac.((count($params))?"&".http_build_query($params):'');
 		$json = @file_get_contents($url);
 		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-		log::add('aTVremote','debug','disconnect brut : '.$json);
+		log::add('aTVremote','debug','Disconnect brut : '.$json);
 		return json_decode($json, true);
 
 	}
