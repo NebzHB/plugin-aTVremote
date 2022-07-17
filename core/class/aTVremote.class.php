@@ -329,7 +329,7 @@ class aTVremote extends eqLogic {
 			}
 
 
-			log::add('aTVremote','debug','Changement Brut : '.json_encode($return));
+			log::add('aTVremote','debug','Résultat Scan Brut : '.json_encode($return));
 		}
 		return $return;
     }	
