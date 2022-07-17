@@ -41,8 +41,8 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', functio
 			$('#needAirplayPairing').val(1);
 			$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
 			$('#Airplay').show();
-			
 			$('#HelpMe').show();
+			$('#VolumeCmds').show();
 			
 			// if version is not 3
 			if($('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').html() != "3") {
@@ -61,7 +61,7 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', functio
 			$('#HelpMe').hide();
 			$('#needCompanionPairing').val(0);
 			$('#Companion').hide();
-			
+			$('#VolumeCmds').hide();
 		// END if device is Apple TV
 		}
 	}
