@@ -118,6 +118,9 @@ function connectATV(mac,version) {
 				if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
 				}
+				if(data.match(/^[0-9]{0,3}\.[0-9]/)) {
+					jsend({eventType: 'volume', data : data, mac: mac});
+				}
 				
 				Logger.log('cmd | '+data,LogType.DEBUG);
 			}
