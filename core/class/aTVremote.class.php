@@ -26,12 +26,25 @@ class aTVremote extends eqLogic {
 		foreach ($eqLogics as $aTVremote) {
 			try {
 				if(is_object($aTVremote)) {
-					if($aTVremote->getConfiguration('version',0) == '3'){
+					if($aTVremote->getConfiguration('version','') == '3'){
 						$play_state = $aTVremote->getCmd(null, 'play_state');
 						if(is_object($play_state)) {
 							$val=$play_state->execCmd();
 							if($val) {
 								$aTVremote->setaTVremoteInfo();
+							}
+						}
+					} elseif($aTVremote->getConfiguration('device','') == 'HomePod') {
+						$play_state = $aTVremote->getCmd(null, 'play_state');
+						if(is_object($play_state)) {
+							$val=$play_state->execCmd();
+							if($val) { // if playing : 1min
+								$aTVremote->aTVdaemonExecute('volume');
+							} else { // else : 5min
+								$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
+								if ($c->isDue()) {
+									$aTVremote->aTVdaemonExecute('volume');
+								}
 							}
 						}
 					}
@@ -246,6 +259,14 @@ class aTVremote extends eqLogic {
 				if (is_object($launch_app)) {
 					$launch_app->setConfiguration('listValue', $AppList);
 					$launch_app->save();
+				}
+			break;
+			case 'volume':
+				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
+				$eqLogic=aTVremote::byLogicalId(init('mac'), 'aTVremote');
+				$volume = $eqLogic->getCmd(null, 'volume');
+				if (is_object($volume)) {
+					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
 				}
 			break;
 		}
@@ -489,8 +510,7 @@ class aTVremote extends eqLogic {
 			$src=$finale_folder.'artwork.png';
 
             exec("sudo chown www-data:www-data $src >/dev/null 2>&1;sudo chmod 775 $src >/dev/null 2>&1"); // force rights
-			if($this->getConfiguration('version',0) == '3') { 
-					
+			if($this->getConfiguration('version',0) == '3') { 	
 				sleep(5);
 		
 				if(file_exists($src)) {
@@ -517,8 +537,11 @@ class aTVremote extends eqLogic {
 		}
 		
 		if($artwork) {
+			log::add('aTVremote','debug','--updating cmd with '.$artwork.'...');
 			$artwork_url = $this->getCmd(null, 'artwork_url');
-			$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+			if(is_object($artwork_url)) {
+				$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+			}
 		}
 		
 		return $changed;
@@ -972,6 +995,13 @@ class aTVremoteCmd extends cmd {
               	case 'volume_down' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('volume_down');
+						$volume = $eqLogic->getCmd(null, 'volume');
+						if (is_object($volume)) {
+							$currentVol=intval($volume->execCmd());
+							$currentVol-=5;
+							if($currentVol <0){$currentVol=0;}
+							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+						}
 					} else {
 						$cmds=$eqLogic->getConfiguration('LessVol');
 						$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
@@ -982,11 +1012,27 @@ class aTVremoteCmd extends cmd {
                 case 'volume_up' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('volume_up');
+						$volume = $eqLogic->getCmd(null, 'volume');
+						if (is_object($volume)) {
+							$currentVol=intval($volume->execCmd());
+							$currentVol+=5;
+							if($currentVol >100){$currentVol=100;}
+							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+						}
 					} else {
 						$cmds=$eqLogic->getConfiguration('MoreVol');
 						$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 						if(!is_object($cmdMoreVol)) {return;}
 						$cmdMoreVol->execCmd();
+					}
+				break;
+				case 'set_volume' :
+					if($eqLogic->getConfiguration('device','') == 'HomePod') {
+						$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider']);
+						$volume = $eqLogic->getCmd(null, 'volume');
+						if (is_object($volume)) {
+							$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
+						}
 					}
 				break;
 				case 'channel_up':
