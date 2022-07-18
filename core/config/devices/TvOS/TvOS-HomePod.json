@@ -212,7 +212,7 @@
 			"isHistorized": 0,
 			"logicalId": "app"
 		}, {
-			"name": "Bouton Volume Plus",
+			"name": "Bouton Volume +5",
 			"type": "action",
 			"subtype": "other",
 			"display": {
@@ -221,7 +221,7 @@
 			"isVisible": 1,
 			"logicalId": "volume_up"
 		}, {
-			"name": "Bouton Volume Moins",
+			"name": "Bouton Volume -5",
 			"type": "action",
 			"subtype": "other",
 			"display": {
@@ -229,6 +229,30 @@
 			},
 			"isVisible": 1,
 			"logicalId": "volume_down"
+		}, {
+			"name": "Info Volume",
+			"type": "info",
+			"subtype": "numeric",
+			"display": {
+				"generic_type": "SPEAKER_VOLUME"
+			},
+			"isVisible": 1,
+			"logicalId": "volume"
+		}, {
+			"name": "Variateur Volume",
+			"type": "action",
+			"subtype": "slider",
+			"display": {
+				"generic_type": "SPEAKER_SET_VOLUME"
+			},
+			"configuration": {
+				"minValue":"0",
+				"maxValue":"100",
+				"step":"5"
+			},
+			"value":"volume",
+			"isVisible": 1,
+			"logicalId": "set_volume"
 		}, {
 			"name": "Rafraichir",
 			"type": "action",
