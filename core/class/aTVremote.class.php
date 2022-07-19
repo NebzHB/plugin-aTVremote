@@ -277,7 +277,7 @@ class aTVremote extends eqLogic {
 		}
 	}
 // OLDSCAN
-    /* public static function discover($_mode) {
+    	public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
         	$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
@@ -299,7 +299,6 @@ class aTVremote extends eqLogic {
 					$res["model"]=$device[2];
 					$res["ip"]=$device[3];
 					$res["mac"]=$device[4];
-					$res["port"]= 7000;
 					
 					if(strpos($res['model'],'Apple TV') === false && strpos($res['model'],'HomePod') === false) {
 						log::add('aTVremote','debug','Ignore '.$res['model']);
@@ -311,12 +310,7 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Address :'.$res["ip"]);
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
 					
-					
-					
-					
 					$modElmt=explode(', ',$res['model']);
-					//$res['version']=$modElmt[0];
-					//if($res['version'] == 'Apple TV 3') $res['version']=3;
 					
 					if(strpos($res['model'],'Apple TV') !== false) {
 						$res['device']="Apple TV";
@@ -349,7 +343,6 @@ class aTVremote extends eqLogic {
 					
 					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
-					$eqLogic->setConfiguration('port', $res["port"]);
 					$eqLogic->setConfiguration('mac',$res["mac"]);
 					
 					$eqLogic->setConfiguration('fullModel',$res["model"]);
@@ -379,8 +372,8 @@ class aTVremote extends eqLogic {
 			log::add('aTVremote','info','Ajouté : '.json_encode($return));
 		}
 		return $return;
-	}	*/
-	public static function discover($_mode) {
+	}	
+	/* public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
 		$output=shell_exec(aTVremote::getaTVscript(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
@@ -461,7 +454,7 @@ class aTVremote extends eqLogic {
 			log::add('aTVremote','debug','Résultat Scan Brut : '.json_encode($return));
 		}
 		return $return;
-	}	
+	}*/	
 	
 	public static function devicesParameters($os,$device='') {
 		$path = dirname(__FILE__) . '/../config/devices/' . $os;
