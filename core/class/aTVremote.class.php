@@ -332,6 +332,7 @@ class aTVremote extends eqLogic {
 					
 					$subModElmt=explode(' ',$modElmt[1]);
 					$res['os']=$subModElmt[0];
+					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
 					$res['osVersion']=$subModElmt[1];
 					
 					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
