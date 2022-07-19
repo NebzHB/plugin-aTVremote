@@ -189,8 +189,12 @@ class aTVremote extends eqLogic {
 	}
 
 	public static function deamon_stop() {
-		@file_get_contents("http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop");
-		sleep(3);
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['state'] == 'ok') {
+			@file_get_contents("http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop");
+			sleep(3);
+		}
+		
 		if(shell_exec('ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') == '1') {
 			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
 		}
@@ -492,40 +496,51 @@ class aTVremote extends eqLogic {
 	}
 	public function aTVdaemonExecute($cmd,$params=[]) {
 		if($cmd) {
-			$mac = $this->getConfiguration('mac','');
-			
-			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/cmd?cmd=";
-			$url.=urlencode($cmd).'&mac='.$mac.((count($params))?"&".http_build_query($params):'');
-			$json = @file_get_contents($url);
-			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-			log::add('aTVremote','debug',ucfirst($cmd).' brut : '.$json);
-			return json_decode($json, true);
+			$deamon_info = aTVremote::deamon_info();
+			if ($deamon_info['state'] == 'ok') {
+				$mac = $this->getConfiguration('mac','');
+
+				$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/cmd?cmd=";
+				$url.=urlencode($cmd).'&mac='.$mac.((count($params))?"&".http_build_query($params):'');
+				$json = @file_get_contents($url);
+				if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
+				log::add('aTVremote','debug',ucfirst($cmd).' brut : '.$json);
+				return json_decode($json, true);
+			} else {
+				log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande '.ucfirst($cmd));
+			}
 		}
 	}
 	public function aTVdaemonConnectATV($params=[]) {
+		$deamon_info = aTVremote::deamon_info();
+		if ($deamon_info['state'] == 'ok') {
+			$mac = $this->getConfiguration('mac','');
+			$version = $this->getConfiguration('version',0);
 
-		$mac = $this->getConfiguration('mac','');
-		$version = $this->getConfiguration('version',0);
-		
-		$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
-		$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
-		$json = @file_get_contents($url);
-		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-		log::add('aTVremote','debug','Connect brut : '.$json);
-		return json_decode($json, true);
-
+			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
+			$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
+			$json = @file_get_contents($url);
+			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
+			log::add('aTVremote','debug','Connect brut : '.$json);
+			return json_decode($json, true);
+		} else {
+			log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande Connect');
+		}
 	}
 	public function aTVdaemonDisconnectATV($params=[]) {
+		$deamon_info = aTVremote::deamon_info();
+		if ($deamon_info['state'] == 'ok') {
+			$mac = $this->getConfiguration('mac','');
 
-		$mac = $this->getConfiguration('mac','');
-		
-		$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/disconnect?";
-		$url.='mac='.$mac.((count($params))?"&".http_build_query($params):'');
-		$json = @file_get_contents($url);
-		if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-		log::add('aTVremote','debug','Disconnect brut : '.$json);
-		return json_decode($json, true);
-
+			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/disconnect?";
+			$url.='mac='.$mac.((count($params))?"&".http_build_query($params):'');
+			$json = @file_get_contents($url);
+			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
+			log::add('aTVremote','debug','Disconnect brut : '.$json);
+			return json_decode($json, true);
+		} else {
+			log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande Disconnect');
+		}
 	}
 
 	public function setPowerstate($data=null) {	
