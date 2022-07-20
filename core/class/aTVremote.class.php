@@ -979,6 +979,9 @@ class aTVremote extends eqLogic {
 		$replace["#build#"] = $this->getConfiguration('build',0);
 		
 		$replace["#ATV#"] = $this->getConfiguration('version',0);
+      	$replace["#model#"] = $this->getConfiguration('fullModel',0);
+      	$Test = $this->getConfiguration('device',0);
+      	$replace["#device#"] = $Test;
 		
 		$marquee = config::byKey('marquee', 'aTVremote', 0);
 		if ($marquee == 1){
@@ -987,8 +990,18 @@ class aTVremote extends eqLogic {
 		} else {
 			$replace["#marquee#"] = "alternate";
 		};
+   
+/** pour les tests sans HomePod **/   
+      
+      	$typeWidget = config::byKey('typeWidget', 'aTVremote', 0);
+      	if ($typeWidget == 0){
+			$replace["#typeWidget#"] = "ATV";
+			log::add('aTVremote','debug','Type widget : '.$typeWidget);
+		} else {
+			$replace["#typeWidget#"] = "HomePod";
+		};
 		
-		
+/** pour les tests sans HomePod **/   		
 		
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#cmd_' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
@@ -1006,8 +1019,24 @@ class aTVremote extends eqLogic {
 		if ($version == 'mobile'){
 			$lentocheck = 17;
 		}**/
-
-		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'aTVremote')));
+      
+/** pour les tests sans HomePod **/  
+      
+		/**if ($typeWidget == 0){
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'aTVremote')));
+        }else{
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic1', 'aTVremote')));
+        };**/
+      
+/** pour les tests sans HomePod **/   
+      
+    
+		if ($Test == "Apple TV"){
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'aTVremote')));
+        }else{
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic1', 'aTVremote')));
+        };
+        
 	}  
 }
 
