@@ -10,6 +10,16 @@
 			"isHistorized": 0,
 			"logicalId": "play_state"
 		}, {
+			"name": "Hash",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "hash"
+		}, {
 			"name": "URL Artwork",
 			"type": "info",
 			"subtype": "string",
