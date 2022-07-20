@@ -1,0 +1,408 @@
+.haut_aTVremote_widH{
+	height: 291px;
+	width: 256px !important;
+	background-color: #000000;
+	z-index: 1;
+  	border-radius:30px;
+  	color : #FFFFFF;
+  	opacity:1;
+    background-image:url(Homepod.png);
+    background-repeat:no-repeat;
+  	background-size:98%;
+  	background-position:bottom;
+    margin:0;
+}
+
+/* Partie supérieure */
+.haut{
+    width: 138px;
+    height: 40px;
+}
+.titre_haut_aTVremote_widgetH{
+	width: 256px;
+	font-size : 11px;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+  	text-align:center;
+    color : #FFFFFF !important;
+}
+.power{
+  	position : absolute;
+  	left : 6px;
+  	top : 11px;
+  	font-size : 1em; 
+  	z-index:4;
+  	opacity:1;
+    cursor: pointer;
+}
+.power:hover{
+    opacity:0.7;
+}
+
+#onoff{
+	width : 24px;
+}
+
+/*Artwork*/
+
+.artwork_aTVremote{
+	width: 138px;
+	height: 138px;
+}
+.artwork_un_aTVremoteH{
+	width: 70px !important;
+	max-height: 150px;
+	position: absolute;
+	margin-left: 50%;
+	margin-top: 48%;
+    transform: translate(-50%, -50%);
+	z-index: 1;
+	cursor:pointer;
+	/*border-radius: 10%;*/
+}
+.repeatBoxH{
+    top:90px;
+    left:99px;
+    position:absolute;
+    z-index: 8;
+    cursor:pointer;
+}
+
+
+
+.infoBoxH{
+    top:178px;
+    left:144px;
+    position:absolute;
+    z-index: 8;
+    opacity: 0.8;
+    cursor:pointer;
+}
+
+.appsBox{
+    top:7px;
+    left:114px;
+    position:absolute;
+    z-index: 8;
+    opacity: 0.8;
+    cursor:pointer;
+}
+
+.infoBoxH:hover{
+    opacity:0.4;
+}
+
+.appsBox:hover{
+    opacity:0.4;
+}
+.oModal {
+    position: absolute;
+    z-index: 99999;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.8);
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+  	width:256px;
+}
+        
+.oModal:target {
+    opacity:1;
+    pointer-events: auto;
+}
+        
+.oModal:target > div {
+    margin: 10% auto;
+    transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+}
+        
+.oModal > div {
+    width: 256px;
+    position: absolute;
+    left: 0px;
+    top:-12px;
+    border-radius: 5px;
+    background: black;
+    transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+}
+        
+.oModal > div header,.oModal > div footer {
+    border-bottom: 1px solid #e7e7e7;
+    border-radius: 5px 5px 0 0;
+}
+        
+.oModal > div h2 {
+    margin:0;
+}
+        
+.oModal > div section,.oModal > div > header, .oModal > div > footer {
+    padding:0px;
+/* Statut & Info */
+}
+marquee {
+    -webkit-marquee-direction: left;
+    -webkit-marquee-increment: 2px;
+    -webkit-marquee-speed: 60ms;
+    width: 118px;
+    margin-left: 10px;
+    margin-right: 10px;
+  	font-size:12px;
+}
+.Statut_aTVremoteH{
+  	width: 256px;
+	text-align:center;
+	position: absolute;
+	z-index: 2;
+	font-size:10px;
+  	top: 115px;
+}    
+.app_aTVremoteH{
+	font-size:10px;
+  	width: 256px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+  	text-transform: capitalize;
+}
+.artist_titre_aTVremote{
+  	width: 138px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:13px;
+}
+.album_titre_aTVremote{
+	font-size:14px;
+  	width: 138px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+} 
+.titre_titre_aTVremote{
+  	width: 138px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:13px;
+}
+.last_titre_aTVremote{
+	font-size:12px;
+  	width: 138px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+}
+
+/* Control & Navigation */
+
+.btn_aTVremote_playback{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_playback:hover{
+	opacity: 0.5;
+}
+
+.btn_aTVremote_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_menu:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_top_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_top_menu:hover{
+	opacity: 0.5;
+}
+
+.btn_aTVremote_up{
+  	left:54px;
+  	top:41px;
+	cursor:pointer;
+	z-index: 8;
+	opacity: 0;
+    width: 30px;
+    position:absolute;
+  	-ms-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+}
+.btn_aTVremote_up:hover{
+	opacity: 1;
+}
+a > img:hover {
+  opacity:1;
+}
+.btn_aTVremote_leftH{
+  	left:51px;
+  	top:150px;
+	cursor:pointer;
+	z-index: 8;
+	opacity: 1;
+    width: 30px;
+    position:absolute;
+}
+.btn_aTVremote_leftH:hover{
+	opacity: 0.5;
+}
+.aTVremote_left{
+	-ms-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.btn_aTVremote_select{
+  	left:54px;
+  	top:94px;
+	cursor:pointer;
+	z-index: 8;
+	opacity: 0;
+    width: 30px;
+    position:absolute;
+}
+.btn_aTVremote_select:hover{
+	opacity: 1;
+}
+.btn_aTVremote_rightH{
+  	left:174px;
+  	top:150px;
+	cursor:pointer;
+	z-index: 8;
+	opacity: 1;
+    width: 30px;
+    position:absolute;
+}
+.btn_aTVremote_rightH:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_down{
+  	left:54px;
+  	top:147px;
+	cursor:pointer;
+	z-index: 8;
+	opacity: 0;
+    width: 30px;
+    position:absolute;
+}
+.btn_aTVremote_down:hover{
+	opacity: 1;
+}
+.aTVremote_down{
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+.btn_aTVremote_shuffle{
+	cursor:pointer;
+	z-index: 10;
+	opacity: 1;
+}
+.btn_aTVremote_shuffle:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_repeat{
+	cursor:pointer;
+	z-index: 10;
+	opacity: 1;
+}
+.btn_aTVremote_repeat:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_plus{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_plus:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_moins{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_moins:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_up2{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}  
+.aTVremote_up2{
+  	-ms-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+.btn_aTVremote_up2:hover{
+	opacity: 1;
+}
+.btn_aTVremote_down2{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+
+.aTVremote_down2{
+  	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+
+
+
+/*Back to the futur
+	Sildebar*/
+
+/*.slidecontainer {
+  width: 100%;*/ /* Width of the outside container */
+/*}*/
+
+/* The slider itself */
+/*.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;   
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}*/
