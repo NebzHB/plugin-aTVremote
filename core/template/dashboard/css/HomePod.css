@@ -1,4 +1,5 @@
 .haut_aTVremote_widH{
+  	max-height: 291px;
 	height: 291px;
 	width: 256px !important;
 	background-color: #000000;
@@ -52,10 +53,21 @@
 }
 .artwork_un_aTVremoteH{
 	width: 70px !important;
-	max-height: 150px;
+	max-height: 70px;
 	position: absolute;
 	margin-left: 50%;
 	margin-top: 48%;
+    transform: translate(-50%, -50%);
+	z-index: 1;
+	cursor:pointer;
+	/*border-radius: 10%;*/
+}
+.artwork_equalizerH{
+	width: 70px !important;
+	max-height: 70px;
+	position: absolute;
+	margin-left: 50%;
+	margin-top: 57%;
     transform: translate(-50%, -50%);
 	z-index: 1;
 	cursor:pointer;
@@ -72,7 +84,7 @@
 
 
 .infoBoxH{
-    top:178px;
+    top:125px;
     left:144px;
     position:absolute;
     z-index: 8;
