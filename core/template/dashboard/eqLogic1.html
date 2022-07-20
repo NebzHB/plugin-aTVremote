@@ -66,6 +66,7 @@
 		<div class="artwork_aTVremote">
           
 			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
+			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer" />
           	
 			<!--<img src="#artwork_url#" class="artwork_deux_aTVremote" />
 			<img src="#artwork_url#" class="artwork_trois_aTVremote" />-->          
@@ -73,7 +74,6 @@
            		<a class="artwork_deux_aTVremote" >#artwork_url#</a>
            		<a class="artwork_trois_aTVremote" >#artwork_url#</a>-->
           		<!--<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" ><img class="aTVremote_up" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>-->              
-				
 				<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img class="aTVremote_left" src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;"/></a>
 				<!--<a class="btn_aTVremote_select cmd select" data-cmd_id="#cmd_select_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/record.png' style="width:30px;"/></a>-->
 				<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;"/></a>
@@ -170,10 +170,10 @@
 <!--  Control & Navigation -->
           
 <!--  Back to the futur Sildebar -->          
-          	<!--<div class="slidecontainer">
+          	<!-- <div class="slidecontainer">
  		 		<input type="range" min="1" max="" value="" class="slider" id="myRange">
               	<p>Value: <span id="demo"></span></p>
-			</div>-->
+			</div>--> 
 <!--  Back to the futur Sildebar -->                                      
 		</div>
      
@@ -245,6 +245,12 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').click();
         	});
                  
+          	if('#play_human#' != "Lecture en cours"){
+          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+            }else{
+          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.gif');
+            }
+            
 //ATV 4 ou 4K - Play_state
           
       		if('#play_state#' == ''){
@@ -329,6 +335,9 @@
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
+      
+      
+
       
 /* Back to the futur Sildebar */    
       
