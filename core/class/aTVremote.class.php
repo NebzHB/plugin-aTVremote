@@ -590,73 +590,61 @@ class aTVremote extends eqLogic {
 
 	public function setArtwork($hash) {
         	
+		$hash=md5($hash);
+		
 		$id=$this->getLogicalId();
-        	//log::add('aTVremote','debug',$id);
       
 		$NEWheight=-1;
 		$NEWwidth=138;
-		$changed=false;
 		
-		$rel_folder='plugins/aTVremote/core/img/';
-		$abs_folder=dirname(__FILE__).'/../../../../'.$rel_folder;
-      		$finale_folder= $abs_folder.$id.'/';
-      	
-      		if (!file_exists($finale_folder)) {
-      			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data $finale_folder >/dev/null 2>&1;sudo chmod 775 $finale_folder >/dev/null 2>&1");
-          		log::add('aTVremote','debug','Création répertoire pour '.$id);
-        	}
-		
-		if($this->getConfiguration('version',0) == '3') {
-			$hash=$this->aTVremoteExecute('hash');
-			$hash=$hash[0];	
+		$rel_folder = 'plugins/aTVremote/core/img/';
+		$abs_folder = realpath(dirname(__FILE__).'/../../../../'.$rel_folder).'/';
+		$artwork = $rel_folder.$id.'/'.$hash.'.jpg';
+		$src =	   $abs_folder.$id.'/'.'artwork.png';
+		$dest =    $abs_folder.$id.'/'.$hash.'.jpg';
+	
+		if (!file_exists($abs_folder.$id.'/')) {
+			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data ".$abs_folder.$id."/ >/dev/null 2>&1;sudo chmod 775 ".$abs_folder.$id."/ >/dev/null 2>&1");
+			log::add('aTVremote','debug','Création répertoire pour '.$id);
 		}
-		$hash=md5($hash);
-		
-		$rel_folder2='plugins/aTVremote/core/img/'.$id.'/';
-		$artwork= $rel_folder2.$hash.'.jpg';
-		$dest = $finale_folder.$hash.'.jpg';
-		
-		if(!file_exists($dest)) {
-			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);//artwork.png
-			
-			$src=$finale_folder.'artwork.png';
 
-            		exec("sudo chown www-data:www-data $src >/dev/null 2>&1;sudo chmod 775 $src >/dev/null 2>&1"); // force rights
-			if($this->getConfiguration('version',0) == '3') { 	
-				sleep(5);
-		
-				if(file_exists($src)) {
-					rename($src,$dest);
-					exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
-					log::add('aTVremote','debug','--displaying '.$dest.'...');				
-				} else {
-					$artwork=null;
-				}
+		if(!file_exists($dest)) {
+			if(file_exists($src)) {
+				log::add('aTVremote','debug','--src already exists, remove it...'.$src);
+				exec("sudo rm -f $src >/dev/null 2>&1");
+			}
+			
+			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);// create artwork.png
+			
+			$t=1;
+			while(!file_exists($src) && $t < 11) {
+				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/10');
+				sleep(1);
+				$t++;
+			}
+			if($t == 11) {
+				log::add('aTVremote','debug','Pas de artwork.png !');
+				return false;
 			} else {
-				if(file_exists($src)) {
-					rename($src,$dest);
-					exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
-					log::add('aTVremote','debug','--displaying '.$dest.'...');				
-				} else {
-					$artwork=null;
-				}
+				log::add('aTVremote','debug','Artwork trouvé !');
 			}
+			
+			exec("sudo chown www-data:www-data $src >/dev/null 2>&1;sudo chmod 775 $src >/dev/null 2>&1"); // force rights
+			rename($src,$dest);
+			exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
 		} else {
-			log::add('aTVremote','debug','--dest already exists, just display it...'.$dest);
+			log::add('aTVremote','debug','--Artwork déjà dans le cache, on l\'utilise :'.$dest);
 			touch($dest); // update mtime
-			$src=$finale_folder.'artwork.png';
-			exec("sudo rm $src >/dev/null 2>&1");
+			exec("sudo rm -f $src >/dev/null 2>&1");
 		}
 		
-		if($artwork) {
-			log::add('aTVremote','debug','--updating cmd with '.$artwork.'...');
-			$artwork_url = $this->getCmd(null, 'artwork_url');
-			if(is_object($artwork_url)) {
-				$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
-			}
+		$artwork_url = $this->getCmd(null, 'artwork_url');
+		if(is_object($artwork_url)) {
+			log::add('aTVremote','debug','--MàJ de la commande avec :'.$artwork.'...');
+			$this->checkAndUpdateCmd($artwork_url, $artwork);
 		}
 		
-		return $changed;
+		return true;
 	}
 
 	public function setaTVremoteInfo($aTVremoteinfo=null) {
@@ -675,10 +663,21 @@ class aTVremote extends eqLogic {
 					$info=str_replace(' ','_',strtolower($info));
 					$aTVremoteinfo[$info]=$value;
 				}
+				$aTVremoteinfo['hash']=$this->aTVremoteExecute('hash')[0];	
 			}
 			
 			$changed = false;
 			log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
+			
+			$hashChanged = false;
+			$hash = $this->getCmd(null, 'hash');
+			if(is_object($hash)) {
+				if(isset($aTVremoteinfo['hash'])) {
+					$hashChanged=$this->checkAndUpdateCmd($hash, $aTVremoteinfo['hash']) || $hashChanged;
+				}
+			}
+			if($hashChanged) log::add('aTVremote','debug','hashChanged:'.$hashChanged);
+			$changed = $hashChanged || $changed;
 
 			$isPlaying=false;
 			if(isset($aTVremoteinfo['device_state'])) {
@@ -784,15 +783,22 @@ class aTVremote extends eqLogic {
 					}
 				}
 			
-				if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-					$changed=$this->setArtwork($aTVremoteinfo['hash']) || $changed;
-				} elseif($isPlaying) { // if not paused but no Title...
+				//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
+				if($hashChanged) {
+					if(! $this->setArtwork($aTVremoteinfo['hash'])) {
+						$artwork = $this->getImage();
+						$artwork_url = $this->getCmd(null, 'artwork_url');
+						if(is_object($artwork_url)) {
+							$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+						}
+					}
+				} /*elseif($isPlaying) { // if not paused but no Title...
 					$artwork = $this->getImage();
 					$artwork_url = $this->getCmd(null, 'artwork_url');
 					if (is_object($artwork_url)) {
 						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
 					}
-				}
+				}*/
 			// end if changed hash
 			
 			$position = $this->getCmd(null, 'position');
@@ -960,8 +966,10 @@ class aTVremote extends eqLogic {
 	public function preRemove() {
 		$this->aTVdaemonDisconnectATV();
 	}
+	
   	public function toHtml($_version = 'dashboard') {
-        	$replace = $this->preToHtml($_version);
+        
+		$replace = $this->preToHtml($_version);
  		if (!is_array($replace)) {
  			return $replace;
   		}
@@ -1009,7 +1017,7 @@ class aTVremote extends eqLogic {
 				$optList=[];
 				foreach(explode(';',$cmd->getConfiguration('listValue')) as $value) {
 					$temp=explode('|',$value);
-					log::add('aTVremote','debug','val:'.$temp[0].'|disp:'.$temp[1]);
+					//log::add('aTVremote','debug','val:'.$temp[0].'|disp:'.$temp[1]);
 					array_push($optList,'<option value="'.$temp[0].'">'.$temp[1].'</option>');
 				}
 				$replace['#cmd_' . $cmd->getLogicalId() . '_opt#'] = join('',$optList);;
@@ -1041,12 +1049,6 @@ class aTVremote extends eqLogic {
 }
 
 class aTVremoteCmd extends cmd {
-	/***************************Attributs*******************************/
-
-
-	/*************************Methode static****************************/
-
-	/***********************Methode d'instance**************************/
 
 	public function execute($_options = null) {
 		if ($this->getType() == '') {
@@ -1058,23 +1060,22 @@ class aTVremoteCmd extends cmd {
 		$result=null;
 		
 		if ($logical != 'refresh'){
-			switch ($logical) {
+			switch (strtolower($logical)) {
 				case 'play':
 					$eqLogic->aTVdaemonExecute('play');
 				break;
 				case 'pause':
-					$play_state = $eqLogic->getCmd(null, 'play_state');
-					$eqLogic->checkAndUpdateCmd($play_state, "0");
-					$play_human = $eqLogic->getCmd(null, 'play_human');
-					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
-					$eqLogic->aTVdaemonExecute('pause');
-				break;
 				case 'stop':
+					$eqLogic->aTVdaemonExecute(strtolower($logical));
+					// pre-set
 					$play_state = $eqLogic->getCmd(null, 'play_state');
-					$eqLogic->checkAndUpdateCmd($play_state, "0");
+					if (is_object($play_state)) {
+						$eqLogic->checkAndUpdateCmd($play_state, "0");
+					}
 					$play_human = $eqLogic->getCmd(null, 'play_human');
-					$eqLogic->checkAndUpdateCmd($play_human, "En pause");
-					$eqLogic->aTVdaemonExecute('stop');
+					if (is_object($play_human)) {
+						$eqLogic->checkAndUpdateCmd($play_human, "En pause");
+					}
 				break;
 				case 'set_repeat_all':
 					$eqLogic->aTVdaemonExecute('set_repeat=2');
@@ -1120,10 +1121,20 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'turn_on':
 					$eqLogic->aTVdaemonExecute('turn_on');
+					// pre-set
+					$power_state = $eqLogic->getCmd(null, 'power_state');
+					if (is_object($power_state)) {
+						$changed=$eqLogic->checkAndUpdateCmd($power_state, '1') || $changed;
+					}
 				break;
 				case 'turn_off':
 					//$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 					$eqLogic->aTVdaemonExecute('turn_off');
+					// pre-set
+					$power_state = $eqLogic->getCmd(null, 'power_state');
+					if (is_object($power_state)) {
+						$changed=$eqLogic->checkAndUpdateCmd($power_state, '0') || $changed;
+					}
 				break;
 				case 'chain':
 					$cmds = $_options['title'];
@@ -1136,6 +1147,7 @@ class aTVremoteCmd extends cmd {
 				case 'volume_down' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('volume_down');
+						// pre-set volume
 						$volume = $eqLogic->getCmd(null, 'volume');
 						if (is_object($volume)) {
 							$currentVol=intval($volume->execCmd());
@@ -1153,6 +1165,7 @@ class aTVremoteCmd extends cmd {
 				case 'volume_up' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('volume_up');
+						// pre-set volume
 						$volume = $eqLogic->getCmd(null, 'volume');
 						if (is_object($volume)) {
 							$currentVol=intval($volume->execCmd());
@@ -1170,6 +1183,7 @@ class aTVremoteCmd extends cmd {
 				case 'set_volume' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider']);
+						// pre-set volume
 						$volume = $eqLogic->getCmd(null, 'volume');
 						if (is_object($volume)) {
 							$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
@@ -1195,10 +1209,10 @@ class aTVremoteCmd extends cmd {
 			}
 			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
 		}
-		if($eqLogic->getConfiguration('version',0) == '3')
+		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
+		}
 	}
 
-	/************************Getteur Setteur****************************/
 }
 ?>
