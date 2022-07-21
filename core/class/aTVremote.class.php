@@ -613,7 +613,7 @@ class aTVremote extends eqLogic {
 				$title = $this->getCmd(null, 'title');
 				if(is_object($title)) {
 					if(isset($aTVremoteinfo['title'])) {
-						$changed=$this->checkAndUpdateCmd($title, $aTVremoteinfo['title']) || $changed;         
+						$changed=$this->checkAndUpdateCmd($title, htmlspecialchars($aTVremoteinfo['title'], ENT_QUOTES,'UTF-8')) || $changed;
 					} else {
 						$changed=$this->checkAndUpdateCmd($title, '-') || $changed;
 					}
@@ -621,7 +621,7 @@ class aTVremote extends eqLogic {
 				$artist = $this->getCmd(null, 'artist');
 				if(is_object($artist)) {
 					if(isset($aTVremoteinfo['artist'])) {
-						$changed=$this->checkAndUpdateCmd($artist, $aTVremoteinfo['artist']) || $changed;
+						$changed=$this->checkAndUpdateCmd($artist, htmlspecialchars($aTVremoteinfo['artist'], ENT_QUOTES,'UTF-8')) || $changed;
 					} else {
 						$changed=$this->checkAndUpdateCmd($artist, '-') || $changed;
 					}
@@ -629,7 +629,7 @@ class aTVremote extends eqLogic {
 				$album = $this->getCmd(null, 'album');
 				if(is_object($album)) {
 					if(isset($aTVremoteinfo['album'])) {
-						$changed=$this->checkAndUpdateCmd($album, $aTVremoteinfo['album']) || $changed;
+						$changed=$this->checkAndUpdateCmd($album, htmlspecialchars($aTVremoteinfo['album'], ENT_QUOTES,'UTF-8')) || $changed;
 					} else {
 						$changed=$this->checkAndUpdateCmd($album, '-') || $changed;
 					}
