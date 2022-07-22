@@ -857,7 +857,8 @@ class aTVremote extends eqLogic {
 	} 
 	
 	public function getImage($justCenter=false){
-		if($this->getConfiguration('device','') == "HomePod") {
+		return 'plugins/aTVremote/core/template/inactive.png';
+		/*if($this->getConfiguration('device','') == "HomePod") {
 			if($justCenter) {
 				return 'plugins/aTVremote/core/template/homepod_center.png';
 			} elseif($this->getConfiguration('version','') == 'Mini') {
@@ -867,7 +868,7 @@ class aTVremote extends eqLogic {
 			}
 		} else {
 			return 'plugins/aTVremote/core/template/aTV.png';
-		}
+		}*/
 	}
 	
 	public function preSave() {
