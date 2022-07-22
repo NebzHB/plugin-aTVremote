@@ -785,7 +785,7 @@ class aTVremote extends eqLogic {
 				//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
 				if($hashChanged) {
 					if(! $this->setArtwork($aTVremoteinfo['hash'])) {
-						$artwork = $this->getImage(false);
+						$artwork = $this->getImage(true);
 						$artwork_url = $this->getCmd(null, 'artwork_url');
 						if(is_object($artwork_url)) {
 							$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
@@ -856,9 +856,13 @@ class aTVremote extends eqLogic {
 		}
 	} 
 	
-	public function getImage($default=true){
-		if($this->getConfiguration('device','') == "HomePod" && !$default) {
-			return 'plugins/aTVremote/core/template/Homepod-center.png';
+	public function getImage($justCenter=false){
+		if($this->getConfiguration('device','') == "HomePod") {
+			if($justCenter) {
+				return 'plugins/aTVremote/core/template/Homepod-center.png';
+			} else {
+				return 'plugins/aTVremote/core/template/aTVremote.png';
+			}
 		} else {
 			return 'plugins/aTVremote/core/template/aTVremote.png';
 		}
