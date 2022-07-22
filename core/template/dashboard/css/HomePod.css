@@ -1,3 +1,5 @@
+
+
 .haut_aTVremote_widH{
   	max-height: 291px;
 	height: 291px;
@@ -108,59 +110,8 @@
 .appsBox:hover{
     opacity:0.4;
 }
-.oModal {
-    position: absolute;
-    z-index: 99999;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background: rgba(0, 0, 0, 0.8);
-    opacity:0;
-    -webkit-transition: opacity 400ms ease-in;
-    -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;
-    pointer-events: none;
-  	width:256px;
-}
-        
-.oModal:target {
-    opacity:1;
-    pointer-events: auto;
-}
-        
-.oModal:target > div {
-    margin: 10% auto;
-    transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-}
-        
-.oModal > div {
-    width: 256px;
-    position: absolute;
-    left: 0px;
-    top:-12px;
-    border-radius: 5px;
-    background: black;
-    transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-}
-        
-.oModal > div header,.oModal > div footer {
-    border-bottom: 1px solid #e7e7e7;
-    border-radius: 5px 5px 0 0;
-}
-        
-.oModal > div h2 {
-    margin:0;
-}
-        
-.oModal > div section,.oModal > div > header, .oModal > div > footer {
-    padding:0px;
+
 /* Statut & Info */
-}
 marquee {
     -webkit-marquee-direction: left;
     -webkit-marquee-increment: 2px;
@@ -377,6 +328,40 @@ a > img:hover {
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
+
+.downRafterH {
+    position: absolute;
+    top: 20.5px;
+    right: 118px;
+    cursor: pointer;
+    z-index: 4;
+    opacity: 0.3;
+}
+
+.downRafter2H {
+    position: absolute;
+    top: -12.5px;
+    left: 117px;
+    cursor: pointer; 
+    z-index: 4;
+    opacity: 0.6;
+}
+
+.downRafterH:hover {
+    opacity: 1;
+}
+.downRafter2H:hover {
+    opacity: 1;
+}
+.downpanelH {
+      width: 256px;
+      height: 291px;
+      float: left;
+      position: absolute;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.9);
+      top: 340px;
+  }
 
 
 
