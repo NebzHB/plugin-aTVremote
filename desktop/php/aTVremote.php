@@ -13,7 +13,7 @@ $eqLogics = eqLogic::byType('aTVremote');
   			<div class="cursor logoPrimary eqLogicAction" data-action="scanAppleTV">
         		<i class="fas fa-bullseye"></i>
 				<br />
-        		<span>{{Scan AppleTV}}</span>
+        		<span>{{Scan}}</span>
       		</div>
 		<div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
 			<i class="fas fa-wrench"></i>
@@ -29,7 +29,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 		<?php
 			if(count($eqLogics)) :
 		?>
-		<legend><i class="fab fa-apple"></i>  {{Mes AppleTV}}</legend>
+		<legend><i class="fab fa-apple"></i>  {{Mes Appareils}}</legend>
 		<div class="input-group" style="margin-bottom:5px;">
 			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 			<div class="input-group-btn">
@@ -232,9 +232,6 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="col-sm-3">
 									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="osVersion"></span>
 								</div>
-							</div>
-							<div class="form-group">
-								<img src="plugins/aTVremote/plugin_info/aTVremote_icon.png" style="height : 200px;margin-top:5px" />
 							</div>
 						</fieldset>
 					</div>
