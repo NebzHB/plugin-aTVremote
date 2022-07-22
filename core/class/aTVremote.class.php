@@ -247,9 +247,14 @@ class aTVremote extends eqLogic {
 		{
 			case 'playing':
 				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
+				$result = json_decode(init('data'),true);
+				$result["id"] = $aTVremote->getId();
+				event::add('aTVremote::playing', $result);
 			break;
 			case 'powerstate':
 				$eqLogic->setPowerstate(init('data'));
+				$result = array("id" => $aTVremote->getId(), "powerstate" => json_decode(init('data'),true)['power_state']);
+				event::add('aTVremote::powerstate', $result);
 			break;
 			case 'app':
 				$apps = explode(', App: ',init('data'));
@@ -274,6 +279,8 @@ class aTVremote extends eqLogic {
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
 				}
+				$result = array("id" => $eqLogic->getId(), "volume" => explode('.',init('data'))[0]);
+				event::add('aTVremote::volume', $result);
 			break;
 		}
 	}
@@ -353,18 +360,23 @@ class aTVremote extends eqLogic {
 
 					$eqLogic->save();
 					
+					$result = array('id' => $aTVremote->getId(), 'name' => $res["name"], 'device' => $res['device'], 'ip' => $res["ip"], 'mac' => $res["mac"], 'fullModel' => $res["model"], 'version' => $res["version"], 'os' => $res["os"], 'osVersion' => $res["osVersion"]);
 					if(!is_object($aTVremote)) { // NEW
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
 							'message' => __('Nouvelle AppleTV detectée ' .$res["name"], __FILE__),
 						));
+						$result['type'] = 'newNode';
+						event::add('aTVremote::scan', $result);
 					} else { // UPDATED
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
 							'message' => __('AppleTV mise à jour avec succès ' .$res["name"], __FILE__),
 						));
+						$result['type'] = 'updateNode';
+						event::add('aTVremote::scan', $result);
 					}
 					$return[] = $res;
 				}
