@@ -16,7 +16,7 @@
   			<!--<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
 			<a class="power cmd turn_off" data-cmd_id="#cmd_turn_off_id#" title="On"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/On1.png'/></a>-->
   
-  			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
+  			<!--<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a> -->
       	
 			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="ATV#ATV# #os# #osVersion# #build#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>
           	
@@ -217,8 +217,8 @@
               	$('.eqLogic[data-eqLogic_id=#id#] .media').hide(1);
                 $('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
               
-              	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/aTVremote.png');
-              	$(".artwork").attr('src','plugins/aTVremote/core/template/aTVremote.png');
+              	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/inactive.png');
+              	$(".artwork").attr('src','plugins/aTVremote/core/template/inactive.png');
               	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text('Inactif');
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
