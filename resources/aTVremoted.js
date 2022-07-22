@@ -114,6 +114,9 @@ function connectATV(mac,version) {
 				} else {
 					jsend({eventType: 'hash', data : data, mac: mac});
 				} */
+				if(data.includes('Could not find any Apple TV on current network')) {
+					lastErrorMsg=data;
+				}
 				
 				if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
