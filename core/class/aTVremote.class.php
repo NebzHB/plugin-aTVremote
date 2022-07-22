@@ -34,18 +34,24 @@ class aTVremote extends eqLogic {
 								$aTVremote->setaTVremoteInfo();
 							}
 						}
-					} elseif($aTVremote->getConfiguration('device','') == 'HomePod') {
-						$play_state = $aTVremote->getCmd(null, 'play_state');
-						if(is_object($play_state)) {
-							$val=$play_state->execCmd();
-							if($val) { // if playing : 1min
-								$aTVremote->aTVdaemonExecute('volume');
-							} else { // else : 5min
-								$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
-								if ($c->isDue()) {
+					} else {
+						if($aTVremote->getConfiguration('device','') == 'HomePod') {
+							$play_state = $aTVremote->getCmd(null, 'play_state');
+							if(is_object($play_state)) {
+								$val=$play_state->execCmd();
+								if($val) { // if playing : 1min
 									$aTVremote->aTVdaemonExecute('volume');
+								} else { // else : 5min
+									$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
+									if ($c->isDue()) {
+										$aTVremote->aTVdaemonExecute('volume');
+									}
 								}
 							}
+						}
+						$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
+						if ($nc->isDue()) {
+							$aTVremote->aTVdaemonExecute('power_state');
 						}
 					}
 				}
@@ -243,7 +249,7 @@ class aTVremote extends eqLogic {
 				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
 			break;
 			case 'powerstate':
-				$eqLogic->setPowerstate(json_decode(init('data'),true));
+				$eqLogic->setPowerstate(init('data'));
 			break;
 			case 'app':
 				$apps = explode(', App: ',init('data'));
@@ -536,7 +542,16 @@ class aTVremote extends eqLogic {
 		if($this->getConfiguration('version',0) != '3'){
 			$changed = false;
 			
-			$power_state=$data;
+			if($data && is_string($data)) {
+				if($data[0] == "{") {
+					$power_state=json_decode($data,true);
+				} else {
+					$power_state=[];
+					$power_state['power_state']=strtolower(str_replace('PowerState.','',$data));
+				}
+			} elseif(is_object($data)) {
+				$power_state=$data;
+			}
 
 			log::add('aTVremote','debug','power_state : '.$power_state['power_state']);
 			
@@ -612,12 +627,13 @@ class aTVremote extends eqLogic {
 			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);// create artwork.png
 			
 			$t=1;
-			while(!file_exists($src) && $t < 6) {
-				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/5');
-				sleep(1);
+			while(!file_exists($src) && $t < 16) {
+				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/15');
+				usleep(0.3*1000000);
+				//sleep(1);
 				$t++;
 			}
-			if($t == 6) {
+			if($t == 16) {
 				log::add('aTVremote','debug','Pas de artwork.png !');
 				return false;
 			} else {
@@ -831,6 +847,8 @@ class aTVremote extends eqLogic {
 					if(is_object($artwork_url)) {
 						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
 					}
+				} else {
+					$changed=true;
 				}
 			} /*elseif($isPlaying) { // if not paused but no Title...
 				$artwork = $this->getImage();
