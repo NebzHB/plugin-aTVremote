@@ -721,7 +721,6 @@ class aTVremote extends eqLogic {
 						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
 						$changed=$this->checkAndUpdateCmd($play_human, "Inconnu") || $changed;
 						break;
-					break;
 				}
 			}
 			
