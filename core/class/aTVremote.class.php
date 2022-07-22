@@ -228,27 +228,24 @@ class aTVremote extends eqLogic {
 
 	public static function event() {
 		$eventType = init('eventType');
-		log::add('aTVremote', 'debug', 'Passage dans la fonction event ' . $eventType);
+		
+		$eqLogic = aTVremote::byLogicalId(init('mac'), 'aTVremote');
+		
+		log::add('aTVremote', 'debug', 'Passage dans la fonction event ' . $eventType . ' pour '.$eqLogic->getName());
 		if ($eventType == 'error'){
 			log::add('aTVremote', 'error', init('description'));
 			return;
 		}
-		
+		log::add('aTVremote','debug','Reçu du démon :'.init('data'));
 		switch ($eventType)
 		{
 			case 'playing':
-				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
-				$aTVremote = aTVremote::byLogicalId(init('mac'), 'aTVremote');
-				$aTVremote->setaTVremoteInfo(json_decode(init('data'),true));
+				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
 			break;
 			case 'powerstate':
-				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
-				$aTVremote = aTVremote::byLogicalId(init('mac'), 'aTVremote');
-				$aTVremote->setPowerstate(json_decode(init('data'),true));
+				$eqLogic->setPowerstate(json_decode(init('data'),true));
 			break;
 			case 'app':
-				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
-				$eqLogic=aTVremote::byLogicalId(init('mac'), 'aTVremote');
 				$apps = explode(', App: ',init('data'));
 				$apps[0]=str_replace('App: ','',$apps[0]);
 				
@@ -267,8 +264,6 @@ class aTVremote extends eqLogic {
 				}
 			break;
 			case 'volume':
-				log::add('aTVremote','debug','Reçu du démon :'.init('data'));
-				$eqLogic=aTVremote::byLogicalId(init('mac'), 'aTVremote');
 				$volume = $eqLogic->getCmd(null, 'volume');
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
