@@ -860,11 +860,13 @@ class aTVremote extends eqLogic {
 		if($this->getConfiguration('device','') == "HomePod") {
 			if($justCenter) {
 				return 'plugins/aTVremote/core/template/Homepod-center.png';
+			} elseif($this->getConfiguration('version','') == 'Mini') {
+				return 'plugins/aTVremote/core/template/homepod_mini.png';
 			} else {
-				return 'plugins/aTVremote/core/template/aTVremote.png';
+				return 'plugins/aTVremote/core/template/homepod.png';
 			}
 		} else {
-			return 'plugins/aTVremote/core/template/aTVremote.png';
+			return 'plugins/aTVremote/core/template/aTV.png';
 		}
 	}
 	
