@@ -857,18 +857,18 @@ class aTVremote extends eqLogic {
 	} 
 	
 	public function getImage($justCenter=false){
-		return 'plugins/aTVremote/core/template/inactive.png';
-		/*if($this->getConfiguration('device','') == "HomePod") {
-			if($justCenter) {
-				return 'plugins/aTVremote/core/template/homepod_center.png';
-			} elseif($this->getConfiguration('version','') == 'Mini') {
+		if($justCenter) {
+			return 'plugins/aTVremote/core/template/inactive.png';
+		}
+		if($this->getConfiguration('device','') == "HomePod") {
+			if($this->getConfiguration('version','') == 'Mini') {
 				return 'plugins/aTVremote/core/template/homepod_mini.png';
 			} else {
 				return 'plugins/aTVremote/core/template/homepod.png';
 			}
 		} else {
 			return 'plugins/aTVremote/core/template/aTV.png';
-		}*/
+		}
 	}
 	
 	public function preSave() {
