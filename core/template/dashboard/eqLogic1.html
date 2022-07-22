@@ -66,7 +66,7 @@
 		<div class="artwork_aTVremote">
           
 			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
-			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer" />
+			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer#id#" />
           	
 			<!--<img src="#artwork_url#" class="artwork_deux_aTVremote" />
 			<img src="#artwork_url#" class="artwork_trois_aTVremote" />-->          
@@ -246,9 +246,9 @@
         	});
                  
           	if('#play_human#' != "Lecture en cours"){
-          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
             }else{
-          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.gif');
+          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.gif');
             }
             
 //ATV 4 ou 4K - Play_state
