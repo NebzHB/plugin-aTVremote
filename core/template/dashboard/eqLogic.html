@@ -7,8 +7,8 @@
       	<div class="haut">
 		
 <!--  Partie Supérieure -->
-  			<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
-			<a class="power cmd turn_off" data-cmd_id="#cmd_turn_off_id#" title="On"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/On1.png'/></a>
+  			<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="onoff#id#" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
+			<a class="power cmd turn_off" data-cmd_id="#cmd_turn_off_id#" title="On"><img id="onoff#id#" src='plugins/aTVremote/core/template/dashboard/images/On1.png'/></a>
   
   			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
       	
@@ -55,7 +55,7 @@
   			<a style='position:absolute;margin-top:10px;left:47px;z-index:5;'>&nbsp;<img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/>&nbsp;</a>
 
   			<a style='position:absolute;margin-top:10px;left:47px;z-index:4;'>&nbsp;<img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/>&nbsp;</a>         
-          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>
+          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum#id#"></span></a><br></p>
      	</div>
       
 <!--  Artwork -->
@@ -104,8 +104,8 @@
 <!--  Statut & Info -->
 		<div class="info" style="height:80px;">
           	<br>
-			<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut"></a></p>
-          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2">#play_human#</a></p>
+			<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut#id#"></a></p>
+          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2#id#">#play_human#</a></p>
           <br>        
           	<!--<p class="app_hide" style='margin: -20px 0 0px'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>-->
           
@@ -120,7 +120,7 @@
 			<center><p class="titre_hide" style="margin: -9px 0 8px;"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
           	<p class="titre2_hide" style="margin: -5px 0 5px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
 
-			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position" id="pos"></span></marquee></a><br></p>
+			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position" id="pos#id#"></span></marquee></a><br></p>
           	
       </div>
 <!--  Statut & Info -->   
@@ -194,7 +194,7 @@
         	if('#power_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
-              	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);
+              	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);
 			} else if('#power_state#' == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
@@ -213,12 +213,12 @@
               
               	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/aTVremote.png');
               	$(".artwork").attr('src','plugins/aTVremote/core/template/aTVremote.png');
-              	$('.eqLogic[data-eqLogic_id=#id#] #statut').text('Inactif');
+              	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text('Inactif');
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
         		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
-	          	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);              
+	          	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);              
         	};
           	        	
 //ATV 4 ou 4K - App
@@ -229,7 +229,7 @@
       		var app_final = app_split[2];
 	    
       		if(typeof(app_split[1]) != "undefined" && app_split[1] !== null) {    	
-    			$('.eqLogic[data-eqLogic_id=#id#] #sum').text(app_final);
+    			$('.eqLogic[data-eqLogic_id=#id#] #sum#id#').text(app_final);
               
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
@@ -282,7 +282,7 @@
             	var time = '#position#';
           		var split_time = time.split(['/']);
           		var position = split_time[0] + '/' + split_time[1] + 's (' + Math.round((split_time[0]*100)/split_time[1]) + '%)';
-            	$('.eqLogic[data-eqLogic_id=#id#] #pos').text(position);
+            	$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text(position);
             }else{
               	$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
             }          
@@ -328,7 +328,7 @@
 //ATV 3 - Statut
           
           	
-          	$('.eqLogic[data-eqLogic_id=#id#] #statut').slideToggle(1);
+          	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').slideToggle(1);
            
 //ATV 3 - Play_state
                    
