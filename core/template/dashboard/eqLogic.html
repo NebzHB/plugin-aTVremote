@@ -189,7 +189,7 @@
 //ATV 4 ou 4K - Power + Statut
           
           	var statut = '#play_human#';
-          	$('.eqLogic[data-eqLogic_id=#id#] #statut2').slideToggle(1);
+          	$('.eqLogic[data-eqLogic_id=#id#] #statut2#id#').slideToggle(1);
           
         	if('#power_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
@@ -211,8 +211,8 @@
               	$('.eqLogic[data-eqLogic_id=#id#] .media').hide(1);
                 $('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
               
-              	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/aTVremote.png');
-              	$(".artwork").attr('src','plugins/aTVremote/core/template/aTVremote.png');
+              	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/inactive.png');
+              	$(".artwork").attr('src','plugins/aTVremote/core/template/inactive.png');
               	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text('Inactif');
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
