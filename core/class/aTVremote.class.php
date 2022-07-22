@@ -612,12 +612,12 @@ class aTVremote extends eqLogic {
 			$this->aTVdaemonExecute('artwork_save='.$NEWwidth.','.$NEWheight);// create artwork.png
 			
 			$t=1;
-			while(!file_exists($src) && $t < 11) {
-				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/10');
+			while(!file_exists($src) && $t < 6) {
+				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/5');
 				sleep(1);
 				$t++;
 			}
-			if($t == 11) {
+			if($t == 6) {
 				log::add('aTVremote','debug','Pas de artwork.png !');
 				return false;
 			} else {
@@ -659,10 +659,10 @@ class aTVremote extends eqLogic {
 					$aTVremoteinfo[$info]=$value;
 				}
 				$aTVremoteinfo['hash']=$this->aTVremoteExecute('hash')[0];	
+				log::add('aTVremote','debug','Reçu:'.json_encode($aTVremoteinfo));
 			}
 			
 			$changed = false;
-			log::add('aTVremote','debug','recu:'.json_encode($aTVremoteinfo));
 			
 			$hashChanged = false;
 			$hash = $this->getCmd(null, 'hash');
@@ -776,23 +776,6 @@ class aTVremote extends eqLogic {
 						}
 					}
 				}
-			
-				//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-				if($hashChanged) {
-					if(! $this->setArtwork($aTVremoteinfo['hash'])) {
-						$artwork = $this->getImage(true);
-						$artwork_url = $this->getCmd(null, 'artwork_url');
-						if(is_object($artwork_url)) {
-							$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
-						}
-					}
-				} /*elseif($isPlaying) { // if not paused but no Title...
-					$artwork = $this->getImage();
-					$artwork_url = $this->getCmd(null, 'artwork_url');
-					if (is_object($artwork_url)) {
-						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
-					}
-				}*/
 			// end if changed hash
 			
 			$position = $this->getCmd(null, 'position');
@@ -839,6 +822,23 @@ class aTVremote extends eqLogic {
 				    }
 				}
 			}
+			
+			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
+			if($hashChanged && $aTVremoteinfo['device_state'] != 'Idle') {
+				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
+					$artwork = $this->getImage(true);
+					$artwork_url = $this->getCmd(null, 'artwork_url');
+					if(is_object($artwork_url)) {
+						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+					}
+				}
+			} /*elseif($isPlaying) { // if not paused but no Title...
+				$artwork = $this->getImage();
+				$artwork_url = $this->getCmd(null, 'artwork_url');
+				if (is_object($artwork_url)) {
+					$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+				}
+			}*/
 			
 			if ($changed) {
 				$this->refreshWidget();
