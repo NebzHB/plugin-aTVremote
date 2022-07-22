@@ -1221,6 +1221,9 @@ class aTVremoteCmd extends cmd {
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
 		}
+		if ($changed) {
+			$eqLogic->refreshWidget();
+		}
 	}
 
 }
