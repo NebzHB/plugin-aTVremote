@@ -13,39 +13,9 @@
       	<div class="haut">
 		
 <!--  Partie Supérieure -->
-  			<!--<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
-			<a class="power cmd turn_off" data-cmd_id="#cmd_turn_off_id#" title="On"><img id="onoff" src='plugins/aTVremote/core/template/dashboard/images/On1.png'/></a>-->
-  
-  			<!--<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a> -->
-      	
-			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="ATV#ATV# #os# #osVersion# #build#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>
-          	
-          	<!--<a href="#aModal#id#" id="a#id#" class="appsBox" title='Apps'><img src='plugins/aTVremote/core/template/dashboard/images/database.png' style="width:20px;"/></a>
-				
-				<!--<div id="aModal#id#" class="oModal">
-					<div>
-						<section style="text-align: center;"> 
-							<a href="#fermer" title="Fermer la fenêtre" class="droite"><img src='plugins/aTVremote/core/template/dashboard/images/X.png' style="width:30px;"/></a>
-							<br/>
-							Lance App :
-							<div class="cmd-widget" data-type="action" data-subtype="select" data-template="default" data-cmd_id="#cmd_launch_app_id#"><div class="content-xs"><select class="selectCmd"><option value="">Aucune</option>#cmd_launch_app_opt#</select></div></div>
-							<br>
-						</section>
-						
-					</div>
-				</div>
-				<script>
-					
-					$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").on('change', function () {
-					  jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: $(this).value()}})
-					})
 
-					jeedom.cmd.update['#cmd_launch_app_id#'] = function(_options) {
-					  $(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").val(_options.display_value)
-					}
-  
-				</script>-->
-          
+      	
+			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="ATV#ATV# #os# #osVersion# #build#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>  
           		
           	<div id="a#id#" class="repeatBoxH">
               			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:25px;"/>&nbsp;&nbsp;</a>
@@ -68,26 +38,20 @@
 			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
 			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer#id#" />
           	
-			<!--<img src="#artwork_url#" class="artwork_deux_aTVremote" />
-			<img src="#artwork_url#" class="artwork_trois_aTVremote" />-->          
-			<!--<a class="artwork_un_aTVremote" >#artwork_url#</a>
-           		<a class="artwork_deux_aTVremote" >#artwork_url#</a>
-           		<a class="artwork_trois_aTVremote" >#artwork_url#</a>-->
-          		<!--<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" ><img class="aTVremote_up" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>-->              
+			         
 				<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img class="aTVremote_left" src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;"/></a>
-				<!--<a class="btn_aTVremote_select cmd select" data-cmd_id="#cmd_select_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/record.png' style="width:30px;"/></a>-->
+				
 				<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;"/></a>
-				<!--<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" ><img class="aTVremote_down" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>-->
+				
           
           
-          
-				<a href="#oModal#id#" id="i#id#" class="infoBoxH" title='info'><img src='plugins/aTVremote/core/template/dashboard/images/info.png' style="width:20px;"/></a>
-					
-				<div id="oModal#id#" class="oModal">
-					<div>
-						<section style="text-align: center;"> 
-							<a href="#fermer" title="Fermer la fenêtre" class="droite"><img src='plugins/aTVremote/core/template/dashboard/images/X.png' style="width:30px;"/></a>
-							<br/>
+  
+				<div class="downpanelH">
+    				<div style="overflow: auto;height: 316px;">
+        				<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 242px;">Info</legend>
+        				<img class="downRafter2H" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:30px;" onClick="panelDownClose#id#()"/>
+      					<section style="text-align: center;"> 
+							
 							<img src='#artwork_url#' style="width:100px;" class="artwork"/><br>
 							<br/>
 							<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
@@ -98,12 +62,10 @@
 							<p class="album2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();">#album#</marquee></a><br></p>
 							<br>
 						</section>
-						<!--<footer class="cf">
-							<a href="#fermer" class="btn droite" title="Fermer la fenêtre">Fermer</a>
-						</footer>-->
-					</div>
+    				</div>
 				</div>
-				
+
+				<a><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" onclick="panelDown#id#()"/></a>				
 				
 		</div>
 <!--  Artwork -->
@@ -114,30 +76,13 @@
 			<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut#id#"></a></p>
           	<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2#id#">#play_human#</a></p>
         
-          	<!--<p class="app_hide" style='margin: -20px 0 0px'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>-->
-          
-			<!--<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Artiste"> #artist# </a></p></center>
-          		<p class="artist2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:19px">#artist#</marquee></a><br></p>-->
-			
-			<!--<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Album"> #album# </a></p></center>
-          		<p class="album2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;" title="Album"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();">#album#</marquee></a><br></p>-->
-			<!--<center><p class="artist_hide" style="margin: -8px 0 8px;"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #artist# </a></p></center>
-							<p class="artist2_hide" style="margin: -6px 0 4px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#artist#</marquee></a></p>
-          
-			<center><p class="titre_hide" style="margin: -9px 0 8px;"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
-          	<p class="titre2_hide" style="margin: -5px 0 5px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
-
-			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position" id="pos"></span></marquee></a><br></p>-->
           	
       </div>
 <!--  Statut & Info -->   
           
 <!--  Control & Navigation -->  
       <div class="gameplay" style="height:80px">    	
-          	<!--<div style="display: block;margin: -5px 19px 10px;" class="menu_action">			
-				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" title='Menu'><img src='plugins/aTVremote/core/template/dashboard/images/menu2.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" title='Home'><img src='plugins/aTVremote/core/template/dashboard/images/monitor.png' style="width:40px;"/></a>	
-			</div>-->
+          	
         <br>
 			<div style="display: block; margin: -16px 72px 10px;" class="playback">
               	<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:25px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -147,23 +92,7 @@
 				<!--<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>-->
 			</div>
         <br> 
-			<!--<div style="display: block;margin: -15px 19px 10px;" class="backfor">
-              			<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:40px"/></a>
-			</div>-->
-<!--        <br>
-          	<div style="display: block;margin: -15px 19px 10px;" class="fonction">
-              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
-				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:40px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:40px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:40px;;"/></a>
-            </div>-->
-       
-          	<!--<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
-				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" title='Vol +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-              	<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
-            </div>-->
+			
 
         
         
@@ -329,7 +258,16 @@
       				
 //ATV 3         
         } 
-      	
+      	       
+         
+      	function panelDown#id#()
+		{
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "24px"});
+		}
+		function panelDownClose#id#()
+		{
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "296px"});
+		}
 
       	
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
