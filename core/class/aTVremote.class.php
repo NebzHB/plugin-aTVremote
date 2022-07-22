@@ -974,7 +974,7 @@ class aTVremote extends eqLogic {
   		}
 		$version = jeedom::versionAlias($_version);
 		foreach ($this->getCmd('info') as $cmd) {
-			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
+			$replace['#' . $cmd->getLogicalId() . '#'] = htmlspecialchars($cmd->execCmd(), ENT_QUOTES,'UTF-8');
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 			if ($cmd->getIsHistorized() == 1) {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
