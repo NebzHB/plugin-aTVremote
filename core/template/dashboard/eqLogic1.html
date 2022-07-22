@@ -4,7 +4,7 @@
 
 
 
-<div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget" >
+<div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
   
   <link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/HomePod.css" />
 
@@ -59,7 +59,7 @@
   			<a style='position:absolute;margin-top:10px;left:106px;z-index:5;'>&nbsp;<img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/>&nbsp;</a>
 
   			<a style='position:absolute;margin-top:10px;left:106px;z-index:4;'>&nbsp;<img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/>&nbsp;</a>         
-          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>
+          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum#id#"></span></a><br></p>
      	</div>
       
 <!--  Artwork -->
@@ -111,8 +111,8 @@
 <!--  Statut & Info -->
 		<div class="info" style="height:20px;">
           	<br>
-			<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut"></a></p>
-          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2">#play_human#</a></p>
+			<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut#id#"></a></p>
+          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2#id#">#play_human#</a></p>
         
           	<!--<p class="app_hide" style='margin: -20px 0 0px'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum"></span></a><br></p>-->
           
@@ -195,12 +195,12 @@
 //ATV 4 ou 4K - Power + Statut
           
           	var statut = '#play_human#';
-          	$('.eqLogic[data-eqLogic_id=#id#] #statut2').slideToggle(1);
+          	$('.eqLogic[data-eqLogic_id=#id#] #statut2#id#').slideToggle(1);
           
         	if('#power_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
-              	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);
+              	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);
 			} else if('#power_state#' == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.refresh').hide(1);
@@ -219,12 +219,12 @@
               
               	$(".artwork_un_aTVremote").attr('src','plugins/aTVremote/core/template/aTVremote.png');
               	$(".artwork").attr('src','plugins/aTVremote/core/template/aTVremote.png');
-              	$('.eqLogic[data-eqLogic_id=#id#] #statut').text('Inactif');
+              	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text('Inactif');
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
         		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
-	          	$('.eqLogic[data-eqLogic_id=#id#] #statut').text(statut);              
+	          	$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);              
         	};
           	        	
 //ATV 4 ou 4K - App
@@ -235,7 +235,7 @@
       		var app_final = app_split[2];
 	    
       		if(typeof(app_split[1]) != "undefined" && app_split[1] !== null) {    	
-    			$('.eqLogic[data-eqLogic_id=#id#] #sum').text(app_final);
+    			$('.eqLogic[data-eqLogic_id=#id#] #sum#id#').text(app_final);
               
 			} else {
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
