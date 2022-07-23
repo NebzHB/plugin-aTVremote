@@ -28,7 +28,7 @@
 .power{
   	position : absolute;
   	left : 6px;
-  	top : 11px;
+  	top : 14px;
   	font-size : 1em; 
   	z-index:4;
   	opacity:1;
@@ -79,7 +79,7 @@
 }
 
 .appsBox{
-    top:7px;
+    top:11px;
     left:114px;
     position:absolute;
     z-index: 8;
@@ -94,59 +94,7 @@
 .appsBox:hover{
     opacity:0.4;
 }
-.oModal {
-    position: absolute;
-    z-index: 99999;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background: rgba(0, 0, 0, 0.8);
-    opacity:0;
-    -webkit-transition: opacity 400ms ease-in;
-    -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;
-    pointer-events: none;
-  	width:138px;
-}
-        
-.oModal:target {
-    opacity:1;
-    pointer-events: auto;
-}
-        
-.oModal:target > div {
-    margin: 10% auto;
-    transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-}
-        
-.oModal > div {
-    width: 138px;
-    position: absolute;
-    left: 0px;
-    top:72px;
-    border-radius: 5px;
-    background: black;
-    transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -webkit-transition: all 0.4s ease-in-out;
-}
-        
-.oModal > div header,.oModal > div footer {
-    border-bottom: 1px solid #e7e7e7;
-    border-radius: 5px 5px 0 0;
-}
-        
-.oModal > div h2 {
-    margin:0;
-}
-        
-.oModal > div section,.oModal > div > header, .oModal > div > footer {
-    padding:0px;
 /* Statut & Info */
-}
 marquee {
     -webkit-marquee-direction: left;
     -webkit-marquee-increment: 2px;
@@ -364,7 +312,141 @@ a > img:hover {
 }
 
 
+.downRafterA {
+    position: absolute;
+    top: 20.5px;
+    right: 118px;
+    cursor: pointer;
+    z-index: 4;
+    opacity: 0.3;
+}
 
+.downRafter2A {
+    position: absolute;
+    top: -6.5px;
+    left: 54px;
+    cursor: pointer; 
+    z-index: 4;
+    opacity: 0.6;
+}
+
+.downRafterA:hover {
+    opacity: 1;
+}
+.downRafter2A:hover {
+    opacity: 1;
+}
+.downpanelA {
+      width: 138px;
+      height: 276px;
+      float: left;
+      position: absolute;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.9);
+      top: -300px;
+  }
+
+.downRafterApp {
+    position: absolute;
+    top: 20.5px;
+    right: 118px;
+    cursor: pointer;
+    z-index: 4;
+    opacity: 0.3;
+}
+
+.downRafter2App {
+    position: absolute;
+    top: -6.5px;
+    left: 54px;
+    cursor: pointer; 
+    z-index: 4;
+    opacity: 0.6;
+}
+
+.downRafterApp:hover {
+    opacity: 1;
+}
+.downRafter2App:hover {
+    opacity: 1;
+}
+.downpanelApp {
+      width: 138px;
+      height: 276px;
+      float: left;
+      position: absolute;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.9);
+      top: -300px;
+  }
+
+.infoBoxApp{
+    top:181px;
+    left:117px;
+    position:absolute;
+    z-index: 8;
+    opacity: 0.8;
+    cursor:pointer;
+}
+
+
+.infoBoxApp:hover{
+    opacity:0.4;
+}
+
+/*.oModal {
+    position: absolute;
+    z-index: 99999;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.8);
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+  	width:138px;
+}
+        
+.oModal:target {
+    opacity:1;
+    pointer-events: auto;
+}
+        
+.oModal:target > div {
+    margin: 10% auto;
+    transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+}
+        
+.oModal > div {
+    width: 138px;
+    position: absolute;
+    left: 0px;
+    top:72px;
+    border-radius: 5px;
+    background: black;
+    transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+}
+        
+.oModal > div header,.oModal > div footer {
+    border-bottom: 1px solid #e7e7e7;
+    border-radius: 5px 5px 0 0;
+}
+        
+.oModal > div h2 {
+    margin:0;
+}
+        
+.oModal > div section,.oModal > div > header, .oModal > div > footer {
+    padding:0px;
+
+}*/
 
 /*Back to the futur
 	Sildebar*/
