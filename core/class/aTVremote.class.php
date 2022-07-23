@@ -1238,11 +1238,11 @@ class aTVremoteCmd extends cmd {
 					if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
 						$eqLogic->aTVdaemonExecute($logical.'='.$_options['select']);
 					} else {
-						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.((isset($cmds))?' -> '.$cmds:''));
+						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.((isset($cmds))?' -> '.$cmds:'');
 					}
 				break;
 			}
-			log::add('aTVremote','debug','Command : '.$logical.(isset($cmds))?' -> '.$cmds:''));
+			log::add('aTVremote','debug','Command : '.$logical.((isset($cmds))?' -> '.$cmds:'');
 		}
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
