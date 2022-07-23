@@ -266,7 +266,9 @@ class aTVremote extends eqLogic {
 					array_push($AppList,$lib[1].'|'.$lib[0]);
 				}
 				$AppList=join(';',$AppList);
-				
+				$result["id"] = $eqLogic->getId();
+				$result = array("id" => $eqLogic->getId(), "applist" => $AppList);
+				event::add('aTVremote::applist', $result);			
 
 				$launch_app = $eqLogic->getCmd(null, 'launch_app');
 				if (is_object($launch_app)) {
