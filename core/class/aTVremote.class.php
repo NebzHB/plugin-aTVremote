@@ -90,7 +90,7 @@ class aTVremote extends eqLogic {
 	}
 
 	public static function dependancy_install() {
-		$dep_info = self::dependancy_info();
+		//$dep_info = self::dependancy_info();
 		log::remove(__CLASS__ . '_dep');
 		return array('script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder('aTVremote') . '/dependance', 'log' => log::getPathToLog(__CLASS__ . '_dep'));
 	}
@@ -1092,7 +1092,7 @@ class aTVremoteCmd extends cmd {
 		$eqLogic = $this->getEqlogic();
 
 		$logical = $this->getLogicalId();
-		$result=null;
+		$changed=false;
 		
 		if ($logical != 'refresh'){
 			switch (strtolower($logical)) {
@@ -1105,11 +1105,11 @@ class aTVremoteCmd extends cmd {
 					// pre-set
 					$play_state = $eqLogic->getCmd(null, 'play_state');
 					if (is_object($play_state)) {
-						$eqLogic->checkAndUpdateCmd($play_state, "0");
+						$changed = $eqLogic->checkAndUpdateCmd($play_state, "0") || $changed;
 					}
 					$play_human = $eqLogic->getCmd(null, 'play_human');
 					if (is_object($play_human)) {
-						$eqLogic->checkAndUpdateCmd($play_human, "En pause");
+						$changed = $eqLogic->checkAndUpdateCmd($play_human, "En pause") || $changed;
 					}
 				break;
 				case 'set_repeat_all':
@@ -1238,11 +1238,11 @@ class aTVremoteCmd extends cmd {
 					if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
 						$eqLogic->aTVdaemonExecute($logical.'='.$_options['select']);
 					} else {
-						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.(($cmds)?' -> '.$cmds:''));
+						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.((isset($cmds))?' -> '.$cmds:''));
 					}
 				break;
 			}
-			log::add('aTVremote','debug','Command : '.$logical.(($cmds)?' -> '.$cmds:''));
+			log::add('aTVremote','debug','Command : '.$logical.(isset($cmds))?' -> '.$cmds:''));
 		}
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
