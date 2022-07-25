@@ -1165,6 +1165,7 @@ class aTVremoteCmd extends cmd {
 					}
 				break;
 				case 'turn_off':
+					$eqLogic->aTVdaemonExecute('set_repeat=0');
 					//$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 					$eqLogic->aTVdaemonExecute('turn_off');
 					// pre-set
