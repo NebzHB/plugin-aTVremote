@@ -210,7 +210,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "repeat_human"
+			"logicalId": "repeat"
 		}, {
 			"name": "Shuffle",
 			"type": "info",
@@ -230,7 +230,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "shuffle_human"
+			"logicalId": "shuffle"
 		}, {
 			"name": "App Active",
 			"type": "info",
