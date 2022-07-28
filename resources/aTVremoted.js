@@ -90,14 +90,14 @@ function connectATV(mac,version) {
 	
 	// création canal des commandes
 	if(!aTVs.cmd[mac]) {
-		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
-			fs.mkdirSync(__dirname+'/../core/img/'+mac);
+		if (!fs.existsSync(__dirname+'/../core/img/artworks')) {
+			fs.mkdirSync(__dirname+'/../core/img/artworks');
 		}
 		const atvremoteParams = ['-i',mac];
 		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
 		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/artworks'});
 		Logger.log('SPAWN CMD : '+__dirname+'/atvremote/bin/atvremote '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
