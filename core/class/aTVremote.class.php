@@ -366,7 +366,7 @@ class aTVremote extends eqLogic {
 
 					$eqLogic->save();
 					
-					$result = array('id' => $aTVremote->getId(), 'name' => $res["name"], 'device' => $res['device'], 'ip' => $res["ip"], 'mac' => $res["mac"], 'fullModel' => $res["model"], 'version' => $res["version"], 'os' => $res["os"], 'osVersion' => $res["osVersion"]);
+					$result = array('id' => $eqLogic->getId(), 'name' => $res["name"], 'device' => $res['device'], 'ip' => $res["ip"], 'mac' => $res["mac"], 'fullModel' => $res["model"], 'version' => $res["version"], 'os' => $res["os"], 'osVersion' => $res["osVersion"]);
 					if(!is_object($aTVremote)) { // NEW
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
