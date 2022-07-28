@@ -681,32 +681,31 @@ class aTVremote extends eqLogic {
 
 			$isPlaying=false;
 			if(isset($aTVremoteinfo['device_state'])) {
-				$aTVremoteinfo['device_state']=ucfirst($aTVremoteinfo['device_state']);
 				$play_state = $this->getCmd(null, 'play_state');
 				$play_human = $this->getCmd(null, 'play_human');
-				switch($aTVremoteinfo['device_state']) {
-					case 'Idle' :
+				switch(strtolower($aTVremoteinfo['device_state'])) {
+					case 'idle' :
 						$changed=$this->checkAndUpdateCmd($play_human, __("Inactif", __FILE__)) || $changed;
 						break;
-					case 'Paused':
+					case 'paused':
 						$changed=$this->checkAndUpdateCmd($play_human, __("En pause", __FILE__)) || $changed;
 						break;
-					case 'No media':
+					case 'no media':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Aucun Media", __FILE__)) || $changed;
 						break;
-					case 'Playing':
+					case 'playing':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Lecture en cours", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
-					case 'Loading':
+					case 'loading':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Chargement en cours", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
-					case 'Fast forward':
+					case 'fast forward':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Avance rapide", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
-					case 'Fast backward':
+					case 'fast backward':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Recul rapide", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
@@ -834,7 +833,7 @@ class aTVremote extends eqLogic {
 			}
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-			if($hashChanged && $aTVremoteinfo['device_state'] != 'Idle') {
+			if($hashChanged && $aTVremoteinfo['device_state'] != 'idle' && $aTVremoteinfo['media_type'] != 'unknown') {
 				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
 					$artwork = $this->getImage(true);
 					$artwork_url = $this->getCmd(null, 'artwork_url');
