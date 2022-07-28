@@ -818,7 +818,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 			if(isset($aTVremoteinfo['repeat'])) { // always return Off
-				$repeat_human = $this->getCmd(null, 'repeat_human');
+				$repeat_human = $this->getCmd(null, 'repeat');
 				$repeat_state = $this->getCmd(null, 'repeat_state');
 				if (is_object($repeat_human) && is_object($repeat_state)) {
 					switch(ucfirst($aTVremoteinfo['repeat'])) {
@@ -838,7 +838,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 			if(isset($aTVremoteinfo['shuffle'])) { // always return False
-				$shuffle_human = $this->getCmd(null, 'shuffle_human');
+				$shuffle_human = $this->getCmd(null, 'shuffle');
 				$shuffle_state = $this->getCmd(null, 'shuffle_state');
 				if (is_object($shuffle_human) && is_object($shuffle_state)) {
 				    switch(ucfirst($aTVremoteinfo['shuffle'])) {
