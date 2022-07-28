@@ -640,7 +640,7 @@ class aTVremote extends eqLogic {
 			$this->checkAndUpdateCmd($artwork_url, $artwork);
 		}
 		
-		$domColors=getDominantColor($dest,3,true);
+		$domColors=aTVremote::getDominantColor($dest,3,true);
 		if(is_array($domColors)) {
 			$domColor1 = $this->getCmd(null, 'domColor1');
 			if(is_object($domColor1)) {
@@ -658,7 +658,62 @@ class aTVremote extends eqLogic {
 		
 		return true;
 	}
+	public static function getDominantColor($_pathimg, $_level = null, $_smartMode = false) {
+		$colors = array();
+		$i = imagecreatefromjpeg($_pathimg);
+		$imagesX = imagesx($i);
+		$imagesY = imagesy($i);
+		$ratio = $imagesX / $imagesY;
+		$size = 270;
+		$img = imagecreatetruecolor($size, $size / $ratio);
+		imagecopyresized($img, $i, 0, 0, 0, 0, $size, $size / $ratio, $imagesX, $imagesY);
+		$imagesX = imagesx($img);
+		$imagesY = imagesy($img);
+		for ($x = 0; $x < $imagesX; $x++) {
+			for ($y = 0; $y < $imagesY; $y++) {
+				$rgb = imagecolorat($img, $x, $y);
+				if ($_smartMode) {
+					$sum = (($rgb >> 16) & 0xFF) + (($rgb >> 8) & 0xFF) + ($rgb & 0xFF);
+					if ($sum < 150) {
+						continue;
+					}
+					if ($sum > 650) {
+						continue;
+					}
+				}
+				if (!isset($colors[$rgb])) {
+					$colors[$rgb] = array('value' => $rgb, 'nb' => 0);
+				}
+				$colors[$rgb]['nb']++;
+			}
+		}
+		usort($colors, function ($a, $b) {
+			return $b['nb'] - $a['nb'];
+		});
 
+		if ($_level == null) {
+			if ($colors[0]['value'] == 0) {
+				return '#' . substr("000000" . dechex($colors[1]['value']), -6);
+			}
+			return '#' . substr("000000" . dechex($colors[0]['value']), -6);
+		}
+		$return = array();
+		$colors = array_slice($colors, 0, $_level * 50);
+		$previous_color = -1;
+		foreach ($colors as $color) {
+			if ($_smartMode && $previous_color > 0 && colorsAreClose($previous_color, $color['value'], 50)) {
+				continue;
+			}
+			$return[] = '#' . substr("000000" . dechex($color['value']), -6);
+			$previous_color = $color['value'];
+		}
+		if (count($return) < $_level && count($return) > 0) {
+			for ($i = 0; $i < ($_level - count($return)); $i++) {
+				$return[] = $return[$i];
+			}
+		}
+		return $return;
+	}
 	public function setaTVremoteInfo($aTVremoteinfo=null) {
       		try {
 			if($aTVremoteinfo == null && $this->getConfiguration('version',0) == '3') { // is aTV3, fetch info
