@@ -685,6 +685,9 @@ class aTVremote extends eqLogic {
 					case 'paused':
 						$changed=$this->checkAndUpdateCmd($play_human, __("En pause", __FILE__)) || $changed;
 						break;
+					case 'stopped':
+						$changed=$this->checkAndUpdateCmd($play_human, __("Stoppé", __FILE__)) || $changed;
+						break;
 					case 'no media':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Aucun Media", __FILE__)) || $changed;
 						break;
