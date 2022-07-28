@@ -6,10 +6,23 @@
 
 <div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
   
-  <link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/HomePod.css" />
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/HomePod.css" />
+	<style>
+		:root {
+			--gradient-color1#id#: blue;
+			--gradient-color2#id#: white;
+			--gradient-color3#id#: red;
+		}
+
+		.gradientColor#id# {
+			/* background: linear-gradient(0deg, var(--background-color-from#id#) 0%, var(--background-color-to#id#) 100%); */
+			background: linear-gradient(0deg, var(--gradient-color1#id#) 0%, var(--gradient-color2#id#) 50%, var(--gradient-color3#id#) 100%);
+		}
+	</style>
 
 
   	<div class="haut_aTVremote_widH" >
+		<div class="gradientBackgroundH gradientColor#id#"></div>
       	<div class="haut">
 		
 <!--  Partie Supérieure -->
@@ -35,7 +48,7 @@
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
           
-			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
+			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" onload="modifyGradient#id#()"/>
 			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer#id#" />
           	
 			         
@@ -81,7 +94,7 @@
 <!--  Statut & Info -->   
           
 <!--  Control & Navigation -->  
-      <div class="gameplay" style="height:80px">    	
+      <div class="gameplayH" style="height:80px">    	
           	
         <br>
 			<div style="display: block; margin: -16px 72px 10px;" class="playback">
@@ -271,9 +284,17 @@
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
       
-      
+		function modifyGradient#id#(){
+			/*const colorThief = new ColorThief();
+			const img = document.getElementById("color-thief-img");
+			const div = document.getElementById("color-thief-div");
+			const BgPalette = colorThief.getPalette(img, 0);*/
+			console.log("1.modify gradient : #domColor1# #domColor2# #domColor3#");
+			document.documentElement.style.setProperty('--gradient-color1#id#', '#domColor1#');
+			document.documentElement.style.setProperty('--gradient-color2#id#', '#domColor2#');
+			document.documentElement.style.setProperty('--gradient-color3#id#', '#domColor3#');
+		}
 
-      
 /* Back to the futur Sildebar */    
       
       	/*var time = '#position#';
