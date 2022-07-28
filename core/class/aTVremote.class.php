@@ -831,7 +831,7 @@ class aTVremote extends eqLogic {
 			}
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-			if($hashChanged && $aTVremoteinfo['device_state'] != 'idle' && $aTVremoteinfo['media_type'] != 'unknown' && $aTVremoteinfo['title'] != null) {
+			if($hashChanged && $aTVremoteinfo['device_state'] != 'idle' && $aTVremoteinfo['media_type'] != 'unknown') {
 				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
 					$artwork = $this->getImage(true);
 					$artwork_url = $this->getCmd(null, 'artwork_url');
