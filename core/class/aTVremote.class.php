@@ -236,6 +236,10 @@ class aTVremote extends eqLogic {
 		$eventType = init('eventType');
 		
 		$eqLogic = aTVremote::byLogicalId(init('mac'), 'aTVremote');
+		if(!is_object($eqLogic)) {
+			log::add('aTVremote','debug','Reçu un évenement pour '.init('mac').' mais il n\'existe pas !');
+			return;
+		}
 		
 		log::add('aTVremote', 'debug', 'Passage dans la fonction event ' . $eventType . ' pour '.$eqLogic->getName());
 		if ($eventType == 'error'){
@@ -248,12 +252,12 @@ class aTVremote extends eqLogic {
 			case 'playing':
 				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
 				$result = json_decode(init('data'),true);
-				$result["id"] = $aTVremote->getId();
+				$result["id"] = $eqLogic->getId();
 				event::add('aTVremote::playing', $result);
 			break;
 			case 'powerstate':
 				$eqLogic->setPowerstate(init('data'));
-				$result = array("id" => $aTVremote->getId(), "powerstate" => json_decode(init('data'),true)['power_state']);
+				$result = array("id" => $eqLogic->getId(), "powerstate" => json_decode(init('data'),true)['power_state']);
 				event::add('aTVremote::powerstate', $result);
 			break;
 			case 'app':
