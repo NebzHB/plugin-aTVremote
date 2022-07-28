@@ -1,5 +1,14 @@
 {
 	"commands": [{
+			"name": "Rafraichir",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"logicalId": "refresh"
+		}, {
 			"name": "Lecture en cours",
 			"type": "info",
 			"subtype": "binary",
@@ -284,14 +293,35 @@
 			"isVisible": 1,
 			"logicalId": "set_volume"
 		}, {
-			"name": "Rafraichir",
-			"type": "action",
-			"subtype": "other",
+			"name": "domColor1",
+			"type": "info",
+			"subtype": "string",
 			"display": {
 				"generic_type": "DONT"
 			},
-			"isVisible": 1,
-			"logicalId": "refresh"
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "domColor1"
+		}, {
+			"name": "domColor2",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "domColor2"
+		}, {
+			"name": "domColor3",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "domColor3"
 		}
 	]
 }
