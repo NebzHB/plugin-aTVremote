@@ -252,14 +252,9 @@ class aTVremote extends eqLogic {
 		{
 			case 'playing':
 				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
-				$result = json_decode(init('data'),true);
-				$result["id"] = $eqLogic->getId();
-				event::add('aTVremote::playing', $result);
 			break;
 			case 'powerstate':
 				$eqLogic->setPowerstate(init('data'));
-				$result = array("id" => $eqLogic->getId(), "powerstate" => json_decode(init('data'),true)['power_state']);
-				event::add('aTVremote::powerstate', $result);
 			break;
 			case 'app':
 				$apps = explode(', App: ',init('data'));
@@ -270,10 +265,7 @@ class aTVremote extends eqLogic {
 					$lib = explode(' (',str_replace(')','',$app));
 					array_push($AppList,$lib[1].'|'.$lib[0]);
 				}
-				$AppList=join(';',$AppList);
-				$result["id"] = $eqLogic->getId();
-				$result = array("id" => $eqLogic->getId(), "applist" => $AppList);
-				event::add('aTVremote::applist', $result);			
+				$AppList=join(';',$AppList);	
 
 				$launch_app = $eqLogic->getCmd(null, 'launch_app');
 				if (is_object($launch_app)) {
@@ -286,8 +278,6 @@ class aTVremote extends eqLogic {
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
 				}
-				$result = array("id" => $eqLogic->getId(), "volume" => explode('.',init('data'))[0]);
-				event::add('aTVremote::volume', $result);
 			break;
 		}
 	}
@@ -452,6 +442,7 @@ class aTVremote extends eqLogic {
 
 				$eqLogic->save();
 
+				$result = array('id' => $eqLogic->getId(), 'name' => $device["name"], 'device' => $deviceName, 'ip' => $device['address'], 'mac' => $device["identifier"], 'fullModel' => $device['device_info']['model_str'], 'version' => $version, 'os' => $device['device_info']['operating_system'], 'osVersion' => $device['device_info']['version']);
 				if(!is_object($wasExisting)) { // NEW
 					log::add('aTVremote','info','--'.$device["name"].'-Ajouté');
 					event::add('jeedom::alert', array(
@@ -459,6 +450,8 @@ class aTVremote extends eqLogic {
 						'page' => 'aTVremote',
 						'message' => __('Nouvelle AppleTV detectée ' .$device["name"], __FILE__),
 					));
+					$result['type'] = 'newNode';
+					event::add('aTVremote::scan', $result);
 				} else { // UPDATED
 					log::add('aTVremote','info','--'.$device["name"].'-Modifié');
 					event::add('jeedom::alert', array(
@@ -466,6 +459,8 @@ class aTVremote extends eqLogic {
 						'page' => 'aTVremote',
 						'message' => __('AppleTV mise à jour avec succès ' .$device["name"], __FILE__),
 					));
+					$result['type'] = 'updateNode';
+					event::add('aTVremote::scan', $result);
 				}
 				$return[] = $device;
 			}
