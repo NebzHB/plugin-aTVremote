@@ -587,6 +587,7 @@ class aTVremote extends eqLogic {
 		$hash=md5($hash);
 		
 		$id=$this->getLogicalId();
+		$id="artworks";
       
 		$NEWheight=-1;
 		$NEWwidth=138;
@@ -613,7 +614,7 @@ class aTVremote extends eqLogic {
 			$t=1;
 			while(!file_exists($src) && $t < 16) {
 				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/15');
-				usleep(0.3*1000000);
+				usleep(0.333*1000000);
 				//sleep(1);
 				$t++;
 			}
@@ -832,6 +833,9 @@ class aTVremote extends eqLogic {
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
 			if($hashChanged && $aTVremoteinfo['device_state'] != 'idle' && $aTVremoteinfo['media_type'] != 'unknown') {
+				/*if($aTVremoteinfo['title'] == null) {
+					sleep(2);
+				}*/
 				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
 					$artwork = $this->getImage(true);
 					$artwork_url = $this->getCmd(null, 'artwork_url');
