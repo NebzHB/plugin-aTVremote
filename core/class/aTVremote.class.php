@@ -640,6 +640,22 @@ class aTVremote extends eqLogic {
 			$this->checkAndUpdateCmd($artwork_url, $artwork);
 		}
 		
+		$domColors=getDominantColor($dest,3,true);
+		if(is_array($domColors)) {
+			$domColor1 = $this->getCmd(null, 'domColor1');
+			if(is_object($domColor1)) {
+				$this->checkAndUpdateCmd($domColor1, $domColors[0]);
+			}
+			$domColor2 = $this->getCmd(null, 'domColor2');
+			if(is_object($domColor2)) {
+				$this->checkAndUpdateCmd($domColor2, $domColors[1]);
+			}
+			$domColor3 = $this->getCmd(null, 'domColor3');
+			if(is_object($domColor3)) {
+				$this->checkAndUpdateCmd($domColor3, $domColors[2]);
+			}
+		}
+		
 		return true;
 	}
 
