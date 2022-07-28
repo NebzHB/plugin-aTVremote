@@ -352,7 +352,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
 						$eqLogic->setDisplay('width','138px');
-                      				$eqLogic->setDisplay('height','500px');
+                      	$eqLogic->setDisplay('height','500px');
 					} else $eqLogic = $aTVremote;
 					
 					$eqLogic->setConfiguration('device', $res['device']);
@@ -585,36 +585,6 @@ class aTVremote extends eqLogic {
 				$this->refreshWidget();
 		}		
 	}
-	public function setApp($app,$app_id) {
-		$changed = false;
-		if($this->getConfiguration('version',0) != '3'){
-			
-			// Retour App Active 		  
-
-			/*log::add('aTVremote','debug','app active : '.$app);
-			$app_id = explode('.',$app_id);
-			$app_secour = $app_id[2];
-			log::add('aTVremote','debug','app active secour : '.$app_secour);*/
-	  
-			$app_run = $this->getCmd(null, 'app');
-			$changed=$this->checkAndUpdateCmd($app_run, $app_id) || $changed;
-			/*
-			if($app!=null && $app!='Unknown'){
-				$app_run = $this->getCmd(null, 'app');
-				$changed=$this->checkAndUpdateCmd($app_run, $app) || $changed;
-				  
-			} elseif($app==null) {
-				$app_run = $this->getCmd(null, 'app');
-				$changed=$this->checkAndUpdateCmd($app_run, $app_secour) || $changed;
-				  
-			} else {
-				$app_run = $this->getCmd(null, 'app');
-				$changed=$this->checkAndUpdateCmd($app_run, '-') || $changed;
-						
-			}*/	
-		}
-		return $changed;
-	}
 
 	public function setArtwork($hash) {
         	
@@ -798,11 +768,11 @@ class aTVremote extends eqLogic {
 			
 
 				if($this->getConfiguration('version',0) != '3') {
-					if(isset($aTVremoteinfo['app_id'])) {
-						$changed=$this->setApp($aTVremoteinfo['app'],$aTVremoteinfo['app_id']) || $changed;
-					} else {
-						$app = $this->getCmd(null, 'app');
-						if(is_object($app)) {
+					$app = $this->getCmd(null, 'app');
+					if(is_object($app)) {
+						if(isset($aTVremoteinfo['app_id'])) {
+							$changed=$this->checkAndUpdateCmd($app, $aTVremoteinfo['app_id']) || $changed;
+						} else {
 							$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 						}
 					}
