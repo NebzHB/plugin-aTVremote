@@ -711,42 +711,39 @@ class aTVremote extends eqLogic {
 				$play_human = $this->getCmd(null, 'play_human');
 				switch($aTVremoteinfo['device_state']) {
 					case 'Idle' :
-						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Inactif") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Inactif", __FILE__)) || $changed;
 						break;
 					case 'Paused':
-						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "En pause") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("En pause", __FILE__)) || $changed;
 						break;
 					case 'No media':
-						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Aucun Media") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Aucun Media", __FILE__)) || $changed;
 						break;
 					case 'Playing':
-						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Lecture en cours") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Lecture en cours", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
 					case 'Loading':
-						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Chargement en cours") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Chargement en cours", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
 					case 'Fast forward':
-						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Avance rapide") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Avance rapide", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
 					case 'Fast backward':
-						$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Recul rapide") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Recul rapide", __FILE__)) || $changed;
 						$isPlaying=true;
 						break;
 					default:
-						$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
-						$changed=$this->checkAndUpdateCmd($play_human, "Inconnu") || $changed;
+						$changed=$this->checkAndUpdateCmd($play_human, __("Inconnu", __FILE__)) || $changed;
 						break;
 				}
+			}
+			if($isPlaying) {
+				$changed=$this->checkAndUpdateCmd($play_state, "1") || $changed;
+			} else {
+				$changed=$this->checkAndUpdateCmd($play_state, "0") || $changed;
 			}
 			
 			// if hash changed
@@ -821,34 +818,42 @@ class aTVremote extends eqLogic {
 				}
 			}
 			if(isset($aTVremoteinfo['repeat'])) { // always return Off
-				$repeat = $this->getCmd(null, 'repeat');
-				if (is_object($repeat)) {
+				$repeat_human = $this->getCmd(null, 'repeat_human');
+				$repeat_state = $this->getCmd(null, 'repeat_state');
+				if (is_object($repeat_human) && is_object($repeat_state)) {
 					switch(ucfirst($aTVremoteinfo['repeat'])) {
 						case 'Off':
-							$changed=$this->checkAndUpdateCmd($repeat, 'Non') || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __('Non', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_state, '0') || $changed;
 						break;
 						case 'Track':
-							$changed=$this->checkAndUpdateCmd($repeat, 'Piste') || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __('Piste', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_state, '1') || $changed;
 						break;
 						case 'All':
-							$changed=$this->checkAndUpdateCmd($repeat, 'Tout') || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __('Tout', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_state, '2') || $changed;
 						break;
 					}
 				}
 			}
 			if(isset($aTVremoteinfo['shuffle'])) { // always return False
-				$shuffle = $this->getCmd(null, 'shuffle');
-				if (is_object($shuffle)) {
+				$shuffle_human = $this->getCmd(null, 'shuffle_human');
+				$shuffle_state = $this->getCmd(null, 'shuffle_state');
+				if (is_object($shuffle_human) && is_object($shuffle_state)) {
 				    switch(ucfirst($aTVremoteinfo['shuffle'])) {
 					case 'Off':                     
-								$changed=$this->checkAndUpdateCmd($shuffle, 'Non') || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __('Non', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_state, '0') || $changed;
 					break;
 					case 'Songs':
-								$changed=$this->checkAndUpdateCmd($shuffle, 'Songs') || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __('Chansons', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_state, '1') || $changed;
 					break;
-					case 'Albums':
-								$changed=$this->checkAndUpdateCmd($shuffle, 'Albums') || $changed;
-					break;
+					/*case 'Albums':
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __(''Albums', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_state, '2') || $changed;
+					break;*/
 				    }
 				}
 			}
