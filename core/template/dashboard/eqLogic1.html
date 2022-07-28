@@ -9,9 +9,9 @@
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/HomePod.css" />
 	<style>
 		:root {
-			--gradient-color1#id#: blue;
-			--gradient-color2#id#: white;
-			--gradient-color3#id#: red;
+			--gradient-color1#id#: #323232;
+			--gradient-color2#id#: #515151;
+			--gradient-color3#id#: #3d3d3d;
 		}
 
 		.gradientColor#id# {
@@ -285,11 +285,6 @@
 		});
       
 		function modifyGradient#id#(){
-			/*const colorThief = new ColorThief();
-			const img = document.getElementById("color-thief-img");
-			const div = document.getElementById("color-thief-div");
-			const BgPalette = colorThief.getPalette(img, 0);*/
-			console.log("1.modify gradient : #domColor1# #domColor2# #domColor3#");
 			document.documentElement.style.setProperty('--gradient-color1#id#', '#domColor1#');
 			document.documentElement.style.setProperty('--gradient-color2#id#', '#domColor2#');
 			document.documentElement.style.setProperty('--gradient-color3#id#', '#domColor3#');
