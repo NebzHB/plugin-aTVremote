@@ -17,6 +17,24 @@
 }
 
 /* Partie supérieure */
+.gradientBackground {
+	width: 138px;
+	height: 250px;
+	position: absolute;
+	opacity: 0.2;
+}
+.gradientBackgroundH {
+	top:86px;
+	left:52px;
+	width: 154px;
+	height: 154px;
+	position: absolute;
+	opacity: 0.3;
+	border-radius:90px
+}
+.gameplayH{
+	position:absolute;
+}
 .haut{
     width: 138px;
     height: 40px;
