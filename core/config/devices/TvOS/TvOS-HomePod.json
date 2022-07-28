@@ -200,7 +200,17 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "repeat"
+			"logicalId": "repeat_state"
+		}, {
+			"name": "Repeat Humain",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat_human"
 		}, {
 			"name": "Shuffle",
 			"type": "info",
@@ -210,7 +220,17 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "shuffle"
+			"logicalId": "shuffle_state"
+		}, {
+			"name": "Shuffle Humain",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle_human"
 		}, {
 			"name": "App Active",
 			"type": "info",
