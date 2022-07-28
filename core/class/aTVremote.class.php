@@ -23,35 +23,36 @@ class aTVremote extends eqLogic {
 	/***************************Attributs*******************************/	
 	public static function cron($_eqlogic_id = null) {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
-		foreach ($eqLogics as $aTVremote) {
+		foreach ($eqLogics as $eqLogic) {
 			try {
-				if(is_object($aTVremote)) {
-					if($aTVremote->getConfiguration('version','') == '3'){
-						$play_state = $aTVremote->getCmd(null, 'play_state');
+				if(is_object($eqLogic)) {
+					if($eqLogic->getConfiguration('version','') == '3'){
+						$play_state = $eqLogic->getCmd(null, 'play_state');
 						if(is_object($play_state)) {
 							$val=$play_state->execCmd();
 							if($val) {
-								$aTVremote->setaTVremoteInfo();
+								$eqLogic->setaTVremoteInfo();
 							}
 						}
 					} else {
-						if($aTVremote->getConfiguration('device','') == 'HomePod') {
-							$play_state = $aTVremote->getCmd(null, 'play_state');
+						if($eqLogic->getConfiguration('device','') == 'HomePod') {
+							$play_state = $eqLogic->getCmd(null, 'play_state');
 							if(is_object($play_state)) {
 								$val=$play_state->execCmd();
 								if($val) { // if playing : 1min
-									$aTVremote->aTVdaemonExecute('volume');
+									$eqLogic->aTVdaemonExecute('volume');
 								} else { // else : 5min
 									$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
 									if ($c->isDue()) {
-										$aTVremote->aTVdaemonExecute('volume');
+										$eqLogic->aTVdaemonExecute('volume');
 									}
 								}
 							}
-						}
-						$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
-						if ($nc->isDue()) {
-							$aTVremote->aTVdaemonExecute('power_state');
+						} else {
+							$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
+							if ($nc->isDue()) {
+								$eqLogic->aTVdaemonExecute('power_state');
+							}
 						}
 					}
 				}
@@ -343,8 +344,8 @@ class aTVremote extends eqLogic {
 					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
 					$res['osVersion']=$subModElmt[1];
 					
-					$aTVremote = aTVremote::byLogicalId($res["mac"], 'aTVremote');
-					if (!is_object($aTVremote)) {
+					$wasExisting = aTVremote::byLogicalId($res["mac"], 'aTVremote');
+					if (!is_object($wasExisting)) {
 						$eqLogic = new aTVremote();
 						$eqLogic->setName($res["name"]);
 						$eqLogic->setIsEnable(0);
@@ -353,7 +354,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setEqType_name('aTVremote');
 						$eqLogic->setDisplay('width','138px');
                       	$eqLogic->setDisplay('height','500px');
-					} else $eqLogic = $aTVremote;
+					} else $eqLogic = $wasExisting;
 					
 					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
@@ -367,7 +368,7 @@ class aTVremote extends eqLogic {
 					$eqLogic->save();
 					
 					$result = array('id' => $eqLogic->getId(), 'name' => $res["name"], 'device' => $res['device'], 'ip' => $res["ip"], 'mac' => $res["mac"], 'fullModel' => $res["model"], 'version' => $res["version"], 'os' => $res["os"], 'osVersion' => $res["osVersion"]);
-					if(!is_object($aTVremote)) { // NEW
+					if(!is_object($wasExisting)) { // NEW
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
@@ -428,8 +429,8 @@ class aTVremote extends eqLogic {
 				log::add('aTVremote','info','-Address :'.$device['address']);
 				log::add('aTVremote','info','-MAC :'.$device["identifier"]);
 
-				$aTVremote = aTVremote::byLogicalId($device["identifier"], 'aTVremote');
-				if (!is_object($aTVremote)) {
+				$wasExisting = aTVremote::byLogicalId($device["identifier"], 'aTVremote');
+				if (!is_object($wasExisting)) {
 					$eqLogic = new aTVremote();
 					$eqLogic->setName($device["name"]);
 					$eqLogic->setIsEnable(0);
@@ -438,7 +439,7 @@ class aTVremote extends eqLogic {
 					$eqLogic->setEqType_name('aTVremote');
 					$eqLogic->setDisplay('width','138px');
 					$eqLogic->setDisplay('height','500px');
-				} else $eqLogic = $aTVremote;
+				} else $eqLogic = $wasExisting;
 
 				$eqLogic->setConfiguration('device', $deviceName);
 				$eqLogic->setConfiguration('ip', $device['address']);
@@ -451,7 +452,7 @@ class aTVremote extends eqLogic {
 
 				$eqLogic->save();
 
-				if(!is_object($aTVremote)) { // NEW
+				if(!is_object($wasExisting)) { // NEW
 					log::add('aTVremote','info','--'.$device["name"].'-Ajouté');
 					event::add('jeedom::alert', array(
 						'level' => 'warning',
