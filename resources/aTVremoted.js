@@ -115,6 +115,8 @@ function connectATV(mac,version) {
 					jsend({eventType: 'app', data : data, mac: mac});
 				} else if(data.includes('Could not find any Apple TV on current network')) {
 					lastErrorMsg=data;
+				} else if(data.includes('No artwork is currently available')) {
+					jsend({eventType: 'reaskArtwork', mac: mac});
 				} 
 				
 				
@@ -125,6 +127,7 @@ function connectATV(mac,version) {
 		aTVs.cmd[mac].stderr.on('data', function(data) {
 			Logger.log("CMD CHAN ERR :"+data.toString(),LogType.ERROR);
 			lastErrorMsg=data;
+			aTVs.cmd[mac].kill('SIGHUP');
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
