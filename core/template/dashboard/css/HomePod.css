@@ -21,7 +21,7 @@
 	width: 138px;
 	height: 300px;
 	position: absolute;
-	opacity: 0.2;
+	opacity: 0.5;
 }
 .gradientBackgroundH {
 	top:86px;
@@ -29,7 +29,7 @@
 	width: 154px;
 	height: 154px;
 	position: absolute;
-	opacity: 0.3;
+	opacity: 0.5;
 	border-radius:90px
 }
 .gameplayH{
