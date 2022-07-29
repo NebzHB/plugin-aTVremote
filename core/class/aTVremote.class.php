@@ -641,10 +641,11 @@ class aTVremote extends eqLogic {
 		}
 		
 		$domColors=aTVremote::getDominantColor($dest,3,true);
+		$domColorsD=aTVremote::getDominantColor($dest,3,false);
 		if(is_array($domColors)) {
 			$domColor1 = $this->getCmd(null, 'domColor1');
 			if(is_object($domColor1)) {
-				$this->checkAndUpdateCmd($domColor1, $domColors[0]);
+				$this->checkAndUpdateCmd($domColor1, $domColorsD[0]);
 			}
 			$domColor2 = $this->getCmd(null, 'domColor2');
 			if(is_object($domColor2)) {
