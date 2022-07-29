@@ -40,8 +40,8 @@
 }
 .power{
   	position : absolute;
-  	left : 6px;
-  	top : 11px;
+  	left : 9px;
+  	top : 13px;
   	font-size : 1em; 
   	z-index:4;
   	opacity:1;
@@ -122,8 +122,8 @@
 	/*border-radius: 10%;*/
 }
 .repeatBoxH{
-    top:90px;
-    left:99px;
+    top:88px;
+    left:98px;
     position:absolute;
     z-index: 8;
     cursor:pointer;
@@ -132,8 +132,8 @@
 
 
 .infoBox{
-    top:157px;
-    left:117px;
+    top:158px;
+    left:118px;
     position:absolute;
     z-index: 8;
     opacity: 0.8;
@@ -149,8 +149,8 @@
 }
 
 .appsBox{
-    top:7px;
-    left:114px;
+    top:11px;
+    left:109px;
     position:absolute;
     z-index: 8;
     opacity: 0.8;
@@ -307,7 +307,7 @@ a > img:hover {
 }
 .btn_aTVremote_leftH{
   	left:51px;
-  	top:150px;
+  	top:149px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 1;
@@ -347,8 +347,8 @@ a > img:hover {
     position:absolute;
 }
 .btn_aTVremote_rightH{
-  	left:174px;
-  	top:150px;
+  	left:176px;
+  	top:149px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 1;
