@@ -247,7 +247,9 @@ class aTVremote extends eqLogic {
 			log::add('aTVremote', 'error', init('description'));
 			return;
 		}
-		log::add('aTVremote','debug','Reçu du démon :'.init('data'));
+		if(init('data')) {
+			log::add('aTVremote','debug','Reçu du démon :'.init('data'));
+		}
 		switch ($eventType)
 		{
 			case 'playing':
@@ -277,6 +279,12 @@ class aTVremote extends eqLogic {
 				$volume = $eqLogic->getCmd(null, 'volume');
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
+				}
+			break;
+			case 'reaskArtwork':
+				$hash = $eqLogic->getCmd(null, 'hash');
+				if(is_object($hash)) {
+					$eqLogic->setArtwork($hash->execCmd());
 				}
 			break;
 		}
