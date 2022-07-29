@@ -297,7 +297,7 @@ a > img:hover {
   opacity:1;
 }
 .btn_aTVremote_left{
-  	left:1px;
+  	left:0px;
   	top:94px;
 	cursor:pointer;
 	z-index: 8;
@@ -338,7 +338,7 @@ a > img:hover {
 	opacity: 1;
 }
 .btn_aTVremote_right{
-  	left:107px;
+  	left:108px;
   	top:94px;
 	cursor:pointer;
 	z-index: 8;
