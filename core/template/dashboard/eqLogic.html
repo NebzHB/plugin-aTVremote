@@ -1,10 +1,21 @@
 <div class="eqLogic-widget eqLogic" style="max-width:138px;max-height:530px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:530px;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
   
   <link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+  <style>
+	:root {
+		--gradient-color1#id#: #323232;
+		--gradient-color2#id#: #515151;
+		--gradient-color3#id#: #3d3d3d;
+	}
 
+	.gradientColor#id# {
+		background: linear-gradient(0deg, var(--gradient-color1#id#) 0%, var(--gradient-color2#id#) 50%, var(--gradient-color3#id#) 100%);
+	}
+  </style>
 
   	<div class="haut_aTVremote_widget" >
-      	<div class="haut">
+		<div class="gradientBackground gradientColor#id#"></div>
+      		<div class="haut">
 		
 <!--  Partie Supérieure -->
   			<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="off#id#" class="onoff" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
@@ -59,7 +70,7 @@
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
           
-			<img src="#artwork_url#" class="artwork_un_aTVremote" />
+			<img src="#artwork_url#" class="artwork_un_aTVremote" onload="modifyGradient#id#()" />
 
           		<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" ><img class="aTVremote_up" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>              
 				<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" ><img class="aTVremote_left" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
@@ -394,7 +405,13 @@
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
-      
+
+		function modifyGradient#id#(){
+			document.documentElement.style.setProperty('--gradient-color1#id#', '#domColor1#');
+			document.documentElement.style.setProperty('--gradient-color2#id#', '#domColor2#');
+			document.documentElement.style.setProperty('--gradient-color3#id#', '#domColor3#');
+		}
+
 /* Back to the futur Sildebar */    
       
       	/*var time = '#position#';
