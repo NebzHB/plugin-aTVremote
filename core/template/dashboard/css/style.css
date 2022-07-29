@@ -140,8 +140,8 @@
     cursor:pointer;
 }
 .infoBoxH{
-    top:125px;
-    left:144px;
+    top:128px;
+    left:143px;
     position:absolute;
     z-index: 8;
     opacity: 0.8;
