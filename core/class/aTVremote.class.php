@@ -583,7 +583,6 @@ class aTVremote extends eqLogic {
 	}
 
 	public function setArtwork($hash) {
-        sleep(1);
 		$hash=md5($hash);
 		
 		$id=$this->getLogicalId();
@@ -604,6 +603,7 @@ class aTVremote extends eqLogic {
 		}
 
 		if(!file_exists($dest)) {
+			sleep(1);
 			if(file_exists($src)) {
 				log::add('aTVremote','debug','--src already exists, remove it...'.$src);
 				exec("sudo rm -f $src >/dev/null 2>&1");
