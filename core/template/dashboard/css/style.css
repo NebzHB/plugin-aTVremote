@@ -178,6 +178,15 @@ marquee {
     margin-right: 10px;
   	font-size:12px;
 }
+.downpanelH marquee {
+	-webkit-marquee-direction: left;
+    -webkit-marquee-increment: 2px;
+    -webkit-marquee-speed: 60ms;
+    width: 230px;
+    margin-left: 10px;
+    margin-right: 10px;
+  	font-size:12px;
+}
 .Statut_aTVremote{
   	width: 138px;
 	text-align:center;
