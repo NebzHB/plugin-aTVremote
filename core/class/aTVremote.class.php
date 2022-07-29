@@ -583,7 +583,7 @@ class aTVremote extends eqLogic {
 	}
 
 	public function setArtwork($hash) {
-        	
+        sleep(1);
 		$hash=md5($hash);
 		
 		$id=$this->getLogicalId();
