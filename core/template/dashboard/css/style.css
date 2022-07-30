@@ -280,7 +280,7 @@ marquee {
 
 .btn_aTVremote_up{
   	left:54px;
-  	top:41px;
+  	top:40px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 0;
@@ -363,7 +363,7 @@ a > img:hover {
 }
 .btn_aTVremote_down{
   	left:54px;
-  	top:147px;
+  	top:148px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 0;
