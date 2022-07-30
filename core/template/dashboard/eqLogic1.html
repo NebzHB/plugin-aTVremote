@@ -124,6 +124,7 @@
           	var statut = '#play_human#';
           	$('.eqLogic[data-eqLogic_id=#id#] #statut2#id#').slideToggle(1);
 			$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);
+			$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
         	if('#power_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
 			} else if('#power_state#' == 0){
