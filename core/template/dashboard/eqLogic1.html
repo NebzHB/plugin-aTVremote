@@ -39,7 +39,9 @@
 			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
 			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer#id#" />
           	     
-			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img class="aTVremote_left" src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;"/></a>
+			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;"/></a>
+          	<a class="btn_aTVremote_playbackH cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
+			<a class="btn_aTVremote_playbackH cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
 			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;"/></a>
 
 			<div class="downpanelH">
@@ -73,12 +75,10 @@
 <!--  Statut & Info -->   
           
 <!--  Control & Navigation -->  
-		<div class="gameplayH" style="height:94px">    	
-				<div style="display: block;position: relative;top:20px; margin: -14px 78px;" class="playback">
-					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:25px"/>&nbsp;&nbsp;&nbsp;</a>
-					<a class="btn_aTVremote_playback cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:25px"/>&nbsp;&nbsp;&nbsp;</a>
-					<a class="btn_aTVremote_playback cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:25px"/>&nbsp;&nbsp;&nbsp;</a>
-					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:25px"/></a>
+		<div class="gameplayH">    	
+				<div class="blocPlayH">
+					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:30px"/>&nbsp;&nbsp;</a>
+					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:30px"/></a>
 					<!--<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>-->
 				</div>
 
