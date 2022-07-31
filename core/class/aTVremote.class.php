@@ -277,7 +277,7 @@ class aTVremote extends eqLogic {
 			case 'volume':
 				$volume = $eqLogic->getCmd(null, 'volume');
 				if (is_object($volume)) {
-					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
+					$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]);
 				}
 			break;
 			case 'reaskArtwork':
