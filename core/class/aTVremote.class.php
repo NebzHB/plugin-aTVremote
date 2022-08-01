@@ -296,7 +296,13 @@ class aTVremote extends eqLogic {
 
 		if($output) {
 			$return = [];
-			$toMatch = '#Name: (.*)\s* Model/SW: (.*)\s* Address: (.*)\s* MAC: (.*)\s*#';
+			//$toMatch = '#Name: (.*)\s* Model/SW: (.*)\s* Address: (.*)\s* MAC: (.*)\s*#';
+			$toMatch='#Name: (.*)\s*Model/SW: (.*)\s*Address: (.*)\s*MAC: (.*)\s*Deep Sleep: (.*)\s*Identifiers:\s[^S]*Services:\n';
+			for($p=0;$p<4;$p++) {
+				$toMatch.='(?: - Protocol: ([^,]*), Port: ([^,]*), Credentials: ([^,]*), Requires Password: ([^,]*), Password: ([^,]*), Pairing: ([^\n]*)\n)?';
+			}
+			$toMatch.='#';
+
 
 
 			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
@@ -321,6 +327,8 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Model/SW :'.$res["model"]);
 					log::add('aTVremote','debug','Address :'.$res["ip"]);
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
+					array_shift($device);
+					log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
 					
 					$modElmt=explode(', ',$res['model']);
 					
@@ -386,7 +394,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 
-			log::add('aTVremote','info','Ajouté : '.json_encode($return));
+			log::add('aTVremote','info','Ajouté : '.json_encode($return,JSON_UNESCAPED_UNICODE));
 		}
 		return $return;
 	}	
