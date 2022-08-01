@@ -281,9 +281,13 @@ class aTVremote extends eqLogic {
 				}
 			break;
 			case 'reaskArtwork':
-				$hash = $eqLogic->getCmd(null, 'hash');
-				if(is_object($hash)) {
-					$eqLogic->setArtwork($hash->execCmd());
+				if($eqLogic->getConfiguration('version',0) != '3') {
+					$hash = $eqLogic->getCmd(null, 'hash');
+					if(is_object($hash)) {
+						$eqLogic->setArtwork($hash->execCmd());
+					}
+				} else {
+					log::add('aTVremote','debug','Pas de reask sur atv3');
 				}
 			break;
 		}
