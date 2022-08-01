@@ -1192,6 +1192,7 @@ class aTVremoteCmd extends cmd {
 							$currentVol=intval($volume->execCmd());
 							$currentVol-=5;
 							if($currentVol <0){$currentVol=0;}
+							log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
 							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
 						}
 					} else {
@@ -1210,6 +1211,7 @@ class aTVremoteCmd extends cmd {
 							$currentVol=intval($volume->execCmd());
 							$currentVol+=5;
 							if($currentVol >100){$currentVol=100;}
+							log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
 							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
 						}
 					} else {
@@ -1225,6 +1227,7 @@ class aTVremoteCmd extends cmd {
 						// pre-set volume
 						$volume = $eqLogic->getCmd(null, 'volume');
 						if (is_object($volume)) {
+							log::add('aTVremote','debug','PréChangement volume à '.$_options['slider']);
 							$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
 						}
 					}
