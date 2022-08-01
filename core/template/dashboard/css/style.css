@@ -275,8 +275,8 @@ marquee {
 	cursor:pointer;
 	z-index: 4;
 	opacity: 0;
-  	top:149px;
-    left:114px;
+  	top:150px;
+    left:113px;
 }
 .btn_aTVremote_playbackH:hover{
 	opacity: 1;
@@ -328,7 +328,7 @@ a > img:hover {
 }
 .btn_aTVremote_leftH{
   	left:51px;
-  	top:149px;
+  	top:150px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 1;
@@ -369,7 +369,7 @@ a > img:hover {
 }
 .btn_aTVremote_rightH{
   	left:176px;
-  	top:149px;
+  	top:150px;
 	cursor:pointer;
 	z-index: 8;
 	opacity: 1;
