@@ -36,8 +36,7 @@
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
           
-			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#title# - #artist# - #album#" />
-			<img src="plugins/aTVremote/core/template/dashboard/images/equalizer.gif" class="artwork_equalizerH" title="" id="equalizer#id#" />
+			<img src="#artwork_url#" class="artwork_un_aTVremoteH" title="#artist# - #title# - #album#" />
           	     
 			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;"/></a>
           	<a class="btn_aTVremote_playbackH cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
@@ -51,10 +50,10 @@
 					<section style="text-align: center;"> 
 						<img src='#artwork_url#' style="width:100px;" class="artwork"/><br>
 						<br/>
-						<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
-						<p class="titre2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
-						<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #artist# </a></p></center>
-						<p class="artist2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#artist#</marquee></a><br></p>
+						<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #artist# </a></p></center>
+						<p class="titre2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#artist#</marquee></a><br></p>
+						<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #title# </a></p></center>
+						<p class="artist2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
 						<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"> #album# </a></p></center>
 						<p class="album2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();">#album#</marquee></a><br></p>
 						<br>
@@ -69,8 +68,8 @@
 <!--  Statut & Info -->
 		<div class="info" style="height:20px;">
           	<br>
-			<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut#id#"></a></p>
-          	<p style='margin: -14px 0 0px'><a class="Statut_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2#id#">#play_human#</a></p>
+			<p style='text-align: center;top: 104px;position: absolute;width: 256px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px"/></p>
+          	
 		</div>
 <!--  Statut & Info -->   
           
@@ -116,7 +115,6 @@
 //ATV 4 ou 4K - Power + Statut
           
           	var statut = '#play_human#';
-          	$('.eqLogic[data-eqLogic_id=#id#] #statut2#id#').slideToggle(1);
 			$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text(statut);
 			$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
         	if('#power_state#' == 1){
@@ -159,9 +157,9 @@
 			$('.appBox').show(1);
                  
           	if('#play_human#' != "Lecture en cours"){
-          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+          		
             } else {
-          		$('.eqLogic[data-eqLogic_id=#id#] #equalizer#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.gif');
+          		$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
             }
             
 //ATV 4 ou 4K - Play_state
