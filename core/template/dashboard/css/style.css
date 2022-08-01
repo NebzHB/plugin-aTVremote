@@ -274,7 +274,7 @@ marquee {
   	position:absolute;
 	cursor:pointer;
 	z-index: 4;
-	opacity: 0.3;
+	opacity: 0;
   	top:149px;
     left:114px;
 }
