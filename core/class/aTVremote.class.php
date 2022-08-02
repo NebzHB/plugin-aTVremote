@@ -374,8 +374,8 @@ class aTVremote extends eqLogic {
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
-						$eqLogic->setDisplay('width','138px');
-                      				$eqLogic->setDisplay('height','500px');
+						/* $eqLogic->setDisplay('width','138px');
+						$eqLogic->setDisplay('height','500px'); */
 					} else $eqLogic = $wasExisting;
 					
 					$eqLogic->setConfiguration('device', $res['device']);
