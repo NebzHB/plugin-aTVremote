@@ -416,7 +416,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					} else {
 						log::add('aTVremote','debug','Appairage Companion inconnu');
-						$eqLogic->setConfiguration('needCompanionPairing','0'); 8
+						$eqLogic->setConfiguration('needCompanionPairing','0');
 					}
 					
 					$eqLogic->setConfiguration('device', $res['device']);
