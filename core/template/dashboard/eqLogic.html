@@ -208,16 +208,16 @@
                  
 //ATV 4 ou 4K - Play_state
           
-      		if('#play_state#' == ''){
+      		if('#play_state#' == 0){
+			$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+        	} else if('#play_state#' == 1){
+			$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+		}else{
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
-        	} else if('#play_state#' == 1){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
-          			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
-			}else{
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
-			};
+		};
 
 //ATV 4 ou 4K - Metadonnée          
           
@@ -297,16 +297,16 @@
         
 //ATV 3 - Play_state
                    
-	      	if('#play_state#' == ''){
-    	      	$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
-        	  	$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
+		if('#play_state#' == 0){
+			$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+        	} else if('#play_state#' == 1){
+			$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+		}else{
+          		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
+          		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
-	        } else if('#play_state#' == 1){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
-          			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
-			}else{
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
-			};
+		};
 	    
 	        if("#artist#"!='-'){}else{$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').slideToggle(1);};
 	    
