@@ -1315,7 +1315,7 @@ class aTVremoteCmd extends cmd {
 					}
 				break;
 			}
-			log::add('aTVremote','debug','Command : '.$logical.((isset($cmds))?' -> '.$cmds:''));
+			log::add('aTVremote','info','Commande sur '.$eqLogic->getName().' : '.$logical.((isset($cmds))?' -> '.$cmds:''));
 		}
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
