@@ -187,14 +187,7 @@
               	//$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').text('Inactif');
 			}
           	        	
-//ATV 4 ou 4K - App
-               
-          	if('#play_human#' != "Lecture en cours"){
-          		
-            } else {
-          		$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
-            }
-          
+//ATV 4 ou 4K - App          
 			var str_app = '#app#';
 			var app_split = str_app.split(['.']);
       		//var app_final = app_split[1]+' : '+app_split[2];
@@ -220,6 +213,7 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
         	} else if('#play_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+          			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}else{
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
 			};
@@ -299,15 +293,7 @@
 			$('.eqLogic[data-eqLogic_id=#id#] .appsBox').hide(1);
 
 //ATV 3 - Statut
-          
-          	
-          	/*$('.eqLogic[data-eqLogic_id=#id#] #statut#id#').slideToggle(1);*/  
-          	if('#play_human#' != "Lecture en cours"){
-          		
-            } else {
-          		$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
-            }
-           
+        
 //ATV 3 - Play_state
                    
 	      	if('#play_state#' == ''){
@@ -316,6 +302,7 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
 	        } else if('#play_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+          			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}else{
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
 			};
