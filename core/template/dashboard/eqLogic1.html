@@ -155,12 +155,6 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
         	};
 			$('.appBox').show(1);
-                 
-          	if('#play_human#' != "Lecture en cours"){
-          		
-            } else {
-          		$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
-            }
             
 //ATV 4 ou 4K - Play_state
           
@@ -170,6 +164,7 @@
           		$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
         	} else if('#play_state#' == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+          			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').attr('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			} else{
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
 			};
