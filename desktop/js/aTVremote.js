@@ -36,33 +36,40 @@ $('#bt_VolLessCmd').on('click', function () {
 });
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
 	if($(this).val()) {
-		// if device is Apple TV
-		if($('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').html() == 'Apple TV') {
-			$('#needAirplayPairing').val(1);
+		$('#savingWithGui').val(1);
+	}
+});
+
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change', function () {
+	if($(this).html()) {
+		if($(this).html() == 'Apple TV') {
+			$('#VolumeCmds').show();
+		} else {
+			$('#VolumeCmds').hide();
+		}
+	}
+});
+
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=needAirplayPairing]').on('change', function () {
+	if($(this).val()) {
+		if($(this).val() == '1') {
 			$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
 			$('#Airplay').show();
 			$('#HelpMe').show();
-			$('#VolumeCmds').show();
-			
-			// if version is not 3
-			if($('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').html() != "3") {
-				$('#needCompanionPairing').val(1);
-				$('#SSHcmdCompanion').val($('#SSHcmdPath').val()+" --protocol companion -i "+$(this).val()+" pair");
-				$('#Companion').show();
-			} else {
-				$('#needCompanionPairing').val(0);
-				$('#Companion').hide();
-			}
-			
-		// else devide is not Apple TV
 		} else {
-			$('#needAirplayPairing').val(0);
 			$('#Airplay').hide();
 			$('#HelpMe').hide();
-			$('#needCompanionPairing').val(0);
+		}
+	}
+});
+
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=needCompanionPairing]').on('change', function () {
+	if($(this).val()) {
+		if($(this).val() == '1') {
+			$('#SSHcmdCompanion').val($('#SSHcmdPath').val()+" --protocol companion -i "+$(this).val()+" pair");
+			$('#Companion').show();
+		} else {
 			$('#Companion').hide();
-			$('#VolumeCmds').hide();
-		// END if device is Apple TV
 		}
 	}
 });
