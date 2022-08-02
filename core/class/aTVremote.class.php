@@ -315,6 +315,12 @@ class aTVremote extends eqLogic {
 						log::add('aTVremote','debug','Pas de MAC : on ignore');
 						continue;
 					}
+					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[9]) && $device[9] == "True") ||
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[15] && $device[15] == "True") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[21] && $device[21] == "True")) {
+						log::add('aTVremote','debug','AppleTV avec mot de passe AirPlay : on ignore');
+						continue;    
+					}
 					
 					$res = [];
 					$res["name"]=$device[1];
@@ -351,7 +357,14 @@ class aTVremote extends eqLogic {
 					$subModElmt=explode(' ',$modElmt[1]);
 					$res['os']=$subModElmt[0];
 					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
-					$res['osVersion']=$subModElmt[1];
+					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
+						log::add('aTVremote','debug','Pas une vraie AppleTV3: on Ignore '.$res['model']);
+						continue;
+					} elseif($subModElmt[1] == 'SW') {
+						$res['osVersion']=$subModElmt[2];
+					} else {
+						$res['osVersion']=$subModElmt[1];
+					}
 					
 					$wasExisting = aTVremote::byLogicalId($res["mac"], 'aTVremote');
 					if (!is_object($wasExisting)) {
@@ -362,7 +375,7 @@ class aTVremote extends eqLogic {
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
 						$eqLogic->setDisplay('width','138px');
-                      	$eqLogic->setDisplay('height','500px');
+                      				$eqLogic->setDisplay('height','500px');
 					} else $eqLogic = $wasExisting;
 					
 					$eqLogic->setConfiguration('device', $res['device']);
