@@ -44,7 +44,7 @@ pre#pre_eventlog {
 			<label class="col-lg-6 control-label">{{Mode de défilement des champs Titre, Artiste et Album}}</label>
 			<div class="col-lg-3">
 				<select class="configKey form-control" data-l1key="marquee">
-					<option value="0">Alterné</option>
+					<option value="0">Alterné (Pas compatible Safari)</option>
 					<option value="1">Défilement</option>
 				</select>
           		<marquee id="testMarquee" direction="left" behavior="alternate" scrollamount="2" scrolldelay="60" width="100px" hspace=15px loop=0 style="font-weight: bold; font-size:12px">Exemple</marquee>
