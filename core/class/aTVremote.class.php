@@ -316,8 +316,8 @@ class aTVremote extends eqLogic {
 						continue;
 					}
 					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[9]) && $device[9] == "True") ||
-					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[15] && $device[15] == "True") ||
-					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[21] && $device[21] == "True")) {
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[15]) && $device[15] == "True") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[21]) && $device[21] == "True") ) {
 						log::add('aTVremote','debug','AppleTV avec mot de passe AirPlay : on ignore');
 						continue;    
 					}
