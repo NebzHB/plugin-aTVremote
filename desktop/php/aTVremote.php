@@ -82,7 +82,6 @@ $eqLogics = eqLogic::byType('aTVremote');
 									<div class="col-sm-4">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
 										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" />
-										
 									</div>
 								</div>
 								<div class="form-group">
@@ -131,6 +130,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 									</div>
 								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
+								<input type="text" id="savingWithGui" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="savingWithGui" />
 								<div id="Airplay" style="display:none">
 								<input type="text" id="needAirplayPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needAirplayPairing" />
 								<br />
