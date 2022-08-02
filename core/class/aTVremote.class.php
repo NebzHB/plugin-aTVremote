@@ -1241,15 +1241,20 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'volume_down' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
-						$eqLogic->aTVdaemonExecute('volume_down');
-						// pre-set volume
-						$volume = $eqLogic->getCmd(null, 'volume');
-						if (is_object($volume)) {
-							$currentVol=intval($volume->execCmd());
-							$currentVol-=5;
-							if($currentVol <0){$currentVol=0;}
-							log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
-							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+						$play_state = $eqLogic->getCmd(null, 'play_state');
+						if (is_object($play_state) && $play_state->execCmd() == '1') { // or the deamon crash !
+							$eqLogic->aTVdaemonExecute('volume_down');
+							// pre-set volume
+							$volume = $eqLogic->getCmd(null, 'volume');
+							if (is_object($volume)) {
+								$currentVol=intval($volume->execCmd());
+								$currentVol-=5;
+								if($currentVol <0){$currentVol=0;}
+								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
+								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+							}
+						} else {
+							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
 					} else {
 						$cmds=$eqLogic->getConfiguration('LessVol');
@@ -1260,15 +1265,20 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'volume_up' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
-						$eqLogic->aTVdaemonExecute('volume_up');
-						// pre-set volume
-						$volume = $eqLogic->getCmd(null, 'volume');
-						if (is_object($volume)) {
-							$currentVol=intval($volume->execCmd());
-							$currentVol+=5;
-							if($currentVol >100){$currentVol=100;}
-							log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
-							$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+						$play_state = $eqLogic->getCmd(null, 'play_state');
+						if (is_object($play_state) && $play_state->execCmd() == '1') { // or the deamon crash !
+							$eqLogic->aTVdaemonExecute('volume_up');
+							// pre-set volume
+							$volume = $eqLogic->getCmd(null, 'volume');
+							if (is_object($volume)) {
+								$currentVol=intval($volume->execCmd());
+								$currentVol+=5;
+								if($currentVol >100){$currentVol=100;}
+								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
+								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
+							}
+						} else {
+							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
 					} else {
 						$cmds=$eqLogic->getConfiguration('MoreVol');
