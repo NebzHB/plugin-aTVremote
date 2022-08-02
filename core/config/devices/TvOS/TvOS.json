@@ -1,5 +1,14 @@
 {
 	"commands": [{
+			"name": "Rafraichir",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"logicalId": "refresh"
+		}, {
 			"name": "Lecture en cours",
 			"type": "info",
 			"subtype": "binary",
@@ -10,34 +19,25 @@
 			"isHistorized": 0,
 			"logicalId": "play_state"
 		}, {
+			"name": "Hash",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "hash"
+		}, {
 			"name": "URL Artwork",
 			"type": "info",
 			"subtype": "string",
 			"display": {
-				"generic_type": "DONT",
-				"showNameOndashboard": 0,
-				"showNameOnplan": 0,
-				"showNameOnview": 0,
-				"showNameOnmobile": 0
+				"generic_type": "DONT"
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "artwork_url",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
-		}, {
-			"name": "MàJ Liste App",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fas fa-recycle\"><\/i>",
-				"forceReturnLineBefore": 1
-			},
-			"isVisible": 1,
-			"logicalId": "app_list"
+			"logicalId": "artwork_url"
 		}, {
 			"name": "Hors Veille",
 			"type": "info",
@@ -53,9 +53,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "SWITCH_ON",
-				"icon": "<i class=\"icon jeedom-on\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "SWITCH_ON"
 			},
 			"isVisible": 1,
 			"logicalId": "turn_on",
@@ -65,8 +63,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "SWITCH_OFF",
-				"icon": "<i class=\"icon jeedom-off\"><\/i>"
+				"generic_type": "SWITCH_OFF"
 			},
 			"isVisible": 1,
 			"logicalId": "turn_off",
@@ -76,9 +73,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "SWITCH_ON",
-				"icon": "<i class=\"fa fa-play\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "SWITCH_ON"
 			},
 			"value": "play_state",
 			"isVisible": 1,
@@ -88,8 +83,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "SWITCH_OFF",
-				"icon": "<i class=\"fa fa-pause\"><\/i>"
+				"generic_type": "SWITCH_OFF"
 			},
 			"value": "play_state",
 			"isVisible": 1,
@@ -99,8 +93,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-stop\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "stop"
@@ -109,9 +102,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-step-backward\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "previous"
@@ -120,8 +111,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-step-forward\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "next"
@@ -130,9 +120,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-arrow-up\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "up"
@@ -142,9 +130,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-arrow-left\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "left"
@@ -153,8 +139,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-crosshairs\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "select"
@@ -163,8 +148,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-arrow-right\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "right"
@@ -173,9 +157,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-arrow-down\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "down"
@@ -184,9 +166,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-cog\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "menu"
@@ -195,8 +175,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-desktop\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "top_menu"
@@ -205,9 +184,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-random\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "set_shuffle_on"
@@ -216,8 +193,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-random\" style=\"opacity:0.5\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "set_shuffle_off"
@@ -226,9 +202,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"icon jeedomapp-reload\"><\/i>",
-				"forceReturnLineBefore": 1
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_all"
@@ -237,8 +211,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"icon jeedomapp-rond01\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_track"
@@ -247,8 +220,7 @@
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"icon jeedomapp-reload-fail\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "set_repeat_off"
@@ -257,11 +229,7 @@
 			"type": "info",
 			"subtype": "string",
 			"display": {
-				"generic_type": "GENERIC_INFO",
-				"showNameOndashboard": 0,
-				"showNameOnplan": 0,
-				"showNameOnview": 0,
-				"showNameOnmobile": 0
+				"generic_type": "GENERIC_INFO"
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
@@ -275,11 +243,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "artist",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "artist"
 		}, {
 			"name": "Titre",
 			"type": "info",
@@ -289,11 +253,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "title",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "title"
 		}, {
 			"name": "Album",
 			"type": "info",
@@ -303,11 +263,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "album",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "album"
 		}, {
 			"name": "Genre",
 			"type": "info",
@@ -317,11 +273,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "genre",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "genre"
 		}, {
 			"name": "Type Media",
 			"type": "info",
@@ -331,11 +283,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "media_type",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "media_type"
 		}, {
 			"name": "Position",
 			"type": "info",
@@ -345,11 +293,17 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "position",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "position"
+		}, {
+			"name": "Repeat Humain",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat"
 		}, {
 			"name": "Repeat",
 			"type": "info",
@@ -359,11 +313,17 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "repeat",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "repeat_state"
+		}, {
+			"name": "Shuffle Humain",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle"
 		}, {
 			"name": "Shuffle",
 			"type": "info",
@@ -373,11 +333,7 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "shuffle",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "shuffle_state"
 		}, {
 			"name": "App Active",
 			"type": "info",
@@ -387,40 +343,61 @@
 			},
 			"isVisible": 1,
 			"isHistorized": 0,
-			"logicalId": "app",
-			"template": {
-				"dashboard": "line",
-				"mobile": "line"
-			}
+			"logicalId": "app"
 		}, {
-			"name": "Bouton Plus",
+			"name": "Bouton Volume Plus",
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-stop\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "volume_up"
 		}, {
-			"name": "Bouton Moins",
+			"name": "Bouton Volume Moins",
 			"type": "action",
 			"subtype": "other",
 			"display": {
-				"generic_type": "GENERIC_ACTION",
-				"icon": "<i class=\"fa fa-stop\"><\/i>"
+				"generic_type": "GENERIC_ACTION"
 			},
 			"isVisible": 1,
 			"logicalId": "volume_down"
 		}, {
-			"name": "Rafraichir",
+			"name": "Bouton Chaîne Haut",
 			"type": "action",
 			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "channel_up"
+		}, {
+			"name": "Bouton Chaîne Bas",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "channel_down"
+		}, {
+			"name": "MàJ Liste App",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "app_list"
+		}, {
+			"name": "Lancer App",
+			"type": "action",
+			"subtype": "select",
 			"display": {
 				"generic_type": "DONT"
 			},
 			"isVisible": 1,
-			"logicalId": "refresh"
+			"logicalId": "launch_app"
 		}
 	]
 }

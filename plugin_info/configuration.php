@@ -49,6 +49,19 @@ pre#pre_eventlog {
 				</select>
 			</div>
 		</div>
+		<br />
+		
+<!-- /*Pour les tests widget*/
+		<div class="form-group">
+			<label class="col-lg-6 control-label">{{ATV ou HomePod}}</label>
+			<div class="col-lg-3">
+				<select class="configKey form-control" data-l1key="typeWidget">
+					<option value="0">ATV </option>
+					<option value="1">Homepod</option>
+				</select>
+			</div>
+		</div> -->
+		
 	</fieldset>
 </form>
 <script>

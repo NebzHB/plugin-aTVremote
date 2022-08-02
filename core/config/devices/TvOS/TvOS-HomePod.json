@@ -86,70 +86,6 @@
 			"isVisible": 1,
 			"logicalId": "next"
 		}, {
-			"name": "Bouton Haut",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "up"
-		},
-		{
-			"name": "Bouton Gauche",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "left"
-		}, {
-			"name": "Bouton Sélection",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "select"
-		}, {
-			"name": "Bouton Droit",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "right"
-		}, {
-			"name": "Bouton Bas",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "down"
-		}, {
-			"name": "Bouton Menu",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "menu"
-		}, {
-			"name": "Bouton Home",
-			"type": "action",
-			"subtype": "other",
-			"display": {
-				"generic_type": "GENERIC_ACTION"
-			},
-			"isVisible": 1,
-			"logicalId": "top_menu"
-		}, {
 			"name": "Bouton Aléatoire ON",
 			"type": "action",
 			"subtype": "other",
@@ -304,6 +240,58 @@
 			"isVisible": 1,
 			"isHistorized": 0,
 			"logicalId": "shuffle_state"
+		}, {
+			"name": "App Active",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "app"
+		}, {
+			"name": "Bouton Volume +5",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_up"
+		}, {
+			"name": "Bouton Volume -5",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_down"
+		}, {
+			"name": "Info Volume",
+			"type": "info",
+			"subtype": "numeric",
+			"display": {
+				"generic_type": "SPEAKER_VOLUME"
+			},
+			"isVisible": 1,
+			"logicalId": "volume"
+		}, {
+			"name": "Variateur Volume",
+			"type": "action",
+			"subtype": "slider",
+			"display": {
+				"generic_type": "SPEAKER_SET_VOLUME"
+			},
+			"configuration": {
+				"minValue":"0",
+				"maxValue":"100",
+				"step":"5"
+			},
+			"value":"volume",
+			"isVisible": 1,
+			"logicalId": "set_volume"
 		}
 	]
 }

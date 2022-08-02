@@ -9,6 +9,7 @@ Logger.setLogLevel(LogType.DEBUG);
 var conf={};
 conf.preConnect3=[];
 conf.preConnect4=[];
+conf.preConnectHP=[];
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 // Logger.log("env : "+process.env.NODE_ENV,LogType.DEBUG);
@@ -38,6 +39,11 @@ process.argv.forEach(function(val, index) {
 				conf.preConnect4 = val.split(',');
 			}
 		break;
+		case 8: // other
+			if(val != "None") {
+				conf.preConnectHP = val.split(',');
+			}
+		break;
 	}
 });
 
@@ -64,33 +70,34 @@ var isReady=false;
 var lastErrorMsg="";
 
 function connectATV(mac,version) {
-	version=parseInt(version);
-	
 	var pairingKeyAirplay=null;
-	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
-		pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
-	} else {
-		Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-	}
 	var pairingKeyCompanion=null;
-	if(version != 3) {
-		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
-			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+	if(version == 3 || version == 4) {
+		
+		if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
+			pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
 		} else {
-			Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		}
+		if(version != 3) {
+			if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
+				pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+			} else {
+				Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			}
 		}
 	}
 	
 	// création canal des commandes
 	if(!aTVs.cmd[mac]) {
-		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
-			fs.mkdirSync(__dirname+'/../core/img/'+mac);
+		if (!fs.existsSync(__dirname+'/../core/img/artworks')) {
+			fs.mkdirSync(__dirname+'/../core/img/artworks');
 		}
 		const atvremoteParams = ['-i',mac];
 		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
 		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/artworks'});
 		Logger.log('SPAWN CMD : '+__dirname+'/atvremote/bin/atvremote '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
 			data=data.toString();
@@ -99,18 +106,19 @@ function connectATV(mac,version) {
 			}
 			if(data != "pyatv> ") {
 				data=data.replace('\npyatv> ','');
-				/*
-				if(data.includes('PowerState.')) {
+				
+				if(data.match(/^[0-9]{0,3}\.[0-9]$/)) {
+					jsend({eventType: 'volume', data : data, mac: mac});
+				} else if(data.includes('PowerState.')) {
 					jsend({eventType: 'powerstate', data : data, mac: mac});
 				} else if(data.includes('App: ')) {
 					jsend({eventType: 'app', data : data, mac: mac});
-				} else {
-					jsend({eventType: 'hash', data : data, mac: mac});
-				} */
+				} else if(data.includes('Could not find any Apple TV on current network')) {
+					lastErrorMsg=data;
+				} else if(data.includes('No artwork is currently available')) {
+					jsend({eventType: 'reaskArtwork', mac: mac});
+				} 
 				
-				if(data.includes('App: ')) {
-					jsend({eventType: 'app', data : data, mac: mac});
-				}
 				
 				Logger.log('cmd | '+data,LogType.DEBUG);
 			}
@@ -119,6 +127,7 @@ function connectATV(mac,version) {
 		aTVs.cmd[mac].stderr.on('data', function(data) {
 			Logger.log("CMD CHAN ERR :"+data.toString(),LogType.ERROR);
 			lastErrorMsg=data;
+			aTVs.cmd[mac].kill('SIGHUP');
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
@@ -244,7 +253,7 @@ app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
 		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
-		connectATV(mac,req.query.version);
+		connectATV(mac,parseInt(req.query.version));
 		res.status(200).json({'result':'ok'});		
 	} else {
 		Logger.log("Déjà connecté sur "+mac,LogType.INFO);
@@ -294,6 +303,9 @@ for(const mac of conf.preConnect3) {
 }
 for(const mac of conf.preConnect4) {
 	connectATV(mac,4);
+}
+for(const mac of conf.preConnectHP) {
+	connectATV(mac,'HP');
 }
 
 if(!isReady) {

@@ -33,6 +33,7 @@ function aTVremote_update() {
 	foreach (eqLogic::byType('aTVremote') as $aTVremote) {
 		$aTVremote->save();
 	}
+	message::add('aTVremote', 'Attention, cette version est toujours une beta ! relancez les dépendances après mise à jour !');
 }
 
 function aTVremote_remove() {
