@@ -293,7 +293,7 @@ class aTVremote extends eqLogic {
 		}
 	}
 // OLDSCAN
-    	public static function discover($_mode) {
+    public static function discover($_mode) {
 		log::add('aTVremote','info','Scan en cours...');
         	$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
@@ -337,8 +337,9 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Model/SW :'.$res["model"]);
 					log::add('aTVremote','debug','Address :'.$res["ip"]);
 					log::add('aTVremote','debug','MAC :'.$res["mac"]);
-					array_shift($device);
+					$tempo=array_shift($device);
 					log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
+					array_unshift($device,$tempo);
 					
 					$modElmt=explode(', ',$res['model']);
 					
@@ -378,6 +379,46 @@ class aTVremote extends eqLogic {
 						$eqLogic->setDisplay('height','500px'); */
 					} else $eqLogic = $wasExisting;
 					
+					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Mandatory") ||
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Mandatory") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Mandatory") ) {
+						log::add('aTVremote','debug','Appairage AirPlay obligatoire !');
+						$eqLogic->setConfiguration('needAirplayPairing','1'); 
+					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "NotNeeded") ||
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "NotNeeded") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "NotNeeded") ) {
+						log::add('aTVremote','debug','Appairage AirPlay pas nécessaire');
+						$eqLogic->setConfiguration('needAirplayPairing','0'); 
+					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Unsupported") ||
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Unsupported") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Unsupported") ) {
+						log::add('aTVremote','debug','Appairage AirPlay non supporté');
+						$eqLogic->setConfiguration('needAirplayPairing','0'); 
+					} else {
+						log::add('aTVremote','debug','Appairage AirPlay inconnu');
+						$eqLogic->setConfiguration('needAirplayPairing','0'); 
+					}
+					
+					if( (isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Mandatory") ||
+					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Mandatory") ||
+					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Mandatory") ) {
+						log::add('aTVremote','debug','Appairage Companion obligatoire !');
+						$eqLogic->setConfiguration('needCompanionPairing','1'); 
+					} elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "NotNeeded") ||
+					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "NotNeeded") ||
+					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "NotNeeded") ) {
+						log::add('aTVremote','debug','Appairage Companion pas nécessaire');
+						$eqLogic->setConfiguration('needCompanionPairing','0'); 
+					}  elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Unsupported") ||
+					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Unsupported") ||
+					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Unsupported") ) {
+						log::add('aTVremote','debug','Appairage Companion non supporté');
+						$eqLogic->setConfiguration('needCompanionPairing','0'); 
+					} else {
+						log::add('aTVremote','debug','Appairage Companion inconnu');
+						$eqLogic->setConfiguration('needCompanionPairing','0'); 8
+					}
+					
 					$eqLogic->setConfiguration('device', $res['device']);
 					$eqLogic->setConfiguration('ip', $res["ip"]);
 					$eqLogic->setConfiguration('mac',$res["mac"]);
@@ -386,6 +427,7 @@ class aTVremote extends eqLogic {
 					$eqLogic->setConfiguration('version',$res["version"]);
 					$eqLogic->setConfiguration('os',$res["os"]);
 					$eqLogic->setConfiguration('osVersion',$res["osVersion"]);
+					$eqLogic->getConfiguration('savingWithGui','0');
 
 					$eqLogic->save();
 					
@@ -913,20 +955,21 @@ class aTVremote extends eqLogic {
 	}
 	
 	public function preSave() {
-		$pairingKeyAirplay=$this->getConfiguration('pairingKeyAirplay','');
-		if($this->getConfiguration('needAirplayPairing','') == '1' && $pairingKeyAirplay == '') {
-			throw new Exception("Vous devez faire l'appairage Airplay !");
-		} elseif ($pairingKeyAirplay != '') {
-			$this->setConfiguration('pairingKeyAirplay', trim(str_replace('You may now use these credentials: ','',$pairingKeyAirplay)) );
+		if($this->getConfiguration('savingWithGui','') == '1') {
+			$pairingKeyAirplay=$this->getConfiguration('pairingKeyAirplay','');
+			if($this->getConfiguration('needAirplayPairing','') == '1' && $pairingKeyAirplay == '') {
+				throw new Exception("Vous devez faire l'appairage Airplay !");
+			} elseif ($pairingKeyAirplay != '') {
+				$this->setConfiguration('pairingKeyAirplay', trim(str_replace('You may now use these credentials: ','',$pairingKeyAirplay)) );
+			}
+			
+			$pairingKeyCompanion=$this->getConfiguration('pairingKeyCompanion','');
+			if($this->getConfiguration('needCompanionPairing','') == '1' && $pairingKeyCompanion == '') {
+				throw new Exception("Vous devez faire l'appairage Companion !");
+			} elseif ($pairingKeyCompanion != '') {
+				$this->setConfiguration('pairingKeyCompanion', trim(str_replace('You may now use these credentials: ','',$pairingKeyCompanion)) );
+			}
 		}
-		
-		$pairingKeyCompanion=$this->getConfiguration('pairingKeyCompanion','');
-		if($this->getConfiguration('needCompanionPairing','') == '1' && $pairingKeyCompanion == '') {
-			throw new Exception("Vous devez faire l'appairage Companion !");
-		} elseif ($pairingKeyCompanion != '') {
-			$this->setConfiguration('pairingKeyCompanion', trim(str_replace('You may now use these credentials: ','',$pairingKeyCompanion)) );
-		}
-		
 	}
 	
 	public function postSave() {
