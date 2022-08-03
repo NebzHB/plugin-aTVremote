@@ -1098,7 +1098,7 @@ class aTVremote extends eqLogic {
       	$typeWidget = config::byKey('typeWidget', 'aTVremote', 0);
       	if ($typeWidget == 0){
 			$replace["#typeWidget#"] = "ATV";
-			log::add('aTVremote','debug','Type widget : '.$typeWidget);
+			//log::add('aTVremote','debug','Type widget : '.$typeWidget);
 		} else {
 			$replace["#typeWidget#"] = "HomePod";
 		};
