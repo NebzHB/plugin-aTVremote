@@ -37,6 +37,8 @@ $('#bt_VolLessCmd').on('click', function () {
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=mac]').on('change', function () {
 	if($(this).val()) {
 		$('#savingWithGui').val(1);
+		$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
+		$('#SSHcmdCompanion').val($('#SSHcmdPath').val()+" --protocol companion -i "+$(this).val()+" pair");
 	}
 });
 
@@ -53,7 +55,6 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=device]').on('change', func
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=needAirplayPairing]').on('change', function () {
 	if($(this).val()) {
 		if($(this).val() == '1') {
-			$('#SSHcmdAirplay').val($('#SSHcmdPath').val()+" --protocol airplay -i "+$(this).val()+" pair");
 			$('#Airplay').show();
 			$('#HelpMe').show();
 		} else {
@@ -66,7 +67,6 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=needAirplayPairing]').on('c
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=needCompanionPairing]').on('change', function () {
 	if($(this).val()) {
 		if($(this).val() == '1') {
-			$('#SSHcmdCompanion').val($('#SSHcmdPath').val()+" --protocol companion -i "+$(this).val()+" pair");
 			$('#Companion').show();
 		} else {
 			$('#Companion').hide();
