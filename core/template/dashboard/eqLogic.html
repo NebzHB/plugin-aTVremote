@@ -8,7 +8,6 @@
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
-          		border-bottom: 4px solid black;
 		}
 	</style>
 
@@ -109,17 +108,18 @@
           		<p class="titre2_hide" style="margin: 0px 0 5px;"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
 			
 			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position" id="pos#id#"></span></marquee></a><br></p>
+          <div style="display: block;margin: -5px 19px 10px;" class="menu_action">			
+				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" title='Menu'><img src='plugins/aTVremote/core/template/dashboard/images/menu2.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" title='Home'><img src='plugins/aTVremote/core/template/dashboard/images/monitor.png' style="width:40px;"/></a>	
+			</div>
 		</div>
 <!--  Statut & Info -->   
           
 <!--  Control & Navigation -->  
-      <div class="gameplay" style="height:246px">    	
-          	<div style="display: block;margin: -5px 19px 10px;" class="menu_action">			
-				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" title='Menu'><img src='plugins/aTVremote/core/template/dashboard/images/menu2.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" title='Home'><img src='plugins/aTVremote/core/template/dashboard/images/monitor.png' style="width:40px;"/></a>	
-			</div>
+      <div class="gameplay" style="height: 230px;position: absolute;top: 302px;width: 138px;background-color: black;">    	
+          	
         <br>
-			<div style="display: block; margin: -16px 19px 10px;" class="playback">
+			<div style="display: block; margin: -12px 19px 10px;" class="playback">
 				<a class="btn_aTVremote_playback cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_playback cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>
