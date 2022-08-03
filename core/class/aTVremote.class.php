@@ -29,7 +29,7 @@ class aTVremote extends eqLogic {
 					if($eqLogic->getConfiguration('version','') == '3'){
 						$play_state = $eqLogic->getCmd(null, 'play_state');
 						if(is_object($play_state)) {
-							$val=$play_state->execCmd();
+							$val=$play_state->getCache('value');
 							if($val) {
 								$eqLogic->setaTVremoteInfo();
 							}
@@ -38,7 +38,7 @@ class aTVremote extends eqLogic {
 						if($eqLogic->getConfiguration('device','') == 'HomePod') {
 							$play_state = $eqLogic->getCmd(null, 'play_state');
 							if(is_object($play_state)) {
-								$val=$play_state->execCmd();
+								$val=$play_state->getCache('value');
 								if($val) { // if playing : 1min
 									$eqLogic->aTVdaemonExecute('volume');
 								} else { // else : 5min
@@ -284,7 +284,7 @@ class aTVremote extends eqLogic {
 				if($eqLogic->getConfiguration('version',0) != '3') {
 					$hash = $eqLogic->getCmd(null, 'hash');
 					if(is_object($hash)) {
-						$eqLogic->setArtwork($hash->execCmd());
+						$eqLogic->setArtwork($hash->getCache('value'));
 					}
 				} else {
 					log::add('aTVremote','debug','Pas de reask sur atv3');
@@ -1069,7 +1069,7 @@ class aTVremote extends eqLogic {
   		}
 		$version = jeedom::versionAlias($_version);
 		foreach ($this->getCmd('info') as $cmd) {
-			$replace['#' . $cmd->getLogicalId() . '#'] = htmlspecialchars($cmd->execCmd(), ENT_QUOTES,'UTF-8');
+			$replace['#' . $cmd->getLogicalId() . '#'] = htmlspecialchars($cmd->getCache('value'), ENT_QUOTES,'UTF-8');
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 			if ($cmd->getIsHistorized() == 1) {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
@@ -1242,12 +1242,12 @@ class aTVremoteCmd extends cmd {
 				case 'volume_down' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
-						if (is_object($play_state) && $play_state->execCmd() == '1') { // or the deamon crash !
+						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('volume_down');
 							// pre-set volume
 							$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
-								$currentVol=intval($volume->execCmd());
+								$currentVol=intval($volume->getCache('value'));
 								$currentVol-=5;
 								if($currentVol <0){$currentVol=0;}
 								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
@@ -1266,12 +1266,12 @@ class aTVremoteCmd extends cmd {
 				case 'volume_up' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
-						if (is_object($play_state) && $play_state->execCmd() == '1') { // or the deamon crash !
+						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('volume_up');
 							// pre-set volume
 							$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
-								$currentVol=intval($volume->execCmd());
+								$currentVol=intval($volume->getCache('value'));
 								$currentVol+=5;
 								if($currentVol >100){$currentVol=100;}
 								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
