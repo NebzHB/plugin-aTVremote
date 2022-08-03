@@ -477,8 +477,8 @@ a > img:hover {
 
 .downRafter2A {
     position: absolute;
-    top: -6.5px;
-    left: 54px;
+    top: 0.5px;
+    left: 58px;
     cursor: pointer; 
     z-index: 4;
     opacity: 0.6;
@@ -486,8 +486,8 @@ a > img:hover {
 
 .downRafter2H {
     position: absolute;
-    top: -12.5px;
-    left: 117px;
+    top: -6.5px;
+    left: 120px;
     cursor: pointer; 
     z-index: 4;
     opacity: 0.6;
