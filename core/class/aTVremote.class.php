@@ -282,14 +282,14 @@ class aTVremote extends eqLogic {
 			break;
 			case 'reaskArtwork':
 				if($eqLogic->getConfiguration('version',0) != '3') {
-					$title=$eqLogic->getCmd(null, 'title');
-					if($title->getCache('value') != '-') {
+					$app=$eqLogic->getCmd(null, 'app');
+					if($app->getCache('value') != 'com.apple.TVAirPlay') {
 						$hash = $eqLogic->getCmd(null, 'hash');
 						if(is_object($hash)) {
 							$eqLogic->setArtwork($hash->getCache('value'));
 						}
 					} else {
-						log::add('aTVremote','debug','Pas de reask si pas de titre');
+						log::add('aTVremote','debug','Pas de reask si airplay');
 					}
 				} else {
 					log::add('aTVremote','debug','Pas de reask sur atv3');
