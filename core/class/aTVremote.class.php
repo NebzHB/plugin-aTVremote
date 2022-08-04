@@ -862,14 +862,36 @@ class aTVremote extends eqLogic {
 			
 			$position = $this->getCmd(null, 'position');
 			if (is_object($position)) {
-				if(isset($aTVremoteinfo['position'])) {
-					if(isset($aTVremoteinfo['total_time'])) { //aTV4+
-						$changed=$this->checkAndUpdateCmd($position, (($aTVremoteinfo['position']=='')?'0':$aTVremoteinfo['position']).'/'.$aTVremoteinfo['total_time']) || $changed;
+				if(isset($aTVremoteinfo['total_time']) && $aTVremoteinfo['total_time'] != null) {
+					if($aTVremoteinfo['total_time'] <60) {
+						$displayTT=$aTVremoteinfo['total_time'].'s';
+					} elseif($aTVremoteinfo['total_time'] <3600) {
+						$displayTT=gmdate("i:s",$aTVremoteinfo['total_time']);
 					} else {
-						$changed=$this->checkAndUpdateCmd($position, $aTVremoteinfo['position']) || $changed;
+						$displayTT=gmdate("H:i:s",$aTVremoteinfo['total_time']);
+					}
+				}
+				
+				if(isset($aTVremoteinfo['position']) && $aTVremoteinfo['position'] != null) {
+					if($aTVremoteinfo['position'] <60) {
+						$displayPos=$aTVremoteinfo['position'].'s';
+					} elseif($aTVremoteinfo['position'] <3600) {
+						$displayPos=gmdate("i:s",$aTVremoteinfo['position']);
+					} else {
+						$displayPos=gmdate("H:i:s",$aTVremoteinfo['position']);
+					}
+						
+					if(isset($aTVremoteinfo['total_time']) && $aTVremoteinfo['total_time'] != null) { //aTV4+
+						$changed=$this->checkAndUpdateCmd($position, $displayPos.'/'.$displayTT.' ('.round(intval($aTVremoteinfo['position'])*100/intval($aTVremoteinfo['total_time'])).'%)') || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
 					}
 				} else {
-					$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
+					if(isset($aTVremoteinfo['total_time']) && $aTVremoteinfo['total_time'] != null) { //aTV4+
+						$changed=$this->checkAndUpdateCmd($position, $displayTT) || $changed;
+					} else {
+						$changed=$this->checkAndUpdateCmd($position, '-') || $changed;
+					}
 				}
 			}
 			if(isset($aTVremoteinfo['repeat'])) { // always return Off
