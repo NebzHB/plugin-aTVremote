@@ -282,9 +282,14 @@ class aTVremote extends eqLogic {
 			break;
 			case 'reaskArtwork':
 				if($eqLogic->getConfiguration('version',0) != '3') {
-					$hash = $eqLogic->getCmd(null, 'hash');
-					if(is_object($hash)) {
-						$eqLogic->setArtwork($hash->getCache('value'));
+					$title=$eqLogic->getCmd(null, 'title');
+					if($title->getCache('value') != '-') {
+						$hash = $eqLogic->getCmd(null, 'hash');
+						if(is_object($hash)) {
+							$eqLogic->setArtwork($hash->getCache('value'));
+						}
+					} else {
+						log::add('aTVremote','debug','Pas de reask si pas de titre');
 					}
 				} else {
 					log::add('aTVremote','debug','Pas de reask sur atv3');
@@ -936,7 +941,7 @@ class aTVremote extends eqLogic {
 			}
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-			if($hashChanged && $aTVremoteinfo['device_state'] != 'idle' && $aTVremoteinfo['media_type'] != 'unknown') {
+			if($hashChanged && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) != 'unknown') {
 				/*if($aTVremoteinfo['title'] == null) {
 					sleep(2);
 				}*/
@@ -949,7 +954,14 @@ class aTVremote extends eqLogic {
 				} else {
 					$changed=true;
 				}
-			} /*elseif($isPlaying) { // if not paused but no Title...
+			} elseif(strtolower($aTVremoteinfo['media_type']) == 'unknown') {
+				$artwork = $this->getImage(true);
+				$artwork_url = $this->getCmd(null, 'artwork_url');
+				if(is_object($artwork_url)) {
+					$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+				}
+			}
+			/*elseif($isPlaying) { // if not paused but no Title...
 				$artwork = $this->getImage();
 				$artwork_url = $this->getCmd(null, 'artwork_url');
 				if (is_object($artwork_url)) {
