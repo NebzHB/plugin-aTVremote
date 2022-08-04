@@ -247,12 +247,7 @@
 //ATV 4 ou 4K - Position 
           
       		if('#position#' != '-'){
-            	var time = '#position#';
-          		var split_time = time.split(['/']);
-			if(split_time[1] != 0) {
-          			var position = split_time[0] + '/' + split_time[1] + 's (' + Math.round((split_time[0]*100)/split_time[1]) + '%)';
-			}
-            	$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text(position);
+            	$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text('#position#');
             }else{
               	$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
             }          
