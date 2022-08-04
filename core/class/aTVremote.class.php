@@ -283,7 +283,7 @@ class aTVremote extends eqLogic {
 			case 'reaskArtwork':
 				if($eqLogic->getConfiguration('version',0) != '3') {
 					$app=$eqLogic->getCmd(null, 'app');
-					if($app->getCache('value') != 'com.apple.TVAirPlay') {
+					if($app->getCache('value') != 'com.apple.TVAirPlay' && $app->getCache('value') != 'com.apple.tvairplayd') {
 						$hash = $eqLogic->getCmd(null, 'hash');
 						if(is_object($hash)) {
 							$eqLogic->setArtwork($hash->getCache('value'));
