@@ -215,17 +215,16 @@ function connectATV(mac,version) {
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
 				}
+			} else if(lasterrorMsg && lastErrorMsg.includes('connection": "lost')) {
+				delete aTVs.msg[mac];
+				Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
+				setTimeout(connectATV,100,mac,version);
 			} else {
-				if(lasterrorMsg && lastErrorMsg.includes('connection": "lost')) {
-					delete aTVs.msg[mac];
-					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
-					setTimeout(connectATV,100,mac,version);
-				} else {
-					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
-					delete aTVs.msg[mac];
-					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
-				}
+				Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
+				delete aTVs.msg[mac];
+				Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
 			}
+	
 			lastErrorMsg="";
 		});
 		aTVs.msg[mac].on('spawn', function() {
