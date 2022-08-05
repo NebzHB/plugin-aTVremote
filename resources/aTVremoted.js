@@ -190,6 +190,8 @@ function connectATV(mac,version) {
 				} */ else if(stringData.includes('error": "device_not_found')) {
 					delete aTVs.msg[mac];
 					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+				} else if(stringData.includes('connection": "lost')) {
+					lastErrorMsg=stringData;
 				}
 				Logger.log('msg '+sent+'|'+stringData,LogType.DEBUG);
 			}
@@ -214,7 +216,15 @@ function connectATV(mac,version) {
 					setTimeout(connectATV,100,mac,version);
 				}
 			} else {
-				Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+				if(lasterrorMsg && lastErrorMsg.includes('connection": "lost')) {
+					delete aTVs.msg[mac];
+					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
+					setTimeout(connectATV,100,mac,version);
+				} else {
+					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
+					delete aTVs.msg[mac];
+					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+				}
 			}
 			lastErrorMsg="";
 		});
