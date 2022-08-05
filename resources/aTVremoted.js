@@ -215,7 +215,7 @@ function connectATV(mac,version) {
 					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
 				}
-			} else if(lasterrorMsg && lastErrorMsg.includes('connection": "lost')) {
+			} else if(lastErrorMsg && lastErrorMsg.includes('connection": "lost')) {
 				delete aTVs.msg[mac];
 				Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
 				setTimeout(connectATV,100,mac,version);
