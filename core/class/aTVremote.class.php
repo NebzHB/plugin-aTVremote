@@ -234,6 +234,7 @@ class aTVremote extends eqLogic {
 
 	public static function event() {
 		$eventType = init('eventType');
+		$changed=false;
 		
 		$eqLogic = aTVremote::byLogicalId(init('mac'), 'aTVremote');
 		if(!is_object($eqLogic)) {
@@ -255,7 +256,7 @@ class aTVremote extends eqLogic {
 				$eqLogic->setaTVremoteInfo(json_decode(init('data'),true));
 			break;
 			case 'powerstate':
-				$eqLogic->setPowerstate(init('data'));
+				$changed=$eqLogic->setPowerstate(init('data')) || $changed;
 			break;
 			case 'app':
 				$apps = explode(', App: ',init('data'));
@@ -277,7 +278,7 @@ class aTVremote extends eqLogic {
 			case 'volume':
 				$volume = $eqLogic->getCmd(null, 'volume');
 				if (is_object($volume)) {
-					$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]);
+					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
 				}
 			break;
 			case 'reaskArtwork':
@@ -286,7 +287,15 @@ class aTVremote extends eqLogic {
 					if($app->getCache('value') != 'com.apple.TVAirPlay' && $app->getCache('value') != 'com.apple.tvairplayd') {
 						$hash = $eqLogic->getCmd(null, 'hash');
 						if(is_object($hash)) {
-							$eqLogic->setArtwork($hash->getCache('value'));
+							if(! $eqLogic->setArtwork($hash->getCache('value'))) {
+								$artwork = $eqLogic->getImage(true);
+								$artwork_url = $eqLogic->getCmd(null, 'artwork_url');
+								if(is_object($artwork_url)) {
+									$changed=$eqLogic->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+								}
+							} else {
+								$changed=true;
+							}
 						}
 					} else {
 						log::add('aTVremote','debug','Pas de reask si airplay');
@@ -295,6 +304,9 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','debug','Pas de reask sur atv3');
 				}
 			break;
+		}
+		if($changed) {
+			$eqLogic->refreshWidget();
 		}
 	}
 // OLDSCAN
@@ -639,9 +651,8 @@ class aTVremote extends eqLogic {
 	}
 
 	public function setPowerstate($data=null) {	
+		$changed = false;
 		if($this->getConfiguration('version',0) != '3'){
-			$changed = false;
-			
 			if($data && is_string($data)) {
 				if($data[0] == "{") {
 					$power_state=json_decode($data,true);
@@ -662,10 +673,8 @@ class aTVremote extends eqLogic {
 				$power = $this->getCmd(null, 'power_state');
 				$changed=$this->checkAndUpdateCmd($power, '1') || $changed;
 			}
-			
-			if ($changed) 
-				$this->refreshWidget();
-		}		
+		}
+		return $changed;
 	}
 
 	public function setArtwork($hash) {
@@ -1360,8 +1369,7 @@ class aTVremoteCmd extends cmd {
 		}
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
-		}
-		if ($changed) {
+		} elseif ($changed) {
 			$eqLogic->refreshWidget();
 		}
 	}
