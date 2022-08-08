@@ -328,16 +328,21 @@ class aTVremote extends eqLogic {
 
 			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
 				foreach($matches as $device) {
+					log::add('aTVremote','info','*****************************');
 					if($device[4] == "None") {
-						log::add('aTVremote','debug','Pas de MAC : on ignore');
+						log::add('aTVremote','info','Pas de MAC : on ignore '.$device[1]);
 						continue;
 					}
 					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[9]) && $device[9] == "True") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[15]) && $device[15] == "True") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[21]) && $device[21] == "True") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[27]) && $device[27] == "True") ) {
-						log::add('aTVremote','debug','AppleTV avec mot de passe AirPlay : on ignore');
+						log::add('aTVremote','info','AppleTV avec mot de passe AirPlay : on ignore '.$device[1]);
 						continue;    
+					}
+					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'HomePod') === false) {
+						log::add('aTVremote','info','Modèle non supporté '.$device[2].' : on ignore '.$device[1]);
+						continue;
 					}
 					
 					$res = [];
@@ -345,16 +350,12 @@ class aTVremote extends eqLogic {
 					$res["model"]=$device[2];
 					$res["ip"]=$device[3];
 					$res["mac"]=$device[4];
+
 					
-					if(strpos($res['model'],'Apple TV') === false && strpos($res['model'],'HomePod') === false) {
-						log::add('aTVremote','debug','Ignore '.$res['model']);
-						continue;
-					}
-					
-					log::add('aTVremote','debug','Name :'.$res["name"]);
-					log::add('aTVremote','debug','Model/SW :'.$res["model"]);
-					log::add('aTVremote','debug','Address :'.$res["ip"]);
-					log::add('aTVremote','debug','MAC :'.$res["mac"]);
+					log::add('aTVremote','info','Name :'.$res["name"]);
+					log::add('aTVremote','info','Model/SW :'.$res["model"]);
+					log::add('aTVremote','info','Address :'.$res["ip"]);
+					log::add('aTVremote','info','MAC :'.$res["mac"]);
 					$tempo=array_shift($device);
 					log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
 					array_unshift($device,$tempo);
@@ -377,7 +378,7 @@ class aTVremote extends eqLogic {
 					$res['os']=$subModElmt[0];
 					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
-						log::add('aTVremote','debug','Pas une vraie AppleTV3: on Ignore '.$res['model']);
+						log::add('aTVremote','info','Pas une vraie AppleTV3: on Ignore '.$res['model']);
 						continue;
 					} elseif($subModElmt[1] == 'SW') {
 						$res['osVersion']=$subModElmt[2];
@@ -401,22 +402,22 @@ class aTVremote extends eqLogic {
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Mandatory") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Mandatory") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Mandatory") ) {
-						log::add('aTVremote','debug','Appairage AirPlay obligatoire !');
+						log::add('aTVremote','info','Appairage AirPlay obligatoire !');
 						$eqLogic->setConfiguration('needAirplayPairing','1'); 
 					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "NotNeeded") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "NotNeeded") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "NotNeeded") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "NotNeeded") ) {
-						log::add('aTVremote','debug','Appairage AirPlay pas nécessaire');
+						log::add('aTVremote','info','Appairage AirPlay pas nécessaire');
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Unsupported") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Unsupported") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Unsupported") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Unsupported") ) {
-						log::add('aTVremote','debug','Appairage AirPlay non supporté');
+						log::add('aTVremote','info','Appairage AirPlay non supporté');
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					} else {
-						log::add('aTVremote','debug','Appairage AirPlay inconnu');
+						log::add('aTVremote','info','Appairage AirPlay inconnu');
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					}
 					
@@ -424,22 +425,22 @@ class aTVremote extends eqLogic {
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Mandatory") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Mandatory") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Mandatory") ) {
-						log::add('aTVremote','debug','Appairage Companion obligatoire !');
+						log::add('aTVremote','info','Appairage Companion obligatoire !');
 						$eqLogic->setConfiguration('needCompanionPairing','1'); 
 					} elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "NotNeeded") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "NotNeeded") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "NotNeeded") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "NotNeeded") ) {
-						log::add('aTVremote','debug','Appairage Companion pas nécessaire');
+						log::add('aTVremote','info','Appairage Companion pas nécessaire');
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					}  elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Unsupported") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Unsupported") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Unsupported") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Unsupported") ) {
-						log::add('aTVremote','debug','Appairage Companion non supporté');
+						log::add('aTVremote','info','Appairage Companion non supporté');
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					} else {
-						log::add('aTVremote','debug','Appairage Companion inconnu');
+						log::add('aTVremote','info','Appairage Companion inconnu');
 						$eqLogic->setConfiguration('needCompanionPairing','0');
 					}
 					
