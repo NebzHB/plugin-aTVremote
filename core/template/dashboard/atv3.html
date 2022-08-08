@@ -16,37 +16,8 @@
       	<div class="haut">
 		
 <!--  Partie Supérieure -->
-  			<a class="power cmd turn_on" data-cmd_id="#cmd_turn_on_id#" title="Off"><img id="off#id#" class="onoff" src='plugins/aTVremote/core/template/dashboard/images/Off1.png'/></a>
-			<a class="power cmd turn_off" data-cmd_id="#cmd_turn_off_id#" title="On"><img id="on#id#" class="onoff" src='plugins/aTVremote/core/template/dashboard/images/On1.png'/></a>
-  
-  			<!--<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>-->
-      	
 			<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>
-          		
-			<div class="downpanelApp">
-				<div style="overflow: auto;height: 276px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 117px;margin-top: 17px !important;">App</legend>
-					<img class="downRafter2App" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" onClick="panelDownCloseApp#id#()" />
-					<section style="text-align: center;">
-						<br/>
-						Lance App :
-						<div class="cmd-widget" data-type="action" data-subtype="select" data-template="default" data-cmd_id="#cmd_launch_app_id#"><div class="content-xs"><select class="selectCmd"><option value="">Aucune</option>#cmd_launch_app_opt#</select></div></div>
-						<br>
-					</section>
-				</div>
-			</div>
-			<a><img class="appsBox" src="plugins/aTVremote/core/template/dashboard/images/database.png" style="width:20px;" onclick="panelDownApp#id#()" title='Apps'/></a>	
-			<script>
-				
-				$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").on('change', function () {
-				  jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: $(this).value()}})
-				})
 
-				jeedom.cmd.update['#cmd_launch_app_id#'] = function(_options) {
-				  $(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").val(_options.display_value)
-				}
-
-			</script>
           	<div id="a#id#" class="repeatBox">
               	<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:20px;"/>&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:20px;"/>&nbsp;&nbsp;</a> 
@@ -57,8 +28,6 @@
 <!--  Partie Supérieure -->
   			<a style='position:absolute;margin-top:10px;left:48px;z-index:5;'><img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
   			<a style='position:absolute;margin-top:10px;left:48px;z-index:4;'><img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>
-			
-          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum#id#"></span></a><br></p>
      	</div>
       
 <!--  Artwork -->
@@ -153,10 +122,6 @@
 	  
 //hide Power et hide App         
 	  
-		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
-		$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').hide(1);
-		$('.eqLogic[data-eqLogic_id=#id#] .app_hide').slideUp(1);
-		$('.eqLogic[data-eqLogic_id=#id#] .appsBox').hide(1);
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd.plus').hide(1);
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd.moins').hide(1);
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd.up2').hide(1);
