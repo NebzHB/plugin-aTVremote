@@ -962,9 +962,16 @@ class aTVremote extends eqLogic {
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
 			if($hashChanged && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) != 'unknown') {
-				/*if($aTVremoteinfo['title'] == null) {
-					sleep(2);
-				}*/
+				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
+					$artwork = $this->getImage(true);
+					$artwork_url = $this->getCmd(null, 'artwork_url');
+					if(is_object($artwork_url)) {
+						$changed=$this->checkAndUpdateCmd($artwork_url, $artwork) || $changed;
+					}
+				} else {
+					$changed=true;
+				}
+			} elseif($this->getConfiguration('version',0) == '3' && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) == 'unknown') {
 				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
 					$artwork = $this->getImage(true);
 					$artwork_url = $this->getCmd(null, 'artwork_url');
@@ -1288,7 +1295,6 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'turn_off':
 					$eqLogic->aTVdaemonExecute('set_repeat=0');
-					//$eqLogic->aTVremoteExecute('turn_off set_repeat=0 set_shuffle=0');
 					$eqLogic->aTVdaemonExecute('turn_off');
 					// pre-set
 					$power_state = $eqLogic->getCmd(null, 'power_state');
