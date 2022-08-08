@@ -311,6 +311,7 @@ class aTVremote extends eqLogic {
 	}
 // OLDSCAN
     public static function discover($_mode) {
+		log::add('aTVremote','info','============================');
 		log::add('aTVremote','info','Scan en cours...');
         	$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
 		log::add('aTVremote','debug','Résultat brut : '.$output);
@@ -328,7 +329,13 @@ class aTVremote extends eqLogic {
 
 			if(preg_match_all($toMatch, $output, $matches,PREG_SET_ORDER)) {
 				foreach($matches as $device) {
-					log::add('aTVremote','info','*****************************');
+					log::add('aTVremote','info','****************************');
+					if(log::convertLogLevel(log::getLogLevel('aTVremote')) == 'debug') {
+						$tempo=array_shift($device);
+						log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
+						array_unshift($device,$tempo);
+					}
+					
 					if($device[4] == "None") {
 						log::add('aTVremote','info','Pas de MAC : on ignore '.$device[1]);
 						continue;
@@ -356,9 +363,7 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','info','Model/SW :'.$res["model"]);
 					log::add('aTVremote','info','Address :'.$res["ip"]);
 					log::add('aTVremote','info','MAC :'.$res["mac"]);
-					$tempo=array_shift($device);
-					log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
-					array_unshift($device,$tempo);
+					
 					
 					$modElmt=explode(', ',$res['model']);
 					
@@ -420,6 +425,10 @@ class aTVremote extends eqLogic {
 						log::add('aTVremote','info','Appairage AirPlay inconnu');
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					}
+					if($res['device']=="Apple TV" && $res['version'] == 3) {
+						log::add('aTVremote','info','Appairage AirPlay obligatoire ! (car Apple TV 3)');
+						$eqLogic->setConfiguration('needAirplayPairing','1'); 
+					}
 					
 					if( (isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Mandatory") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Mandatory") ||
@@ -479,6 +488,7 @@ class aTVremote extends eqLogic {
 			}
 
 			log::add('aTVremote','info','Ajouté : '.json_encode($return,JSON_UNESCAPED_UNICODE));
+			log::add('aTVremote','info','============================');
 		}
 		return $return;
 	}	
