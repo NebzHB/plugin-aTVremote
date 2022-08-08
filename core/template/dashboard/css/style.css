@@ -534,7 +534,7 @@ a > img:hover {
 
 .downRafter2App {
     position: absolute;
-    top: -6.5px;
+    top: 0.5px;
     left: 54px;
     cursor: pointer; 
     z-index: 4;
@@ -552,7 +552,7 @@ a > img:hover {
       height: 276px;
       float: left;
       position: absolute;
-      z-index: 10;
+      z-index: 11;
       background: rgba(0, 0, 0, 0.9);
       top: -300px;
   }
