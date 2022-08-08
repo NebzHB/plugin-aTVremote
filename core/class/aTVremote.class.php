@@ -1288,19 +1288,21 @@ class aTVremoteCmd extends cmd {
 				case 'turn_on':
 					$eqLogic->aTVdaemonExecute('turn_on');
 					// pre-set
-					$power_state = $eqLogic->getCmd(null, 'power_state');
+					/*$power_state = $eqLogic->getCmd(null, 'power_state');
 					if (is_object($power_state)) {
 						$changed=$eqLogic->checkAndUpdateCmd($power_state, '1') || $changed;
-					}
+					}*/
+					$eqLogic->aTVdaemonExecute('power_state');
 				break;
 				case 'turn_off':
 					$eqLogic->aTVdaemonExecute('set_repeat=0');
 					$eqLogic->aTVdaemonExecute('turn_off');
 					// pre-set
-					$power_state = $eqLogic->getCmd(null, 'power_state');
+					/*$power_state = $eqLogic->getCmd(null, 'power_state');
 					if (is_object($power_state)) {
 						$changed=$eqLogic->checkAndUpdateCmd($power_state, '0') || $changed;
-					}
+					}*/
+					$eqLogic->aTVdaemonExecute('power_state');
 				break;
 				case 'chain':
 					$cmds = $_options['title'];
@@ -1316,14 +1318,15 @@ class aTVremoteCmd extends cmd {
 						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('volume_down');
 							// pre-set volume
-							$volume = $eqLogic->getCmd(null, 'volume');
+							/*$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
 								$currentVol=intval($volume->getCache('value'));
 								$currentVol-=5;
 								if($currentVol <0){$currentVol=0;}
 								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
 								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
-							}
+							}*/
+							$eqLogic->aTVdaemonExecute('volume');
 						} else {
 							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
@@ -1340,14 +1343,15 @@ class aTVremoteCmd extends cmd {
 						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('volume_up');
 							// pre-set volume
-							$volume = $eqLogic->getCmd(null, 'volume');
+							/*$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
 								$currentVol=intval($volume->getCache('value'));
 								$currentVol+=5;
 								if($currentVol >100){$currentVol=100;}
 								log::add('aTVremote','debug','PréChangement volume à '.$currentVol);
 								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
-							}
+							}*/
+							$eqLogic->aTVdaemonExecute('volume');
 						} else {
 							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
@@ -1362,11 +1366,12 @@ class aTVremoteCmd extends cmd {
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider']);
 						// pre-set volume
-						$volume = $eqLogic->getCmd(null, 'volume');
+						/*$volume = $eqLogic->getCmd(null, 'volume');
 						if (is_object($volume)) {
 							log::add('aTVremote','debug','PréChangement volume à '.$_options['slider']);
 							$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
-						}
+						}*/
+						$eqLogic->aTVdaemonExecute('volume');
 					}
 				break;
 				case 'channel_up':
@@ -1387,10 +1392,19 @@ class aTVremoteCmd extends cmd {
 				break;
 			}
 			log::add('aTVremote','info','Commande sur '.$eqLogic->getName().' : '.$logical.((isset($cmds))?' -> '.$cmds:''));
+		
+		} elseif($eqLogic->getConfiguration('version',0) != '3') { // refresh on !atv3
+			if($eqLogic->getConfiguration('device','') != 'HomePod') {
+				$eqLogic->aTVdaemonExecute('power_state');
+				$eqLogic->aTVdaemonExecute('app_list');
+			}
+			$eqLogic->aTVdaemonExecute('volume');
 		}
-		if($eqLogic->getConfiguration('version',0) == '3') {
+		
+		if($eqLogic->getConfiguration('device','') == 'Apple TV' && $eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
-		}/* elseif ($changed) {
+		}
+		/* if ($changed) {
 			$eqLogic->refreshWidget();
 		}*/
 	}
