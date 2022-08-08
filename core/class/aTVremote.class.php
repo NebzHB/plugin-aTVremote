@@ -305,9 +305,9 @@ class aTVremote extends eqLogic {
 				}
 			break;
 		}
-		if($changed) {
+		/*if($changed) {
 			$eqLogic->refreshWidget();
-		}
+		}*/
 	}
 // OLDSCAN
     public static function discover($_mode) {
@@ -978,9 +978,9 @@ class aTVremote extends eqLogic {
 				}
 			}*/
 			
-			if ($changed) {
+			/*if ($changed) {
 				$this->refreshWidget();
-			}
+			}*/
 		} catch (Exception $e) {
 			/*$aTVremoteCmd = $this->getCmd(null, 'status');
 			if (is_object($aTVremoteCmd)) {
@@ -1184,9 +1184,13 @@ class aTVremote extends eqLogic {
       
     
 		if ($Test == "Apple TV"){
-			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'aTVremote')));
+			if($this->getConfiguration('version',0) == '3') {
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv3', 'aTVremote')));
+			} else {
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv', 'aTVremote')));
+			}
         }else{
-			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic1', 'aTVremote')));
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'homepod', 'aTVremote')));
         };
         
 	}  
@@ -1369,9 +1373,9 @@ class aTVremoteCmd extends cmd {
 		}
 		if($eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
-		} elseif ($changed) {
+		}/* elseif ($changed) {
 			$eqLogic->refreshWidget();
-		}
+		}*/
 	}
 
 }
