@@ -251,7 +251,7 @@
 			"isHistorized": 0,
 			"logicalId": "app"
 		}, {
-			"name": "Bouton Volume +5",
+			"name": "Bouton Volume +",
 			"type": "action",
 			"subtype": "other",
 			"display": {
@@ -260,7 +260,7 @@
 			"isVisible": 1,
 			"logicalId": "volume_up"
 		}, {
-			"name": "Bouton Volume -5",
+			"name": "Bouton Volume -",
 			"type": "action",
 			"subtype": "other",
 			"display": {
