@@ -589,6 +589,9 @@ class aTVremote extends eqLogic {
 		try {
 			$file = $path . '/' . $os.(($device)?'-'.$device:'').'.json';
 			$content = file_get_contents($file);
+			if($content) {
+				$content=translate::exec($content,realpath($file));
+			}
 			$return = json_decode($content, true);
 		} catch (Exception $e) {
 			return false;
