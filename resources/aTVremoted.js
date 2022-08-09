@@ -250,7 +250,7 @@ function removeATV(mac) {
 
 app.get('/cmd', function(req,res){
 	var mac  = req.query.mac.toUpperCase();
-	var cmds = req.query.cmd.toLowerCase().replace(' ','');
+	var cmds = req.query.cmd.replace(' ','');
 	if(cmds.includes("push_updates")) {
 		Logger.log(cmds+' unsupported because of push_updates',LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'unsupported'});
