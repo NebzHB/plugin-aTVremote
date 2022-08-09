@@ -249,13 +249,21 @@ function removeATV(mac) {
 }
 
 app.get('/cmd', function(req,res){
-	if(req.query.cmd=="push_updates") {
-		Logger.log(req.query.cmd+' unsupported',LogType.INFO);
+	var mac  = req.query.mac.toUpperCase();
+	var cmds = req.query.cmd.toLowerCase().replace(' ','');
+	if(cmds.includes("push_updates")) {
+		Logger.log(cmds+' unsupported because of push_updates',LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'unsupported'});
 	}
-	var mac=req.query.mac.toUpperCase();
-	Logger.log("Exécution commande "+req.query.cmd+' sur '+mac,LogType.DEBUG);
-	aTVs.cmd[mac].stdin.write(req.query.cmd+'\n');
+	if(cmds.includes('|')) {
+		cmds=cmds.split('|');
+	} else {
+		cmds=[cmds];
+	}
+	for(const cmd of cmds) {
+		Logger.log("Exécution commande "+cmd+' sur '+mac,LogType.DEBUG);
+		aTVs.cmd[mac].stdin.write(cmd+'\n');
+	}
 	res.status(200).json({'result':'ok'});		
 });
 app.get('/connect', function(req,res){
