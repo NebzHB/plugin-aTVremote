@@ -881,7 +881,7 @@ class aTVremote extends eqLogic {
 					if(is_object($app)) {
 						if(isset($aTVremoteinfo['app_id'])) {
 							$changed=$this->checkAndUpdateCmd($app, $aTVremoteinfo['app_id']) || $changed;
-						} else {
+						} elseif(!isset($aTVremoteinfo['simplifiedPlaying'])){
 							$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 						}
 					}
@@ -890,6 +890,13 @@ class aTVremote extends eqLogic {
 			
 			$position = $this->getCmd(null, 'position');
 			if (is_object($position)) {
+				if(isset($aTVremoteinfo['position']) && $aTVremoteinfo['position'] != null && strpos($aTVremoteinfo['position'],'%') !== false) { // position from refreshed playing
+					$sep=explode(' ',$aTVremoteinfo['position']);
+					$posPart=explode('/',$sep[0]);
+					$aTVremoteinfo['position']=intval($posPart[0]);
+					$aTVremoteinfo['total_time']=intval(str_replace('s','',$posPart[1]));
+				}
+				
 				if(isset($aTVremoteinfo['total_time']) && $aTVremoteinfo['total_time'] != null) {
 					if($aTVremoteinfo['total_time'] <60) {
 						$displayTT=$aTVremoteinfo['total_time'].'s';
@@ -1390,7 +1397,7 @@ class aTVremoteCmd extends cmd {
 			if($eqLogic->getConfiguration('device','') != 'HomePod') {
 				$eqLogic->aTVdaemonExecute('power_state|app_list');
 			}
-			$eqLogic->aTVdaemonExecute('volume');
+			$eqLogic->aTVdaemonExecute('playing|volume');
 		}
 		
 		if($eqLogic->getConfiguration('device','') == 'Apple TV' && $eqLogic->getConfiguration('version',0) == '3') {
