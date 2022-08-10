@@ -1397,7 +1397,7 @@ class aTVremoteCmd extends cmd {
 			if($eqLogic->getConfiguration('device','') != 'HomePod') {
 				$eqLogic->aTVdaemonExecute('power_state|app_list');
 			}
-			$eqLogic->aTVdaemonExecute('playing|volume');
+			$eqLogic->aTVdaemonExecute('playing|delay=333|volume');
 		}
 		
 		if($eqLogic->getConfiguration('device','') == 'Apple TV' && $eqLogic->getConfiguration('version',0) == '3') {
