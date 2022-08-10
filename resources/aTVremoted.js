@@ -109,6 +109,13 @@ function connectATV(mac,version) {
 				
 				if(data.match(/^[0-9]{0,3}\.[0-9]$/)) {
 					jsend({eventType: 'volume', data : data, mac: mac});
+				} else if(data.includes('Media type')) {
+					var jsonData={'simplifiedPlaying':true};
+					for(const line of data.split('\n')) {
+						const fields=line.trim().split(': ');
+						jsonData[fields[0].replace(' ','_').toLowerCase()]=fields[1];
+					}
+					jsend({eventType: 'playing', data : JSON.stringify(jsonData), mac: mac});
 				} else if(data.includes('PowerState.')) {
 					jsend({eventType: 'powerstate', data : data, mac: mac});
 				} else if(data.includes('App: ')) {
