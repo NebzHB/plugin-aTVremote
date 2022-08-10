@@ -105,15 +105,23 @@ function connectATV(mac,version) {
 				return;
 			}
 			if(data != "pyatv> ") {
-				data=data.replace('\npyatv> ','');
+				data=data.replace('\npyatv> ','').replace('\npyatv> ','').replace('pyatv> ','');
 				
 				if(data.match(/^[0-9]{0,3}\.[0-9]$/)) {
 					jsend({eventType: 'volume', data : data, mac: mac});
 				} else if(data.includes('Media type')) {
-					var jsonData={'simplifiedPlaying':true};
+					let jsonData={'simplifiedPlaying':true};
 					for(const line of data.split('\n')) {
 						const fields=line.trim().split(': ');
-						jsonData[fields[0].replace(' ','_').toLowerCase()]=fields[1];
+						const key=fields[0].trim().replace(' ','_').toLowerCase();
+						if(fields[1]) {
+							let newValue=fields[1].trim();
+							if(fields.length > 2) {
+								fields.shift();
+								newValue=fields.join(': ');
+							} 
+							jsonData[key]=newValue;
+						}
 					}
 					jsend({eventType: 'playing', data : JSON.stringify(jsonData), mac: mac});
 				} else if(data.includes('PowerState.')) {
