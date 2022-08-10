@@ -110,7 +110,7 @@ function connectATV(mac,version) {
 				if(data.match(/^[0-9]{0,3}\.[0-9]$/)) {
 					jsend({eventType: 'volume', data : data, mac: mac});
 				} else if(data.includes('Media type')) {
-					let jsonData={'simplifiedPlaying':true};
+					const jsonData={'simplifiedPlaying':true};
 					for(const line of data.split('\n')) {
 						const fields=line.trim().split(': ');
 						const key=fields[0].trim().replace(' ','_').toLowerCase();
