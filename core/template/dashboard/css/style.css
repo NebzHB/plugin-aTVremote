@@ -55,6 +55,20 @@
 	width : 24px;
 }
 
+/* volume Homepod */
+
+.volumeWidget {
+	position: absolute;
+	z-index:0;
+	top:38px;
+	left:4px;
+}
+.volumeWidget .rs-tooltip {
+	top:22px;
+}
+
+/*Artwork*/
+
 .artworkBackground {
 	width: 138px;
 	height: 302px;
@@ -74,17 +88,15 @@
 .gameplayH{
 	position: absolute;
 	height: 40px;
-	width: 256px;
+	width: 70px;
+	left:93px
 }
 
 .blocPlayH{
 	display: block;
 	position: absolute;
 	top: 9px;
-	left: 93px;
 }
-
-/*Artwork*/
 
 .artwork_aTVremote{
 	width: 138px;
