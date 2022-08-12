@@ -129,6 +129,12 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}" readonly />
 									</div>
 								</div>
+								<div class="form-group" style="display:none" id="ColorSelect">
+									<label class="col-sm-3 control-label">{{Couleur}}</label>
+									<div class="col-sm-4">
+										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="theme"></select>
+									</div>
+								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
 								<input type="text" id="savingWithGui" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="savingWithGui" />
 								<div id="Airplay" style="display:none">
