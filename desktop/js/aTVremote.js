@@ -74,6 +74,22 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=needCompanionPairing]').on(
 	}
 });
 
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').on('change', function () {
+	if($(this).html()) {
+		var themes = ['<option value="black" selected>Noir</option>','<option value="white">Blanc</option>'];
+		if($(this).html() == 'Mini') {
+			themes=themes.concat(['<option value="red">Rouge</option>','<option value="yellow">Jaune</option>','<option value="blue">Bleu</option>']);
+			$('.eqLogicAttr[data-l1key=configuration][data-l2key=theme]').html(themes.join(''));
+			$('#ColorSelect').show();
+		} else if($(this).html() == 'Original') {
+			$('.eqLogicAttr[data-l1key=configuration][data-l2key=theme]').html(themes.join(''));
+			$('#ColorSelect').show();
+		} else {
+			$('#ColorSelect').hide();
+		}
+	}
+});
+
 $('.eqLogicAction[data-action=scanAppleTV]').on('click', function () {
 	$('#div_alert').showAlert({message: '{{Détection en cours}}', level: 'warning'});
 	$.showLoading();
