@@ -1,5 +1,6 @@
 <div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
 <!--  HomePod -->
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/roundslider.min.css" />
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
 	<style>
 		.artworkBackgroundH_#id# {
@@ -9,9 +10,19 @@
 			background-repeat: no-repeat;
 			background-size: cover;
 		}
+		#volumeWidget_#id# .rs-handle {
+			background-color: #handleColor#;
+		}
+		#volumeWidget_#id# .rs-handle:hover {
+			box-shadow: 0px 0px 4px 0px #handleShadowColor#;
+		}
+		#volumeWidget_#id# .rs-tooltip {
+			color:#tooltipColor#;
+		}
 	</style>
-
-  	<div class="haut_aTVremote_widH" >
+    <script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
+  	<div class="haut_aTVremote_widH">
+		<div class="volumeWidget"><div id="volumeWidget_#id#"></div></div>
 		<div class="artworkBackgroundH artworkBackgroundH_#id#"></div>
       	<div class="haut">
 		
@@ -65,7 +76,7 @@
 <!--  Statut & Info -->
 		<div class="info" style="height:20px;">
           	<br>
-			<p style='text-align: center;top: 104px;position: absolute;width: 256px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
+			<p style='text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
           	
 		</div>
 <!--  Statut & Info -->   
@@ -92,7 +103,31 @@
 	</div>
     <script> 
 
-      
+		$("#volumeWidget_#id#").roundSlider({
+			sliderType: "min-range",
+			radius: 125,
+			width: 47,
+			step: 1,
+			keyboardAction:false,
+			mouseScrollAction:false,
+			editableTooltip: false,
+			svgMode:true,
+			borderWidth:0,
+			rangeColor:"#rangeColor#",
+			pathColor:"#pathColor#",
+			value: #volume#,
+			change: function (args) {
+				jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: args.value}});
+			},
+			drag:function (args) {
+				if(args.value >= 20 && args.value <=30) {
+					$('#volumeWidget_#id# .rs-tooltip').css('top','225px');
+				} else {
+					$('#volumeWidget_#id# .rs-tooltip').css('top','22px');
+				}
+			},
+		});
+		
 //Apple clignotante
       	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){
 			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
@@ -200,6 +235,18 @@
 		} else {
 			$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
 		}*/     
+		
+//volume	
+		jeedom.cmd.update['#volume_id#'] = function(_options){
+			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
+			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
+			if(_options.display_value >= 20 && _options.display_value <=30) {
+				$('#volumeWidget_#id# .rs-tooltip').css('top','225px');
+			} else {
+				$('#volumeWidget_#id# .rs-tooltip').css('top','22px');
+			}
+		}
+		jeedom.cmd.update['#volume_id#']({display_value:'#volume#'});
 	  
 //Repeat	
 		jeedom.cmd.update['#repeat_state_id#'] = function(_options){
