@@ -1208,8 +1208,50 @@ class aTVremote extends eqLogic {
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic1', 'aTVremote')));
         };**/
       
-/** pour les tests sans HomePod **/   
-      
+/** pour les tests sans HomePod **/  
+
+/** THEMES HomePods **/
+		$themes=[];
+		$themes['black'] = [
+			"handleColor"=>"#464646",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(0,0,0,0)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['white'] = [
+			"handleColor"=>"#000",
+			"handleShadowColor"=>"#000",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(255,255,255,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['red'] = [
+			"handleColor"=>"#FF3200",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(255,50,0,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['yellow'] = [
+			"handleColor"=>"#FDD514",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(253,213,20,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['blue'] = [
+			"handleColor"=>"#003d7e",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(0,61,126,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		
+		$theme=$this->getConfiguration('theme','black');
+		foreach($themes[$theme] as $elmt=>$value) {
+			$replace["#".$elmt."#"] = $value;
+        }
     
 		if ($Test == "Apple TV"){
 			if($this->getConfiguration('version',0) == '3') {
