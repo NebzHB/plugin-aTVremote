@@ -1,6 +1,8 @@
 <div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
 <!--  HomePod -->
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/roundslider.min.css" />
+	<script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
 	<style>
 		.artworkBackgroundH_#id# {
 			background-image: url("#artwork_url#");
@@ -9,9 +11,32 @@
 			background-repeat: no-repeat;
 			background-size: cover;
 		}
+		#slider#id# {
+			position: absolute;
+			top: 65px;
+			left: 31px;
+			z-index:0;
+		}
+		#slider#id# .rs-range-color {
+			background-color: gray;
+			border:0;
+			/*opacity:0.5;*/
+		}
+		#slider#id# .rs-path-color {
+			background-color: lightgray;
+			border:0;
+			/* opacity: 0.5 !important; */
+		}
+		#slider#id# .rs-handle {
+			background-color: gray;
+		}		
+		#slider#id# .rs-border {
+			border:0;
+		}
 	</style>
 
   	<div class="haut_aTVremote_widH" >
+		<div id="slider#id#" class="cmd set_volume" data-cmd_id="#cmd_set_volume_id#"></div>        
 		<div class="artworkBackgroundH artworkBackgroundH_#id#"></div>
       	<div class="haut">
 		
@@ -247,6 +272,15 @@
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		})
 
+
+// Volume
+		jeedom.cmd.update['#volume_id#'] = function(_options){
+			//console.log("update volume slider to " + _options.display_value);
+			//$("#slider#id#").roundSlider("setValue", _options.display_value);
+			let slider = $("#slider#id#").data("roundSlider");
+			slider.setValue(_options.display_value);
+		}
+		    
 /* Back to the futur Sildebar */    
       
       	/*var time = '#position#';
@@ -275,6 +309,35 @@
           
 		}*/
       
-     
+		function volumeChanged() {
+			//console.log("volume changed to " + $("#slider#id#").roundSlider("getValue"));
+			jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: $("#slider#id#").roundSlider("getValue")}});
+		}
+		/*
+		function volumeUpdated() {
+			console.log("volume updated to " + $("#slider#id#").roundSlider("getValue"));
+			jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: $("#slider#id#").roundSlider("getValue")}});
+		}
+		function volumeValueChanged() {
+			console.log("volume value changed to " + $("#slider#id#").roundSlider("getValue"));
+			jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: $("#slider#id#").roundSlider("getValue")}});
+		}
+		*/
+
+		//console.log("start value=#volume#");
+		$("#slider#id#").roundSlider({
+			animation:false,
+			radius: 97,
+			value: #volume#,
+			width: 10,
+			borderWidth:0,
+			showTooltip: false,
+			startAngle: 90,
+			sliderType: "min-range",
+			change: "volumeChanged",
+			//update: "volumeUpdated",
+			//valueChange: "volumeValueChanged"
+		});         
+
     </script>
 </div>
