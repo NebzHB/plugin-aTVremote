@@ -94,7 +94,7 @@ source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 	#try sudo `which python3` -m pip install -I wheel
 	try sudo `which python3` -m pip install -I git+https://github.com/NebzHB/pyatv@master
 	try sudo `which python3` -m pip uninstall -y miniaudio
-	try sudo `which python3` -m pip install --no-binary :all: miniaudio==1.40
+	try sudo `which python3` -m pip install --no-binary :all: miniaudio==1.52
 	sudo `which python3` -m pip list
 
 deactivate
