@@ -1407,13 +1407,18 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'set_volume' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
-						$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
-						// pre-set volume
-						/*$volume = $eqLogic->getCmd(null, 'volume');
-						if (is_object($volume)) {
-							log::add('aTVremote','debug','PréChangement volume à '.$_options['slider']);
-							$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
-						}*/
+						$title = $eqLogic->getCmd(null, 'title');
+						if (is_object($title) && $title->getCache('value') != '-') { // or the deamon crash !
+							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
+							// pre-set volume
+							/*$volume = $eqLogic->getCmd(null, 'volume');
+							if (is_object($volume)) {
+								log::add('aTVremote','debug','PréChangement volume à '.$_options['slider']);
+								$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
+							}*/
+						} else {
+							$cmds=" Annulée car pas de titre détecté et ca fait planter le démon";	
+						}
 					}
 				break;
 				case 'channel_up':
