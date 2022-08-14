@@ -399,8 +399,6 @@ class aTVremote extends eqLogic {
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
 						$eqLogic->setEqType_name('aTVremote');
-						/* $eqLogic->setDisplay('width','138px');
-						$eqLogic->setDisplay('height','500px'); */
 					} else $eqLogic = $wasExisting;
 					
 					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Mandatory") ||
