@@ -125,9 +125,9 @@ class aTVremote extends eqLogic {
 
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') {
-			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
+			throw new Exception(__("Veuillez vérifier la configuration", __FILE__));
 		}
-		log::add('aTVremote', 'info', 'Lancement du démon aTVremote');
+		log::add('aTVremote', 'info', "Lancement du démon aTVremote");
 		$socketport = self::getFreePort();
 		$url  = network::getNetworkAccess('internal').'/core/api/jeeApi.php' ;
 
@@ -169,7 +169,7 @@ class aTVremote extends eqLogic {
 		
 		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4 . ' ' . $arrHP;
 
-		log::add('aTVremote', 'debug', 'Lancement démon aTVremote : ' . $cmd);
+		log::add('aTVremote', 'debug', "Lancement démon aTVremote : " . $cmd);
 
 		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('aTVremote_deamon') . ' 2>&1 &');
 		if (strpos(strtolower($result), 'error') !== false || strpos(strtolower($result), 'traceback') !== false) {
@@ -185,11 +185,11 @@ class aTVremote extends eqLogic {
 			$i++;
 		}
 		if ($i >= 30) {
-			log::add('aTVremote', 'error', 'Impossible de lancer le démon aTVremote, relancer le démon en debug et vérifiez la log', 'unableStartDeamon');
+			log::add('aTVremote', 'error', "Impossible de lancer le démon aTVremote, relancer le démon en debug et vérifiez le log", 'unableStartDeamon');
 			return false;
 		}
 		message::removeAll('aTVremote', 'unableStartDeamon');
-		log::add('aTVremote', 'info', 'Démon aTVremote lancé');
+		log::add('aTVremote', 'info', "Démon aTVremote lancé");
 		return true;
 
 	}
@@ -204,7 +204,7 @@ class aTVremote extends eqLogic {
 		if(shell_exec('ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') == '1') {
 			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
 		}
-		log::add('aTVremote', 'info', 'Arrêt du démon aTVremote');
+		log::add('aTVremote', 'info', "Arrêt du démon aTVremote");
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
 			sleep(1);
@@ -219,15 +219,15 @@ class aTVremote extends eqLogic {
 
 	public static function reinstallNodeJS() { // Reinstall NODEJS from scratch (to use if there is errors in dependancy install)
 		$pluginaTVremote = plugin::byId('aTVremote');
-		log::add('aTVremote', 'info', 'Suppression du Code NodeJS');
+		log::add('aTVremote', 'info', "Suppression du Code NodeJS");
 		$cmd = system::getCmdSudo() . 'rm -rf ' . dirname(__FILE__) . '/../../resources/node_modules >/dev/null 2>&1';
 		exec($cmd);
-		log::add('aTVremote', 'info', 'Suppression de NodeJS');
+		log::add('aTVremote', 'info', "Suppression de NodeJS");
 		$cmd = system::getCmdSudo() . 'apt-get -y --purge autoremove npm';
 		exec($cmd);
 		$cmd = system::getCmdSudo() . 'apt-get -y --purge autoremove nodejs';
 		exec($cmd);
-		log::add('aTVremote', 'info', 'Réinstallation des dependances');
+		log::add('aTVremote', 'info', "Réinstallation des dependances");
 		$pluginaTVremote->dependancy_install();
 		return true;
 	}
@@ -238,17 +238,17 @@ class aTVremote extends eqLogic {
 		
 		$eqLogic = aTVremote::byLogicalId(init('mac'), 'aTVremote');
 		if(!is_object($eqLogic)) {
-			log::add('aTVremote','debug','Reçu un évenement pour '.init('mac').' mais il n\'existe pas !');
+			log::add('aTVremote','debug',"Reçu un évenement pour ".init('mac')." mais il n'existe pas !");
 			return;
 		}
 		
-		log::add('aTVremote', 'debug', 'Passage dans la fonction event ' . $eventType . ' pour '.$eqLogic->getName());
+		log::add('aTVremote', 'debug', "Passage dans la fonction event " . $eventType . " pour ".$eqLogic->getName());
 		if ($eventType == 'error'){
 			log::add('aTVremote', 'error', init('description'));
 			return;
 		}
 		if(init('data')) {
-			log::add('aTVremote','debug','Reçu du démon :'.init('data'));
+			log::add('aTVremote','debug',"Reçu du démon :".init('data'));
 		}
 		switch ($eventType)
 		{
@@ -298,10 +298,10 @@ class aTVremote extends eqLogic {
 							}
 						}
 					} else {
-						log::add('aTVremote','debug','Pas de reask si airplay');
+						log::add('aTVremote','debug',"Pas de reask si airplay");
 					}
 				} else {
-					log::add('aTVremote','debug','Pas de reask sur atv3');
+					log::add('aTVremote','debug',"Pas de reask sur atv3");
 				}
 			break;
 		}
@@ -312,9 +312,9 @@ class aTVremote extends eqLogic {
 // OLDSCAN
     public static function discover($_mode) {
 		log::add('aTVremote','info','============================');
-		log::add('aTVremote','info','Scan en cours...');
+		log::add('aTVremote','info',"Scan en cours...");
         	$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
-		log::add('aTVremote','debug','Résultat brut : '.$output);
+		log::add('aTVremote','debug',"Résultat brut : ".$output);
 
 		if($output) {
 			$return = [];
@@ -332,23 +332,23 @@ class aTVremote extends eqLogic {
 					log::add('aTVremote','info','****************************');
 					if(log::convertLogLevel(log::getLogLevel('aTVremote')) == 'debug') {
 						$tempo=array_shift($device);
-						log::add('aTVremote','debug','PREG BRUT:'.json_encode($device,JSON_UNESCAPED_UNICODE));
+						log::add('aTVremote','debug',"PREG BRUT:".json_encode($device,JSON_UNESCAPED_UNICODE));
 						array_unshift($device,$tempo);
 					}
 					
 					if($device[4] == "None") {
-						log::add('aTVremote','info','Pas de MAC : on ignore '.$device[1]);
+						log::add('aTVremote','info',"Pas de MAC : on ignore ".$device[1]);
 						continue;
 					}
 					if( (isset($device[6]) && $device[6] == 'AirPlay' && isset($device[9]) && $device[9] == "True") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[15]) && $device[15] == "True") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[21]) && $device[21] == "True") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[27]) && $device[27] == "True") ) {
-						log::add('aTVremote','info','AppleTV avec mot de passe AirPlay : on ignore '.$device[1]);
+						log::add('aTVremote','info',"AppleTV avec mot de passe AirPlay : on ignore ".$device[1]);
 						continue;    
 					}
 					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'HomePod') === false) {
-						log::add('aTVremote','info','Modèle non supporté '.$device[2].' : on ignore '.$device[1]);
+						log::add('aTVremote','info',"Modèle non supporté ".$device[2]." : on ignore ".$device[1]);
 						continue;
 					}
 					
@@ -383,7 +383,7 @@ class aTVremote extends eqLogic {
 					$res['os']=$subModElmt[0];
 					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
-						log::add('aTVremote','info','Pas une vraie AppleTV3: on Ignore '.$res['model']);
+						log::add('aTVremote','info',"Pas une vraie AppleTV3: on Ignore ".$res['model']);
 						continue;
 					} elseif($subModElmt[1] == 'SW') {
 						$res['osVersion']=$subModElmt[2];
@@ -405,26 +405,26 @@ class aTVremote extends eqLogic {
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Mandatory") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Mandatory") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Mandatory") ) {
-						log::add('aTVremote','info','Appairage AirPlay obligatoire !');
+						log::add('aTVremote','info',"Appairage AirPlay obligatoire !");
 						$eqLogic->setConfiguration('needAirplayPairing','1'); 
 					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "NotNeeded") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "NotNeeded") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "NotNeeded") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "NotNeeded") ) {
-						log::add('aTVremote','info','Appairage AirPlay pas nécessaire');
+						log::add('aTVremote','info',"Appairage AirPlay pas nécessaire");
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Unsupported") ||
 					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Unsupported") ||
 					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Unsupported") ||
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Unsupported") ) {
-						log::add('aTVremote','info','Appairage AirPlay non supporté');
+						log::add('aTVremote','info',"Appairage AirPlay non supporté");
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					} else {
-						log::add('aTVremote','info','Appairage AirPlay inconnu');
+						log::add('aTVremote','info',"Appairage AirPlay inconnu");
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					}
 					if($res['device']=="Apple TV" && $res['version'] == 3) {
-						log::add('aTVremote','info','Appairage AirPlay obligatoire ! (car Apple TV 3)');
+						log::add('aTVremote','info',"Appairage AirPlay obligatoire ! (car Apple TV 3)");
 						$eqLogic->setConfiguration('needAirplayPairing','1'); 
 					}
 					
@@ -432,22 +432,22 @@ class aTVremote extends eqLogic {
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Mandatory") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Mandatory") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Mandatory") ) {
-						log::add('aTVremote','info','Appairage Companion obligatoire !');
+						log::add('aTVremote','info',"Appairage Companion obligatoire !");
 						$eqLogic->setConfiguration('needCompanionPairing','1'); 
 					} elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "NotNeeded") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "NotNeeded") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "NotNeeded") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "NotNeeded") ) {
-						log::add('aTVremote','info','Appairage Companion pas nécessaire');
+						log::add('aTVremote','info',"Appairage Companion pas nécessaire");
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					}  elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Unsupported") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Unsupported") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Unsupported") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Unsupported") ) {
-						log::add('aTVremote','info','Appairage Companion non supporté');
+						log::add('aTVremote','info',"Appairage Companion non supporté");
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					} else {
-						log::add('aTVremote','info','Appairage Companion inconnu');
+						log::add('aTVremote','info',"Appairage Companion inconnu");
 						$eqLogic->setConfiguration('needCompanionPairing','0');
 					}
 					
@@ -468,7 +468,7 @@ class aTVremote extends eqLogic {
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
-							'message' => __('Nouvelle AppleTV detectée ' .$res["name"], __FILE__),
+							'message' => __("Nouvelle AppleTV detectée " .$res["name"], __FILE__),
 						));
 						$result['type'] = 'newNode';
 						event::add('aTVremote::scan', $result);
@@ -476,7 +476,7 @@ class aTVremote extends eqLogic {
 						event::add('jeedom::alert', array(
 							'level' => 'warning',
 							'page' => 'aTVremote',
-							'message' => __('AppleTV mise à jour avec succès ' .$res["name"], __FILE__),
+							'message' => __("AppleTV mise à jour avec succès " .$res["name"], __FILE__),
 						));
 						$result['type'] = 'updateNode';
 						event::add('aTVremote::scan', $result);
@@ -485,7 +485,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 
-			log::add('aTVremote','info','Ajouté : '.json_encode($return,JSON_UNESCAPED_UNICODE));
+			log::add('aTVremote','info',"Ajouté : ".json_encode($return,JSON_UNESCAPED_UNICODE));
 			log::add('aTVremote','info','============================');
 		}
 		return $return;
@@ -622,11 +622,11 @@ class aTVremote extends eqLogic {
 				$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/cmd?cmd=";
 				$url.=urlencode($cmd).'&mac='.$mac.((count($params))?"&".http_build_query($params):'');
 				$json = @file_get_contents($url);
-				if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
+				if($json === false) log::add('aTVremote','error',"Problème de communication avec le démon : ".$url);
 				log::add('aTVremote','debug',ucfirst($cmd).' brut : '.$json);
 				return json_decode($json, true);
 			} else {
-				log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande '.ucfirst($cmd));
+				log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande ".ucfirst($cmd));
 			}
 		}
 	}
@@ -639,11 +639,11 @@ class aTVremote extends eqLogic {
 			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
 			$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
 			$json = @file_get_contents($url);
-			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-			log::add('aTVremote','debug','Connect brut : '.$json);
+			if($json === false) log::add('aTVremote','error',"Problème de communication avec le démon : ".$url);
+			log::add('aTVremote','debug',"Connect brut : ".$json);
 			return json_decode($json, true);
 		} else {
-			log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande Connect');
+			log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande Connect");
 		}
 	}
 	public function aTVdaemonDisconnectATV($params=[]) {
@@ -654,11 +654,11 @@ class aTVremote extends eqLogic {
 			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/disconnect?";
 			$url.='mac='.$mac.((count($params))?"&".http_build_query($params):'');
 			$json = @file_get_contents($url);
-			if($json === false) log::add('aTVremote','error','Problème de communication avec le démon : '.$url);
-			log::add('aTVremote','debug','Disconnect brut : '.$json);
+			if($json === false) log::add('aTVremote','error',"Problème de communication avec le démon : ".$url);
+			log::add('aTVremote','debug',"Disconnect brut : ".$json);
 			return json_decode($json, true);
 		} else {
-			log::add('aTVremote','info','Démon pas démarré, impossible de lui envoyer la commande Disconnect');
+			log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande Disconnect");
 		}
 	}
 
@@ -706,13 +706,13 @@ class aTVremote extends eqLogic {
 	
 		if (!file_exists($abs_folder.$id.'/')) {
 			exec("cd $abs_folder && sudo mkdir $id && sudo chown www-data:www-data ".$abs_folder.$id."/ >/dev/null 2>&1;sudo chmod 775 ".$abs_folder.$id."/ >/dev/null 2>&1");
-			log::add('aTVremote','debug','Création répertoire pour '.$id);
+			log::add('aTVremote','debug',"Création répertoire pour ".$id);
 		}
 
 		if(!file_exists($dest)) {
 			sleep(1);
 			if(file_exists($src)) {
-				log::add('aTVremote','debug','--src already exists, remove it...'.$src);
+				log::add('aTVremote','debug',"--src already exists, remove it...".$src);
 				exec("sudo rm -f $src >/dev/null 2>&1");
 			}
 			
@@ -720,30 +720,30 @@ class aTVremote extends eqLogic {
 			
 			$t=1;
 			while(!file_exists($src) && $t < 16) {
-				log::add('aTVremote','debug','Pas encore de artwork.png, on attend...'.$t.'/15');
+				log::add('aTVremote','debug',"Pas encore de artwork.png, on attend...".$t.'/15');
 				usleep(0.333*1000000);
 				//sleep(1);
 				$t++;
 			}
 			if($t == 16) {
-				log::add('aTVremote','debug','Pas de artwork.png !');
+				log::add('aTVremote','debug',"Pas de artwork.png !");
 				return false;
 			} else {
-				log::add('aTVremote','debug','Artwork trouvé !');
+				log::add('aTVremote','debug',"Artwork trouvé !");
 			}
 			
 			exec("sudo chown www-data:www-data $src >/dev/null 2>&1;sudo chmod 775 $src >/dev/null 2>&1"); // force rights
 			rename($src,$dest);
 			exec("sudo chown www-data:www-data $dest >/dev/null 2>&1;sudo chmod 775 $dest >/dev/null 2>&1"); // force rights
 		} else {
-			log::add('aTVremote','debug','--Artwork déjà dans le cache, on l\'utilise :'.$dest);
+			log::add('aTVremote','debug',"--Artwork déjà dans le cache, on l'utilise :".$dest);
 			touch($dest); // update mtime
 			exec("sudo rm -f $src >/dev/null 2>&1");
 		}
 		
 		$artwork_url = $this->getCmd(null, 'artwork_url');
 		if(is_object($artwork_url)) {
-			log::add('aTVremote','debug','--MàJ de la commande avec :'.$artwork.'...');
+			log::add('aTVremote','debug',"--MàJ de la commande avec :".$artwork.'...');
 			$this->checkAndUpdateCmd($artwork_url, $artwork);
 			return true;
 		}
@@ -768,7 +768,7 @@ class aTVremote extends eqLogic {
 					$aTVremoteinfo[$info]=$value;
 				}
 				$aTVremoteinfo['hash']=$this->aTVremoteExecute('hash')[0];	
-				log::add('aTVremote','debug','Reçu:'.json_encode($aTVremoteinfo));
+				log::add('aTVremote','debug',"Reçu:".json_encode($aTVremoteinfo));
 			}
 			
 			$changed = false;
@@ -933,15 +933,15 @@ class aTVremote extends eqLogic {
 				if (is_object($repeat_human) && is_object($repeat_state)) {
 					switch(ucfirst($aTVremoteinfo['repeat'])) {
 						case 'Off':
-							$changed=$this->checkAndUpdateCmd($repeat_human, __('Non', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __("Non", __FILE__)) || $changed;
 							$changed=$this->checkAndUpdateCmd($repeat_state, '0') || $changed;
 						break;
 						case 'Track':
-							$changed=$this->checkAndUpdateCmd($repeat_human, __('Piste', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __("Piste", __FILE__)) || $changed;
 							$changed=$this->checkAndUpdateCmd($repeat_state, '1') || $changed;
 						break;
 						case 'All':
-							$changed=$this->checkAndUpdateCmd($repeat_human, __('Tout', __FILE__)) || $changed;
+							$changed=$this->checkAndUpdateCmd($repeat_human, __("Tout", __FILE__)) || $changed;
 							$changed=$this->checkAndUpdateCmd($repeat_state, '2') || $changed;
 						break;
 					}
@@ -953,15 +953,15 @@ class aTVremote extends eqLogic {
 				if (is_object($shuffle_human) && is_object($shuffle_state)) {
 				    switch(ucfirst($aTVremoteinfo['shuffle'])) {
 					case 'Off':                     
-								$changed=$this->checkAndUpdateCmd($shuffle_human, __('Non', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __("Non", __FILE__)) || $changed;
 								$changed=$this->checkAndUpdateCmd($shuffle_state, '0') || $changed;
 					break;
 					case 'Songs':
-								$changed=$this->checkAndUpdateCmd($shuffle_human, __('Chansons', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __("Chansons", __FILE__)) || $changed;
 								$changed=$this->checkAndUpdateCmd($shuffle_state, '1') || $changed;
 					break;
 					/*case 'Albums':
-								$changed=$this->checkAndUpdateCmd($shuffle_human, __(''Albums', __FILE__)) || $changed;
+								$changed=$this->checkAndUpdateCmd($shuffle_human, __("Albums", __FILE__)) || $changed;
 								$changed=$this->checkAndUpdateCmd($shuffle_state, '2') || $changed;
 					break;*/
 				    }
@@ -1019,7 +1019,7 @@ class aTVremote extends eqLogic {
 		if($justCenter) {
 			return 'plugins/aTVremote/core/template/inactive.png';
 		}
-		if($this->getConfiguration('device','') == "HomePod") {
+		if($this->getConfiguration('device','') == 'HomePod') {
 			if($this->getConfiguration('version','') == 'Mini') {
 				return 'plugins/aTVremote/core/template/homepod_mini.png';
 			} else {
@@ -1434,11 +1434,11 @@ class aTVremoteCmd extends cmd {
 					if($eqLogic->getConfiguration('pairingKeyCompanion','') != '') {
 						$eqLogic->aTVdaemonExecute($logical.'='.$_options['select']);
 					} else {
-						log::add('aTVremote','debug','Impossible de lancer la commande : '.$logical.'='.$_options['select'].' car pas d\'appairage Companion'.((isset($cmds))?' -> '.$cmds:''));
+						log::add('aTVremote','debug',"Impossible de lancer la commande : ".$logical.'='.$_options['select']." car pas d'appairage Companion".((isset($cmds))?' -> '.$cmds:''));
 					}
 				break;
 			}
-			log::add('aTVremote','info','Commande sur '.$eqLogic->getName().' : '.$logical.((isset($cmds))?' -> '.$cmds:''));
+			log::add('aTVremote','info',"Commande sur ".$eqLogic->getName().' : '.$logical.((isset($cmds))?' -> '.$cmds:''));
 		
 		} elseif($eqLogic->getConfiguration('version',0) != '3') { // refresh on !atv3
 			if($eqLogic->getConfiguration('device','') != 'HomePod') {
