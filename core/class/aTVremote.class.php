@@ -394,7 +394,7 @@ class aTVremote extends eqLogic {
 					$wasExisting = aTVremote::byLogicalId($res["mac"], 'aTVremote');
 					if (!is_object($wasExisting)) {
 						$eqLogic = new aTVremote();
-						$eqLogic->setName($res["name"]);
+						$eqLogic->setName($res["name"].(($res['device']=="HomePod")?' (Airplay)':''));
 						$eqLogic->setIsEnable(0);
 						$eqLogic->setIsVisible(0);
 						$eqLogic->setLogicalId($res["mac"]);
