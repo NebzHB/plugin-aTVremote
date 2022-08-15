@@ -16,7 +16,12 @@
 		#volumeWidget_#id# .rs-handle:hover {
 			box-shadow: 0px 0px 4px 0px #handleShadowColor#;
 		}
-		#volumeWidget_#id# .rs-tooltip {
+		#volumeWidget_#id# .rs-tooltip2 {
+			position: absolute;
+			margin-top: -9.5px;
+			margin-left: -8px; 
+			top: -8px; 
+			left: 13px;
 			color:#tooltipColor#;
 			font-family: Verdana;
 			font-weight: bold;
@@ -105,6 +110,32 @@
       
 	</div>
     <script> 
+		function initTooltip() {
+			$('#volumeWidget_#id# .rs-tooltip').css('display','none');
+			$('#volumeWidget_#id# .rs-bar').html($('#volumeWidget_#id# .rs-bar').html() 
+				+ '<span class="rs-tooltip2 rs-tooltip-text">&nbsp;</span>');
+		}
+
+		function setTooltipPosition() {
+			$('#volumeWidget_#id# .rs-tooltip2').html($('#volumeWidget_#id# .rs-tooltip').html());
+
+			const tr = $('#volumeWidget_#id# .rs-bar').css('transform');
+			let values = tr.split('(')[1];
+			values = values.split(')')[0];
+			values = values.split(',');
+			const a = values[0];
+			const b = values[1];
+			const c = values[2];
+			const d = values[3];
+			const scale = Math.sqrt(a*a + b*b);
+			const sin = b/scale;
+			let radians = Math.atan2(b, a);
+			if ( radians < 0 ) {
+				radians += (2 * Math.PI);
+			}
+			const angle = - Math.round( radians * (180/Math.PI));
+			$('#volumeWidget_#id# .rs-tooltip2').css('transform', 'rotate(' + angle + 'deg)');
+		}
 
 		$("#volumeWidget_#id#").roundSlider({
 			sliderType: "min-range",
@@ -123,13 +154,11 @@
 				jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: args.value}});
 			},
 			drag:function (args) {
-				if(args.value >= 20 && args.value <=30) {
-					$('#volumeWidget_#id# .rs-tooltip').css('top','225px');
-				} else {
-					$('#volumeWidget_#id# .rs-tooltip').css('top','22px');
-				}
+				setTooltipPosition();
 			},
 		});
+	    
+		initTooltip();
 		
 //Apple clignotante
       	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){
@@ -243,11 +272,7 @@
 		jeedom.cmd.update['#volume_id#'] = function(_options){
 			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
 			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
-			if(_options.display_value >= 20 && _options.display_value <=30) {
-				$('#volumeWidget_#id# .rs-tooltip').css('top','225px');
-			} else {
-				$('#volumeWidget_#id# .rs-tooltip').css('top','22px');
-			}
+			setTimeout(setTooltipPosition, 500);
 		}
 		jeedom.cmd.update['#volume_id#']({display_value:'#volume#'});
 	  
