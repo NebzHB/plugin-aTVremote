@@ -256,11 +256,17 @@ function connectATV(mac,version) {
 function removeATV(mac) {
 	var hasRemoved=false;
 	if(aTVs.cmd[mac]) {
+		aTVs.cmd[mac].stdout.removeAllListeners();
+		aTVs.cmd[mac].stderr.removeAllListeners();
+		aTVs.cmd[mac].removeAllListeners();
 		aTVs.cmd[mac].stdin.write('exit\n');
 		delete aTVs.cmd[mac];
 		hasRemoved=true;
 	}
 	if(aTVs.msg[mac]) {
+		aTVs.msg[mac].stdout.removeAllListeners();
+		aTVs.msg[mac].stderr.removeAllListeners();
+		aTVs.msg[mac].removeAllListeners();
 		aTVs.msg[mac].stdin.write('\n');
 		delete aTVs.msg[mac];
 		hasRemoved=true;
