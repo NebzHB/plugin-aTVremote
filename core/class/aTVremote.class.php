@@ -279,6 +279,7 @@ class aTVremote extends eqLogic {
 				$volume = $eqLogic->getCmd(null, 'volume');
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
+					if(!$changed) $volume->event(explode('.',init('data'))[0]);
 				}
 			break;
 			case 'reaskArtwork':
@@ -1407,8 +1408,9 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'set_volume' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
-						$title = $eqLogic->getCmd(null, 'title');
-						if (is_object($title) && $title->getCache('value') != '-') { // or the deamon crash !
+						//$eqLogic->aTVdaemonExecute('features');
+						$play_human = $eqLogic->getCmd(null, 'play_human');
+						if (is_object($play_human) && $play_human->getCache('value') != __("Inactif", __FILE__)) { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
@@ -1417,7 +1419,8 @@ class aTVremoteCmd extends cmd {
 								$changed=$eqLogic->checkAndUpdateCmd($volume, $_options['slider']) || $changed;
 							}*/
 						} else {
-							$cmds=" Annulée car pas de titre détecté et ca fait planter le démon";	
+							$eqLogic->aTVdaemonExecute('volume');
+							$cmds=" Annulée car Inactif et ca fait planter le démon";	
 						}
 					}
 				break;
