@@ -254,24 +254,24 @@ function connectATV(mac,version) {
 }
 
 function removeATV(mac) {
-	var hasRemoved=false;
 	if(aTVs.cmd[mac]) {
+		Logger.log('[CMD]['+mac+'] Demande de déconnexion...',LogType.INFO);
 		aTVs.cmd[mac].stdout.removeAllListeners();
 		aTVs.cmd[mac].stderr.removeAllListeners();
 		aTVs.cmd[mac].removeAllListeners();
 		aTVs.cmd[mac].stdin.write('exit\n');
 		delete aTVs.cmd[mac];
-		hasRemoved=true;
+		Logger.log('[CMD]['+mac+'] Déconnecté !',LogType.INFO);
 	}
 	if(aTVs.msg[mac]) {
+		Logger.log('[MSG]['+mac+'] Demande de déconnexion...',LogType.INFO);
 		aTVs.msg[mac].stdout.removeAllListeners();
 		aTVs.msg[mac].stderr.removeAllListeners();
 		aTVs.msg[mac].removeAllListeners();
 		aTVs.msg[mac].stdin.write('\n');
 		delete aTVs.msg[mac];
-		hasRemoved=true;
+		Logger.log('[MSG]['+mac+'] Déconnecté !',LogType.INFO);
 	}
-	if(hasRemoved) { Logger.log('Déconnecté de '+mac,LogType.INFO); }
 }
 
 app.get('/cmd', function(req,res){
@@ -299,18 +299,17 @@ app.get('/connect', function(req,res){
 		connectATV(mac,parseInt(req.query.version));
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Déjà connecté sur "+mac,LogType.INFO);
+		Logger.log("Connexion mais déjà connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
 	}
 });
 app.get('/disconnect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(aTVs.cmd[mac] || aTVs.msg[mac]) {
-		Logger.log("Déconnexion de "+mac+"...",LogType.INFO);
 		removeATV(mac);
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Pas connecté sur "+mac,LogType.INFO);
+		Logger.log("Déconnexion mais pas connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'notConnected'});		
 	}
 });
