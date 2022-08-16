@@ -49,7 +49,7 @@ then
 fi
 
 step 5 "Mise à jour APT et installation des packages nécessaires"
-try sudo apt-get update
+tryOrStop sudo apt-get update
 
 #install nodejs, steps 10->50
 . ${BASEDIR}/install_nodejs.sh ${installVer}
@@ -63,7 +63,7 @@ silent sudo rm -f package-lock.json
 step 70 "Installation des librairies du démon, veuillez patienter svp"
 silent sudo mkdir node_modules 
 silent sudo chown -R www-data:www-data . 
-try sudo npm install --no-fund --no-package-lock --no-audit
+tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
 silent sudo chown -R www-data:www-data . 
 
 step 90 "Installation librairie atvremote"
@@ -83,20 +83,20 @@ else
 fi
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
-#try sudo `which pip` install -I wheel
-#try sudo `which pip` install -I git+https://github.com/NebzHB/pyatv@master
-#try sudo `which pip` uninstall -y miniaudio
-#try sudo `which pip` install --no-binary :all: miniaudio==1.40
+	#try sudo pip3 install --upgrade pip
+	try sudo ${BASEDIR}/atvremote/bin/python -m pip install --upgrade pip
 
-#try sudo `which python3` -m pip install -I wheel
-try sudo `which python3` -m pip install -I git+https://github.com/NebzHB/pyatv@master
-try sudo `which python3` -m pip uninstall -y miniaudio
-try sudo `which python3` -m pip install --no-binary :all: miniaudio==1.40
-sudo `which python3` -m pip list
+	#try sudo `which pip` install -I wheel
+	#try sudo `which pip` install -I git+https://github.com/NebzHB/pyatv@master
+	#try sudo `which pip` uninstall -y miniaudio
+	#try sudo `which pip` install --no-binary :all: miniaudio==1.40
+
+	#try sudo `which python3` -m pip install -I wheel
+	try sudo `which python3` -m pip install -I git+https://github.com/NebzHB/pyatv@master
+	try sudo `which python3` -m pip uninstall -y miniaudio
+	try sudo `which python3` -m pip install --no-binary :all: miniaudio==1.52
+	sudo `which python3` -m pip list
 
 deactivate
-
-#try sudo pip3 install --upgrade pip
-try sudo ${BASEDIR}/atvremote/bin/python -m pip install --upgrade pip
 
 post

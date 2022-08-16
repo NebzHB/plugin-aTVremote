@@ -1,0 +1,335 @@
+<div class="eqLogic-widget eqLogic" style="max-width:256px;max-height:292px;width:250px !important;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:280px !important;margin:0;display:;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
+<!--  HomePod -->
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/roundslider.min.css" />
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+	<style>
+		.artworkBackgroundH_#id# {
+			background-image: url("#artwork_url#");
+			filter:blur(15px);
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		#volumeWidget_#id# .rs-handle:hover {
+			box-shadow: 0px 0px 4px 0px #handleShadowColor#;
+		}
+		#volumeWidget_#id# .rs-tooltip2 {
+			position: absolute;
+			margin-top: -9.5px;
+			margin-left: -8px; 
+			top: 15px; 
+			left: 13px;
+			color:#tooltipColor#;
+			font-family: Verdana;
+			font-weight: bold;
+			font-size: x-large;
+			width: 36px;
+		}
+		#volumeWidget_#id# .rs-tooltip2:hover {
+			cursor: move !important;
+		}		
+	</style>
+    <script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
+  	<div class="haut_aTVremote_widH">
+		<div class="volumeWidget"><div id="volumeWidget_#id#"></div></div>
+		<div class="artworkBackgroundH artworkBackgroundH_#id#"></div>
+      	<div class="haut">
+		
+<!--  Partie Supérieure -->
+			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>  
+          		
+          	<div id="a#id#" class="repeatBoxH">
+              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:25px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:25px;"/>&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:25px;;"/></a>
+            </div>
+<!--  Partie Supérieure -->
+
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:5;'><img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
+
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:4;'><img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>         
+          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremoteH noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="App"><span id="sum#id#"></span></a><br></p>
+     	</div>
+      
+<!--  Artwork -->
+		<div class="artwork_aTVremote">
+          
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" />
+          	     
+			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;" title="Vol-"/></a>
+          	<a class="btn_aTVremote_playbackH cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
+			<a class="btn_aTVremote_playbackH cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
+			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;" title="Vol+"/></a>
+
+			<div class="downpanelH">
+				<div style="overflow: auto;height: 316px;">
+					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 242px;">Info</legend>
+					<img class="downRafter2H" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" onClick="panelDownClose#id#()"/>
+					<section style="text-align: center;"> 
+						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork"/><br>
+						<br/>
+						<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste">[artist]</a></p></center>
+						<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre">[title]</a></p></center>
+						<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album">[album]</a></p></center>
+						<br>
+					</section>
+				</div>
+			</div>
+
+			<a><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" onclick="panelDown#id#()"/></a>					
+		</div>
+<!--  Artwork -->
+      
+<!--  Statut & Info -->
+		<div class="info" style="height:20px;">
+          	<br>
+			<p style='text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
+          	
+		</div>
+<!--  Statut & Info -->   
+          
+<!--  Control & Navigation -->  
+		<div class="gameplayH">    	
+				<div class="blocPlayH">
+					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:30px"/>&nbsp;&nbsp;</a>
+					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:30px"/></a>
+					<!--<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>-->
+				</div>
+
+<!--  Control & Navigation -->
+          
+<!--  Back to the futur Sildebar -->          
+          	<!-- <div class="slidecontainer">
+ 		 		<input type="range" min="1" max="" value="" class="slider" id="myRange">
+              	<p>Value: <span id="demo"></span></p>
+			</div>--> 
+<!--  Back to the futur Sildebar -->                                      
+		</div>
+     
+      
+	</div>
+    <script> 
+		$("#volumeWidget_#id#").roundSlider({
+			sliderType: "min-range",
+			radius: 125,
+			width: 47,
+			step: 1,
+			showTooltip: true,
+			editableTooltip: false,
+			keyboardAction:false,
+			mouseScrollAction:false,
+			svgMode:true,
+			borderWidth:0,
+			rangeColor:"#rangeColor#",
+			pathColor:"#pathColor#",
+			handleColor:"#handleColor#",
+			tooltipColor:"#tooltipColor#",
+			handleShape:"round",
+			handleRotation:true,
+			value: #volume#,
+			change: function (args) {
+				jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: args.value}});
+			},
+			valueChange: function (args) {
+				$('#volumeWidget_#id# .rs-tooltip2').html(args.value);
+			},
+			create:function (args) {
+				$('#volumeWidget_#id# .rs-tooltip').css('display','none');
+				$('#volumeWidget_#id# .rs-handle').append( '<span class="rs-tooltip2 rs-tooltip-text"></span>');
+			},
+		});
+
+//Apple clignotante
+      	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeIn(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeIn(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(100);
+		});
+
+//Play_human
+		jeedom.cmd.update['#play_human_id#'] = function(_options){
+			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
+			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
+		}
+		jeedom.cmd.update['#play_human_id#']({display_value:'#play_human#'});
+		
+//Play_state
+		jeedom.cmd.update['#play_state_id#'] = function(_options){
+			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == 0){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+			} else if(_options.display_value == 1){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+			}
+		}
+		jeedom.cmd.update['#play_state_id#']({display_value:'#play_state#'});	
+		
+//Artwork
+
+		jeedom.cmd.update['#artwork_url_id#'] = function(_options){
+			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
+			
+			$('#artworkForeground_#id#').prop('src',_options.display_value);
+			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
+			$('.artworkBackgroundH_#id#').css('background-image',"url("+_options.display_value+")");
+		}
+		jeedom.cmd.update['#artwork_url_id#']({display_value:'#artwork_url#'});
+
+//Metadonnée          
+
+		jeedom.cmd.update['#artist_id#'] = function(_options){
+			//console.log('ààà artist_id _options.display_value =',_options.display_value)
+			
+			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
+			$('#artworkForeground_#id#').prop('title',_options.display_value+'  -  '+artworkTitle[1]+'  -  '+artworkTitle[2]);
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').toggle(1);
+			}
+			
+			if (_options.display_value.length > 40){
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#artist_id#']({display_value:'#artist#'});
+		
+		
+		jeedom.cmd.update['#album_id#'] = function(_options){
+			//console.log('ààà album_id _options.display_value =',_options.display_value)
+			
+			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
+			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+artworkTitle[1]+'  -  '+_options.display_value);
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').toggle(1);
+			}
+			
+			if (_options.display_value.length > 40){
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#album_id#']({display_value:'#album#'});
+		
+		
+		jeedom.cmd.update['#title_id#'] = function(_options){
+			//console.log('ààà title_id _options.display_value =',_options.display_value)
+			
+			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
+			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+_options.display_value+'  -  '+artworkTitle[2]);
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').toggle();
+			}
+
+			if (_options.display_value.length > 40){
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#title_id#']({display_value:'#title#'}); 
+	  
+//Position 
+	  
+		/*if('#position#' != '-'){
+			$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text('#position#');
+		} else {
+			$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
+		}*/     
+		
+//volume	
+		jeedom.cmd.update['#volume_id#'] = function(_options){
+			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
+		}
+		jeedom.cmd.update['#volume_id#']({display_value:'#volume#'});
+		$('#volumeWidget_#id# .rs-tooltip2').html('#volume#');
+	  
+//Repeat	
+		jeedom.cmd.update['#repeat_state_id#'] = function(_options){
+			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == '1'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').show(1);				
+			} else if(_options.display_value == '2'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);           	
+			} else if(_options.display_value == '0'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);        
+			}
+		}
+		jeedom.cmd.update['#repeat_state_id#']({display_value:'#repeat_state#'});
+		
+		
+	  
+//Shuffle
+		jeedom.cmd.update['#shuffle_state_id#'] = function(_options){
+			//console.log('ààà shuffle_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == '0'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').hide(1);  
+			} else if(_options.display_value == '1'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').show(1);  				
+			}
+		}
+		jeedom.cmd.update['#shuffle_state_id#']({display_value:'#shuffle_state#'});
+
+	  
+      	function panelDown#id#() {
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "24px"});
+		}
+		function panelDownClose#id#() {
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "300px"});
+		}
+
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			jeedom.cmd.execute({id: $(this).data('cmd_id')});
+		})
+
+/* Back to the futur Sildebar */    
+      
+      	/*var time = '#position#';
+      	var split_time = time.split(['/']);
+      	var current_time = split_time[0];
+      	var total_time = split_time[1]; 
+        
+      	var split_total_time = total_time.split(['s']);
+      	var total = split_total_time[0];
+      
+      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('value', current_time);
+      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('max', total);
+
+      
+      	var slider = document.getElementById("myRange");
+		var output = document.getElementById("demo");
+		output.innerHTML = slider.value; // Display the default slider value
+		
+		// Update the current slider value (each time you drag the slider handle)
+		slider.oninput = function() {
+  		output.innerHTML = this.value;
+          
+       		$(".eqLogic[data-eqLogic_id=#id#] .silde").on('slidestop', function (event,ui) {
+				jeedom.cmd.execute({id: '#set_position#', value: {slider: ui.value}});
+			});
+          
+		}*/
+      
+     
+    </script>
+</div>

@@ -49,6 +49,36 @@
 			"isHistorized": 0,
 			"logicalId": "artwork_url"
 		}, {
+			"name": "{{Hors Veille}}",
+			"type": "info",
+			"subtype": "binary",
+			"display": {
+				"generic_type": "SWITCH_STATE"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "power_state"
+		}, {
+			"name": "{{Bouton On}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_ON"
+			},
+			"isVisible": 1,
+			"logicalId": "turn_on",
+			"value": "power_state"
+		}, {
+			"name": "{{Bouton Off}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_OFF"
+			},
+			"isVisible": 1,
+			"logicalId": "turn_off",
+			"value": "power_state"
+		}, {
 			"name": "{{Bouton Lecture}}",
 			"type": "action",
 			"subtype": "other",
@@ -304,6 +334,84 @@
 			},
 			"isVisible": 1,
 			"logicalId": "set_shuffle_off"
+		}, {
+			"name": "{{App Active}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "app"
+		}, {
+			"name": "{{Bouton Volume +}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_up"
+		}, {
+			"name": "{{Bouton Volume -}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "volume_down"
+		}, {
+			"name": "{{Bouton Chaîne Haut}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "channel_up"
+		}, {
+			"name": "{{Bouton Chaîne Bas}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "channel_down"
+		}, {
+			"name": "{{MàJ Liste App}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "app_list"
+		}, {
+			"name": "{{Lancer App}}",
+			"type": "action",
+			"subtype": "select",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"logicalId": "launch_app"
+		}, {
+			"name": "{{Commande Personnalisée}}",
+			"type": "action",
+			"subtype": "message",
+			"display": {
+				"generic_type": "DONT",
+				"title_disable":0,
+				"title_placeholder":"{{Indiquez la ou les commande(s) à lancer sur l'équipement (Attention risque de crash démon si erreur de syntaxe)}}",
+				"message_disable":1,
+				"message_placeholder":"{{Non Utilisé}}"
+				
+			},
+			"isVisible": 0,
+			"logicalId": "chain"
 		}
 	]
 }

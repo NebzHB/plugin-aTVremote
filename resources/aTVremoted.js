@@ -9,6 +9,7 @@ Logger.setLogLevel(LogType.DEBUG);
 var conf={};
 conf.preConnect3=[];
 conf.preConnect4=[];
+conf.preConnectHP=[];
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 // Logger.log("env : "+process.env.NODE_ENV,LogType.DEBUG);
@@ -38,6 +39,11 @@ process.argv.forEach(function(val, index) {
 				conf.preConnect4 = val.split(',');
 			}
 		break;
+		case 8: // other
+			if(val != "None") {
+				conf.preConnectHP = val.split(',');
+			}
+		break;
 	}
 });
 
@@ -64,82 +70,106 @@ var isReady=false;
 var lastErrorMsg="";
 
 function connectATV(mac,version) {
-	version=parseInt(version);
-	
 	var pairingKeyAirplay=null;
-	if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
-		pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
-	} else {
-		Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
-	}
 	var pairingKeyCompanion=null;
-	if(version != 3) {
-		if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
-			pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+	if(version == 3 || version == 4) {
+		
+		if (fs.existsSync(__dirname+'/../data/'+mac+'-airplay.key')) {
+			pairingKeyAirplay=fs.readFileSync(__dirname+'/../data/'+mac+'-airplay.key');
 		} else {
-			Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			Logger.log("Pas de clé airplay trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+		}
+		if(version != 3) {
+			if (fs.existsSync(__dirname+'/../data/'+mac+'-companion.key')) {
+				pairingKeyCompanion=fs.readFileSync(__dirname+'/../data/'+mac+'-companion.key');
+			} else {
+				Logger.log("Pas de clé companion trouvée pour l'Apple TV "+mac+", merci de faire l'appairage avant",LogType.WARNING);
+			}
 		}
 	}
 	
 	// création canal des commandes
 	if(!aTVs.cmd[mac]) {
-		if (!fs.existsSync(__dirname+'/../core/img/'+mac)) {
-			fs.mkdirSync(__dirname+'/../core/img/'+mac);
+		if (!fs.existsSync(__dirname+'/../core/img/artworks')) {
+			fs.mkdirSync(__dirname+'/../core/img/artworks');
 		}
 		const atvremoteParams = ['-i',mac];
 		if(pairingKeyAirplay) { atvremoteParams.push('--protocol','airplay','--airplay-credentials',pairingKeyAirplay); }
 		if(pairingKeyCompanion) { atvremoteParams.push('--protocol','companion','--companion-credentials',pairingKeyCompanion); }
 		atvremoteParams.push('cli');
-		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/'+mac});
+		aTVs.cmd[mac] = spawn(__dirname+'/atvremote/bin/atvremote', atvremoteParams,{cwd:__dirname+'/../core/img/artworks'});
 		Logger.log('SPAWN CMD : '+__dirname+'/atvremote/bin/atvremote '+atvremoteParams.join(' '),LogType.DEBUG);
 		aTVs.cmd[mac].stdout.on('data', function(data) {
+			var sent="";
 			data=data.toString();
 			if(data.includes("Enter commands and press enter")) {
 				return;
 			}
 			if(data != "pyatv> ") {
-				data=data.replace('\npyatv> ','');
-				/*
-				if(data.includes('PowerState.')) {
+				data=data.replace('\npyatv> ','').replace('\npyatv> ','').replace('pyatv> ','');
+				
+				if(data.match(/^[0-9]{0,3}\.[0-9]$/)) {
+					sent=" volume et envoyé à jeedom";
+					jsend({eventType: 'volume', data : data, mac: mac});
+				} else if(data.includes('Media type')) {
+					const jsonData={'simplifiedPlaying':true};
+					for(const line of data.split('\n')) {
+						const fields=line.trim().split(': ');
+						const key=fields[0].trim().replace(' ','_').toLowerCase();
+						if(fields[1]) {
+							let newValue=fields[1].trim();
+							if(fields.length > 2) {
+								fields.shift();
+								newValue=fields.join(': ');
+							} 
+							jsonData[key]=newValue;
+						}
+					}
+					sent=" playing et envoyé à jeedom";
+					jsend({eventType: 'playing', data : JSON.stringify(jsonData), mac: mac});
+				} else if(data.includes('PowerState.')) {
+					sent=" powerstate et envoyé à jeedom";
 					jsend({eventType: 'powerstate', data : data, mac: mac});
 				} else if(data.includes('App: ')) {
+					sent=" app et envoyé à jeedom";
 					jsend({eventType: 'app', data : data, mac: mac});
-				} else {
-					jsend({eventType: 'hash', data : data, mac: mac});
-				} */
+				} else if(data.includes('Could not find any Apple TV on current network')) {
+					lastErrorMsg=data;
+				} else if(data.includes('No artwork is currently available')) {
+					sent=" 'Pas de artwork' et envoyé à jeedom pour redemande";
+					jsend({eventType: 'reaskArtwork', mac: mac});
+				} 
 				
-				if(data.includes('App: ')) {
-					jsend({eventType: 'app', data : data, mac: mac});
-				}
 				
-				Logger.log('cmd | '+data,LogType.DEBUG);
+				Logger.log('[CMD]['+mac+'] Reçu'+sent+' |'+data,LogType.DEBUG);
 			}
 		});
 
 		aTVs.cmd[mac].stderr.on('data', function(data) {
-			Logger.log("CMD CHAN ERR :"+data.toString(),LogType.ERROR);
+			Logger.log("[CMD]["+mac+"] ERROR :"+data.toString(),LogType.ERROR);
 			lastErrorMsg=data;
+			aTVs.cmd[mac].kill('SIGHUP');
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
 			const mac=this.spawnargs[2];
-			Logger.log('Exit code CMD : ' + code,LogType.DEBUG);
+			Logger.log('[CMD]['+mac+'] Exit code :' + code,LogType.DEBUG);
 			if(code != 0) {
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
 					delete aTVs.cmd[mac];
-					Logger.log('Déconnecté du canal des commandes de '+mac,LogType.DEBUG);
+					Logger.log('[CMD]['+mac+'] Déconnecté et équipement introuvable sur le réseau !',LogType.DEBUG);
 				} else {
 					delete aTVs.cmd[mac];
-					Logger.log('Reconnection au canal des commandes...',LogType.DEBUG);
+					Logger.log('[CMD]['+mac+'] Reconnection...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
 				}
 			} else {
-				Logger.log('Déconnecté du canal des commandes de '+mac,LogType.DEBUG);
+				Logger.log('[CMD]['+mac+'] Déconnecté !',LogType.DEBUG);
 			}
 			lastErrorMsg="";
 		});
 		aTVs.cmd[mac].on('spawn', function() {
-			Logger.log('Connecté au canal des commandes de '+mac+' !',LogType.INFO);
+			Logger.log('[CMD]['+mac+'] Connecté avec succes !',LogType.INFO);
 		});
 	}
 	
@@ -164,15 +194,15 @@ function connectATV(mac,version) {
 				} */
 				sent="";
 				if(stringData.includes('power_state')) {
-					sent="envoyé à jeedom ";
+					sent=" power_state et envoyé à jeedom";
 					jsend({eventType: 'powerstate', data : stringData, mac: mac});
 				} else if(stringData.includes('media_type')) {
 					// aTVs.previousMsg[mac]=comparingData;
-					sent="envoyé à jeedom ";
+					sent=" playing et envoyé à jeedom";
 					jsend({eventType: 'playing', data : stringData, mac: mac});	
 				} else if(stringData.includes('connection": "closed')) {
 					delete aTVs.msg[mac];
-					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
+					Logger.log('[MSG]['+mac+'] Reconnection...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
 				} /* else if(stringData.includes('push_updates": "finished')) {
 					delete aTVs.msg[mac];
@@ -180,85 +210,106 @@ function connectATV(mac,version) {
 					setTimeout(connectATV,100,mac,version);
 				} */ else if(stringData.includes('error": "device_not_found')) {
 					delete aTVs.msg[mac];
-					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+					Logger.log('[MSG]['+mac+'] Déconnecté !',LogType.DEBUG);
+				} else if(stringData.includes('connection": "lost')) {
+					lastErrorMsg=stringData;
 				}
-				Logger.log('msg '+sent+'|'+stringData,LogType.DEBUG);
+				Logger.log('[MSG]['+mac+'] Reçu'+sent+' |'+stringData,LogType.DEBUG);
 			}
 		});
 
 		aTVs.msg[mac].stderr.on('data', function(data) {
-			Logger.log("MSG CHAN ERR :"+data.toString(),LogType.ERROR);
+			Logger.log("[MSG]["+mac+"] ERROR :"+data.toString(),LogType.ERROR);
 			lastErrorMsg=data;
 		});
 
 		aTVs.msg[mac].on('exit', function(code) {
 			const mac=this.spawnargs[2];
-			Logger.log('Exit code MSG : ' + code,LogType.DEBUG);
+			Logger.log('[MSG]['+mac+'] Exit code :' + code,LogType.DEBUG);
 			if(code != 0) {
 				if(lastErrorMsg && lastErrorMsg.includes('Could not find any Apple TV on current network')) {
-					Logger.log('Removing '+mac+' from aTVs...',LogType.DEBUG);
 					delete aTVs.msg[mac];
-					Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+					Logger.log('[MSG]['+mac+'] Déconnecté et équipement introuvable sur le réseau !',LogType.DEBUG);
 				} else {
 					delete aTVs.msg[mac];
-					Logger.log('Reconnection au canal des messages...',LogType.DEBUG);
+					Logger.log('[MSG]['+mac+'] Reconnection...',LogType.DEBUG);
 					setTimeout(connectATV,100,mac,version);
 				}
+			} else if(lastErrorMsg && lastErrorMsg.includes('connection": "lost')) {
+				delete aTVs.msg[mac];
+				Logger.log('[MSG]['+mac+'] Reconnection...',LogType.DEBUG);
+				setTimeout(connectATV,100,mac,version);
 			} else {
-				Logger.log('Déconnecté du canal des messages de '+mac,LogType.DEBUG);
+				delete aTVs.msg[mac];
+				Logger.log('[MSG]['+mac+'] Reconnection...',LogType.DEBUG);
+				setTimeout(connectATV,100,mac,version);
 			}
+	
 			lastErrorMsg="";
 		});
 		aTVs.msg[mac].on('spawn', function() {
-			Logger.log('Connecté au canal des messages de '+mac+' !',LogType.INFO);
+			Logger.log('[MSG]['+mac+'] Connecté avec succes !',LogType.INFO);
 		});
 	}
 }
 
 function removeATV(mac) {
-	var hasRemoved=false;
 	if(aTVs.cmd[mac]) {
+		Logger.log('[CMD]['+mac+'] Demande de déconnexion...',LogType.INFO);
+		aTVs.cmd[mac].stdout.removeAllListeners();
+		aTVs.cmd[mac].stderr.removeAllListeners();
+		aTVs.cmd[mac].removeAllListeners();
 		aTVs.cmd[mac].stdin.write('exit\n');
 		delete aTVs.cmd[mac];
-		hasRemoved=true;
+		Logger.log('[CMD]['+mac+'] Déconnecté !',LogType.INFO);
 	}
 	if(aTVs.msg[mac]) {
+		Logger.log('[MSG]['+mac+'] Demande de déconnexion...',LogType.INFO);
+		aTVs.msg[mac].stdout.removeAllListeners();
+		aTVs.msg[mac].stderr.removeAllListeners();
+		aTVs.msg[mac].removeAllListeners();
 		aTVs.msg[mac].stdin.write('\n');
 		delete aTVs.msg[mac];
-		hasRemoved=true;
+		Logger.log('[MSG]['+mac+'] Déconnecté !',LogType.INFO);
 	}
-	if(hasRemoved) { Logger.log('Déconnecté de '+mac,LogType.INFO); }
 }
 
 app.get('/cmd', function(req,res){
-	if(req.query.cmd=="push_updates") {
-		Logger.log(req.query.cmd+' unsupported',LogType.INFO);
+	var mac = req.query.mac.toUpperCase();
+	var cmds = req.query.cmd.replace(' ','');
+	if(cmds.includes("push_updates")) {
+		Logger.log(cmds+' unsupported because of push_updates',LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'unsupported'});
 	}
-	var mac=req.query.mac.toUpperCase();
-	Logger.log("Exécution commande "+req.query.cmd+' sur '+mac,LogType.DEBUG);
-	aTVs.cmd[mac].stdin.write(req.query.cmd+'\n');
+	if(cmds.includes('|')) {
+		cmds=cmds.split('|');
+	} else {
+		cmds=[cmds];
+	}
+	for(const cmd of cmds) {
+		Logger.log("[CMD]["+mac+"] Envoi "+cmd,LogType.DEBUG);
+		aTVs.cmd[mac].stdin.write(cmd+'\n');
+	}
 	res.status(200).json({'result':'ok'});		
 });
 app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
 		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
-		connectATV(mac,req.query.version);
+		connectATV(mac,parseInt(req.query.version));
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Déjà connecté sur "+mac,LogType.INFO);
+		Logger.log("Connexion mais déjà connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
 	}
 });
 app.get('/disconnect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(aTVs.cmd[mac] || aTVs.msg[mac]) {
-		Logger.log("Déconnexion de "+mac+"...",LogType.INFO);
 		removeATV(mac);
 		res.status(200).json({'result':'ok'});		
 	} else {
-		Logger.log("Pas connecté sur "+mac,LogType.INFO);
+		Logger.log("Déconnexion mais pas connecté sur "+mac,LogType.INFO);
 		res.status(200).json({'result':'ko','msg':'notConnected'});		
 	}
 });
@@ -294,6 +345,9 @@ for(const mac of conf.preConnect3) {
 }
 for(const mac of conf.preConnect4) {
 	connectATV(mac,4);
+}
+for(const mac of conf.preConnectHP) {
+	connectATV(mac,'HP');
 }
 
 if(!isReady) {

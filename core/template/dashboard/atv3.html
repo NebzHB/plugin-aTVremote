@@ -1,0 +1,350 @@
+<div class="eqLogic-widget eqLogic" style="max-width:138px;max-height:530px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;height:530px;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
+<!--  aTV3 -->
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+	<style>
+		.artworkBackground_#id# {
+			background-image: url("#artwork_url#");
+			filter:blur(15px);
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	</style>
+
+  	<div class="haut_aTVremote_widget" >
+		<div class="artworkBackground artworkBackground_#id#"></div>
+      	<div class="haut">
+		
+<!--  Partie Supérieure -->
+			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" title='Rafraichir' ><img class="aTVremote_refresh"  src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
+			<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>
+
+          	<div id="a#id#" class="repeatBox">
+              	<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:20px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:20px;"/>&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:20px;;"/></a>
+            </div>
+<!--  Partie Supérieure -->
+  			<a style='position:absolute;margin-top:10px;left:48px;z-index:5;'><img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
+  			<a style='position:absolute;margin-top:10px;left:48px;z-index:4;'><img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>
+     	</div>
+      
+<!--  Artwork -->
+		<div class="artwork_aTVremote">
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" />
+
+			<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" ><img class="aTVremote_up" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>              
+			<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" ><img class="aTVremote_left" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
+			<a class="btn_aTVremote_select cmd select" data-cmd_id="#cmd_select_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/record.png' style="width:30px;"/></a>
+			<a class="btn_aTVremote_right cmd right" data-cmd_id="#cmd_right_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
+			<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" ><img class="aTVremote_down" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
+          
+			<div class="downpanelA">
+				<div style="overflow: auto;height: 290px;">
+					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 117px;margin-top: 17px !important;">Info</legend>
+					<img class="downRafter2A" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" onClick="panelDownClose#id#()"/>
+					<section style="text-align: center;"> 
+						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork"/><br>
+						<br/>
+						<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #artist# </a></p></center>
+						<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
+						<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"> #album# </a></p></center>
+						<br>
+					</section>
+				</div>
+			</div>
+
+			<a><img class="infoBox" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" onclick="panelDown#id#()" title='info'/></a>	
+				
+		</div>
+<!--  Artwork -->
+      
+<!--  Statut & Info -->
+		<div class="info" style="height:80px;">
+      
+			<p style='margin: -14px 0 0px;text-align: center;top: 189px;position: absolute;width: 138px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equa#id#" style="width:20px;vertical-align:sub;"/></p>
+          	<!--<p style='margin: -14px 0 0px'><a class="Statut_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Statut" id="statut2#id#">#play_human#</a></p>-->
+			
+			<br> 
+			<center><p class="artist_hide" style="margin: -1px 0 1px;"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #artist# </a></p></center>
+			<center><p class="titre_hide" style="margin: -1px 0 8px;"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
+			
+			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Info Média"><marquee  direction="left" behavior="scroll" scrollamount="2" scrolldelay="60" width="140px" hspace=55px loop=0 onmouseover="stop();" onmouseout="start();"><span class="genre" id="genre#id#">#genre#</span>&emsp;<span class="media" id="med#id#">#media_type#</span>&emsp;<span class="position" id="pos#id#"></span></marquee></a><br></p>
+			<div style="display: block;margin: -5px 19px 10px;position: absolute;top: 263px;" class="menu_action">			
+				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" title='Menu'><img src='plugins/aTVremote/core/template/dashboard/images/menu2.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" title='Home'><img src='plugins/aTVremote/core/template/dashboard/images/monitor.png' style="width:40px;"/></a>	
+			</div>
+		</div>
+<!--  Statut & Info -->   
+          
+<!--  Control & Navigation -->  
+      <div class="gameplay" style="height: 230px;position: absolute;top: 302px;width: 138px;background-color: black;">    	
+          	
+        <br>
+			<div style="display: block; margin: -12px 19px 10px;" class="playback">
+				<a class="btn_aTVremote_playback cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>
+			</div>
+        <br> 
+			<div style="display: block;margin: -15px 19px 10px;" class="backfor">
+              			<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:40px"/></a>
+			</div>
+        <br>
+          	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
+              	
+				
+				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" title='Vol +'><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:40px;"/></a>
+            </div>
+        <br>
+          	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
+              	
+				 
+				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
+            </div>
+		</div>
+	</div>
+
+    <script> 
+//Apple clignotante
+      
+      	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeIn(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeIn(200);
+			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(100);
+		});
+
+//ATV 3
+	  
+//hide VOL & CH
+
+//Play_human
+		jeedom.cmd.update['#play_human_id#'] = function(_options){
+			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
+			$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('title',_options.display_value);
+		}
+		jeedom.cmd.update['#play_human_id#']({display_value:'#play_human#'});
+		
+//Play_state
+		jeedom.cmd.update['#play_state_id#'] = function(_options){
+			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == 0){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+			} else if(_options.display_value == 1){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+			}
+		}
+		jeedom.cmd.update['#play_state_id#']({display_value:'#play_state#'});	
+
+//Artwork
+
+		jeedom.cmd.update['#artwork_url_id#'] = function(_options){
+			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
+			
+			$('#artworkForeground_#id#').prop('src',_options.display_value);
+			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
+			$('.artworkBackground_#id#').css('background-image',"url("+_options.display_value+")");
+		}
+		jeedom.cmd.update['#artwork_url_id#']({display_value:'#artwork_url#'});
+	
+//Metadonnée          
+
+		jeedom.cmd.update['#artist_id#'] = function(_options){
+			//console.log('ààà artist_id _options.display_value =',_options.display_value)
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').toggle(1);
+			}
+			
+			if (_options.display_value.length > 18){
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#artist_id#']({display_value:'#artist#'});
+		
+		
+		jeedom.cmd.update['#album_id#'] = function(_options){
+			//console.log('ààà album_id _options.display_value =',_options.display_value)
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').toggle(1);
+			}
+			
+			if (_options.display_value.length > 18){
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#album_id#']({display_value:'#album#'});
+		
+		
+		jeedom.cmd.update['#title_id#'] = function(_options){
+			//console.log('ààà title_id _options.display_value =',_options.display_value)
+			
+			if (_options.display_value == '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').toggle();
+			}
+
+			if (_options.display_value.length > 18){
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#title_id#']({display_value:'#title#'}); 
+	  
+		jeedom.cmd.update['#genre_id#'] = function(_options){
+			//console.log('ààà genre_id _options.display_value =',_options.display_value)
+			
+			if(_options.display_value == '-' || _options.display_value == 'Unknown'){
+				$('.eqLogic[data-eqLogic_id=#id#] .genre').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .genre').html();
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .genre').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .genre').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#genre_id#']({display_value:'#genre#'});
+		
+		jeedom.cmd.update['#media_type_id#'] = function(_options){
+			//console.log('ààà media_type_id _options.display_value =',_options.display_value)
+			
+			if(_options.display_value == '-' || _options.display_value == 'Unknown'){
+				$('.eqLogic[data-eqLogic_id=#id#] .media').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .media').html();
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .media').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .media').html(_options.display_value);
+			}
+		}
+		jeedom.cmd.update['#media_type_id#']({display_value:'#media_type#'});
+	  
+//Position 		        
+		jeedom.cmd.update['#position_id#'] = function(_options){
+			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value != '-'){
+				$('.eqLogic[data-eqLogic_id=#id#] .position').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text(_options.display_value);
+			}else{
+				$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text();
+			}  
+		}
+		jeedom.cmd.update['#position_id#']({display_value:'#position#'});
+	  
+//Repeat	
+		jeedom.cmd.update['#repeat_state_id#'] = function(_options){
+			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == '1'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').show(1);				
+			} else if(_options.display_value == '2'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);           	
+			} else if(_options.display_value == '0'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);        
+			}
+		}
+		jeedom.cmd.update['#repeat_state_id#']({display_value:'#repeat_state#'});
+		
+		
+	  
+//Shuffle
+		jeedom.cmd.update['#shuffle_state_id#'] = function(_options){
+			//console.log('ààà shuffle_state_id _options.display_value =',_options.display_value)
+			if(_options.display_value == '0'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').hide(1);  
+			} else if(_options.display_value == '1'){
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').show(1);  				
+			}
+		}
+		jeedom.cmd.update['#shuffle_state_id#']({display_value:'#shuffle_state#'});
+	  
+      
+      	function panelDown#id#()
+		{
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "30px"});
+		}
+		function panelDownClose#id#()
+		{
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "-300px"});
+		}
+
+
+      	
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			jeedom.cmd.execute({id: $(this).data('cmd_id')});
+		});
+
+
+/* Back to the futur Sildebar */    
+      
+      	/*var time = '#position#';
+      	var split_time = time.split(['/']);
+      	var current_time = split_time[0];
+      	var total_time = split_time[1]; 
+        
+      	var split_total_time = total_time.split(['s']);
+      	var total = split_total_time[0];
+      
+      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('value', current_time);
+      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('max', total);
+
+      
+      	var slider = document.getElementById("myRange");
+		var output = document.getElementById("demo");
+		output.innerHTML = slider.value; // Display the default slider value
+		
+		// Update the current slider value (each time you drag the slider handle)
+		slider.oninput = function() {
+  		output.innerHTML = this.value;
+          
+       		$(".eqLogic[data-eqLogic_id=#id#] .silde").on('slidestop', function (event,ui) {
+				jeedom.cmd.execute({id: '#set_position#', value: {slider: ui.value}});
+			});
+          
+		}*/
+      
+     
+    </script>
+  <!--<a href="#oModal#id#" id="i#id#" class="infoBox" title='info'><img src='plugins/aTVremote/core/template/dashboard/images/info.png' style="width:20px;"/></a>
+					
+				<div id="oModal#id#" class="oModal">
+					<div>
+						<section style="text-align: center;"> 
+							<a href="#fermer" title="Fermer la fenêtre" class="droite"><img src='plugins/aTVremote/core/template/dashboard/images/X.png' style="width:30px;"/></a>
+							<br/>
+							<img src='#artwork_url#' style="width:100px;" class="artwork"/><br>
+							<br/>
+							<center><p class="titre_hide"><a class="titre_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"> #title# </a></p></center>
+							<p class="titre2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Titre"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#title#</marquee></a><br></p>
+							<center><p class="artist_hide"><a class="artist_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"> #artist# </a></p></center>
+							<p class="artist2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Artiste"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">#artist#</marquee></a><br></p>
+							<center><p class="album_hide"><a class="album_titre_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"> #album# </a></p></center>
+							<p class="album2_hide"><a class="last_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Album"><marquee  direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" width="220px" hspace=15px loop=0 onmouseover="stop();" onmouseout="start();">#album#</marquee></a><br></p>
+							<br>
+						</section>-->
+						<!--<footer class="cf">
+							<a href="#fermer" class="btn droite" title="Fermer la fenêtre">Fermer</a>
+						</footer>-->
+					<!--</div>
+				</div>-->
+</div>

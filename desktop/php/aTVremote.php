@@ -13,7 +13,7 @@ $eqLogics = eqLogic::byType('aTVremote');
   			<div class="cursor logoPrimary eqLogicAction" data-action="scanAppleTV">
         		<i class="fas fa-bullseye"></i>
 				<br />
-        		<span>{{Scan AppleTV}}</span>
+        		<span>{{Scan}}</span>
       		</div>
 		<div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
 			<i class="fas fa-wrench"></i>
@@ -29,7 +29,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 		<?php
 			if(count($eqLogics)) :
 		?>
-		<legend><i class="fab fa-apple"></i>  {{Mes AppleTV}}</legend>
+		<legend><i class="fab fa-apple"></i>  {{Mes Appareils}}</legend>
 		<div class="input-group" style="margin-bottom:5px;">
 			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 			<div class="input-group-btn">
@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 						$opacity = ($eqLogic->getIsEnable()) ? '' : ' disableCard';
 						$img=$eqLogic->getImage();
 						echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-						echo '<img class="lazy" src="'.$img.'" style="min-height:75px !important;" />';
+						echo '<img class="lazy" src="'.$img.'" style="min-height:75px !important;filter:contrast(0%)" />';
 						echo "<br />";
 						echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
 						echo '</div>';
@@ -78,11 +78,10 @@ $eqLogics = eqLogic::byType('aTVremote');
 							<fieldset>
 								<div class="form-group">
 									<br/>
-									<label class="col-sm-3 control-label help" data-help="{{Renommez dans l'AppleTV > Réglages > Général > A Propos puis relancez une Découverte}}">{{Nom de l'appleTV}}</label>
+									<label class="col-sm-3 control-label">{{Nom de l'appleTV}}</label>
 									<div class="col-sm-4">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" readonly />
-										
+										<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'appleTV}}" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -130,8 +129,16 @@ $eqLogics = eqLogic::byType('aTVremote');
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mac" placeholder="{{Mac}}" readonly />
 									</div>
 								</div>
+								<div class="form-group" style="display:none" id="ColorSelect">
+									<label class="col-sm-3 control-label">{{Couleur}}</label>
+									<div class="col-sm-4">
+										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="theme"></select>
+									</div>
+								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
+								<input type="text" id="savingWithGui" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="savingWithGui" />
 								<div id="Airplay" style="display:none">
+								<input type="text" id="needAirplayPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needAirplayPairing" />
 								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Airplay}}</label>
@@ -151,14 +158,17 @@ $eqLogics = eqLogic::byType('aTVremote');
 										</div>
 									</div>
 								</div>
-								<br />
-								<div class="form-group">
-									<label class="col-sm-3 control-label"></label>
-									<div class="col-sm-4">
-										<a class="btn btn-warning cursor" title="Comment faire ?" id="bt_Help"><i class="fas fa-medkit"></i> {{Aidez-moi}} <i class="fas fa-ambulance"></i></a>
+								<div id="HelpMe" style="display:none">
+									<br />
+									<div class="form-group">
+										<label class="col-sm-3 control-label"></label>
+										<div class="col-sm-4">
+											<a class="btn btn-warning cursor" title="Comment faire ?" id="bt_Help"><i class="fas fa-medkit"></i> {{Aidez-moi}} <i class="fas fa-ambulance"></i></a>
+										</div>
 									</div>
 								</div>
 								<div id="Companion" style="display:none">
+								<input type="text" id="needCompanionPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needCompanionPairing" />
 								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Companion}}</label>
@@ -178,28 +188,30 @@ $eqLogics = eqLogic::byType('aTVremote');
 										</div>
 									</div>
 								</div>
+								<div id="VolumeCmds" style="display:none">
 								<br />
-								<div class="form-group">
-								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume +}}</label>
-								  <div class="col-sm-4">
-									<div class="input-group">
-									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="MoreVol" />
-									  <span class="input-group-btn">
-										<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolMoreCmd"><i class="fas fa-list-alt"></i></a>
-									  </span>
+									<div class="form-group">
+									  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume +}}</label>
+									  <div class="col-sm-4">
+										<div class="input-group">
+										  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="MoreVol" />
+										  <span class="input-group-btn">
+											<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolMoreCmd"><i class="fas fa-list-alt"></i></a>
+										  </span>
+										</div>
+									  </div>
 									</div>
-								  </div>
-								</div>
-								<div class="form-group">
-								  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume -}}</label>
-								  <div class="col-sm-4">
-									<div class="input-group">
-									  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="LessVol" />
-									  <span class="input-group-btn">
-										<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolLessCmd"><i class="fas fa-list-alt"></i></a>
-									  </span>
+									<div class="form-group">
+									  <label class="col-sm-3 control-label help" data-help="{{Sélectionnez une commande qui peut être utilisée pour modifier le volume sur la TV (via un équipement IR ou Harmony per ex)}}">{{Volume -}}</label>
+									  <div class="col-sm-4">
+										<div class="input-group">
+										  <input type="text"  class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="LessVol" />
+										  <span class="input-group-btn">
+											<a class="btn btn-default cursor" title="Rechercher une commande action" id="bt_VolLessCmd"><i class="fas fa-list-alt"></i></a>
+										  </span>
+										</div>
+									  </div>
 									</div>
-								  </div>
 								</div>
 							</fieldset>
 						</form>
@@ -226,9 +238,6 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div class="col-sm-3">
 									<span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="osVersion"></span>
 								</div>
-							</div>
-							<div class="form-group">
-								<img src="plugins/aTVremote/plugin_info/aTVremote_icon.png" style="height : 200px;margin-top:5px" />
 							</div>
 						</fieldset>
 					</div>
