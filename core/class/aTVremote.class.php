@@ -1223,7 +1223,7 @@ class aTVremote extends eqLogic {
 			"handleShadowColor"=>"#000",
 			"rangeColor"=>"rgba(0,0,0,0.5)",
 			"pathColor"=>"rgba(255,255,255,0.4)",
-			"tooltipColor"=>"#FFF"
+			"tooltipColor"=>"#B1B1B1"
 		];
 		$themes['red'] = [
 			"handleColor"=>"#FF3200",
