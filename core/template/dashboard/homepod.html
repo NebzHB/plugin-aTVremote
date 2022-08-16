@@ -25,6 +25,9 @@
 			font-size: x-large;
 			width: 36px;
 		}
+		#volumeWidget_#id# .rs-tooltip2:hover {
+			cursor: move !important;
+		}		
 	</style>
     <script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
   	<div class="haut_aTVremote_widH">
@@ -134,7 +137,7 @@
 			},
 			create:function (args) {
 				$('#volumeWidget_#id# .rs-tooltip').css('display','none');
-				$('#volumeWidget_#id# .rs-bar').append( '<span class="rs-tooltip2 rs-tooltip-text"></span>');
+				$('#volumeWidget_#id# .rs-handle').append( '<span class="rs-tooltip2 rs-tooltip-text"></span>');
 			},
 		});
 
