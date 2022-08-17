@@ -1,11 +1,11 @@
 
 
 /* Partie supérieure */
-.haut{
+.aTVremote .haut{
     width: 138px;
     height: 40px;
 }
-.titre_haut_aTVremote_widget{
+.aTVremote .titre_haut_aTVremote_widget{
 	width: 138px;
 	font-size : 11px;
 	position: absolute;
@@ -14,7 +14,7 @@
   	text-align:center;
     color : #FFFFFF !important;
 }
-.titre_haut_aTVremote_widgetH{
+.aTVremote .titre_haut_aTVremote_widgetH{
 	width: 256px;
 	font-size : 11px;
 	position: absolute;
@@ -23,7 +23,7 @@
   	text-align:center;
     color : #FFFFFF !important;
 }
-.haut_aTVremote_widH{
+.aTVremote .haut_aTVremote_widH{
   	max-height: 291px;
 	height: 291px;
 	width: 256px !important;
@@ -38,7 +38,7 @@
   	background-position:bottom;
     margin:0;
 }
-.power{
+.aTVremote .power{
   	position : absolute;
   	left : 9px;
   	top : 13px;
@@ -47,36 +47,36 @@
   	opacity:1;
     cursor: pointer;
 }
-.power:hover{
+.aTVremote .power:hover{
     opacity:0.7;
 }
 
-.onoff{
+.aTVremote .onoff{
 	width : 24px;
 }
 
 /* volume Homepod */
 
-.volumeWidget {
+.aTVremote .volumeWidget {
 	position: absolute;
 	z-index:0;
 	top:38px;
 	left:4px;
 }
-.volumeWidget .rs-tooltip {
+.aTVremote .volumeWidget .rs-tooltip {
 	top:22px;
 }
 
 /*Artwork*/
 
-.artworkBackground {
+.aTVremote .artworkBackground {
 	width: 138px;
 	height: 302px;
 	position: absolute;
 	opacity: 0.5;
 	z-index: -1;
 }
-.artworkBackgroundH {
+.aTVremote .artworkBackgroundH {
 	top:86px;
 	left:52px;
 	width: 154px;
@@ -85,24 +85,24 @@
 	opacity: 0.7;
 	border-radius:50%;
 }
-.gameplayH{
+.aTVremote .gameplayH{
 	position: absolute;
 	height: 40px;
 	width: 70px;
 	left:93px
 }
 
-.blocPlayH{
+.aTVremote .blocPlayH{
 	display: block;
 	position: absolute;
 	top: 9px;
 }
 
-.artwork_aTVremote{
+.aTVremote .artwork_aTVremote{
 	width: 138px;
 	height: 138px;
 }
-.artwork_un_aTVremote{
+.aTVremote .artwork_un_aTVremote{
 	width: 138px !important;
 	max-height: 138px;
 	position: absolute;
@@ -113,7 +113,7 @@
 	cursor:pointer;
 	/*border-radius: 10%;*/
 }
-.artwork_un_aTVremoteH{
+.aTVremote .artwork_un_aTVremoteH{
 	width: 70px !important;
 	max-height: 70px;
 	position: absolute;
@@ -124,14 +124,14 @@
 	cursor:pointer;
 	/*border-radius: 10%;*/
 }
-.repeatBox{
+.aTVremote .repeatBox{
     top:156px;
     left:0px;
     position:absolute;
     z-index: 8;
     cursor:pointer;
 }
-.artwork_equalizerH{
+.aTVremote .artwork_equalizerH{
 	width: 70px !important;
 	max-height: 70px;
 	position: absolute;
@@ -142,7 +142,7 @@
 	cursor:pointer;
 	/*border-radius: 10%;*/
 }
-.repeatBoxH{
+.aTVremote .repeatBoxH{
     top:88px;
     left:98px;
     position:absolute;
@@ -152,7 +152,7 @@
 
 
 
-.infoBox{
+.aTVremote .infoBox{
     top:158px;
     left:118px;
     position:absolute;
@@ -160,7 +160,7 @@
     opacity: 0.8;
     cursor:pointer;
 }
-.infoBoxH{
+.aTVremote .infoBoxH{
     top:128px;
     left:143px;
     position:absolute;
@@ -169,7 +169,7 @@
     cursor:pointer;
 }
 
-.appsBox{
+.aTVremote .appsBox{
     top:11px;
     left:109px;
     position:absolute;
@@ -178,19 +178,19 @@
     cursor:pointer;
 }
 
-.infoBox:hover{
+.aTVremote .infoBox:hover{
     opacity:0.4;
 }
-.infoBoxH:hover{
+.aTVremote .infoBoxH:hover{
     opacity:0.4;
 }
 
-.appsBox:hover{
+.aTVremote .appsBox:hover{
     opacity:0.4;
 }
 
 /* Statut & Info */
-marquee {
+.aTVremote marquee {
     -webkit-marquee-direction: left;
     -webkit-marquee-increment: 2px;
     -webkit-marquee-speed: 60ms;
@@ -199,7 +199,7 @@ marquee {
     margin-right: 10px;
   	font-size:12px;
 }
-.downpanelH marquee {
+.aTVremote .downpanelH marquee {
 	-webkit-marquee-direction: left;
     -webkit-marquee-increment: 2px;
     -webkit-marquee-speed: 60ms;
@@ -208,14 +208,14 @@ marquee {
     margin-right: 10px;
   	font-size:12px;
 }
-.Statut_aTVremote{
+.aTVremote .Statut_aTVremote{
   	width: 138px;
 	text-align:center;
 	position: absolute;
 	z-index: 2;
 	font-size:10px;
 }   
-.Statut_aTVremoteH{
+.aTVremote .Statut_aTVremoteH{
   	width: 256px;
 	text-align:center;
 	position: absolute;
@@ -223,7 +223,7 @@ marquee {
 	font-size:10px;
   	top: 115px;
 }    
-.app_aTVremote{
+.aTVremote .app_aTVremote{
 	font-size:10px;
   	width: 138px;
 	text-align:center;
@@ -232,7 +232,7 @@ marquee {
 	z-index: 2;
   	text-transform: capitalize;
 }
-.app_aTVremoteH{
+.aTVremote .app_aTVremoteH{
 	font-size:10px;
   	width: 256px;
 	text-align:center;
@@ -241,28 +241,28 @@ marquee {
 	z-index: 2;
   	text-transform: capitalize;
 }
-.artist_titre_aTVremote{
+.aTVremote .artist_titre_aTVremote{
   	width: 138px;
 	text-align:center;
 	font-weight: bold;
 	z-index: 2;
 	font-size:13px;
 }
-.album_titre_aTVremote{
+.aTVremote .album_titre_aTVremote{
 	font-size:14px;
   	width: 138px;
 	text-align:center;
 	font-weight: bold;
 	z-index: 2;
 } 
-.titre_titre_aTVremote{
+.aTVremote .titre_titre_aTVremote{
   	width: 138px;
 	text-align:center;
 	font-weight: bold;
 	z-index: 2;
 	font-size:13px;
 }
-.last_titre_aTVremote{
+.aTVremote .last_titre_aTVremote{
 	font-size:12px;
   	width: 138px;
 	text-align:center;
@@ -273,16 +273,16 @@ marquee {
 
 /* Control & Navigation */
 
-.btn_aTVremote_playback{
+.aTVremote .btn_aTVremote_playback{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
-.btn_aTVremote_playback:hover{
+.aTVremote .btn_aTVremote_playback:hover{
 	opacity: 0.5;
 }
 
-.btn_aTVremote_playbackH{
+.aTVremote .btn_aTVremote_playbackH{
   	position:absolute;
 	cursor:pointer;
 	z-index: 4;
@@ -290,28 +290,28 @@ marquee {
   	top:150px;
     left:113px;
 }
-.btn_aTVremote_playbackH:hover{
+.aTVremote .btn_aTVremote_playbackH:hover{
 	opacity: 1;
 }
 
-.btn_aTVremote_menu{
+.aTVremote .btn_aTVremote_menu{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
-.btn_aTVremote_menu:hover{
+.aTVremote .btn_aTVremote_menu:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_top_menu{
+.aTVremote .btn_aTVremote_top_menu{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
-.btn_aTVremote_top_menu:hover{
+.aTVremote .btn_aTVremote_top_menu:hover{
 	opacity: 0.5;
 }
 
-.btn_aTVremote_up{
+.aTVremote .btn_aTVremote_up{
   	left:54px;
   	top:40px;
 	cursor:pointer;
@@ -323,13 +323,13 @@ marquee {
 	-webkit-transform: rotate(270deg);
 	transform: rotate(270deg);
 }
-.btn_aTVremote_up:hover{
+.aTVremote .btn_aTVremote_up:hover{
 	opacity: 1;
 }
-a > img:hover {
+.aTVremote a > img:hover {
   opacity:1;
 }
-.btn_aTVremote_left{
+.aTVremote .btn_aTVremote_left{
   	left:0px;
   	top:94px;
 	cursor:pointer;
@@ -338,7 +338,7 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_leftH{
+.aTVremote .btn_aTVremote_leftH{
   	left:51px;
   	top:150px;
 	cursor:pointer;
@@ -347,18 +347,18 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_left:hover{
+.aTVremote .btn_aTVremote_left:hover{
 	opacity: 1;
 }
-.btn_aTVremote_leftH:hover{
+.aTVremote .btn_aTVremote_leftH:hover{
 	opacity: 0.5;
 }
-.aTVremote_left{
+.aTVremote .aTVremote_left{
 	-ms-transform: rotate(180deg);
 	-webkit-transform: rotate(180deg);
 	transform: rotate(180deg);
 }
-.btn_aTVremote_select{
+.aTVremote .btn_aTVremote_select{
   	left:54px;
   	top:94px;
 	cursor:pointer;
@@ -367,10 +367,10 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_select:hover{
+.aTVremote .btn_aTVremote_select:hover{
 	opacity: 1;
 }
-.btn_aTVremote_right{
+.aTVremote .btn_aTVremote_right{
   	left:108px;
   	top:94px;
 	cursor:pointer;
@@ -379,7 +379,7 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_rightH{
+.aTVremote .btn_aTVremote_rightH{
   	left:176px;
   	top:150px;
 	cursor:pointer;
@@ -388,13 +388,13 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_right:hover{
+.aTVremote .btn_aTVremote_right:hover{
 	opacity: 1;
 }
-.btn_aTVremote_rightH:hover{
+.aTVremote .btn_aTVremote_rightH:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_down{
+.aTVremote .btn_aTVremote_down{
   	left:54px;
   	top:148px;
 	cursor:pointer;
@@ -403,73 +403,73 @@ a > img:hover {
     width: 30px;
     position:absolute;
 }
-.btn_aTVremote_down:hover{
+.aTVremote .btn_aTVremote_down:hover{
 	opacity: 1;
 }
-.aTVremote_down{
+.aTVremote .aTVremote_down{
 	-ms-transform: rotate(90deg);
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
-.btn_aTVremote_shuffle{
+.aTVremote .btn_aTVremote_shuffle{
 	cursor:pointer;
 	z-index: 10;
 	opacity: 1;
 }
-.btn_aTVremote_shuffle:hover{
+.aTVremote .btn_aTVremote_shuffle:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_repeat{
+.aTVremote .btn_aTVremote_repeat{
 	cursor:pointer;
 	z-index: 10;
 	opacity: 1;
 }
-.btn_aTVremote_repeat:hover{
+.aTVremote .btn_aTVremote_repeat:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_plus{
+.aTVremote .btn_aTVremote_plus{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
-.btn_aTVremote_plus:hover{
+.aTVremote .btn_aTVremote_plus:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_moins{
+.aTVremote .btn_aTVremote_moins{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
-.btn_aTVremote_moins:hover{
+.aTVremote .btn_aTVremote_moins:hover{
 	opacity: 0.5;
 }
-.btn_aTVremote_up2{
+.aTVremote .btn_aTVremote_up2{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }  
-.aTVremote_up2{
+.aTVremote .aTVremote_up2{
   	-ms-transform: rotate(-90deg);
 	-webkit-transform: rotate(-90deg);
 	transform: rotate(-90deg);
 }
-.btn_aTVremote_up2:hover{
+.aTVremote .btn_aTVremote_up2:hover{
 	opacity: 1;
 }
-.btn_aTVremote_down2{
+.aTVremote .btn_aTVremote_down2{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
 
-.aTVremote_down2{
+.aTVremote .aTVremote_down2{
   	-ms-transform: rotate(90deg);
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
 
 
-.downRafterA {
+.aTVremote .downRafterA {
     position: absolute;
     top: 20.5px;
     right: 118px;
@@ -478,7 +478,7 @@ a > img:hover {
     opacity: 0.3;
 }
 
-.downRafterH {
+.aTVremote .downRafterH {
     position: absolute;
     top: 20.5px;
     right: 118px;
@@ -487,7 +487,7 @@ a > img:hover {
     opacity: 0.3;
 }
 
-.downRafter2A {
+.aTVremote .downRafter2A {
     position: absolute;
     top: 0.5px;
     left: 58px;
@@ -496,7 +496,7 @@ a > img:hover {
     opacity: 0.6;
 }
 
-.downRafter2H {
+.aTVremote .downRafter2H {
     position: absolute;
     top: -6.5px;
     left: 120px;
@@ -505,19 +505,19 @@ a > img:hover {
     opacity: 0.6;
 }
 
-.downRafterA:hover {
+.aTVremote .downRafterA:hover {
     opacity: 1;
 }
-.downRafterH:hover {
+.aTVremote .downRafterH:hover {
     opacity: 1;
 }
-.downRafter2A:hover {
+.aTVremote .downRafter2A:hover {
     opacity: 1;
 }
-.downRafter2H:hover {
+.aTVremote .downRafter2H:hover {
     opacity: 1;
 }
-.downpanelA {
+.aTVremote .downpanelA {
 	width: 138px;
 	height: 276px;
 	float: left;
@@ -526,7 +526,7 @@ a > img:hover {
 	background: rgba(0, 0, 0, 0.9);
 	top: -300px;
 }
-.downpanelH {
+.aTVremote .downpanelH {
 	width: 256px;
 	height: 291px;
 	float: left;
@@ -535,7 +535,7 @@ a > img:hover {
 	background: rgba(0, 0, 0, 0.9);
 	top: 340px;
 }
-.downRafterApp {
+.aTVremote .downRafterApp {
     position: absolute;
     top: 20.5px;
     right: 118px;
@@ -544,7 +544,7 @@ a > img:hover {
     opacity: 0.3;
 }
 
-.downRafter2App {
+.aTVremote .downRafter2App {
     position: absolute;
     top: 0.5px;
     left: 54px;
@@ -553,13 +553,13 @@ a > img:hover {
     opacity: 0.6;
 }
 
-.downRafterApp:hover {
+.aTVremote .downRafterApp:hover {
     opacity: 1;
 }
-.downRafter2App:hover {
+.aTVremote .downRafter2App:hover {
     opacity: 1;
 }
-.downpanelApp {
+.aTVremote .downpanelApp {
       width: 138px;
       height: 276px;
       float: left;
@@ -569,7 +569,7 @@ a > img:hover {
       top: -300px;
   }
 
-.infoBoxApp{
+.aTVremote .infoBoxApp{
     top:181px;
     left:117px;
     position:absolute;
@@ -579,7 +579,7 @@ a > img:hover {
 }
 
 
-.infoBoxApp:hover{
+.aTVremote .infoBoxApp:hover{
     opacity:0.4;
 }
 
