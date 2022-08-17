@@ -84,8 +84,8 @@
           	
         <br>
 			<div style="display: block; margin: -12px 19px 10px;" class="playback">
-				<a class="btn_aTVremote_playback cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_playback cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd play_btn" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd pause_btn" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>
 			</div>
         <br> 
@@ -134,12 +134,12 @@
 		jeedom.cmd.update['#play_state_id#'] = function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').show(1);
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
 			} else if(_options.display_value == 1){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}
 		}
