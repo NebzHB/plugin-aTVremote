@@ -58,10 +58,10 @@
           
 			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" />
           	     
-			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;" title="Vol-"/></a>
-          	<a class="btn_aTVremote_playbackH cmd play" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
-			<a class="btn_aTVremote_playbackH cmd pause" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
-			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;" title="Vol+"/></a>
+			<a class="btn_aTVremote_leftH cmd left_btn" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;" title="Vol-"/></a>
+          	<a class="btn_aTVremote_playbackH cmd play_btn" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
+			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
+			<a class="btn_aTVremote_rightH cmd right_btn" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;" title="Vol+"/></a>
 
 			<div class="downpanelH">
 				<div style="overflow: auto;height: 316px;">
@@ -161,12 +161,12 @@
 		jeedom.cmd.update['#play_state_id#'] = function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').show(1);
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
 			} else if(_options.display_value == 1){
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play').hide(1);
-				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause').show(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').hide(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}
 		}
