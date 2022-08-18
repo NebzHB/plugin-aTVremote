@@ -424,6 +424,12 @@ class aTVremote extends eqLogic {
 					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Unsupported") ) {
 						log::add('aTVremote','info',"Appairage AirPlay non supporté");
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
+					} elseif((isset($device[6]) && $device[6] == 'AirPlay' && isset($device[11]) && $device[11] == "Disabled") ||
+					    (isset($device[12]) && $device[12] == 'AirPlay' && isset($device[17]) && $device[17] == "Disabled") ||
+					    (isset($device[18]) && $device[18] == 'AirPlay' && isset($device[23]) && $device[23] == "Disabled") ||
+					    (isset($device[24]) && $device[24] == 'AirPlay' && isset($device[29]) && $device[29] == "Disabled") ) {
+						log::add('aTVremote','warning',"Appairage AirPlay désactivé, Réglages > Airplay > Airplay -> Oui");
+						$eqLogic->setConfiguration('needAirplayPairing','0'); 
 					} else {
 						log::add('aTVremote','info',"Appairage AirPlay inconnu");
 						$eqLogic->setConfiguration('needAirplayPairing','0'); 
@@ -445,11 +451,17 @@ class aTVremote extends eqLogic {
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "NotNeeded") ) {
 						log::add('aTVremote','info',"Appairage Companion pas nécessaire");
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
-					}  elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Unsupported") ||
+					} elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Unsupported") ||
 					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Unsupported") ||
 					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Unsupported") ||
 					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Unsupported") ) {
 						log::add('aTVremote','info',"Appairage Companion non supporté");
+						$eqLogic->setConfiguration('needCompanionPairing','0'); 
+					} elseif((isset($device[6]) && $device[6] == 'Companion' && isset($device[11]) && $device[11] == "Disabled") ||
+					    (isset($device[12]) && $device[12] == 'Companion' && isset($device[17]) && $device[17] == "Disabled") ||
+					    (isset($device[18]) && $device[18] == 'Companion' && isset($device[23]) && $device[23] == "Disabled") ||
+					    (isset($device[24]) && $device[24] == 'Companion' && isset($device[29]) && $device[29] == "Disabled") ) {
+						log::add('aTVremote','warning',"Appairage Companion désactivé, Réglages > Airplay > Accès -> Tout le monde");
 						$eqLogic->setConfiguration('needCompanionPairing','0'); 
 					} else {
 						log::add('aTVremote','info',"Appairage Companion inconnu");
