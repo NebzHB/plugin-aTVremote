@@ -1,7 +1,9 @@
 {
 	"id" : "aTVremote",
 	"name" : "aTV Remote",
-	"description" : "aTV Remote - Permet de commander votre AppleTV - restera en BETA longtemps !",
+	"description" : {
+		"fr_FR": "aTV Remote - Permet de commander votre AppleTV - restera en BETA longtemps !"
+	},
 	"utilization" : "ATTENTION : Non supporté : Stretch&Jessie & Docker & Jeedom Mini+ & Raspberry Pi 1-2 & Raspberry Zéro (armv6) & i386 (32bits)\n\nPas de volume, pas de bouton micro (Siri) Voir documentation.",
 	"licence" : "AGPL",
 	"author" : "Nebz,Wators",
@@ -11,11 +13,12 @@
 	"require" : "4.2",
 	"category" : "multimedia",
 	"issue" : "https://github.com/NebzHB/plugin-aTVremote/issues",
-	"changelog" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/#language#/changelog",
-	"documentation" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/#language#/",
-	"forum_link" : "https://www.jeedom.com/forum/viewtopic.php?f=142&t=39196",
+	"changelog" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/fr_FR/changelog",
+	"documentation" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/fr_FR/",
+	"changelog_beta" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/fr_FR/changelog",
+	"documentation_beta" : "https://nebzhb.github.io/jeedom_docs/plugins/aTVremote/fr_FR/",
 	"link" : {
-		"forum":"https://www.jeedom.com/forum/viewtopic.php?f=142&t=39196"
+		"forum":"https://community.jeedom.com/tag/plugin-aTVremote"
 	},
 	"languages" : ["fr_FR"],
 	"compatibility" : ["smart","rpi","diy","v4"]
