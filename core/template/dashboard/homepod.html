@@ -17,12 +17,10 @@
 			position: absolute;
 			margin-top: -9.5px;
 			margin-left: -8px; 
-			top: 15px; 
 			left: 13px;
 			color:#tooltipColor#;
 			font-family: Verdana;
 			font-weight: bold;
-			font-size: x-large;
 			width: 36px;
 		}
 		#volumeWidget_#id# .rs-tooltip2:hover {
@@ -133,11 +131,15 @@
 				jeedom.cmd.execute({id: '#cmd_set_volume_id#', value: {slider: args.value}});
 			},
 			valueChange: function (args) {
-				$('#volumeWidget_#id# .rs-tooltip2').html(args.value);
+				if(args.value == 100) {
+					$("#volumeWidget_#id# .rs-tooltip2").html(args.value).css({'font-size':'larger','top':'20px'});
+				} else {
+					$("#volumeWidget_#id# .rs-tooltip2").html(args.value).css({'font-size':'x-large','top':'15px'});
+				}
 			},
 			create:function (args) {
 				$('#volumeWidget_#id# .rs-tooltip').css('display','none');
-				$('#volumeWidget_#id# .rs-handle').append( '<span class="rs-tooltip2 rs-tooltip-text"></span>');
+				$('#volumeWidget_#id# .rs-handle').append( '<span class="rs-tooltip2 rs-tooltip-text" style="font-size:x-large;top:15px"></span>');
 			},
 		});
 
