@@ -157,7 +157,7 @@
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
 		}
-		jeedom.cmd.update['#play_human_id#']({display_value:'#play_human#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#play_human_id#',display_value:'#play_human#'}]);
 		
 //Play_state
 		jeedom.cmd.update['#play_state_id#'] = function(_options){
@@ -172,7 +172,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}
 		}
-		jeedom.cmd.update['#play_state_id#']({display_value:'#play_state#'});	
+		jeedom.cmd.refreshValue([{cmd_id: '#play_state_id#',display_value:'#play_state#'}]);
 		
 //Artwork
 
@@ -183,7 +183,7 @@
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
 			$('.artworkBackgroundH_#id#').css('background-image',"url("+_options.display_value+")");
 		}
-		jeedom.cmd.update['#artwork_url_id#']({display_value:'#artwork_url#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#artwork_url_id#',display_value:'#artwork_url#'}]);
 
 //Metadonnée          
 
@@ -203,7 +203,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
 			}
 		}
-		jeedom.cmd.update['#artist_id#']({display_value:'#artist#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
 		
 		
 		jeedom.cmd.update['#album_id#'] = function(_options){
@@ -222,7 +222,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
 			}
 		}
-		jeedom.cmd.update['#album_id#']({display_value:'#album#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
 		
 		jeedom.cmd.update['#title_id#'] = function(_options){
@@ -241,7 +241,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
 			}
 		}
-		jeedom.cmd.update['#title_id#']({display_value:'#title#'}); 
+		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
 //Position 
 	  
@@ -255,7 +255,7 @@
 		jeedom.cmd.update['#volume_id#'] = function(_options){
 			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
 		}
-		jeedom.cmd.update['#volume_id#']({display_value:'#volume#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#volume_id#',display_value:'#volume#'}]);
 		$('#volumeWidget_#id# .rs-tooltip2').html('#volume#');
 	  
 //Repeat	
@@ -275,9 +275,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);        
 			}
 		}
-		jeedom.cmd.update['#repeat_state_id#']({display_value:'#repeat_state#'});
-		
-		
+		jeedom.cmd.refreshValue([{cmd_id: '#repeat_state_id#',display_value:'#repeat_state#'}]);
 	  
 //Shuffle
 		jeedom.cmd.update['#shuffle_state_id#'] = function(_options){
@@ -290,7 +288,7 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').show(1);  				
 			}
 		}
-		jeedom.cmd.update['#shuffle_state_id#']({display_value:'#shuffle_state#'});
+		jeedom.cmd.refreshValue([{cmd_id: '#shuffle_state_id#',display_value:'#shuffle_state#'}]);
 
 	  
       	function panelDown#id#() {
