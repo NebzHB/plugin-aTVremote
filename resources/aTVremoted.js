@@ -127,10 +127,20 @@ function connectATV(mac,version) {
 					}
 					sent=" playing et envoyé à jeedom";
 					jsend({eventType: 'playing', data : JSON.stringify(jsonData), mac: mac});
+					data=data.replaceAll("\n",'');
 				} else if(data.includes('PowerState.')) {
 					sent=" powerstate et envoyé à jeedom";
 					jsend({eventType: 'powerstate', data : data, mac: mac});
-				} else if(data.includes('App: ')) {
+				} else if(data.includes('Feature list:')) {
+					const jsonData={};
+					for(const line of data.split('\n')) {
+						const fields=line.trim().split(': ');
+						jsonData[fields[0]]=fields[1];
+					}					
+					sent=" features et envoyé à jeedom";
+					jsend({eventType: 'features', data : JSON.stringify(jsonData), mac: mac});
+					data=data.replaceAll("\n",'');
+				} else if(data.includes('App: ')) { // need to be after feature list cause it contains App:
 					sent=" app et envoyé à jeedom";
 					jsend({eventType: 'app', data : data, mac: mac});
 				} else if(data.includes('Could not find any Apple TV on current network')) {
