@@ -49,6 +49,8 @@ class aTVremote extends eqLogic {
 								}
 							}
 						} else {
+							$eqLogic->aTVdaemonExecute('features');
+							
 							$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
 							if ($nc->isDue()) {
 								$eqLogic->aTVdaemonExecute('power_state');
@@ -307,6 +309,13 @@ class aTVremote extends eqLogic {
 					}
 				} else {
 					log::add('aTVremote','debug',"Pas de reask sur atv3");
+				}
+			break;
+			case 'features':
+				$features=json_decode(init('data'),true);
+				if($features) {
+					$eqLogic->setConfiguration('features',$features);
+					$eqLogic->save(true);
 				}
 			break;
 		}
@@ -1391,7 +1400,17 @@ class aTVremoteCmd extends cmd {
 						} else {
 							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
-					} else {
+					} else if($eqLogic->getConfiguration('version',0) != '3'){
+						$features=$eqLogic->getConfiguration('features',null);
+						if($features && $features['Volume']=="Available") {
+							$eqLogic->aTVdaemonExecute('volume_down|volume');
+						} else {
+							$cmds=$eqLogic->getConfiguration('LessVol');
+							$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+							if(!is_object($cmdLessVol)) {return;}
+							$cmdLessVol->execCmd();
+						}
+					} else { // aTV3 using jeedom commands
 						$cmds=$eqLogic->getConfiguration('LessVol');
 						$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 						if(!is_object($cmdLessVol)) {return;}
@@ -1415,7 +1434,17 @@ class aTVremoteCmd extends cmd {
 						} else {
 							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
 						}
-					} else {
+					} else if($eqLogic->getConfiguration('version',0) != '3'){
+						$features=$eqLogic->getConfiguration('features',null);
+						if($features && $features['Volume']=="Available") {
+							$eqLogic->aTVdaemonExecute('volume_up|volume');
+						} else {
+							$cmds=$eqLogic->getConfiguration('MoreVol');
+							$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
+							if(!is_object($cmdMoreVol)) {return;}
+							$cmdMoreVol->execCmd();
+						}
+					} else { // aTV3 using jeedom commands
 						$cmds=$eqLogic->getConfiguration('MoreVol');
 						$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 						if(!is_object($cmdMoreVol)) {return;}
@@ -1424,7 +1453,6 @@ class aTVremoteCmd extends cmd {
 				break;
 				case 'set_volume' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
-						//$eqLogic->aTVdaemonExecute('features');
 						$play_human = $eqLogic->getCmd(null, 'play_human');
 						if (is_object($play_human) && $play_human->getCache('value') != __("Inactif", __FILE__)) { // or the deamon crash !
 							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
@@ -1437,6 +1465,11 @@ class aTVremoteCmd extends cmd {
 						} else {
 							$eqLogic->aTVdaemonExecute('volume');
 							$cmds=" Annulée car Inactif et ca fait planter le démon";	
+						}
+					} else if($eqLogic->getConfiguration('version',0) != '3'){
+						$features=$eqLogic->getConfiguration('features',null);
+						if($features && $features['Volume']=="Available") {
+							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
 						}
 					}
 				break;
