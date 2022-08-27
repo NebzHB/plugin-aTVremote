@@ -109,7 +109,7 @@
 	</div>
 
     <script>
-		if(typeof jeedom.cmd.addUpdateFunction !== 'function') { // for 4.3
+		if(typeof jeedom.cmd.addUpdateFunction !== 'function') { // before 4.3
 			jeedom.cmd.addUpdateFunction = function(id,func) {
 				jeedom.cmd.update[id]=func;
 			}
