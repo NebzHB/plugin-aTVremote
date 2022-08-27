@@ -133,7 +133,7 @@ function addCmdToTable(_cmd) {
     tr += '</td>'; 
 	if(init(_cmd.type) == 'info') {
 		tr += '<td>';
-		tr += '<input class="form-control input-sm" type="text" data-key="value" placeholder="{{Valeur}}" readonly=true>';
+		tr += '<span class="cmdAttr" data-l1key="htmlstate">{{Valeur}}</span>';
 		tr += '</td>';
 	} else {
 		tr += '<td>';
@@ -165,30 +165,33 @@ function addCmdToTable(_cmd) {
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 		
 	function refreshValue(val,show=true) {
-		$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').value(val);
+		let cmd = $('.cmd[data-cmd_id=' + _cmd.id + '] span.cmdAttr[data-l1key=htmlstate]');
+		cmd.html(val);
 		if(show){
-			$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','background-color:#ffff99 !important;');
+			cmd.css('background-color','rgb(150, 201, 39)');
 			setTimeout(function(){
-				$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','');
+				cmd.css('background-color','');
 			},200);
 		}
 	}
 
-	if (_cmd.id != undefined) {
-		if(init(_cmd.type) == 'info') {
-			jeedom.cmd.execute({
-				id: _cmd.id,
-				cache: 0,
-				notify: false,
-				success: function(result) {
-					refreshValue(result,false);
-			}});
-		
-		
-			// Set the update value callback
-			jeedom.cmd.update[_cmd.id] = function(_options) {
-				refreshValue(_options.display_value);
+	if(typeof jeeFrontEnd === "undefined") {
+		if (_cmd.id != undefined) {
+			if(init(_cmd.type) == 'info') {
+				jeedom.cmd.execute({
+					id: _cmd.id,
+					cache: 0,
+					notify: false,
+					success: function(result) {
+						refreshValue(result,false);
+				}});
+			
+			
+				// Set the update value callback
+				jeedom.cmd.update[_cmd.id] = function(_options) {
+					refreshValue(_options.display_value);
+				}
 			}
 		}
-	}	
+	}
 }
