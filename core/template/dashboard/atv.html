@@ -138,7 +138,13 @@
 		</div>
 	</div>
 
-    <script> 
+    <script>
+		if(typeof jeedom.cmd.addUpdateFunction !== 'function') { // for 4.3
+			jeedom.cmd.addUpdateFunction = function(id,func) {
+				jeedom.cmd.update[id]=func;
+			}
+		}
+		
 //Apple clignotante
       	$('.eqLogic[data-eqLogic_id=#id#] .cmd').click(function(){
 			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(200);
@@ -151,14 +157,14 @@
 //ATV 4 ou 4K
         
 //Play_human
-		jeedom.cmd.update['#play_human_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('title',_options.display_value);
-		}
-		jeedom.cmd.update['#play_human_id#']({display_value:'#play_human#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#play_human_id#',display_value:'#play_human#'}]);
 		
 //Power_State
-		jeedom.cmd.update['#power_state_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#power_state_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').show(1);
@@ -167,11 +173,11 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_on').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.turn_off').show(1);
 			}
-		}
-		jeedom.cmd.update['#power_state_id#']({display_value:'#power_state#'});	
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#power_state_id#',display_value:'#power_state#'}]);
 					
-//App          	
-		jeedom.cmd.update['#app_id#'] = function(_options){
+//App
+		jeedom.cmd.addUpdateFunction('#app_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			var str_app = _options.display_value;
 			var app_split = str_app.split(['.']);
@@ -190,11 +196,11 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .app_hide').hide(1);
 			}
 			$('.eqLogic[data-eqLogic_id=#id#] .appsBox').show(1);
-		}
-		jeedom.cmd.update['#app_id#']({display_value:'#app#'});	
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#app_id#',display_value:'#app#'}]);
 			 
 //Play_state
-		jeedom.cmd.update['#play_state_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#play_state_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
@@ -205,23 +211,21 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #equa#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
 			}
-		}
-		jeedom.cmd.update['#play_state_id#']({display_value:'#play_state#'});	
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#play_state_id#',display_value:'#play_state#'}]);
 
 //Artwork
-
-		jeedom.cmd.update['#artwork_url_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
 			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
 			$('.artworkBackground_#id#').css('background-image',"url("+_options.display_value+")");
-		}
-		jeedom.cmd.update['#artwork_url_id#']({display_value:'#artwork_url#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#artwork_url_id#',display_value:'#artwork_url#'}]);
 
 //Metadonnée          
-
-		jeedom.cmd.update['#artist_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#artist_id#', function(_options){
 			//console.log('ààà artist_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
@@ -233,11 +237,10 @@
 			} else {
 				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
 			}
-		}
-		jeedom.cmd.update['#artist_id#']({display_value:'#artist#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
 		
-		
-		jeedom.cmd.update['#album_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#album_id#', function(_options){
 			//console.log('ààà album_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
@@ -249,11 +252,10 @@
 			} else {
 				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
 			}
-		}
-		jeedom.cmd.update['#album_id#']({display_value:'#album#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
-		
-		jeedom.cmd.update['#title_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
 			//console.log('ààà title_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
@@ -265,10 +267,10 @@
 			} else {
 				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
 			}
-		}
-		jeedom.cmd.update['#title_id#']({display_value:'#title#'}); 
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
-		jeedom.cmd.update['#genre_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#genre_id#', function(_options){
 			//console.log('ààà genre_id _options.display_value =',_options.display_value)
 			
 			if(_options.display_value == '-' || _options.display_value == 'Unknown'){
@@ -278,10 +280,10 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .genre').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .genre').html(_options.display_value);
 			}
-		}
-		jeedom.cmd.update['#genre_id#']({display_value:'#genre#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#genre_id#',display_value:'#genre#'}]);
 		
-		jeedom.cmd.update['#media_type_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#media_type_id#', function(_options){
 			//console.log('ààà media_type_id _options.display_value =',_options.display_value)
 			
 			if(_options.display_value == '-' || _options.display_value == 'Unknown'){
@@ -291,11 +293,11 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .media').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .media').html(_options.display_value);
 			}
-		}
-		jeedom.cmd.update['#media_type_id#']({display_value:'#media_type#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#media_type_id#',display_value:'#media_type#'}]);
 	  
-//Position 		        
-		jeedom.cmd.update['#position_id#'] = function(_options){
+//Position
+		jeedom.cmd.addUpdateFunction('#position_id#', function(_options){
 			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value != '-'){
 				$('.eqLogic[data-eqLogic_id=#id#] .position').show(1);
@@ -304,11 +306,11 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text();
 			}  
-		}
-		jeedom.cmd.update['#position_id#']({display_value:'#position#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#position_id#',display_value:'#position#'}]);
 	  
 //Repeat	
-		jeedom.cmd.update['#repeat_state_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#repeat_state_id#', function(_options){
 			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '1'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
@@ -323,13 +325,11 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_off').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);        
 			}
-		}
-		jeedom.cmd.update['#repeat_state_id#']({display_value:'#repeat_state#'});
-		
-		
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#repeat_state_id#',display_value:'#repeat_state#'}]);
 	  
 //Shuffle
-		jeedom.cmd.update['#shuffle_state_id#'] = function(_options){
+		jeedom.cmd.addUpdateFunction('#shuffle_state_id#', function(_options){
 			//console.log('ààà shuffle_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '0'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').show(1);
@@ -338,8 +338,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').show(1);  				
 			}
-		}
-		jeedom.cmd.update['#shuffle_state_id#']({display_value:'#shuffle_state#'});
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#shuffle_state_id#',display_value:'#shuffle_state#'}]);
       	
        
       	function panelDownApp#id#()
@@ -359,8 +359,6 @@
     		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "-300px"});
 		}
 
-
-      	
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
