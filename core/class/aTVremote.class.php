@@ -1406,12 +1406,14 @@ class aTVremoteCmd extends cmd {
 							$eqLogic->aTVdaemonExecute('volume_down|volume');
 						} else {
 							$cmds=$eqLogic->getConfiguration('LessVol');
+							if(!$cmds) {return;}
 							$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 							if(!is_object($cmdLessVol)) {return;}
 							$cmdLessVol->execCmd();
 						}
 					} else { // aTV3 using jeedom commands
 						$cmds=$eqLogic->getConfiguration('LessVol');
+						if(!$cmds) {return;}
 						$cmdLessVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 						if(!is_object($cmdLessVol)) {return;}
 						$cmdLessVol->execCmd();
@@ -1440,12 +1442,14 @@ class aTVremoteCmd extends cmd {
 							$eqLogic->aTVdaemonExecute('volume_up|volume');
 						} else {
 							$cmds=$eqLogic->getConfiguration('MoreVol');
+							if(!$cmds) {return;}
 							$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 							if(!is_object($cmdMoreVol)) {return;}
 							$cmdMoreVol->execCmd();
 						}
 					} else { // aTV3 using jeedom commands
 						$cmds=$eqLogic->getConfiguration('MoreVol');
+						if(!$cmds) {return;}
 						$cmdMoreVol = cmd::byId(trim(str_replace('#', '', $cmds)));
 						if(!is_object($cmdMoreVol)) {return;}
 						$cmdMoreVol->execCmd();
