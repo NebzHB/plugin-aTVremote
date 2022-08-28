@@ -35,20 +35,19 @@ class aTVremote extends eqLogic {
 							}
 						}
 					} else {
-						if($eqLogic->getConfiguration('device','') == 'HomePod') {
-							$play_state = $eqLogic->getCmd(null, 'play_state');
-							if(is_object($play_state)) {
-								$val=$play_state->getCache('value');
-								if($val) { // if playing : 1min
+						$play_state = $eqLogic->getCmd(null, 'play_state');
+						if(is_object($play_state)) {
+							$val=$play_state->getCache('value');
+							if($val) { // if playing : 1min
+								$eqLogic->aTVdaemonExecute('volume');
+							} else { // else : 5min
+								$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
+								if ($c->isDue()) {
 									$eqLogic->aTVdaemonExecute('volume');
-								} else { // else : 5min
-									$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
-									if ($c->isDue()) {
-										$eqLogic->aTVdaemonExecute('volume');
-									}
 								}
 							}
-						} else {
+						}
+						if($eqLogic->getConfiguration('device','') != 'HomePod') {
 							$eqLogic->aTVdaemonExecute('features');
 							
 							$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
