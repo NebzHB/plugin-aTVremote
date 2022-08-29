@@ -345,6 +345,15 @@
 			"isHistorized": 0,
 			"logicalId": "app"
 		}, {
+			"name": "{{Info Volume}}",
+			"type": "info",
+			"subtype": "numeric",
+			"display": {
+				"generic_type": "SPEAKER_VOLUME"
+			},
+			"isVisible": 1,
+			"logicalId": "volume"
+		}, {
 			"name": "{{Bouton Volume +}}",
 			"type": "action",
 			"subtype": "other",

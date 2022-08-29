@@ -165,11 +165,12 @@ function addCmdToTable(_cmd) {
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 		
 	function refreshValue(val,show=true) {
-		$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').value(val);
+		let cmd = $('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]');
+		cmd.value(val);
 		if(show){
-			$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','background-color:#ffff99 !important;');
+			cmd.attr('style','background-color:#ffff99 !important;');
 			setTimeout(function(){
-				$('.cmd[data-cmd_id=' + _cmd.id + '] .form-control[data-key=value]').attr('style','');
+				cmd.attr('style','');
 			},200);
 		}
 	}
@@ -183,7 +184,6 @@ function addCmdToTable(_cmd) {
 				success: function(result) {
 					refreshValue(result,false);
 			}});
-		
 		
 			// Set the update value callback
 			jeedom.cmd.update[_cmd.id] = function(_options) {
