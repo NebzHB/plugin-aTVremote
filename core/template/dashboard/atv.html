@@ -183,6 +183,8 @@
 			//var app_final = app_split[1]+' : '+app_split[2];
 			if (app_split[1] != "apple"){
 				var app_final = app_split[1];
+			} else if(app_split[2] == 'ios') {
+				var app_final = app_split[3];
 			} else {
 				var app_final = app_split[2];
 			}
