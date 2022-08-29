@@ -111,7 +111,7 @@
           
 <!--  Control & Navigation -->  
       <div class="gameplay" style="height: 230px;position: absolute;top: 302px;width: 138px;background-color: black;">    	
-          	
+        <div style="position:absolute;top:155px;left:90px;" class="volumeContainer_aTVremote"><a class="volume_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important" title="Volume"> #volume# </a></div>
         <br>
 			<div style="display: block; margin: -12px 19px 10px;" class="playback">
 				<a class="btn_aTVremote_playback cmd play_btn" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -131,7 +131,6 @@
             </div>
         <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="volume" style="background-image:url(plus-moins.png);">
-              	
 				<a class="btn_aTVremote_plus cmd down2" data-cmd_id="#cmd_channel_down_id#" title='CH -'><img class="aTVremote_down2" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> 
 				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" title='Vol -'><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:40px;"/></a>
             </div>
@@ -308,6 +307,19 @@
 			}  
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#position_id#',display_value:'#position#'}]);
+		
+//volume
+		jeedom.cmd.addUpdateFunction('#volume_id#', function(_options){
+			$('.eqLogic[data-eqLogic_id=#id#] .volume_aTVremote').html(_options.display_value);
+			if(_options.display_value == 0) {
+				$('.eqLogic[data-eqLogic_id=#id#] .volumeContainer_aTVremote').css('left','94px');
+			} else if(_options.display_value == 100) {
+				$('.eqLogic[data-eqLogic_id=#id#] .volumeContainer_aTVremote').css('left','86px');
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .volumeContainer_aTVremote').css('left','90px');
+			}
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#volume_id#',display_value:'#volume#'}]);	
 	  
 //Repeat	
 		jeedom.cmd.addUpdateFunction('#repeat_state_id#', function(_options){
