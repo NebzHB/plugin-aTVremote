@@ -165,7 +165,9 @@
 			//console.log('ààà artist_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').toggle(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
 			}
 			
 			if (_options.display_value.length > 18){
@@ -180,7 +182,9 @@
 			//console.log('ààà album_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').toggle(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
 			}
 			
 			if (_options.display_value.length > 18){
@@ -195,7 +199,9 @@
 			//console.log('ààà title_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').toggle();
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
 			}
 
 			if (_options.display_value.length > 18){
