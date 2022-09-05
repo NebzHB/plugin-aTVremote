@@ -197,7 +197,9 @@
 			$('#artworkForeground_#id#').prop('title',_options.display_value+'  -  '+artworkTitle[1]+'  -  '+artworkTitle[2]);
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').toggle(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
 			}
 			
 			if (_options.display_value.length > 40){
@@ -215,7 +217,9 @@
 			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+artworkTitle[1]+'  -  '+_options.display_value);
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').toggle(1);
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
 			}
 			
 			if (_options.display_value.length > 40){
@@ -233,7 +237,9 @@
 			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+_options.display_value+'  -  '+artworkTitle[2]);
 			
 			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').toggle();
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').hide(1);
+			} else {
+				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
 			}
 
 			if (_options.display_value.length > 40){
