@@ -364,7 +364,7 @@ class aTVremote extends eqLogic {
 						log::add('aTVremote','info',"AppleTV avec mot de passe AirPlay : on ignore ".$device[1]);
 						continue;    
 					}
-					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'HomePod') === false) {
+					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'AppleTV') === false && strpos($device[2],'HomePod') === false) {
 						log::add('aTVremote','info',"Modèle non supporté ".$device[2]." : on ignore ".$device[1]);
 						continue;
 					}
