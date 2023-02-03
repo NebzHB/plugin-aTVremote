@@ -387,10 +387,12 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'Apple TV') !== false) {
 						$res['device']="Apple TV";
 						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
-					} elseif(strpos($res['model'],'HomePod') !== false) {
+					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false) {
 						$res['device']="HomePod";
 						if(strpos($res['model'],'Mini') !== false) {
 							$res['version']="Mini";
+						} elseif(strpos($res['model'],'AudioAccessory6,1') !== false) {
+							$res['version']="2";
 						} else {
 							$res['version']="Original";
 						}
