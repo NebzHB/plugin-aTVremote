@@ -393,7 +393,6 @@ class aTVremote extends eqLogic {
 							$res['version']="Mini";
 						} elseif(strpos($res['model'],'AudioAccessory6,1') !== false) {
 							$res['version']="2";
-							$res['os']="TvOS";
 						} else {
 							$res['version']="Original";
 						}
@@ -402,6 +401,9 @@ class aTVremote extends eqLogic {
 					$subModElmt=explode(' ',$modElmt[1]);
 					$res['os']=$subModElmt[0];
 					if($res['os'] == 'tvOS') {$res['os']='TvOS';}
+					if(strpos($res['model'],'AudioAccessory6,1') !== false) {
+						$res['os']='TvOS';
+					}
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
 						log::add('aTVremote','info',"Pas une vraie AppleTV3: on Ignore ".$res['model']);
 						continue;
