@@ -393,6 +393,7 @@ class aTVremote extends eqLogic {
 							$res['version']="Mini";
 						} elseif(strpos($res['model'],'AudioAccessory6,1') !== false) {
 							$res['version']="2";
+							$res['os']="TvOS";
 						} else {
 							$res['version']="Original";
 						}
