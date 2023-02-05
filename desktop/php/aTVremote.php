@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 						$opacity = ($eqLogic->getIsEnable()) ? '' : ' disableCard';
 						$img=$eqLogic->getImage();
 						echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-						echo '<img class="lazy" src="'.$img.'" style="min-height:75px !important;filter:contrast(0%)" />';
+						echo '<img class="lazy" src="'.$img.'" style="min-height:75px !important;filter:contrast(10%)" />';
 						echo "<br />";
 						echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
 						echo '</div>';
