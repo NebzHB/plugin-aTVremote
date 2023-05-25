@@ -210,6 +210,10 @@ function connectATV(mac,version) {
 					// aTVs.previousMsg[mac]=comparingData;
 					sent=" playing et envoyé à jeedom";
 					jsend({eventType: 'playing', data : stringData, mac: mac});	
+				} else if(stringData.includes('volume')) {
+					// aTVs.previousMsg[mac]=comparingData;
+					sent=" volume et envoyé à jeedom";
+					jsend({eventType: 'volume', data : stringData, mac: mac});	
 				} else if(stringData.includes('connection": "closed')) {
 					delete aTVs.msg[mac];
 					Logger.log('[MSG]['+mac+'] Reconnection...',LogType.DEBUG);
