@@ -110,7 +110,7 @@ source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 	try sudo ${BASEDIR}/atvremote/bin/python3 -m pip install --upgrade pip
 
 	#try sudo $pythonCmd -m pip install -I wheel
-	try ${BASEDIR}/atvremote/bin/python3 -m pip install -I git+https://github.com/NebzHB/pyatv@master
+	try ${BASEDIR}/atvremote/bin/python3 -m pip install -I git+https://github.com/postlund/pyatv@master
 	#try sudo $pythonCmd -m pip uninstall -y miniaudio
 	#try sudo $pythonCmd -m pip install --no-binary :all: miniaudio==1.52
 	#sudo ${BASEDIR}/atvremote/bin/python3 -m pip list
