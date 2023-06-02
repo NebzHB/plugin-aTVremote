@@ -107,7 +107,7 @@ try sudo virtualenv -p $pythonCmd ${BASEDIR}/atvremote/
 source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
 
 	#try sudo pip3 install --upgrade pip
-	try sudo ${BASEDIR}/atvremote/bin/python3 -m pip install --upgrade pip
+	try sudo ${BASEDIR}/atvremote/bin/python3 -m pip install --upgrade pip wheel
 
 	#try sudo $pythonCmd -m pip install -I wheel
 	try ${BASEDIR}/atvremote/bin/python3 -m pip install -I git+https://github.com/NebzHB/pyatv@master
