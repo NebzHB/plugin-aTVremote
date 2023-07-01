@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
       - name: PHP Syntax Checker (Lint)
-        uses: StephaneBour/actions-php-lint@8.1
+        uses: StephaneBour/actions-php-lint@8.2
         with:
           dir: '.'
       - name: eslint
