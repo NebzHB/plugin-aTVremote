@@ -23,7 +23,7 @@ lsb_release -c | grep jessie
 if [ $? -eq 0 ]
 then
   today=$(date +%Y%m%d)
-  if [[ "$today" > "20200630" ]]; 
+  if [[ "$today" > "20220630" ]]; 
   then 
     echo "$HR"
     echo "== KO == Erreur d'Installation"
