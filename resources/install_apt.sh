@@ -51,6 +51,7 @@ fi
 
 step 5 "Mise à jour APT et installation des packages nécessaires"
 tryOrStop sudo apt-get update
+tryOrStop apt-get install -y python3 python3-pip python3-dev python3-venv
 
 #install nodejs, steps 10->50
 . ${BASEDIR}/install_nodejs.sh ${installVer}
@@ -67,55 +68,13 @@ silent sudo chown -R www-data:www-data .
 tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
 silent sudo chown -R www-data:www-data . 
 
-lsb_release -c | silent grep buster
-if [ $? -eq 0 ]; then
-  silent python3.8 --version
-  if [ $? -ne 0 ]; then #no python 3.8
-	step 80 "Installation de python 3.8.16"
-	try sudo DEBIAN_FRONTEND=noninteractive apt-get install -y zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev
-	try sudo curl -O https://www.python.org/ftp/python/3.8.16/Python-3.8.16.tar.xz
-	silent sudo tar -xf Python-3.8.16.tar.xz
-	#Clean tar file
-	silent sudo rm -fR Python-3.8.16.tar.xz
-	cd Python-3.8.16/
-	#sudo ./configure --enable-optimizations #too slow
-	try sudo ./configure --prefix=/usr
-	try sudo make -j `nproc`
-	try sudo make altinstall
-	cd ..
-	#Clean Python folder
-	silent sudo rm -fR Python-3.8.16/
-  fi
-fi
+step 80 "Installation librairie atvremote"
+VENV_DIR=$BASEDIR/atvremote
+tryOrStop python3 -m venv $VENV_DIR
+tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
+tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir -I git+https://github.com/NebzHB/pyatv@master
 
-step 90 "Installation librairie atvremote"
-silent sudo rm -fR ${BASEDIR}/atvremote
-try pip3 install virtualenv
-
-silent which python3.8
-if [ $? -eq 0 ];then
-	pythonCmd=`which python3.8`
-else
-	silent which python3.9
-	if [ $? -eq 0 ];then
-		pythonCmd=`which python3.9`
-	else
-		pythonCmd=`which python3`
-	fi
-fi
-
-try sudo virtualenv -p $pythonCmd ${BASEDIR}/atvremote/
-source <(sudo cat ${BASEDIR}/atvremote/bin/activate)
-
-	#try sudo pip3 install --upgrade pip
-	try sudo ${BASEDIR}/atvremote/bin/python3 -m pip install --upgrade pip wheel
-
-	#try sudo $pythonCmd -m pip install -I wheel
-	try ${BASEDIR}/atvremote/bin/python3 -m pip install -I git+https://github.com/NebzHB/pyatv@master
-	#try sudo $pythonCmd -m pip uninstall -y miniaudio
-	#try sudo $pythonCmd -m pip install --no-binary :all: miniaudio==1.52
-	#sudo ${BASEDIR}/atvremote/bin/python3 -m pip list
-
-deactivate
+step 90 "Résumé des packages installés"
+$VENV_DIR/bin/python3 -m pip freeze
 
 post
