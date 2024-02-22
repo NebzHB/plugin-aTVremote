@@ -22,30 +22,33 @@ silent sudo chown -R www-data $(realpath $BASEDIR/..)
 lsb_release -c | grep jessie
 if [ $? -eq 0 ]
 then
-  today=$(date +%Y%m%d)
-  if [[ "$today" > "20200630" ]]; 
-  then 
     echo "$HR"
     echo "== KO == Erreur d'Installation"
     echo "$HR"
     echo "== ATTENTION Debian 8 Jessie n'est officiellement plus supportée depuis le 30 juin 2020, merci de mettre à jour votre distribution !!!"
     exit 1
-  fi
 fi
 
 #stretch is not supported because of old python
 lsb_release -c | grep stretch
 if [ $? -eq 0 ]
 then
-  today=$(date +%Y%m%d)
-  if [[ "$today" > "20220630" ]]; 
-  then 
     echo "$HR"
     echo "== KO == Erreur d'Installation"
     echo "$HR"
     echo "== ATTENTION Debian 9 Stretch n'est pas supporté car la version de python est trop vieille, merci de mettre à jour votre distribution !!!"
     exit 1
-  fi
+fi
+
+#stretch is not supported because of old python
+lsb_release -c | grep buster
+if [ $? -eq 0 ]
+then
+    echo "$HR"
+    echo "== KO == Erreur d'Installation"
+    echo "$HR"
+    echo "== ATTENTION Debian 10 Buster n'est pas supporté car la version de python est trop vieille, merci de mettre à jour votre distribution !!!"
+    exit 1
 fi
 
 step 5 "Mise à jour APT et installation des packages nécessaires"
