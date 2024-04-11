@@ -8,8 +8,6 @@ TIMED=1
 ##################################################################
 wget https://raw.githubusercontent.com/NebzHB/dependance.lib/master/install_nodejs.sh -O $BASEDIR/install_nodejs.sh &>/dev/null
 
-installVer='18' 	#NodeJS major version to be installed
-
 pre
 step 0 "Vérification des droits"
 DIRECTORY="/var/www"
@@ -56,7 +54,7 @@ tryOrStop sudo apt-get update
 tryOrStop apt-get install -y python3 python3-pip python3-dev python3-venv
 
 #install nodejs, steps 10->50
-. ${BASEDIR}/install_nodejs.sh ${installVer} 10 50
+. ${BASEDIR}/install_nodejs.sh --firstSubStep 10 --lastSubStep 50
 
 step 60 "Nettoyage anciens modules"
 cd ${BASEDIR};
