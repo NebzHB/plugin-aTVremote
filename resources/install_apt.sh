@@ -6,7 +6,7 @@ PLUGIN=$(basename "$(realpath $BASEDIR/..)")
 TIMED=1
 . ${BASEDIR}/dependance.lib
 ##################################################################
-wget https://raw.githubusercontent.com/NebzHB/nodejs_install/main/install_nodejs.sh -O $BASEDIR/install_nodejs.sh &>/dev/null
+wget https://raw.githubusercontent.com/NebzHB/dependance.lib/master/install_nodejs.sh -O $BASEDIR/install_nodejs.sh &>/dev/null
 
 installVer='18' 	#NodeJS major version to be installed
 
@@ -56,7 +56,7 @@ tryOrStop sudo apt-get update
 tryOrStop apt-get install -y python3 python3-pip python3-dev python3-venv
 
 #install nodejs, steps 10->50
-. ${BASEDIR}/install_nodejs.sh ${installVer}
+. ${BASEDIR}/install_nodejs.sh ${installVer} 10 50
 
 step 60 "Nettoyage anciens modules"
 cd ${BASEDIR};
