@@ -206,23 +206,35 @@ class aTVremote extends eqLogic {
 	public static function deamon_stop() {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
-			@file_get_contents("http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop");
-			sleep(3);
-		}
-		
-		if(shell_exec('ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') == '1') {
-			exec('sudo kill $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
-		}
-		log::add('aTVremote', 'info', "Arrêt du démon aTVremote");
-		$deamon_info = self::deamon_info();
-		if ($deamon_info['state'] == 'ok') {
-			sleep(1);
-			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
-		}
-		$deamon_info = self::deamon_info();
-		if ($deamon_info['state'] == 'ok') {
-			sleep(1);
-			exec('sudo kill -9 $(ps aux | grep "resources/aTVremoted.js" | grep -v "grep" | awk \'{print $2}\') >/dev/null 2>&1');
+			log::add('hkControl', 'info', __("Arrêt du démon aTVremote", __FILE__));
+			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop";
+			$request_http = new com_http($url);
+			$request_http->setNoReportError(true);
+			$request_http->exec(11,1);
+			for ($retry = 0; $retry < 5; $retry++) {
+				if (self::deamon_info()['state'] != 'ok') { 
+					return true;
+				}
+				sleep(1);
+			}
+			
+			$pid = exec("pgrep -f 'resources/aTVremoted.js'");
+			if($pid) {
+				exec(system::getCmdSudo().'kill -15 ' . $pid.' > /dev/null 2>&1');
+				log::add('hkControl', 'info', __("Arrêt SIGTERM du démon aTVremote", __FILE__));
+				for ($retry = 0; $retry < 3; $retry++) {
+					if (self::deamon_info()['state'] != 'ok') { 
+						return true;
+					}
+					sleep(1);
+				}
+			}
+			
+			$pid = exec("pgrep -f 'resources/aTVremoted.js'");
+			if($pid) {
+				exec(system::getCmdSudo().'kill -9 ' . $pid.' > /dev/null 2>&1');
+				log::add('hkControl', 'info', __("Arrêt SIGKILL du démon aTVremote", __FILE__));
+			}
 		}
 	}	
 
