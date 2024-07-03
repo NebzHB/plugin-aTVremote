@@ -21,6 +21,9 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class aTVremote extends eqLogic {
 	/***************************Attributs*******************************/	
+	public static function backupExclude() {
+		return ['resources/atvremote/'];
+	}
 	public static function cron($_eqlogic_id = null) {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
 		foreach ($eqLogics as $eqLogic) {
