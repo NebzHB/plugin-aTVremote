@@ -70,7 +70,6 @@ silent sudo chown -R www-data:www-data .
 
 step 80 "Installation librairie atvremote"
 VENV_DIR=$BASEDIR/atvremote
-silent sudo rm -fR $VENV_DIR
 tryOrStop python3 -m venv $VENV_DIR
 tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
 tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir -I git+https://github.com/NebzHB/pyatv@master
