@@ -66,6 +66,7 @@ step 70 "Installation des librairies du démon, veuillez patienter svp"
 silent sudo mkdir node_modules 
 silent sudo chown -R www-data:www-data . 
 tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
+silent wget https://raw.githubusercontent.com/NebzHB/nodejsToJeedom/main/jeedom.js -O $BASEDIR/utils/jeedom.js
 silent sudo chown -R www-data:www-data . 
 
 step 80 "Installation librairie atvremote"
