@@ -86,9 +86,77 @@ class aTVremote extends eqLogic {
 	}
 	
 	public static function dependancy_info() {
-		$return = array();
-		$return['progress_file'] = jeedom::getTmpFolder('aTVremote') . '/dependance';
+		$return = [];
+		$return['log'] = __CLASS__ . '_dep';
+		$return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependance';
 		$return['state'] = 'nok';
+
+		// Check if NodeJS exists
+		$nodeJSError=null;
+		$out=null;
+		exec('type node',$out,$nodeJSError);
+		$nodeInstalled=($nodeJSError == 0);
+		if(!$nodeInstalled) {		
+			return $return;
+		}
+
+		// Don't check anything more if buster to avoid dep reinstall and blocking users
+		if(trim(shell_exec("lsb_release -c -s")) == "buster" && strtotime(date("Y-m-d")) > strtotime("2024-06-30")) {
+			$return['state'] = 'ok';
+			return $return;
+		}
+
+		// Get package.json
+		$packageRequiredVers = file_get_contents(dirname(__FILE__) . '/../../resources/package.json');
+		$packageRequiredVers = json_decode($packageRequiredVers,true);
+
+		// Check if NodeJS version is greater or equal the required version
+		$nodeVer=trim(shell_exec('node -v'),"v\n\r");
+		if(!$nodeVer) {$nodeVer='';}
+		preg_match('/(>=|<=|>|<|=)?(\d+(\.\d+){0,2})/', $packageRequiredVers['engines']['node'], $matches);
+		$nodeOperator = $matches[1] ?: '==';
+		$nodeVersion = $matches[2];
+		
+		$nodeVersionOK=version_compare($nodeVer,$nodeVersion,$nodeOperator);
+		if(!$nodeVersionOK) {
+			return $return;
+		}
+
+		// Check if NPM version is greater or equal the required version
+		$npmVer=trim(shell_exec('npm -v'),"\n\r");
+		if(!$npmVer) {$npmVer='';}
+		preg_match('/(>=|<=|>|<|=)?(\d+(\.\d+){0,2})/', $packageRequiredVers['engines']['npm'], $matches);
+		$npmOperator = $matches[1] ?: '==';
+		$npmVersion = $matches[2];
+		
+		$npmVersionOK=version_compare($npmVer,$npmVersion,$npmOperator);
+		if(!$npmVersionOK) {
+			return $return;
+		}
+
+		// Check if jeedom connect class is present
+		if(!file_exists(dirname(__FILE__) . '/../../resources/utils/jeedom.js')) {
+			return $return;
+		}
+
+		// Check if all dependancies of hap-controller are installed and have the required version
+		foreach($packageRequiredVers['dependencies'] as $dep => $requiredVersionSpec) {
+		    $depPackageJson = file_get_contents(dirname(__FILE__) . '/../../resources/node_modules/' . $dep . '/package.json');
+		    if (!$depPackageJson) {
+		        return $return;
+		    }
+		
+		    $depDetails = json_decode($depPackageJson, true);
+		    $installedVersion = $depDetails['version'];
+		
+		    preg_match('/(>=|<=|>|<|=)?(\d+(\.\d+){0,2})/', $requiredVersionSpec, $matches);
+		    $requiredOperator = $matches[1] ?: '==';
+		    $requiredVersion = $matches[2];
+		
+		    if (!version_compare($installedVersion, $requiredVersion, $requiredOperator)) {
+		        return $return;
+		    }
+		}
 
 		$path=aTVremote::getaTVremote();
 		if (file_exists($path)) {
