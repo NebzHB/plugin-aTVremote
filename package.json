@@ -16,7 +16,7 @@
   "dependencies": {
   },
   "devDependencies": {
-    "@babel/core": ">=7.24.7",
+    "@babel/core": ">=7.25.2",
     "@babel/eslint-parser": "^7.25.1",
     "eslint": "^8.52.0"
   }
