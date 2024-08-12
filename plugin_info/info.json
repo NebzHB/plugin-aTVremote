@@ -20,6 +20,6 @@
 	"link" : {
 		"forum":"https://community.jeedom.com/tag/plugin-aTVremote"
 	},
-	"languages" : ["fr_FR"],
+	"language" : ["fr_FR"],
 	"compatibility" : ["smart","rpi","diy","v4","atlas"]
 }
