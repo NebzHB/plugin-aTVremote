@@ -26,7 +26,5 @@ jobs:
         uses: StephaneBour/actions-php-lint@8.2
         with:
           dir: '.'
-      - name: eslint
-        uses: icrawl/action-eslint@v1
-        with:
-          custom-glob: resources/
+      - name: Run ESLint
+        run: npm run lint
