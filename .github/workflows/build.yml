@@ -1,4 +1,4 @@
-name: Build
+name: PHP8.2
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
       - name: PHP Syntax Checker (Lint)
-        uses: StephaneBour/actions-php-lint@8.3
+        uses: StephaneBour/actions-php-lint@8.2
         with:
           dir: '.'
       - name: eslint
