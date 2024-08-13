@@ -4,20 +4,19 @@
   "description": "Jeedom Plugin for aTVRemote",
   "main": "resources/aTVremoted.js",
   "scripts": {
-    "lint": "eslint ."
+    "lint:js": "eslint resources/*.js",
+    "lint": "npm run lint:js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nebzhb/plugin-aTVremote.git"
   },
-  "author": "Benjamin RENARD <nebz@nebz.be>",
+  "author": "Nebz <nebz@nebz.be>",
   "contributor": "Wators",
   "license": "AGPL",
   "dependencies": {
   },
   "devDependencies": {
-    "@babel/core": ">=7.25.2",
-    "@babel/eslint-parser": "^7.25.1",
     "eslint": "^8.52.0"
   }
 }
