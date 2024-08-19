@@ -1,4 +1,4 @@
-name: PHP8.2
+name: PHP8.3
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 22.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
       - name: PHP Syntax Checker (Lint)
-        uses: StephaneBour/actions-php-lint@8.2
+        uses: StephaneBour/actions-php-lint@8.3
         with:
           dir: '.'
       - name: Run ESLint
