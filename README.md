@@ -1,6 +1,6 @@
 # plugin-aTVremote
 
-Dev : ![Alpha](https://github.com/NebzHB/plugin-aTVremote/actions/workflows/build.yml/badge.svg?branch=alpha)
+Dev : ![Alpha](https://github.com/NebzHB/plugin-aTVremote/actions/workflows/build.yml/badge.svg?branch=dev)
 
 Beta : ![Beta](https://github.com/NebzHB/plugin-aTVremote/actions/workflows/build.yml/badge.svg?branch=beta)
 
