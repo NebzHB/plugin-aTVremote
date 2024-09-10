@@ -103,7 +103,7 @@ step 80 "Installation librairie atvremote"
 VENV_DIR=$BASEDIR/atvremote
 tryOrStop python3 -m venv $VENV_DIR
 tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
-tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir -I git+https://github.com/NebzHB/pyatv@master
+tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir -I git+https://github.com/postlund/pyatv@v0.15.1
 
 step 90 "Résumé des packages installés"
 $VENV_DIR/bin/python3 -m pip freeze
