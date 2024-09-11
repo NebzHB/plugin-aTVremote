@@ -17,8 +17,7 @@
 	"display": "panel",
 	"require": "4.4",
 	"os": {
-		"min": 11,
-		"max": ""
+		"min": 11
 	},
 	"category": "multimedia",
 	"issue": "https://github.com/NebzHB/plugin-aTVremote/issues",
