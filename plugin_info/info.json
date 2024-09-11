@@ -18,7 +18,7 @@
 	"require": "4.4",
 	"os": {
 		"min": 11,
-		"max": 12.99
+		"max": ""
 	},
 	"category": "multimedia",
 	"issue": "https://github.com/NebzHB/plugin-aTVremote/issues",
