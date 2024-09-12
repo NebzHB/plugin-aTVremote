@@ -1,13 +1,13 @@
 #!/bin/bash
 ######################### INCLUSION LIB ##########################
 BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/beta/dependance.lib --no-cache -O $BASEDIR/dependance.lib &>/dev/null
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/dependance.lib --no-cache -O $BASEDIR/dependance.lib &>/dev/null
 PLUGIN=$(basename "$(realpath $BASEDIR/..)")
 TIMED=1
 . ${BASEDIR}/dependance.lib
 ##################################################################
-wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/beta/install_nodejs.sh --no-cache -O $BASEDIR/install_nodejs.sh &>/dev/null
-wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/beta/pyenv.lib --no-cache -O ${BASE_DIR}/pyenv.lib &>/dev/null
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/install_nodejs.sh --no-cache -O $BASEDIR/install_nodejs.sh &>/dev/null
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/pyenv.lib --no-cache -O ${BASE_DIR}/pyenv.lib &>/dev/null
 . ${BASE_DIR}/pyenv.lib
 ##################################################################
 
