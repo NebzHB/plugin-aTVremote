@@ -141,7 +141,7 @@ class aTVremote extends eqLogic {
 
 		// Check if all dependancies of hap-controller are installed and have the required version
 		foreach($packageRequiredVers['dependencies'] as $dep => $requiredVersionSpec) {
-		    $depPackageJson = file_get_contents(dirname(__FILE__) . '/../../resources/node_modules/' . $dep . '/package.json');
+		    $depPackageJson = @file_get_contents(dirname(__FILE__) . '/../../resources/node_modules/' . $dep . '/package.json');
 		    if (!$depPackageJson) {
 		        return $return;
 		    }
