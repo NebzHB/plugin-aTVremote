@@ -39,13 +39,14 @@ tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
 silent sudo chown -R www-data:www-data . 
 
 VENV_DIR=$BASEDIR/atvremote
+silent rm -fR $VENV_DIR/*
 firstSubStep=70
 lastSubStep=95
 autoSetupVenv
 
 #tryOrStop python3 -m venv $VENV_DIR
 #tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
-tryOrStop $VENV_DIR/bin/python3 -m pip install --upgrade --upgrade-strategy eager --no-cache-dir -I git+https://github.com/NebzHB/pyatv@v0.15.1
+tryOrStop $VENV_DIR/bin/python3 -m pip install --upgrade --no-cache-dir -I git+https://github.com/NebzHB/pyatv@v0.15.1
 
 step 98 "Résumé des packages installés"
 $VENV_DIR/bin/python3 -m pip freeze
