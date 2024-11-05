@@ -6,7 +6,7 @@
   "main": "aTVremoted.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo \"Error: configure and run hkControl to start\" && exit 1"
+    "start": "echo \"Error: configure and run aTVremote to start\" && exit 1"
   },
   "engines": {
     "node": ">=20",
