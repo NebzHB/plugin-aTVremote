@@ -1307,7 +1307,7 @@ class aTVremote extends eqLogic {
 				foreach(explode(';',$cmd->getConfiguration('listValue')) as $value) {
 					$temp=explode('|',$value);
 					//log::add('aTVremote','debug','val:'.$temp[0].'|disp:'.$temp[1]);
-					array_push($optList,'<option value="'.$temp[0].'">'.$temp[1].'</option>');
+					array_push($optList,'<option value="'.$temp[0].'">'.((isset($temp[1]))?$temp[1]:__("Inconnu",__FILE__)).'</option>');
 				}
 				$replace['#cmd_' . $cmd->getLogicalId() . '_opt#'] = join('',$optList);;
 			}
