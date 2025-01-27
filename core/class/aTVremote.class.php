@@ -1206,6 +1206,7 @@ class aTVremote extends eqLogic {
 				}
 				$newCmd->setSubType($cmd['subtype']);
 				$newCmd->setIsVisible($cmd['isVisible']);
+				$newCmd->setIsHistorized($cmd['isHistorized']);
 				$newCmd->setOrder($order);
 				$newCmd->setName(__($cmd['name'], __FILE__));
 				$newCmd->setEqLogic_id($this->getId());
