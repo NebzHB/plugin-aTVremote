@@ -1203,14 +1203,16 @@ class aTVremote extends eqLogic {
 					$newCmd = new aTVremoteCmd();
 					$newCmd->setLogicalId($cmd['logicalId']);
 					$newCmd->setType($cmd['type']);
+					$newCmd->setSubType($cmd['subtype']);
+					$newCmd->setIsVisible($cmd['isVisible']);
+					if($cmd['type'] == 'info' && isset($cmd['isHistorized'])) $newCmd->setIsHistorized($cmd['isHistorized']);
+					$newCmd->setOrder($order);
+					$newCmd->setName(__($cmd['name'], __FILE__));
+					$newCmd->setEqLogic_id($this->getId());
 				}
-				$newCmd->setSubType($cmd['subtype']);
-				$newCmd->setIsVisible($cmd['isVisible']);
-				$newCmd->setIsHistorized($cmd['isHistorized']);
-				$newCmd->setOrder($order);
-				$newCmd->setName(__($cmd['name'], __FILE__));
-				$newCmd->setEqLogic_id($this->getId());
-				
+				if(isset($cmd['unite'])) {
+					$newCmd->setUnite($cmd['unite']);
+				}
 				if(isset($cmd['configuration'])) {
 					foreach($cmd['configuration'] as $configuration_type=>$configuration_value) {
 						$newCmd->setConfiguration($configuration_type, $configuration_value);
