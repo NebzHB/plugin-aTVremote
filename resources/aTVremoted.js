@@ -65,6 +65,7 @@ aTVs.cmd = [];
 aTVs.msg = [];
 // aTVs.previousMsg= [];
 const app = express();
+app.set("query parser", "extended");
 var server = null;
 var isReady=false;
 var lastErrorMsg="";
