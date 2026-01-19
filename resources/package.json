@@ -20,7 +20,7 @@
     "Jeedom"
   ],
   "dependencies": {
-	"express": ">=5.1.0",
+	"express": ">=5.2.1",
 	"request": ">=2.88.2"
   },
   "devDependencies": {
