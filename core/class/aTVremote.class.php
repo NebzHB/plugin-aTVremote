@@ -289,7 +289,7 @@ class aTVremote extends eqLogic {
 				sleep(1);
 			}
 			
-			$pid = exec("pgrep -f 'resources/aTVremoted.js'");
+			$pid = exec("pgrep -fo 'resources/aTVremoted.js'");
 			if($pid) {
 				exec(system::getCmdSudo().'kill -15 ' . $pid.' > /dev/null 2>&1');
 				log::add('hkControl', 'info', __("Arrêt SIGTERM du démon aTVremote", __FILE__));
@@ -301,7 +301,7 @@ class aTVremote extends eqLogic {
 				}
 			}
 			
-			$pid = exec("pgrep -f 'resources/aTVremoted.js'");
+			$pid = exec("pgrep -fo 'resources/aTVremoted.js'");
 			if($pid) {
 				exec(system::getCmdSudo().'kill -9 ' . $pid.' > /dev/null 2>&1');
 				log::add('hkControl', 'info', __("Arrêt SIGKILL du démon aTVremote", __FILE__));
