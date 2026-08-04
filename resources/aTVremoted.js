@@ -159,7 +159,7 @@ function connectATV(mac,version) {
 		aTVs.cmd[mac].stderr.on('data', function(data) {
 			Logger.log("[CMD]["+mac+"] ERROR :"+data.toString(),LogType.ERROR);
 			lastErrorMsg=data;
-			aTVs.cmd[mac].kill('SIGHUP');
+			aTVs.cmd[mac].kill('SIGKILL');
 		});
 
 		aTVs.cmd[mac].on('exit', function(code) {
