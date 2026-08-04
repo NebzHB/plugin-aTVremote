@@ -61,8 +61,8 @@ for(var name in conf) {
 
 // display starting
 var aTVs = {};
-aTVs.cmd = [];
-aTVs.msg = [];
+aTVs.cmd = {};
+aTVs.msg = {};
 // aTVs.previousMsg= [];
 const app = express();
 app.set("query parser", "extended");
@@ -294,7 +294,10 @@ app.get('/cmd', function(req,res){
 	var cmds = req.query.cmd.replace(' ','');
 	if(cmds.includes("push_updates")) {
 		Logger.log(cmds+' unsupported because of push_updates',LogType.INFO);
-		res.status(200).json({'result':'ko','msg':'unsupported'});
+		return res.status(200).json({'result':'ko','msg':'unsupported'});
+	}
+	if (!aTVs.cmd[mac] || !aTVs.cmd[mac].stdin) {
+		return res.status(200).json({result:'ko',msg:'notConnectedATM'});
 	}
 	if(cmds.includes('|')) {
 		cmds=cmds.split('|');
@@ -305,53 +308,54 @@ app.get('/cmd', function(req,res){
 		Logger.log("[CMD]["+mac+"] Envoi "+cmd,LogType.DEBUG);
 		aTVs.cmd[mac].stdin.write(cmd+'\n');
 	}
-	res.status(200).json({'result':'ok'});		
+	return res.status(200).json({'result':'ok'});		
 });
 app.get('/connect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(!aTVs.cmd[mac] || !aTVs.msg[mac]) {
 		Logger.log("Connexion sur "+mac+"...",LogType.INFO);
 		connectATV(mac,parseInt(req.query.version));
-		res.status(200).json({'result':'ok'});		
+		return res.status(200).json({'result':'ok'});		
 	} else {
 		Logger.log("Connexion mais déjà connecté sur "+mac,LogType.INFO);
-		res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
+		return res.status(200).json({'result':'ko','msg':'alreadyConnected'});		
 	}
 });
 app.get('/disconnect', function(req,res){
 	var mac=req.query.mac.toUpperCase();
 	if(aTVs.cmd[mac] || aTVs.msg[mac]) {
 		removeATV(mac);
-		res.status(200).json({'result':'ok'});		
+		return res.status(200).json({'result':'ok'});		
 	} else {
 		Logger.log("Déconnexion mais pas connecté sur "+mac,LogType.INFO);
-		res.status(200).json({'result':'ko','msg':'notConnected'});		
+		return res.status(200).json({'result':'ko','msg':'notConnected'});		
 	}
 });
 app.get('/test', function(req,res){
-		res.status(200).json({'result':'ok'});	
+		return res.status(200).json({'result':'ok'});	
 });
 var stop=function(req, res) {
 	isReady=false;
 	Logger.log('Recu de jeedom: Demande d\'arret',LogType.INFO);
-	
-	for(var atvc of aTVs.cmd) {
+
+	for(var atvc of Object.values(aTVs.cmd)) {
 		atvc.stdin.write('exit\n');
 	}
-	for(var atvm of aTVs.msg) {
+	for(var atvm of Object.values(aTVs.msg)) {
 		atvm.stdin.write('\n');
 	}
+
 	server.close(() => {
 		process.exit(0);
 	});
 	if(res) {
-		res.status(200).json({'result':'stopped'});
+		return res.status(200).json({'result':'stopped'});
 	}
 };
 app.get('/stop', stop);
 app.use(function(err, req, res, _next) {
   Logger.log(err,LogType.ERROR);
-  res.status(200).json({'result':'ko','msg':err});
+  return res.status(200).json({'result':'ko','msg':err});
 });
 
 
