@@ -494,7 +494,9 @@ class aTVremote extends eqLogic {
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
 						log::add('aTVremote','info',"Pas une vraie AppleTV3: on Ignore ".$res['model']);
 						continue;
-					} elseif($subModElmt[1] == 'SW') {
+					} elseif(isset($subModElmt[1]) && $subModElmt[1] == 'SW') {
+						$res['osVersion']=$subModElmt[2];
+					} elseif(isset($subModElmt[1]) && $subModElmt[1] == 'OS') {
 						$res['osVersion']=$subModElmt[2];
 					} else {
 						$res['osVersion']=$subModElmt[1];
