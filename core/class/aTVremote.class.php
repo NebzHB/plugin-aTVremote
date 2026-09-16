@@ -487,6 +487,10 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'AudioAccessory6,1') !== false) {
 						$res['os']='TvOS';
 					}
+					if($res['device']=="HomePod" && $res['os'] == 'Unknown') {
+						log::add('aTVremote','info',"HomePod avec Unknown OS détecté, conversion en TvOS");
+						$res['os']='TvOS';
+					}
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
 						log::add('aTVremote','info',"Pas une vraie AppleTV3: on Ignore ".$res['model']);
 						continue;
