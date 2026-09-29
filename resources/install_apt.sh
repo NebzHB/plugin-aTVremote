@@ -1,29 +1,54 @@
 #!/bin/bash
-PROGRESS_FILE=/tmp/dependancy_aTVremote_in_progress
-if [ ! -z $1 ]; then
-	PROGRESS_FILE=$1
+######################### INCLUSION LIB ##########################
+BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/dependance.lib --no-cache -O $BASEDIR/dependance.lib &>/dev/null
+PLUGIN=$(basename "$(realpath $BASEDIR/..)")
+TIMED=1
+. ${BASEDIR}/dependance.lib
+##################################################################
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/install_nodejs.sh --no-cache -O $BASEDIR/install_nodejs.sh &>/dev/null
+wget -4 https://raw.githubusercontent.com/NebzHB/dependance.lib/master/pyenv.lib --no-cache -O ${BASE_DIR}/pyenv.lib &>/dev/null
+. ${BASE_DIR}/pyenv.lib
+##################################################################
+
+pre
+step 0 "Vérification des droits"
+DIRECTORY="/var/www"
+if [ ! -d "$DIRECTORY" ]; then
+	silent sudo mkdir $DIRECTORY
 fi
-touch ${PROGRESS_FILE}
-echo 0 > ${PROGRESS_FILE}
-echo "--0%"
-echo "********************************************************"
-echo "*             Installation des dépendances             *"
-echo "********************************************************"
-sudo apt-get update
-echo 10 > ${PROGRESS_FILE}
-echo "--10%"
-echo "Installation des dépendances apt"
-sudo apt-get -y install python3 python3-pip python3-setuptools build-essential libssl-dev libffi-dev python3-dev
-echo 50 > ${PROGRESS_FILE}
-echo "--50%"
-#sudo pip3 install aiohttp==3.0.1
-#echo 60 > ${PROGRESS_FILE}
-#echo "--60%"
-#sudo pip3 install pyatv
-sudo pip3 install git+https://github.com/postlund/pyatv@fix_bugs
-echo 100 > /${PROGRESS_FILE}
-echo "--100%"
-echo "********************************************************"
-echo "*             Installation terminée                    *"
-echo "********************************************************"
-rm ${PROGRESS_FILE}
+silent sudo chown -R www-data $(realpath $BASEDIR/..)
+
+step 5 "Mise à jour APT"
+tryOrStop sudo apt-get update
+
+#install nodejs, steps 10->50
+. ${BASEDIR}/install_nodejs.sh --firstSubStep 10 --lastSubStep 50
+
+step 55 "Nettoyage anciens modules"
+cd ${BASEDIR};
+#remove old local modules
+silent sudo rm -fR node_modules
+silent sudo rm -f package-lock.json
+
+step 60 "Installation des librairies du démon, veuillez patienter svp"
+silent sudo mkdir node_modules 
+silent sudo chown -R www-data:www-data . 
+tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
+#silent wget https://raw.githubusercontent.com/NebzHB/nodejsToJeedom/main/jeedom.js -O $BASEDIR/utils/jeedom.js
+silent sudo chown -R www-data:www-data . 
+
+VENV_DIR=$BASEDIR/atvremote
+silent rm -fR $VENV_DIR/*
+firstSubStep=70
+lastSubStep=95
+autoSetupVenv
+
+#tryOrStop python3 -m venv $VENV_DIR
+#tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
+tryOrStop $VENV_DIR/bin/python3 -m pip install --upgrade --no-cache-dir -I git+https://github.com/NebzHB/pyatv@v0.17.0
+
+step 98 "Résumé des packages installés"
+$VENV_DIR/bin/python3 -m pip freeze
+
+post
