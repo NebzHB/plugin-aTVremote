@@ -929,7 +929,6 @@ class aTVremote extends eqLogic {
 						break;
 					case 'loading':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Chargement en cours", __FILE__)) || $changed;
-						$isPlaying=true;
 						break;
 					case 'fast forward':
 						$changed=$this->checkAndUpdateCmd($play_human, __("Avance rapide", __FILE__)) || $changed;
