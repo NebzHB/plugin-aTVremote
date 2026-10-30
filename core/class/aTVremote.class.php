@@ -447,7 +447,7 @@ class aTVremote extends eqLogic {
 						log::add('aTVremote','info',"AppleTV avec mot de passe AirPlay : on ignore ".$device[1]);
 						continue;    
 					}
-					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'AppleTV') === false && strpos($device[2],'HomePod') === false && strpos($device[2],'AudioAccessory6,1') === false) {
+					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'AppleTV') === false && strpos($device[2],'HomePod') === false && strpos($device[2],'AudioAccessory6,1') === false && strpos($device[2],'AudioAccessory11,1') === false) {
 						log::add('aTVremote','info',"Modèle non supporté ".$device[2]." : on ignore ".$device[1]);
 						continue;
 					}
@@ -470,9 +470,11 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'Apple TV') !== false) {
 						$res['device']="Apple TV";
 						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
-					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false) {
+					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false || strpos($res['model'],'AudioAccessory11,1') !== false) {
 						$res['device']="HomePod";
-						if(strpos($res['model'],'Mini') !== false) {
+						if(strpos($res['model'],'AudioAccessory11,1') !== false) {
+							$res['version']="Mini 2";
+						} elseif(strpos($res['model'],'Mini') !== false) {
 							$res['version']="Mini";
 						} elseif(strpos($res['model'],'AudioAccessory6,1') !== false) {
 							$res['version']="2";
@@ -1142,7 +1144,7 @@ class aTVremote extends eqLogic {
 			return 'plugins/aTVremote/core/template/inactive.png';
 		}
 		if($this->getConfiguration('device','') == 'HomePod') {
-			if($this->getConfiguration('version','') == 'Mini') {
+			if($this->getConfiguration('version','') == 'Mini' || $this->getConfiguration('version','') == 'Mini 2') {
 				return 'plugins/aTVremote/core/template/homepod_mini.png';
 			} else if($this->getConfiguration('version','') == '2') {
 				return 'plugins/aTVremote/core/template/homepod_2.png';
@@ -1372,6 +1374,27 @@ class aTVremote extends eqLogic {
 			"handleShadowColor"=>"#FFF",
 			"rangeColor"=>"rgba(0,0,0,0.5)",
 			"pathColor"=>"rgba(0,61,126,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['lightblue'] = [
+			"handleColor"=>"#6F9BD1",
+			"handleShadowColor"=>"#000",
+			"rangeColor"=>"rgba(111,155,209,0.4)",
+			"pathColor"=>"rgba(111,155,209,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['green'] = [
+			"handleColor"=>"#2F6B4F",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(47,107,79,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['pink'] = [
+			"handleColor"=>"#E8A3B0",
+			"handleShadowColor"=>"#000",
+			"rangeColor"=>"rgba(232,163,176,0.4)",
+			"pathColor"=>"rgba(232,163,176,0.4)",
 			"tooltipColor"=>"#FFF"
 		];
 		

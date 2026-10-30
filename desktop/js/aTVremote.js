@@ -81,6 +81,10 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=version]').on('change', fun
 			themes=themes.concat(['<option value="red">Rouge</option>','<option value="yellow">Jaune</option>','<option value="blue">Bleu</option>']);
 			$('.eqLogicAttr[data-l1key=configuration][data-l2key=theme]').html(themes.join(''));
 			$('#ColorSelect').show();
+		} else if($(this).html() == 'Mini 2') {
+			themes=themes.concat(['<option value="green">Vert</option>','<option value="pink">Rose</option>','<option value="lightblue">Bleu</option>']);
+			$('.eqLogicAttr[data-l1key=configuration][data-l2key=theme]').html(themes.join(''));
+			$('#ColorSelect').show();
 		} else if($(this).html() == 'Original') {
 			$('.eqLogicAttr[data-l1key=configuration][data-l2key=theme]').html(themes.join(''));
 			$('#ColorSelect').show();
