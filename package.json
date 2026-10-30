@@ -1,0 +1,22 @@
+{
+  "name": "plugin-aTVremote",
+  "version": "0.0.1",
+  "description": "Jeedom Plugin for aTVRemote",
+  "main": "resources/aTVremoted.js",
+  "scripts": {
+    "lint:js": "eslint resources/*.js",
+    "lint": "npm run lint:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nebzhb/plugin-aTVremote.git"
+  },
+  "author": "Nebz <nebz@nebz.be>",
+  "contributor": "Wators",
+  "license": "AGPL",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
