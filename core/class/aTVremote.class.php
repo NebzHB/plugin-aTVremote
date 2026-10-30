@@ -1376,6 +1376,20 @@ class aTVremote extends eqLogic {
 			"pathColor"=>"rgba(0,61,126,0.4)",
 			"tooltipColor"=>"#FFF"
 		];
+		$themes['green'] = [
+			"handleColor"=>"#2F6B4F",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(47,107,79,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['pink'] = [
+			"handleColor"=>"#E8A3B0",
+			"handleShadowColor"=>"#000",
+			"rangeColor"=>"rgba(232,163,176,0.4)",
+			"pathColor"=>"rgba(232,163,176,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
 		
 		$theme=$this->getConfiguration('theme','black');
 		foreach($themes[$theme] as $elmt=>$value) {
