@@ -1,0 +1,309 @@
+{
+	"commands": [{
+			"name": "{{Rafraichir}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"logicalId": "refresh"
+		}, {
+			"name": "{{Statut}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "play_human"
+		}, {
+			"name": "{{Lecture en cours}}",
+			"type": "info",
+			"subtype": "binary",
+			"display": {
+				"generic_type": "SWITCH_STATE"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "play_state"
+		}, {
+			"name": "{{Hash}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "hash"
+		}, {
+			"name": "{{URL Artwork}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "artwork_url"
+		}, {
+			"name": "{{Bouton Lecture}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_ON"
+			},
+			"value": "play_state",
+			"isVisible": 1,
+			"logicalId": "play"
+		}, {
+			"name": "{{Bouton Pause}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "SWITCH_OFF"
+			},
+			"value": "play_state",
+			"isVisible": 1,
+			"logicalId": "pause"
+		}, {
+			"name": "{{Bouton Stop}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "stop"
+		}, {
+			"name": "{{Bouton Précédent}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "previous"
+		}, {
+			"name": "{{Bouton Suivant}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "next"
+		}, {
+			"name": "{{Bouton Haut}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "up"
+		},
+		{
+			"name": "{{Bouton Gauche}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "left"
+		}, {
+			"name": "{{Bouton Sélection}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "select"
+		}, {
+			"name": "{{Bouton Droit}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "right"
+		}, {
+			"name": "{{Bouton Bas}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "down"
+		}, {
+			"name": "{{Bouton Menu}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "menu"
+		}, {
+			"name": "{{Bouton Home}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "top_menu"
+		}, {
+			"name": "{{Artiste}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "artist"
+		}, {
+			"name": "{{Titre}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "title"
+		}, {
+			"name": "{{Album}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "album"
+		}, {
+			"name": "{{Genre}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "genre"
+		}, {
+			"name": "{{Type Media}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "media_type"
+		}, {
+			"name": "{{Position}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "position"
+		}, {
+			"name": "{{Répétition Humain}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat"
+		}, {
+			"name": "{{Répétition}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "repeat_state"
+		}, {
+			"name": "{{Bouton Répétition Tout}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_all"
+		}, {
+			"name": "{{Bouton Répétition Piste}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_track"
+		}, {
+			"name": "{{Bouton Répétition OFF}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "set_repeat_off"
+		}, {
+			"name": "{{Aléatoire Humain}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle"
+		}, {
+			"name": "{{Aléatoire}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "GENERIC_INFO"
+			},
+			"isVisible": 1,
+			"isHistorized": 0,
+			"logicalId": "shuffle_state"
+		}, {
+			"name": "{{Bouton Aléatoire ON}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "set_shuffle_on"
+		}, {
+			"name": "{{Bouton Aléatoire OFF}}",
+			"type": "action",
+			"subtype": "other",
+			"display": {
+				"generic_type": "GENERIC_ACTION"
+			},
+			"isVisible": 1,
+			"logicalId": "set_shuffle_off"
+		}
+	]
+}
