@@ -47,7 +47,7 @@ process.argv.forEach(function(val, index) {
 	}
 });
 
-const jsend = require('./utils/jeedom.js')('aTVremote',conf.urlJeedom,conf.apiKey,'1',conf.logLevel);
+const jsend = require('./utils/jeedom.js')('aTVremote',conf.urlJeedom,conf.apiKey,conf.logLevel,'event');
 
 
 // display starting
