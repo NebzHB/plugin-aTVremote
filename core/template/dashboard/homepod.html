@@ -184,8 +184,23 @@
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
-			$('.artworkBackgroundH_#id#').css('background-image',"url("+_options.display_value+")");
+			setBlurredArtwork#id#(_options.display_value);
 		});
+
+		// Fond flouté : une fois la nouvelle image chargée, on la pose puis on change très légèrement le flou
+		// du conteneur. Sinon Safari ne repeint que la boîte de la pochette (154px) et le halo autour garde
+		// l'ancienne image jusqu'au prochain défilement.
+		function setBlurredArtwork#id#(url) {
+			var bg = $('.artworkBackgroundH_#id#');
+			var apply = function() {
+				bg.css('background-image', "url("+url+")");
+				bg.closest('.artworkBlurH').toggleClass('artworkBlurH-repaint');
+			};
+			var img = new Image();
+			img.onload = apply;
+			img.onerror = apply;
+			img.src = url;
+		}
 		jeedom.cmd.refreshValue([{cmd_id: '#artwork_url_id#',display_value:'#artwork_url#'}]);
 
 //Metadonnée          
