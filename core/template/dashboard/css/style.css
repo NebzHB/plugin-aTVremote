@@ -674,3 +674,15 @@
   background: #4CAF50;
   cursor: pointer;
 }*/
+
+/* Les rangées de boutons sont calculées au pixel près : sur mobile, Jeedom impose une police
+   de 14px aux widgets, les espaces entre boutons s'élargissent et le 2e bouton passait à la ligne. */
+.aTVremote .blocPlayH,
+.aTVremote .playback,
+.aTVremote .backfor,
+.aTVremote .volume,
+.aTVremote .menu_action,
+.aTVremote .repeatBox,
+.aTVremote .repeatBoxH {
+	white-space: nowrap;
+}
