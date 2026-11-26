@@ -1408,6 +1408,11 @@ class aTVremote extends eqLogic {
 		// getTemplate() renvoyait donc une chaîne vide et le widget mobile restait vide).
 		$tplVersion = 'dashboard';
 
+		// Version du CSS dans son URL : sans elle, Safari (iPad, app mobile) peut garder l'ancien
+		// style.css après une mise à jour du plugin et l'afficher avec le nouveau HTML.
+		$cssFile = dirname(__FILE__) . '/../template/dashboard/css/style.css';
+		$replace['#cssVersion#'] = file_exists($cssFile) ? filemtime($cssFile) : 0;
+
 		if ($Test == "Apple TV"){
 			if($this->getConfiguration('version',0) == '3') {
 				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv3', 'aTVremote')));
