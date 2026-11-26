@@ -76,6 +76,16 @@
 	opacity: 0.5;
 	z-index: -1;
 }
+/* Safari iOS : tant que le fond flouté n'a pas son propre calque GPU, le flou est coupé net
+   aux bords de sa boîte (bords visibles jusqu'au premier défilement). On crée ce calque dès l'affichage. */
+.aTVremote .artworkBackground,
+.aTVremote .artworkBackgroundH {
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	will-change: transform;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
 .aTVremote .artworkBackgroundH {
 	top:86px;
 	left:52px;
