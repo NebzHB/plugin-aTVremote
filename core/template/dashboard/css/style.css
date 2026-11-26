@@ -91,6 +91,11 @@
 	filter: blur(15px);
 	pointer-events: none;
 }
+/* alterné à chaque changement de pochette pour forcer Safari à repeindre tout le halo (écart invisible) */
+.aTVremote .artworkBlurH.artworkBlurH-repaint {
+	-webkit-filter: blur(15.01px);
+	filter: blur(15.01px);
+}
 .aTVremote .artworkBackgroundH {
 	top:45px;
 	left:45px;
