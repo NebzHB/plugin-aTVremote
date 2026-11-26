@@ -152,6 +152,7 @@
 
 //Artwork
 		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
+			releasePressed#id#();
 			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
@@ -196,6 +197,7 @@
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
 		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
+			releasePressed#id#();
 			//console.log('ààà title_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
@@ -296,6 +298,20 @@
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
+
+		// Écran tactile : le bouton touché reste grisé jusqu'au changement de chanson (cover ou titre),
+		// 8 s au plus (même cover, commande qui ne change pas de chanson…). À la souris, c'est le :hover.
+		var pressedTimer#id#;
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+			$(this).addClass('aTVpressed');
+			clearTimeout(pressedTimer#id#);
+			pressedTimer#id# = setTimeout(releasePressed#id#, 8000);
+		});
+		function releasePressed#id#() {
+			clearTimeout(pressedTimer#id#);
+			$('.eqLogic[data-eqLogic_id=#id#] .aTVpressed').removeClass('aTVpressed');
+		}
 
 
 /* Back to the futur Sildebar */    
