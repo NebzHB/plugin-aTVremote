@@ -1403,15 +1403,19 @@ class aTVremote extends eqLogic {
 			$replace["#".$elmt."#"] = $value;
         }
     
+		// Le mobile affiche les mêmes widgets que le Dashboard : il n'y a plus de template 'mobile'
+		// dédié (ils n'étaient plus appelés depuis le passage aux templates atv / atv3 / homepod,
+		// getTemplate() renvoyait donc une chaîne vide et le widget mobile restait vide).
+		$tplVersion = 'dashboard';
+
 		if ($Test == "Apple TV"){
-			// le template mobile 'atv' gère aussi l'Apple TV 3 (il masque les commandes absentes)
-			if($this->getConfiguration('version',0) == '3' && $version != 'mobile') {
-				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv3', 'aTVremote')));
+			if($this->getConfiguration('version',0) == '3') {
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv3', 'aTVremote')));
 			} else {
-				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv', 'aTVremote')));
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv', 'aTVremote')));
 			}
         }else{
-			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'homepod', 'aTVremote')));
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'homepod', 'aTVremote')));
         };
         
 	}  

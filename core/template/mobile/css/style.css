@@ -1,175 +1,266 @@
-/* aTVremote - widget mobile (Apple TV et HomePod)
- * Conçu pour le tactile : zones de 44 px minimum, largeur fluide, pas de hauteur fixe. */
-
-.eqLogic-widget.aTVremote.am {
-	--am-fg: #fff;
-	--am-dim: rgba(255, 255, 255, .62);
-	--am-chip: rgba(255, 255, 255, .12);
-	--am-chip-hover: rgba(255, 255, 255, .22);
-	--am-accent: #fa586a;
-	position: relative;
-	box-sizing: border-box;
-	width: min(340px, calc(100vw - 24px));
-	max-width: none;
-	height: auto !important;
-	min-height: 0;
-	margin: 6px auto;
-	padding: 0;
-	overflow: hidden;
-	border-radius: 24px !important;
-	background: #111 !important;
-	color: var(--am-fg);
-	text-align: left;
-	line-height: 1.25;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	-webkit-tap-highlight-color: transparent;
-	-webkit-text-size-adjust: 100%;
+.haut_aTVremote_widget{
+	max-height: 750px;
+  	height: 750px;
+	width: 210px;
+	background-color: #000000;
+	z-index: 1;
+  	border-radius:30px;
+  	color : #FFFFFF;
+  	opacity:0.9;
 }
-.aTVremote.am *, .aTVremote.am *::before, .aTVremote.am *::after { box-sizing: border-box; }
-.aTVremote.am [hidden] { display: none !important; }
 
-/* fond : pochette floutée */
-.aTVremote.am .am-bg {
-	position: absolute; inset: -30px;
-	background: center / cover no-repeat;
-	filter: blur(28px) brightness(.45) saturate(1.3);
-	opacity: .9;
-	transition: background-image .4s;
+/* Partie supérieure */
+
+.titre_haut_aTVremote_widget{
+	width: 210px;
+	font-size : 1em;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+    color : #FFFFFF !important;
 }
-.aTVremote.am .am-inner { position: relative; z-index: 1; padding: 14px 14px 16px; }
-
-/* boutons (reset + zone tactile) */
-.aTVremote.am button, .aTVremote.am select {
-	font: inherit; color: inherit; margin: 0; border: 0; outline: 0;
-	-webkit-appearance: none; appearance: none;
-	touch-action: manipulation;
+.power{
+  	position : absolute;
+  	left : 14px;
+  	top : 3px;
+  	font-size : 1em; 
+  	z-index:4;
+  	opacity:1;
 }
-.aTVremote.am .am-btn {
-	display: inline-flex; align-items: center; justify-content: center;
-	min-width: 44px; height: 44px; padding: 0;
-	border-radius: 50%;
-	background: transparent; color: var(--am-fg);
-	cursor: pointer;
-	transition: transform .08s, background-color .15s, opacity .15s;
+.power:hover{
+    opacity:0.7;
 }
-.aTVremote.am .am-btn:active { transform: scale(.9); background: var(--am-chip-hover); }
-.aTVremote.am .am-btn:focus-visible, .aTVremote.am select:focus-visible { box-shadow: 0 0 0 2px var(--am-accent); }
-.aTVremote.am .am-btn.is-active { color: var(--am-accent); background: var(--am-chip); }
-.aTVremote.am .am-btn svg { width: 24px; height: 24px; pointer-events: none; }
 
-/* en-tête */
-.aTVremote.am .am-head { display: flex; align-items: center; gap: 8px; min-height: 44px; margin: -6px -6px 6px; }
-.aTVremote.am .am-title-box { flex: 1; min-width: 0; padding-left: 6px; }
-.aTVremote.am .am-name { display: block; font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.aTVremote.am .am-status { display: flex; align-items: center; gap: 6px; min-height: 16px; font-size: 12px; color: var(--am-dim); }
-.aTVremote.am .am-status-text:empty { display: none; }
-.aTVremote.am .am-eq { display: none; align-items: flex-end; gap: 2px; height: 11px; }
-.aTVremote.am.is-playing .am-eq { display: inline-flex; }
-.aTVremote.am .am-eq i { width: 3px; background: var(--am-accent); border-radius: 1px; animation: am-eq .9s ease-in-out infinite; }
-.aTVremote.am .am-eq i:nth-child(1) { height: 40%; animation-delay: -.3s; }
-.aTVremote.am .am-eq i:nth-child(2) { height: 100%; animation-delay: -.6s; }
-.aTVremote.am .am-eq i:nth-child(3) { height: 65%; }
-@keyframes am-eq { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
-.aTVremote.am .am-power-off { color: var(--am-accent); }
+/*Artwork*/
 
-/* lecture en cours */
-.aTVremote.am .am-now { display: flex; gap: 14px; align-items: center; }
-.aTVremote.am .am-art {
-	position: relative; flex: 0 0 auto; width: 96px; aspect-ratio: 1; border-radius: 12px; overflow: hidden;
-	background: rgba(255, 255, 255, .1); color: rgba(255, 255, 255, .35);
-	display: flex; align-items: center; justify-content: center;
-	box-shadow: 0 6px 18px rgba(0, 0, 0, .45);
+.artwork_aTVremote{
+	width: 210px;
+	height: 190px;
 }
-.aTVremote.am .am-art i { display: flex; width: 40%; height: 40%; }
-.aTVremote.am .am-art svg { width: 100%; height: 100%; }
-.aTVremote.am .am-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .3s; }
-.aTVremote.am .am-art.has-art img { opacity: 1; }
-.aTVremote.am .am-art.has-art i { display: none; }
-.aTVremote.am .am-meta { flex: 1; min-width: 0; }
-
-/* défilement des textes longs */
-.aTVremote.am .am-line { overflow: hidden; white-space: nowrap; }
-.aTVremote.am .am-line > span { display: inline-block; }
-.aTVremote.am .am-title { font-size: 17px; font-weight: 700; }
-.aTVremote.am .am-artist { font-size: 14px; color: var(--am-fg); opacity: .9; }
-.aTVremote.am .am-album { font-size: 13px; color: var(--am-dim); }
-.aTVremote.am .am-sub { margin-top: 2px; font-size: 11px; color: var(--am-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.aTVremote.am .am-app {
-	display: inline-block; max-width: 100%; margin-top: 6px; padding: 2px 9px; border-radius: 10px;
-	background: var(--am-chip); font-size: 11px; font-weight: 600; text-transform: capitalize;
-	white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: top;
+.artwork_un_aTVremote{
+	width: 130px !important;
+	/*max-height: 150px;*/
+	position: absolute;
+	margin-left: 50%;
+	margin-top: 45%;
+    transform: translate(-50%, -50%);
+	z-index: 7;
+	cursor:pointer;
+	border-radius: 10%;
 }
-.aTVremote.am .am-line.is-alt > span { animation: am-alt var(--am-dur, 8s) ease-in-out infinite alternate; }
-.aTVremote.am .am-line.is-loop > span { animation: am-loop var(--am-dur, 8s) linear infinite; }
-@keyframes am-alt { 0%, 12% { transform: translateX(0); } 88%, 100% { transform: translateX(calc(-1 * var(--am-over))); } }
-@keyframes am-loop { 0% { transform: translateX(var(--am-box)); } 100% { transform: translateX(calc(-1 * var(--am-w))); } }
-
-/* variante HomePod : grande pochette centrée */
-.aTVremote.am-homepod .am-now { flex-direction: column; gap: 14px; text-align: center; }
-.aTVremote.am-homepod .am-art { width: min(220px, 70%); border-radius: 16px; }
-.aTVremote.am-homepod .am-meta { width: 100%; }
-.aTVremote.am-homepod .am-line > span { max-width: none; }
-.aTVremote.am-homepod .am-line:not(.is-scroll) { text-align: center; }
-
-/* groupes de commandes */
-.aTVremote.am .am-group { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
-.aTVremote.am .am-transport { gap: 18px; margin-top: 16px; }
-.aTVremote.am .am-transport .am-btn { height: 52px; min-width: 52px; }
-.aTVremote.am .am-transport .am-btn svg { width: 30px; height: 30px; }
-.aTVremote.am .am-transport .am-main { height: 64px; min-width: 64px; background: var(--am-fg); color: #111; }
-.aTVremote.am .am-transport .am-main:active { background: rgba(255, 255, 255, .75); }
-.aTVremote.am .am-transport .am-main svg { width: 34px; height: 34px; }
-
-/* volume */
-.aTVremote.am .am-volume { gap: 4px; }
-.aTVremote.am .am-vol-value { min-width: 34px; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--am-dim); }
-.aTVremote.am .am-vol-slider {
-	-webkit-appearance: none; appearance: none;
-	flex: 1; min-width: 0; height: 44px; margin: 0; background: transparent; cursor: pointer;
-	--am-fill: 0%;
+.artwork_deux_aTVremote{
+	width: 130px !important;
+	/*max-height: 150px;*/
+	position: absolute;
+	margin-left: 40%;
+	margin-top: 40%;
+  	transform: translate(-50%, -50%);
+	z-index: 6;
+	opacity: 0.4;
+	border-radius: 10%;
 }
-.aTVremote.am .am-vol-slider::-webkit-slider-runnable-track {
-	height: 6px; border-radius: 3px;
-	background: linear-gradient(to right, var(--am-fg) var(--am-fill), var(--am-chip) var(--am-fill));
+.artwork_trois_aTVremote{
+	max-width: 130px !important;
+	/*max-height: 150px;*/
+	position: absolute;
+	margin-left: 60%;
+	margin-top: 50%;
+  	transform: translate(-50%, -50%);
+	z-index: 5;
+	opacity: 0.4;
+	border-radius: 10%;
 }
-.aTVremote.am .am-vol-slider::-moz-range-track { height: 6px; border-radius: 3px; background: var(--am-chip); }
-.aTVremote.am .am-vol-slider::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--am-fg); }
-.aTVremote.am .am-vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -8px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
-.aTVremote.am .am-vol-slider::-moz-range-thumb { width: 22px; height: 22px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
 
-/* pavé directionnel (Apple TV) */
-.aTVremote.am .am-pad {
-	display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
-	width: min(210px, 100%); aspect-ratio: 1; margin: 18px auto 0; gap: 0; padding: 6px;
-	border-radius: 50%; background: var(--am-chip);
+/* Statut & Info */
+
+.Statut_aTVremote{
+  	width: 210px;
+	text-align:center;
+	position: absolute;
+	z-index: 2;
+	font-size:12px;
+    color : #FFFFFF !important;
+}    
+.app_aTVremote{
+	font-size:14px;
+  	width: 210px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+  	text-transform: capitalize;
+    color : #FFFFFF !important;
 }
-.aTVremote.am .am-pad .am-btn { width: 100%; height: 100%; min-width: 0; border-radius: 50%; }
-.aTVremote.am .am-pad .am-up { grid-area: 1 / 2; }
-.aTVremote.am .am-pad .am-left { grid-area: 2 / 1; }
-.aTVremote.am .am-pad .am-ok { grid-area: 2 / 2; background: var(--am-chip-hover); }
-.aTVremote.am .am-pad .am-right { grid-area: 2 / 3; }
-.aTVremote.am .am-pad .am-down { grid-area: 3 / 2; }
-.aTVremote.am .am-pad .am-ok::after { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--am-fg); opacity: .85; }
-.aTVremote.am .am-pad .am-up svg { transform: rotate(-90deg); }
-.aTVremote.am .am-pad .am-left svg { transform: rotate(180deg); }
-.aTVremote.am .am-pad .am-down svg { transform: rotate(90deg); }
-.aTVremote.am .am-nav { gap: 14px; }
-.aTVremote.am .am-nav .am-btn { background: var(--am-chip); }
-.aTVremote.am .am-nav .am-btn:active { background: var(--am-chip-hover); }
-
-/* modes + app */
-.aTVremote.am .am-modes { flex-wrap: wrap; }
-.aTVremote.am .am-launch {
-	flex: 1 1 140px; max-width: 100%; height: 44px; padding: 0 14px; border-radius: 22px;
-	background: var(--am-chip); color: var(--am-fg); font-size: 14px; cursor: pointer;
+.artist_titre_aTVremote{
+  	width: 210px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:19px;
+    color : #FFFFFF !important;
 }
-.aTVremote.am .am-launch option { color: #000; }
-
-/* états */
-.aTVremote.am.is-off .am-body, .aTVremote.am.is-offline .am-body { opacity: .35; pointer-events: none; filter: grayscale(.6); }
-.aTVremote.am.is-offline .am-status-text { color: var(--am-accent); }
-
-@media (prefers-reduced-motion: reduce) {
-	.aTVremote.am .am-line.is-alt > span, .aTVremote.am .am-line.is-loop > span, .aTVremote.am .am-eq i { animation: none; }
-	.aTVremote.am .am-line.is-scroll { text-overflow: ellipsis; }
+.album_titre_aTVremote{
+	font-size:14px;
+  	width: 210px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+    color : #FFFFFF !important;
+} 
+.titre_titre_aTVremote{
+  	width: 210px;
+	text-align:center;
+	font-weight: bold;
+	z-index: 2;
+	font-size:19px;
+    color : #FFFFFF !important;
 }
+.last_titre_aTVremote{
+	font-size:14px;
+  	width: 210px;
+	text-align:center;
+	position: absolute;
+	font-weight: bold;
+	z-index: 2;
+    color : #FFFFFF !important;
+}
+
+/* Control & Navigation */
+
+.btn_aTVremote_playback{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_playback:hover{
+	opacity: 0.5;
+}
+
+.btn_aTVremote_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_menu:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_top_menu{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_top_menu:hover{
+	opacity: 0.5;
+}
+
+.btn_aTVremote_up{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_up:hover{
+	opacity: 0.5;
+}
+.aTVremote_up{
+	-ms-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+}
+.btn_aTVremote_left{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_left:hover{
+	opacity: 0.5;
+}
+.aTVremote_left{
+	-ms-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.btn_aTVremote_select{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_select:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_right{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_right:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_down{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_down:hover{
+	opacity: 0.5;
+}
+.aTVremote_down{
+	-ms-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+.btn_aTVremote_shuffle{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_shuffle:hover{
+	opacity: 0.5;
+}
+.btn_aTVremote_repeat{
+	cursor:pointer;
+	z-index: 4;
+	opacity: 1;
+}
+.btn_aTVremote_repeat:hover{
+	opacity: 0.5;
+}
+
+
+/*Back to the futur
+	Sildebar*/
+
+/*.slidecontainer {
+  width: 100%;*/ /* Width of the outside container */
+/*}*/
+
+/* The slider itself */
+/*.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;   
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}*/
