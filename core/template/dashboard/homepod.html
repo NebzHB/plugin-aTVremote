@@ -68,9 +68,9 @@
 				<div class="infoContentH">
 					<img src="#artwork_url#" id="artworkInfoBox_#id#" class="infoArtH" alt=""/>
 					<div class="infoTextH">
-						<div class="titre_hide"><span class="infoTitleH">[title]</span></div>
-						<div class="artist_hide"><span class="infoArtistH">[artist]</span></div>
-						<div class="album_hide"><span class="infoAlbumH">[album]</span></div>
+						<div class="titre_hide infoLineH infoTitleH"><span class="infoScrollH"><span class="infoTxtH">[title]</span></span></div>
+						<div class="artist_hide infoLineH infoArtistH"><span class="infoScrollH"><span class="infoTxtH">[artist]</span></span></div>
+						<div class="album_hide infoLineH infoAlbumH"><span class="infoScrollH"><span class="infoTxtH">[album]</span></span></div>
 					</div>
 				</div>
 			</div>
@@ -219,7 +219,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
 			}
 			
-			$('.eqLogic[data-eqLogic_id=#id#] .artist_hide span').text(_options.display_value);
+			$('.eqLogic[data-eqLogic_id=#id#] .artist_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
 		
@@ -235,7 +236,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
 			}
 			
-			$('.eqLogic[data-eqLogic_id=#id#] .album_hide span').text(_options.display_value);
+			$('.eqLogic[data-eqLogic_id=#id#] .album_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
@@ -252,7 +254,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
 			}
 
-			$('.eqLogic[data-eqLogic_id=#id#] .titre_hide span').text(_options.display_value);
+			$('.eqLogic[data-eqLogic_id=#id#] .titre_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
@@ -306,7 +309,34 @@
 	  
       	function panelDown#id#() {
     		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").addClass('open');
+    		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
 		}
+
+		// Texte défilant du panneau Info (remplace <marquee>, qui ne fonctionne pas partout) :
+		// une seule ligne, défilement seulement si le texte dépasse, selon l'option « marquee » du plugin
+		// (alternate = aller-retour, scroll = boucle continue).
+		function fitMarquee#id#() {
+			var loop = ('#marquee#' == 'scroll');
+			$('.eqLogic[data-eqLogic_id=#id#] .infoLineH').each(function() {
+				var line = $(this), inner = line.children('.infoScrollH');
+				line.removeClass('scrolling alt loop');
+				inner.children('.infoTxtH').slice(1).remove();
+				var txt = inner.children('.infoTxtH');
+				var boxW = line.innerWidth(), txtW = inner[0].scrollWidth;
+				if (!line.is(':visible') || boxW === 0 || txtW <= boxW + 1) return;
+				if (loop) {
+					txt.clone().appendTo(inner); // 2 copies : translateX(-50%) boucle sans à-coup
+					line[0].style.setProperty('--aTVdur', Math.max(6, (txtW + 40) / 30) + 's');
+					line.addClass('scrolling loop');
+				} else {
+					var over = txtW - boxW;
+					line[0].style.setProperty('--aTVshift', (-over - 8) + 'px');
+					line[0].style.setProperty('--aTVdur', Math.max(4, over / 30 / 0.7) + 's');
+					line.addClass('scrolling alt');
+				}
+			});
+		}
+		$(window).on('resize', fitMarquee#id#);
 		function panelDownClose#id#() {
     		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").removeClass('open');
 		}

@@ -645,18 +645,46 @@
 .aTVremote .infoTextH {
 	width: 100%;
 	margin-bottom: auto;
-	line-height: 1.25;
-	overflow-wrap: break-word;
-	word-wrap: break-word;
+	line-height: 1.3;
+}
+/* une ligne par texte ; défilement (JS fitMarquee) seulement si le texte dépasse */
+.aTVremote .infoLineH {
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: center;
+}
+.aTVremote .infoScrollH {
+	display: inline-block;
+}
+.aTVremote .infoLineH.scrolling {
+	text-align: left;
+	-webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+	mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+}
+.aTVremote .infoLineH.scrolling .infoTxtH {
+	padding: 0 10px;
+}
+.aTVremote .infoLineH.scrolling.loop .infoTxtH {
+	padding: 0 30px 0 10px;
+}
+.aTVremote .infoLineH.scrolling.alt .infoScrollH {
+	-webkit-animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
+	animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
+}
+.aTVremote .infoLineH.scrolling.loop .infoScrollH {
+	-webkit-animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
+	animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
+}
+@-webkit-keyframes aTVmarqueeAlt { 0%, 15% { -webkit-transform: translateX(0); } 85%, 100% { -webkit-transform: translateX(var(--aTVshift)); } }
+@keyframes aTVmarqueeAlt { 0%, 15% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--aTVshift)); } }
+@-webkit-keyframes aTVmarqueeLoop { from { -webkit-transform: translateX(0); } to { -webkit-transform: translateX(-50%); } }
+@keyframes aTVmarqueeLoop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+	.aTVremote .infoLineH.scrolling .infoScrollH { -webkit-animation: none; animation: none; }
 }
 .aTVremote .infoTitleH {
-	display: block;
 	font-size: 15px;
 	font-weight: bold;
-}
-.aTVremote .infoArtistH,
-.aTVremote .infoAlbumH {
-	display: block;
 }
 .aTVremote .infoArtistH {
 	margin-top: 4px;
