@@ -3,6 +3,9 @@
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/roundslider.min.css" />
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css?v=#cssVersion#" />
 	<style>
+		#infoBg_#id# {
+			background-image: url("#artwork_url#");
+		}
 		.artworkBackgroundH_#id# {
 			background-image: url("#artwork_url#");
 			background-position: center;
@@ -59,18 +62,16 @@
 			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
 			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;" title="Vol+"/></a>
 
-			<div class="downpanelH">
-				<div style="overflow: auto;height: 316px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 242px;">Info</legend>
-					<img class="downRafter2H" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" onClick="panelDownClose#id#()"/>
-					<section style="text-align: center;"> 
-						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork"/><br>
-						<br/>
-						<center><p class="artist_hide"><a class="artist_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Artiste">[artist]</a></p></center>
-						<center><p class="titre_hide"><a class="titre_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Titre">[title]</a></p></center>
-						<center><p class="album_hide"><a class="album_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Album">[album]</a></p></center>
-						<br>
-					</section>
+			<div class="downpanelH" onclick="panelDownClose#id#()" title="Fermer">
+				<div class="infoBgH" id="infoBg_#id#"></div>
+				<span class="infoCloseH">&times;</span>
+				<div class="infoContentH">
+					<img src="#artwork_url#" id="artworkInfoBox_#id#" class="infoArtH" alt=""/>
+					<div class="infoTextH">
+						<div class="titre_hide infoLineH infoTitleH"><span class="infoScrollH"><span class="infoTxtH">[title]</span></span></div>
+						<div class="artist_hide infoLineH infoArtistH"><span class="infoScrollH"><span class="infoTxtH">[artist]</span></span></div>
+						<div class="album_hide infoLineH infoAlbumH"><span class="infoScrollH"><span class="infoTxtH">[album]</span></span></div>
+					</div>
 				</div>
 			</div>
 
@@ -185,6 +186,7 @@
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
+			$('#infoBg_#id#').css('background-image', "url("+_options.display_value+")");
 			setBlurredArtwork#id#(_options.display_value);
 		});
 
@@ -217,11 +219,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
 			}
 			
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
-			}
+			$('.eqLogic[data-eqLogic_id=#id#] .artist_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
 		
@@ -237,11 +236,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
 			}
 			
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
-			}
+			$('.eqLogic[data-eqLogic_id=#id#] .album_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
@@ -258,11 +254,8 @@
 				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
 			}
 
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
-			}
+			$('.eqLogic[data-eqLogic_id=#id#] .titre_hide .infoTxtH').text(_options.display_value);
+			fitMarquee#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
@@ -315,10 +308,37 @@
 
 	  
       	function panelDown#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "24px"});
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").addClass('open');
+    		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
 		}
+
+		// Texte défilant du panneau Info (remplace <marquee>, qui ne fonctionne pas partout) :
+		// une seule ligne, défilement seulement si le texte dépasse, selon l'option « marquee » du plugin
+		// (alternate = aller-retour, scroll = boucle continue).
+		function fitMarquee#id#() {
+			var loop = ('#marquee#' == 'scroll');
+			$('.eqLogic[data-eqLogic_id=#id#] .infoLineH').each(function() {
+				var line = $(this), inner = line.children('.infoScrollH');
+				line.removeClass('scrolling alt loop');
+				inner.children('.infoTxtH').slice(1).remove();
+				var txt = inner.children('.infoTxtH');
+				var boxW = line.innerWidth(), txtW = inner[0].scrollWidth;
+				if (!line.is(':visible') || boxW === 0 || txtW <= boxW + 1) return;
+				if (loop) {
+					txt.clone().appendTo(inner); // 2 copies : translateX(-50%) boucle sans à-coup
+					line[0].style.setProperty('--aTVdur', Math.max(6, (txtW + 40) / 30) + 's');
+					line.addClass('scrolling loop');
+				} else {
+					var over = txtW - boxW;
+					line[0].style.setProperty('--aTVshift', (-over - 8) + 'px');
+					line[0].style.setProperty('--aTVdur', Math.max(4, over / 30 / 0.7) + 's');
+					line.addClass('scrolling alt');
+				}
+			});
+		}
+		$(window).on('resize', fitMarquee#id#);
 		function panelDownClose#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "300px"});
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").removeClass('open');
 		}
 
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
