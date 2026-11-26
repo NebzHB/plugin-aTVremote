@@ -76,23 +76,27 @@
 	opacity: 0.5;
 	z-index: -1;
 }
-/* Safari iOS : tant que le fond flouté n'a pas son propre calque GPU, le flou est coupé net
-   aux bords de sa boîte (bords visibles jusqu'au premier défilement). On crée ce calque dès l'affichage. */
-.aTVremote .artworkBackground,
-.aTVremote .artworkBackgroundH {
-	-webkit-transform: translateZ(0);
-	transform: translateZ(0);
-	will-change: transform;
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
+/* Fond flouté du HomePod : le flou est appliqué à un conteneur assez grand pour contenir
+   tout le halo (154px + 3 x 15px de chaque côté), la pochette ronde est au centre.
+   Ainsi le flou ne déborde jamais de sa boîte : Safari iOS le coupait net aux bords de la boîte
+   (carré visible au chargement sur mobile). */
+.aTVremote .artworkBlurH {
+	position: absolute;
+	top: 41px;
+	left: 7px;
+	width: 244px;
+	height: 244px;
+	opacity: 0.7;
+	-webkit-filter: blur(15px);
+	filter: blur(15px);
+	pointer-events: none;
 }
 .aTVremote .artworkBackgroundH {
-	top:86px;
-	left:52px;
+	top:45px;
+	left:45px;
 	width: 154px;
 	height: 154px;
 	position: absolute;
-	opacity: 0.7;
 	border-radius:50%;
 }
 .aTVremote .gameplayH{
