@@ -1404,7 +1404,8 @@ class aTVremote extends eqLogic {
         }
     
 		if ($Test == "Apple TV"){
-			if($this->getConfiguration('version',0) == '3') {
+			// le template mobile 'atv' gère aussi l'Apple TV 3 (il masque les commandes absentes)
+			if($this->getConfiguration('version',0) == '3' && $version != 'mobile') {
 				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv3', 'aTVremote')));
 			} else {
 				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv', 'aTVremote')));

@@ -1,0 +1,56 @@
+<div class="eqLogic-widget eqLogic aTVremote am am-homepod" data-eqType="#eqType#" data-translate-category="#translate_category#" style="border:#border#;#style#;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-marquee="#marquee#"
+	data-id-artwork_url="#artwork_url_id#" data-val-artwork_url="#artwork_url#"
+	data-id-title="#title_id#" data-val-title="#title#"
+	data-id-artist="#artist_id#" data-val-artist="#artist#"
+	data-id-album="#album_id#" data-val-album="#album#"
+	data-id-play_human="#play_human_id#" data-val-play_human="#play_human#"
+	data-id-play_state="#play_state_id#" data-val-play_state="#play_state#"
+	data-id-volume="#volume_id#" data-val-volume="#volume#"
+	data-id-repeat_state="#repeat_state_id#" data-val-repeat_state="#repeat_state#"
+	data-id-shuffle_state="#shuffle_state_id#" data-val-shuffle_state="#shuffle_state#">
+<!--  HomePod (mobile) -->
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/mobile/css/style.css" />
+	<script src="plugins/aTVremote/core/template/mobile/js/aTVmobile.js"></script>
+
+	<div class="am-bg"></div>
+	<div class="am-inner">
+
+		<div class="am-head">
+			<div class="am-title-box">
+				<span class="am-name" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#">#name_display#</span>
+				<span class="am-status"><span class="am-eq"><i></i><i></i><i></i></span><span class="am-status-text"></span></span>
+			</div>
+		</div>
+
+		<div class="am-body">
+			<div class="am-now">
+				<div class="am-art"><i data-ic="note"></i><img alt="" /></div>
+				<div class="am-meta">
+					<div class="am-line am-title" hidden><span></span></div>
+					<div class="am-line am-artist" hidden><span></span></div>
+					<div class="am-line am-album" hidden><span></span></div>
+				</div>
+			</div>
+
+			<div class="am-group am-transport">
+				<button type="button" class="am-btn" data-cmd="#cmd_previous_id#" aria-label="Précédent"><i data-ic="prev"></i></button>
+				<button type="button" class="am-btn am-main am-play" data-cmd="#cmd_play_id#" aria-label="Lecture"><i data-ic="play"></i></button>
+				<button type="button" class="am-btn am-main am-pause" data-cmd="#cmd_pause_id#" aria-label="Pause" hidden><i data-ic="pause"></i></button>
+				<button type="button" class="am-btn" data-cmd="#cmd_next_id#" aria-label="Suivant"><i data-ic="next"></i></button>
+			</div>
+
+			<div class="am-group am-volume">
+				<button type="button" class="am-btn" data-cmd="#cmd_volume_down_id#" aria-label="Volume -"><i data-ic="minus"></i></button>
+				<input type="range" class="am-vol-slider" min="0" max="100" step="1" value="0" data-cmd-set="#cmd_set_volume_id#" aria-label="Volume" />
+				<button type="button" class="am-btn" data-cmd="#cmd_volume_up_id#" aria-label="Volume +"><i data-ic="plus"></i></button>
+				<span class="am-vol-value">–</span>
+			</div>
+
+			<div class="am-group am-modes">
+				<button type="button" class="am-btn am-shuffle" data-c-on="#cmd_set_shuffle_on_id#" data-c-off="#cmd_set_shuffle_off_id#" aria-label="Aléatoire"><i data-ic="shuffle"></i></button>
+				<button type="button" class="am-btn am-repeat" data-c-all="#cmd_set_repeat_all_id#" data-c-track="#cmd_set_repeat_track_id#" data-c-off="#cmd_set_repeat_off_id#" aria-label="Répétition"><i data-ic="repeat"></i></button>
+			</div>
+		</div>
+	</div>
+	<script>aTVremoteMobile.init($('.eqLogic[data-eqLogic_uid="#uid#"]'));</script>
+</div>
