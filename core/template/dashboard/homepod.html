@@ -329,10 +329,10 @@
 					line[0].style.setProperty('--aTVdur', Math.max(6, (txtW + 40) / 30) + 's');
 					line.addClass('scrolling loop');
 				} else {
-					var over = txtW - boxW;
-					line[0].style.setProperty('--aTVshift', (-over - 8) + 'px');
+					line.addClass('scrolling alt'); // mesure APRÈS la classe : elle ajoute des marges au texte
+					var over = inner[0].scrollWidth - boxW;
+					line[0].style.setProperty('--aTVshift', (-over) + 'px');
 					line[0].style.setProperty('--aTVdur', Math.max(4, over / 30 / 0.7) + 's');
-					line.addClass('scrolling alt');
 				}
 			});
 		}
