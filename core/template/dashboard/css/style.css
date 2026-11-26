@@ -732,18 +732,11 @@
 	white-space: nowrap;
 }
 
-/* Écran tactile : bouton touché grisé jusqu'au changement de chanson (classe posée et retirée par le JS du widget) */
+/* Écran tactile : précédent / suivant grisés après un toucher jusqu'au changement de chanson
+   (classe posée et retirée par le JS du widget). Les autres boutons ne restent pas grisés. */
 @media (hover: none) {
-	.aTVremote .power.aTVpressed,
-	.aTVremote .btn_aTVremote_playback.aTVpressed,
-	.aTVremote .btn_aTVremote_menu.aTVpressed,
-	.aTVremote .btn_aTVremote_top_menu.aTVpressed,
-	.aTVremote .btn_aTVremote_leftH.aTVpressed,
-	.aTVremote .btn_aTVremote_rightH.aTVpressed,
-	.aTVremote .btn_aTVremote_shuffle.aTVpressed,
-	.aTVremote .btn_aTVremote_repeat.aTVpressed,
-	.aTVremote .btn_aTVremote_plus.aTVpressed,
-	.aTVremote .btn_aTVremote_moins.aTVpressed {
+	.aTVremote .cmd.previous.aTVpressed,
+	.aTVremote .cmd.next.aTVpressed {
 		opacity: 0.5;
 	}
 }

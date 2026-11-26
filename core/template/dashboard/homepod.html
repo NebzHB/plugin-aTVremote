@@ -325,10 +325,11 @@
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		})
 
-		// Écran tactile : le bouton touché reste grisé jusqu'au changement de chanson (cover ou titre),
-		// 8 s au plus (même cover, commande qui ne change pas de chanson…). À la souris, c'est le :hover.
+		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de
+		// chanson (cover ou titre), 8 s au plus. Les autres boutons ne restent pas grisés. À la souris : :hover.
 		var pressedTimer#id#;
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			if (!$(this).is('.previous, .next')) return;
 			if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
 			$(this).addClass('aTVpressed');
 			clearTimeout(pressedTimer#id#);
