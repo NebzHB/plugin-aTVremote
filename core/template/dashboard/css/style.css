@@ -47,8 +47,10 @@
   	opacity:1;
     cursor: pointer;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .power:hover{
     opacity:0.7;
+}
 }
 
 .aTVremote .onoff{
@@ -197,15 +199,21 @@
     cursor:pointer;
 }
 
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .infoBox:hover{
     opacity:0.4;
 }
+}
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .infoBoxH:hover{
     opacity:0.4;
 }
+}
 
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .appsBox:hover{
     opacity:0.4;
+}
 }
 
 /* Statut & Info */
@@ -297,8 +305,10 @@
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_playback:hover{
 	opacity: 0.5;
+}
 }
 
 .aTVremote .btn_aTVremote_playbackH{
@@ -318,16 +328,20 @@
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_menu:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_top_menu{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_top_menu:hover{
 	opacity: 0.5;
+}
 }
 
 .aTVremote .btn_aTVremote_up{
@@ -369,8 +383,10 @@
 .aTVremote .btn_aTVremote_left:hover{
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_leftH:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .aTVremote_left{
 	-ms-transform: rotate(180deg);
@@ -410,8 +426,10 @@
 .aTVremote .btn_aTVremote_right:hover{
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_rightH:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_down{
   	left:54px;
@@ -435,32 +453,40 @@
 	z-index: 10;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_shuffle:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_repeat{
 	cursor:pointer;
 	z-index: 10;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_repeat:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_plus{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_plus:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_moins{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_moins:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_up2{
 	cursor:pointer;
