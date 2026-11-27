@@ -41,6 +41,7 @@
         "Tout": "Tudo",
         "Veuillez vérifier la configuration": "Verificar a configuração",
         "Volume": "Volume",
+        "indisponible avec cette source": "indisponível com esta fonte",
         "reste": "restante"
     },
     "plugins\/aTVremote\/core\/config\/devices\/ATV\/ATV.json": {
@@ -81,6 +82,7 @@
         "Album": "Álbum",
         "Aléatoire": "Aleatório",
         "Aléatoire Humain": "Humano aleatório",
+        "Aléatoire disponible": "Aleatório disponível",
         "App Active": "Aplicação ativa",
         "Artiste": "Artista",
         "Bouton Aléatoire OFF": "Botão OFF aleatório",
@@ -106,6 +108,7 @@
         "Rafraichir": "Recarregar",
         "Répétition": "Repetir",
         "Répétition Humain": "Ensaio humano",
+        "Répétition disponible": "Repetição disponível",
         "Statut": "Estado",
         "Titre": "Título",
         "Type Media": "Tipo de suporte",
