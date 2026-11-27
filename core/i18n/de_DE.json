@@ -9,9 +9,9 @@
         "Albums": "Alben",
         "Aléatoire activé": "Zufallswiedergabe an",
         "Aléatoire désactivé": "Zufallswiedergabe aus",
-        "Arrêt du démon aTVremote": "Beenden des aTVremote-Daemons",
         "Arrêt SIGKILL du démon aTVremote": "SIGKILL-Stopp des Daemons aTVremote",
         "Arrêt SIGTERM du démon aTVremote": "SIGTERM-Stopp des Daemons aTVremote",
+        "Arrêt du démon aTVremote": "Beenden des aTVremote-Daemons",
         "Aucun Media": "Keine Medien",
         "Avance rapide": "Schneller Vorlauf",
         "Baisser le volume": "Leiser",
@@ -33,7 +33,6 @@
         "Progression": "Fortschritt",
         "Précédent": "Zurück",
         "Recul rapide": "Schneller Rückzug",
-        "reste": "verbleibend",
         "Répéter la piste": "Titel wiederholen",
         "Répéter tout": "Alle wiederholen",
         "Répétition désactivée": "Wiederholung aus",
@@ -41,7 +40,8 @@
         "Suivant": "Weiter",
         "Tout": "Alles",
         "Veuillez vérifier la configuration": "Bitte überprüfen Sie die Konfiguration",
-        "Volume": "Lautstärke"
+        "Volume": "Lautstärke",
+        "reste": "verbleibend"
     },
     "plugins\/aTVremote\/core\/config\/devices\/ATV\/ATV.json": {
         "Album": "Album",

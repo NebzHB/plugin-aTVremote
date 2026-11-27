@@ -9,9 +9,9 @@
         "Albums": "Albums",
         "Aléatoire activé": "Shuffle on",
         "Aléatoire désactivé": "Shuffle off",
-        "Arrêt du démon aTVremote": "Stopping the aTVremote daemon",
         "Arrêt SIGKILL du démon aTVremote": "SIGKILL shutdown of the aTVremote daemon",
         "Arrêt SIGTERM du démon aTVremote": "SIGTERM shutdown of the aTVremote daemon",
+        "Arrêt du démon aTVremote": "Stopping the aTVremote daemon",
         "Aucun Media": "No Media",
         "Avance rapide": "Fast forward",
         "Baisser le volume": "Volume down",
@@ -33,7 +33,6 @@
         "Progression": "Progress",
         "Précédent": "Previous",
         "Recul rapide": "Fast rewind",
-        "reste": "remaining",
         "Répéter la piste": "Repeat track",
         "Répéter tout": "Repeat all",
         "Répétition désactivée": "Repeat off",
@@ -41,7 +40,8 @@
         "Suivant": "Next",
         "Tout": "All",
         "Veuillez vérifier la configuration": "Please check configuration",
-        "Volume": "Volume"
+        "Volume": "Volume",
+        "reste": "remaining"
     },
     "plugins\/aTVremote\/core\/config\/devices\/ATV\/ATV.json": {
         "Album": "Album",
