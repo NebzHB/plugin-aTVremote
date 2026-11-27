@@ -92,17 +92,10 @@
 				<div class="blocPlayH">
 					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:30px"/>&nbsp;&nbsp;</a>
 					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:30px"/></a>
-					<!--<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>-->
 				</div>
 
 <!--  Control & Navigation -->
           
-<!--  Back to the futur Sildebar -->          
-          	<!-- <div class="slidecontainer">
- 		 		<input type="range" min="1" max="" value="" class="slider" id="myRange">
-              	<p>Value: <span id="demo"></span></p>
-			</div>--> 
-<!--  Back to the futur Sildebar -->                                      
 		</div>
      
       
@@ -204,7 +197,6 @@
 
 //Play_human
 		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
-			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
 			setDevLoading#id#(loadingLabels#id#.indexOf(_options.display_value) != -1, playHumanAge#id#);
 			playHumanAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
@@ -214,7 +206,6 @@
 		
 //Play_state
 		jeedom.cmd.addUpdateFunction('#play_state_id#', function(_options){
-			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').hide(1);
@@ -233,7 +224,6 @@
 		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
 			releasePressed#id#();
 			stopCmdLoading#id#();
-			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
@@ -257,68 +247,30 @@
 		}
 		jeedom.cmd.refreshValue([{cmd_id: '#artwork_url_id#',display_value:'#artwork_url#'}]);
 
-//Metadonnée          
+//Métadonnées : infobulle de la pochette (artiste - titre - album) et lignes du panneau Info
+		var meta#id# = {artist: '', title: '', album: ''};
+		function setMeta#id#(field, cls, value) {
+			meta#id#[field] = (value == '-') ? '' : value;
+			$('#artworkForeground_#id#').prop('title', [meta#id#.artist, meta#id#.title, meta#id#.album].filter(Boolean).join('  -  '));
+			$('.eqLogic[data-eqLogic_id=#id#] .' + cls).toggle(value != '-');
+			$('.eqLogic[data-eqLogic_id=#id#] .' + cls + ' .infoTxtH').text(value);
+			fitMarquee#id#();
+		}
 		jeedom.cmd.addUpdateFunction('#artist_id#', function(_options){
-			//console.log('ààà artist_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',_options.display_value+'  -  '+artworkTitle[1]+'  -  '+artworkTitle[2]);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
-			}
-			
-			$('.eqLogic[data-eqLogic_id=#id#] .artist_hide .infoTxtH').text(_options.display_value);
-			fitMarquee#id#();
+			setMeta#id#('artist', 'artist_hide', _options.display_value);
 		});
-		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
-		
 		jeedom.cmd.addUpdateFunction('#album_id#', function(_options){
-			//console.log('ààà album_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+artworkTitle[1]+'  -  '+_options.display_value);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
-			}
-			
-			$('.eqLogic[data-eqLogic_id=#id#] .album_hide .infoTxtH').text(_options.display_value);
-			fitMarquee#id#();
+			setMeta#id#('album', 'album_hide', _options.display_value);
 		});
-		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
-		
 		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
 			releasePressed#id#();
 			stopCmdLoading#id#();
-			//console.log('ààà title_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+_options.display_value+'  -  '+artworkTitle[2]);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
-			}
-
-			$('.eqLogic[data-eqLogic_id=#id#] .titre_hide .infoTxtH').text(_options.display_value);
-			fitMarquee#id#();
+			setMeta#id#('title', 'titre_hide', _options.display_value);
 		});
+		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
+		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
-//Position 
-	  
-		/*if('#position#' != '-'){
-			$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text('#position#');
-		} else {
-			$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
-		}*/     
-		
 //volume
 		jeedom.cmd.addUpdateFunction('#volume_id#', function(_options){
 			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
@@ -328,7 +280,6 @@
 	  
 //Repeat
 		jeedom.cmd.addUpdateFunction('#repeat_state_id#', function(_options){
-			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '1'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
@@ -347,7 +298,6 @@
 	  
 //Shuffle
 		jeedom.cmd.addUpdateFunction('#shuffle_state_id#', function(_options){
-			//console.log('ààà shuffle_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '0'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').hide(1);  
@@ -413,33 +363,6 @@
 			$('.eqLogic[data-eqLogic_id=#id#] .aTVpressed').removeClass('aTVpressed');
 		}
 
-/* Back to the futur Sildebar */    
-      
-      	/*var time = '#position#';
-      	var split_time = time.split(['/']);
-      	var current_time = split_time[0];
-      	var total_time = split_time[1]; 
-        
-      	var split_total_time = total_time.split(['s']);
-      	var total = split_total_time[0];
-      
-      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('value', current_time);
-      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('max', total);
-
-      
-      	var slider = document.getElementById("myRange");
-		var output = document.getElementById("demo");
-		output.innerHTML = slider.value; // Display the default slider value
-		
-		// Update the current slider value (each time you drag the slider handle)
-		slider.oninput = function() {
-  		output.innerHTML = this.value;
-          
-       		$(".eqLogic[data-eqLogic_id=#id#] .silde").on('slidestop', function (event,ui) {
-				jeedom.cmd.execute({id: '#set_position#', value: {slider: ui.value}});
-			});
-          
-		}*/
       
      
     </script>
