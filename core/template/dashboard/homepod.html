@@ -159,11 +159,13 @@
 
 //Indicateur à côté de la pochette : égaliseur animé (lecture), image fixe (pause),
 //ou chargement (après précédent / suivant jusqu'à la nouvelle chanson, ou appareil en chargement)
-		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null};
+		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null, daemonOff: ('#deamonState#' != 'ok')};
 		var loadingLabels#id# = ['Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
 		function updateEqualizer#id#() {
 			var img = 'equalizer.png';
-			if (eqState#id#.cmdLoading || eqState#id#.devLoading) {
+			if (eqState#id#.daemonOff) {
+				img = 'deamon_off.gif';
+			} else if (eqState#id#.cmdLoading || eqState#id#.devLoading) {
 				img = 'loading.gif';
 			} else if (eqState#id#.playing) {
 				img = 'miniEqua.gif';
@@ -171,6 +173,7 @@
 			var src = 'plugins/aTVremote/core/template/dashboard/images/' + img;
 			var el = $('.eqLogic[data-eqLogic_id=#id#] #equaH#id#');
 			if (el.attr('src') != src) el.attr('src', src);
+			if (eqState#id#.daemonOff) el.attr('title', 'Démon aTVremote arrêté');
 		}
 		function startCmdLoading#id#() {
 			eqState#id#.cmdLoading = true;

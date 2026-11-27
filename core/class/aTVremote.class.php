@@ -201,7 +201,7 @@ class aTVremote extends eqLogic {
 	}
 
 	public static function deamon_start() {
-		self::deamon_stop();
+		self::stopDaemonProcess();
 
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') {
@@ -266,15 +266,30 @@ class aTVremote extends eqLogic {
 		}
 		if ($i >= 30) {
 			log::add('aTVremote', 'error', "Impossible de lancer le démon aTVremote, relancer le démon en debug et vérifiez le log", 'unableStartDeamon');
+			self::refreshAllWidgets();
 			return false;
 		}
 		message::removeAll('aTVremote', 'unableStartDeamon');
 		log::add('aTVremote', 'info', "Démon aTVremote lancé");
+		self::refreshAllWidgets(); // les widgets n'affichent plus « démon arrêté »
 		return true;
 
 	}
 
 	public static function deamon_stop() {
+		$result = self::stopDaemonProcess();
+		self::refreshAllWidgets(); // les widgets affichent « démon arrêté »
+		return $result;
+	}
+
+	// Redessine les widgets de tous les équipements (état du démon affiché à côté de la pochette)
+	public static function refreshAllWidgets() {
+		foreach (eqLogic::byType('aTVremote', true) as $eqLogic) {
+			$eqLogic->refreshWidget();
+		}
+	}
+
+	private static function stopDaemonProcess() {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
 			log::add('hkControl', 'info', __("Arrêt du démon aTVremote", __FILE__));
@@ -752,6 +767,7 @@ class aTVremote extends eqLogic {
 				return json_decode($json, true);
 			} else {
 				log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande ".ucfirst($cmd));
+				$this->refreshWidget(); // le widget affiche « démon arrêté »
 			}
 		}
 	}
@@ -1407,6 +1423,13 @@ class aTVremote extends eqLogic {
 		// dédié (ils n'étaient plus appelés depuis le passage aux templates atv / atv3 / homepod,
 		// getTemplate() renvoyait donc une chaîne vide et le widget mobile restait vide).
 		$tplVersion = 'dashboard';
+
+		// État du démon pour le widget (une seule vérification par requête, même avec plusieurs widgets)
+		static $deamonState = null;
+		if ($deamonState === null) {
+			$deamonState = self::deamon_info()['state'];
+		}
+		$replace['#deamonState#'] = $deamonState;
 
 		// Version du CSS dans son URL : sans elle, Safari (iPad, app mobile) peut garder l'ancien
 		// style.css après une mise à jour du plugin et l'afficher avec le nouveau HTML.
