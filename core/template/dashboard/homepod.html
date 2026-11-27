@@ -157,10 +157,39 @@
 			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(100);
 		});
 
+//Indicateur à côté de la pochette : égaliseur animé (lecture), image fixe (pause),
+//ou chargement (après précédent / suivant jusqu'à la nouvelle chanson, ou appareil en chargement)
+		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null};
+		var loadingLabels#id# = ['Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
+		function updateEqualizer#id#() {
+			var img = 'equalizer.png';
+			if (eqState#id#.cmdLoading || eqState#id#.devLoading) {
+				img = 'loading.gif';
+			} else if (eqState#id#.playing) {
+				img = 'miniEqua.gif';
+			}
+			var src = 'plugins/aTVremote/core/template/dashboard/images/' + img;
+			var el = $('.eqLogic[data-eqLogic_id=#id#] #equaH#id#');
+			if (el.attr('src') != src) el.attr('src', src);
+		}
+		function startCmdLoading#id#() {
+			eqState#id#.cmdLoading = true;
+			clearTimeout(eqState#id#.timer);
+			eqState#id#.timer = setTimeout(stopCmdLoading#id#, 10000); // au plus 10 s (dernière piste…)
+			updateEqualizer#id#();
+		}
+		function stopCmdLoading#id#() {
+			clearTimeout(eqState#id#.timer);
+			eqState#id#.cmdLoading = false;
+			updateEqualizer#id#();
+		}
+
 //Play_human
 		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
+			eqState#id#.devLoading = (loadingLabels#id#.indexOf(_options.display_value) != -1);
+			updateEqualizer#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#play_human_id#',display_value:'#play_human#'}]);
 		
@@ -170,11 +199,13 @@
 			if(_options.display_value == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').hide(1);
-				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+				eqState#id#.playing = false;
+				updateEqualizer#id#();
 			} else if(_options.display_value == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').show(1);
-				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+				eqState#id#.playing = true;
+				updateEqualizer#id#();
 			}
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#play_state_id#',display_value:'#play_state#'}]);
@@ -182,6 +213,7 @@
 //Artwork
 		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
 			releasePressed#id#();
+			stopCmdLoading#id#();
 			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
@@ -243,6 +275,7 @@
 		
 		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
 			releasePressed#id#();
+			stopCmdLoading#id#();
 			//console.log('ààà title_id _options.display_value =',_options.display_value)
 			
 			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
@@ -355,6 +388,7 @@
 			clearTimeout(pressedTimer#id#);
 			pressedTimer#id# = setTimeout(releasePressed#id#, 8000);
 		});
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.previous, .eqLogic[data-eqLogic_id=#id#] .cmd.next').on('click', startCmdLoading#id#);
 		function releasePressed#id#() {
 			clearTimeout(pressedTimer#id#);
 			$('.eqLogic[data-eqLogic_id=#id#] .aTVpressed').removeClass('aTVpressed');
