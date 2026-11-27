@@ -261,6 +261,16 @@
 			"isHistorized": 0,
 			"logicalId": "repeat_available"
 		}, {
+			"name": "{{Identifiant iTunes}}",
+			"type": "info",
+			"subtype": "string",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "itunes_id"
+		}, {
 			"name": "{{App Active}}",
 			"type": "info",
 			"subtype": "string",
