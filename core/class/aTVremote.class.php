@@ -1418,6 +1418,9 @@ class aTVremote extends eqLogic {
 		];
 		
 		$theme=$this->getConfiguration('theme','black');
+		if (!isset($themes[$theme])) { // thème vide ou qui n'existe plus : noir par défaut
+			$theme = 'black';
+		}
 		foreach($themes[$theme] as $elmt=>$value) {
 			$replace["#".$elmt."#"] = $value;
         }
