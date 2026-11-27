@@ -1292,6 +1292,9 @@ class aTVremote extends eqLogic {
 		foreach ($this->getCmd('info') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '#'] = htmlspecialchars($cmd->getCache('value'), ENT_QUOTES,'UTF-8');
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			// âge (s) de la dernière valeur reçue : le widget ignore un « Chargement en cours » ancien
+			$collectDate = strtotime($cmd->getCollectDate());
+			$replace['#' . $cmd->getLogicalId() . '_age#'] = ($collectDate) ? max(0, time() - $collectDate) : 999999;
 			if ($cmd->getIsHistorized() == 1) {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
