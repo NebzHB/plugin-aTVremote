@@ -159,8 +159,23 @@
 
 //Indicateur à côté de la pochette : égaliseur animé (lecture), image fixe (pause),
 //ou chargement (après précédent / suivant jusqu'à la nouvelle chanson, ou appareil en chargement)
-		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null, daemonOff: ('#deamonState#' != 'ok')};
+		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null, devTimer: null, daemonOff: ('#deamonState#' != 'ok')};
 		var loadingLabels#id# = ['Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
+		// Un HomePod qui reçoit de l'AirPlay envoie souvent un dernier état « loading » quand la diffusion
+		// s'arrête, puis plus rien : l'indicateur de chargement venant de l'appareil ne dure que 20 s.
+		var devLoadingMax#id# = 20;
+		var playHumanAge#id# = parseInt('#play_human_age#', 10) || 0; // âge de la valeur affichée au chargement de la page
+		function setDevLoading#id#(isLoading, ageSec) {
+			clearTimeout(eqState#id#.devTimer);
+			var remain = devLoadingMax#id# - ageSec;
+			eqState#id#.devLoading = isLoading && remain > 0;
+			if (eqState#id#.devLoading) {
+				eqState#id#.devTimer = setTimeout(function() {
+					eqState#id#.devLoading = false;
+					updateEqualizer#id#();
+				}, remain * 1000);
+			}
+		}
 		function updateEqualizer#id#() {
 			var img = 'equalizer.png';
 			if (eqState#id#.daemonOff) {
@@ -191,7 +206,8 @@
 		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
 			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
-			eqState#id#.devLoading = (loadingLabels#id#.indexOf(_options.display_value) != -1);
+			setDevLoading#id#(loadingLabels#id#.indexOf(_options.display_value) != -1, playHumanAge#id#);
+			playHumanAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
 			updateEqualizer#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#play_human_id#',display_value:'#play_human#'}]);
