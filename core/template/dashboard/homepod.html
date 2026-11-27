@@ -257,7 +257,7 @@
 			if (!bar.length || !document.body.contains(bar[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
 			if (prog#id#.total <= 0) { bar.hide(); info.hide(); clearInterval(prog#id#.timer); prog#id#.timer = null; return; }
 			var pos = progCurrent#id#(), pct = (pos * 100 / prog#id#.total) + '%';
-			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total);
+			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + Math.round(pos * 100 / prog#id#.total) + ' % · reste ' + progFormat#id#(prog#id#.total - pos);
 			bar.show().attr('title', label).children('.progressBarH').css('width', pct);
 			info.show().find('.infoProgressBarH > div').css('width', pct);
 			info.find('.infoElapsedH').text(progFormat#id#(pos));
