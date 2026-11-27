@@ -786,3 +786,13 @@
 	opacity: 0.7;
 	font-variant-numeric: tabular-nums;
 }
+
+/* Navigation au clavier : contour visible sur le bouton ciblé (pas au clic souris / toucher) */
+.aTVremote [role=button]:focus {
+	outline: none;
+}
+.aTVremote [role=button]:focus-visible {
+	outline: 2px solid rgba(255,255,255,.85);
+	outline-offset: 2px;
+	border-radius: 50%;
+}
