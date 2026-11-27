@@ -748,3 +748,41 @@
 		opacity: 0.5;
 	}
 }
+
+/* Barre de progression : sous la pochette (largeur de la pochette) et dans le panneau Info */
+.aTVremote .progressH {
+	position: absolute;
+	left: 93px;
+	top: 201px;
+	width: 70px;
+	height: 3px;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.2);
+	overflow: hidden;
+	z-index: 3;
+}
+.aTVremote .progressBarH,
+.aTVremote .infoProgressBarH > div {
+	width: 0;
+	height: 100%;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.9);
+}
+.aTVremote .infoProgressH {
+	margin-top: 12px;
+	width: 100%;
+}
+.aTVremote .infoProgressBarH {
+	height: 4px;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.22);
+	overflow: hidden;
+}
+.aTVremote .infoTimesH {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 4px;
+	font-size: 11px;
+	opacity: 0.7;
+	font-variant-numeric: tabular-nums;
+}
