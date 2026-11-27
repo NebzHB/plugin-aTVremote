@@ -1035,6 +1035,15 @@ class aTVremote extends eqLogic {
 							$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 						}
 					}
+					// identifiant iTunes Store : seulement pour Apple Music / iTunes (vide pour Spotify, radios, AirPlay…)
+					$itunes_id = $this->getCmd(null, 'itunes_id');
+					if(is_object($itunes_id)) {
+						if(!empty($aTVremoteinfo['itunes_store_identifier'])) {
+							$changed=$this->checkAndUpdateCmd($itunes_id, $aTVremoteinfo['itunes_store_identifier']) || $changed;
+						} elseif(!isset($aTVremoteinfo['simplifiedPlaying'])){
+							$changed=$this->checkAndUpdateCmd($itunes_id, '-') || $changed;
+						}
+					}
 				}
 			// end if changed hash
 			
@@ -1469,6 +1478,7 @@ class aTVremote extends eqLogic {
 			'volume' => __('Volume', __FILE__),
 			'cover' => __('Pochette', __FILE__),
 			'progress' => __('Progression', __FILE__),
+			'appleMusic' => __('Ouvrir dans Apple Music', __FILE__),
 		);
 		foreach ($texts as $key => $text) {
 			$replace['#txt_' . $key . '#'] = htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // &apos; plutôt que &#039; : pas de # dans les valeurs

@@ -66,6 +66,7 @@
 			<div class="downpanelH" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#">
 				<div class="infoBgH" id="infoBg_#id#"></div>
 				<span class="infoCloseH" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+				<a class="infoLinkH" id="appleMusic#id#" href="#" target="_blank" rel="noopener" style="display:none;" title="#txt_appleMusic#" aria-label="#txt_appleMusic#" onclick="event.stopPropagation();"><i class="fab fa-apple" aria-hidden="true"></i></a>
 				<div class="infoContentH">
 					<img src="#artwork_url#" id="artworkInfoBox_#id#" class="infoArtH" alt=""/>
 					<div class="infoTextH">
@@ -374,6 +375,18 @@
 			}
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#shuffle_state_id#',display_value:'#shuffle_state#'}]);
+
+//Lien Apple Music du panneau Info : seulement si le morceau a un identifiant iTunes Store
+//(Apple Music / iTunes) ; rien pour Spotify, une radio, un flux AirPlay…
+		jeedom.cmd.addUpdateFunction('#itunes_id_id#', function(_options){
+			var id = String(_options.display_value || '').trim(), link = $('#appleMusic#id#');
+			if (/^[1-9][0-9]*$/.test(id)) {
+				link.attr('href', 'https://music.apple.com/song/' + id).show();
+			} else {
+				link.hide().attr('href', '#');
+			}
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#itunes_id_id#',display_value:'#itunes_id#'}]);
 
 //Aléatoire / répétition utilisables avec la source en cours (liste « features » demandée par le démon
 //à chaque changement de morceau) : sinon boutons grisés, mais toujours cliquables (un clic revérifie).
