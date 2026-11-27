@@ -417,6 +417,13 @@ class aTVremote extends eqLogic {
 				if($features) {
 					$eqLogic->setConfiguration('features',$features);
 					$eqLogic->save(true);
+					// aléatoire / répétition utilisables avec la source en cours ? (le widget grise les boutons sinon)
+					foreach (array('shuffle_available' => 'SetShuffle', 'repeat_available' => 'SetRepeat') as $logicalId => $feature) {
+						$cmd = $eqLogic->getCmd(null, $logicalId);
+						if (is_object($cmd) && isset($features[$feature])) {
+							$eqLogic->checkAndUpdateCmd($cmd, ($features[$feature] == 'Available') ? 1 : 0);
+						}
+					}
 				}
 			break;
 		}
@@ -753,6 +760,11 @@ class aTVremote extends eqLogic {
 			return $return;
 		}
 	}
+	// Après aléatoire / répétition : on revérifie si la source les accepte (sinon le bouton reste grisé)
+	public function recheckFeatures() {
+		return ($this->getConfiguration('version',0) != '3') ? '|features' : '';
+	}
+
 	public function aTVdaemonExecute($cmd,$params=[]) {
 		if($cmd) {
 			$deamon_info = aTVremote::deamon_info();
@@ -1418,9 +1430,6 @@ class aTVremote extends eqLogic {
 		];
 		
 		$theme=$this->getConfiguration('theme','black');
-		if (!isset($themes[$theme])) { // thème vide ou qui n'existe plus : noir par défaut
-			$theme = 'black';
-		}
 		foreach($themes[$theme] as $elmt=>$value) {
 			$replace["#".$elmt."#"] = $value;
         }
@@ -1469,6 +1478,7 @@ class aTVremote extends eqLogic {
 			'remain' => __('reste', __FILE__),
 			'daemonOff' => __('Démon aTVremote arrêté', __FILE__),
 			'loading' => __('Chargement en cours', __FILE__),
+			'unavailable' => __('indisponible avec cette source', __FILE__),
 		), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 
 		if ($Test == "Apple TV"){
@@ -1514,19 +1524,19 @@ class aTVremoteCmd extends cmd {
 					}
 				break;
 				case 'set_repeat_all':
-					$eqLogic->aTVdaemonExecute('set_repeat=2');
+					$eqLogic->aTVdaemonExecute('set_repeat=2'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_repeat_track':
-					$eqLogic->aTVdaemonExecute('set_repeat=1');
+					$eqLogic->aTVdaemonExecute('set_repeat=1'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_repeat_off':
-					$eqLogic->aTVdaemonExecute('set_repeat=0');
+					$eqLogic->aTVdaemonExecute('set_repeat=0'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_shuffle_on':
-					$eqLogic->aTVdaemonExecute('set_shuffle=1');
+					$eqLogic->aTVdaemonExecute('set_shuffle=1'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_shuffle_off':
-					$eqLogic->aTVdaemonExecute('set_shuffle=0');
+					$eqLogic->aTVdaemonExecute('set_shuffle=0'.$eqLogic->recheckFeatures());
 				break;
 				case 'down':
 					$eqLogic->aTVdaemonExecute('down');

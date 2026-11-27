@@ -796,3 +796,9 @@
 	outline-offset: 2px;
 	border-radius: 50%;
 }
+
+/* Aléatoire / répétition non utilisables avec la source en cours (ex. Apple Music sur HomePod) */
+.aTVremote .cmd.aTVunavailable,
+.aTVremote .cmd.aTVunavailable:hover {
+	opacity: .3;
+}

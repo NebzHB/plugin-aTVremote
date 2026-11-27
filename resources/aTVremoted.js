@@ -64,6 +64,29 @@ var aTVs = {};
 aTVs.cmd = {};
 aTVs.msg = {};
 // aTVs.previousMsg= [];
+aTVs.featuresTimer = {};
+aTVs.featuresKey = {};
+
+// Fonctions utilisables (aléatoire, répétition…) : elles dépendent de la source (Apple Music, AirPlay…)
+// et l'appareil envoie plusieurs messages pendant le chargement d'un morceau. Après un changement de
+// morceau, d'app ou d'état, on demande donc la liste UNE fois, 3 s après le dernier message reçu.
+function scheduleFeatures(mac, stringData) {
+	var msg;
+	try { msg = JSON.parse(stringData); } catch (e) { return; }
+	const state = String(msg.device_state || '').toLowerCase();
+	const key = [msg.hash, msg.app_id, state].join('|');
+	if (key === aTVs.featuresKey[mac] && !aTVs.featuresTimer[mac]) { return; } // rien de nouveau
+	clearTimeout(aTVs.featuresTimer[mac]);
+	aTVs.featuresTimer[mac] = setTimeout(function() {
+		delete aTVs.featuresTimer[mac];
+		aTVs.featuresKey[mac] = key;
+		if (state !== 'playing' && state !== 'paused') { return; } // rien à lire : inutile
+		if (aTVs.cmd[mac] && aTVs.cmd[mac].stdin) {
+			Logger.log('[CMD]['+mac+'] Envoi features (changement de morceau / source)',LogType.DEBUG);
+			aTVs.cmd[mac].stdin.write('features\n');
+		}
+	}, 3000);
+}
 const app = express();
 app.set("query parser", "extended");
 var server = null;
@@ -211,6 +234,7 @@ function connectATV(mac,version) {
 					// aTVs.previousMsg[mac]=comparingData;
 					sent=" playing et envoyé à jeedom";
 					jsend({eventType: 'playing', data : stringData, mac: mac});	
+					scheduleFeatures(mac, stringData);
 				} else if(stringData.includes('volume')) {
 					// aTVs.previousMsg[mac]=comparingData;
 					sent=" volume et envoyé à jeedom";
