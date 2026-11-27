@@ -31,7 +31,7 @@
 	</style>
     <script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
   	<div class="haut_aTVremote_widH">
-		<div class="volumeWidget"><div id="volumeWidget_#id#"></div></div>
+		<div class="volumeWidget" role="group" aria-label="#txt_volume#"><div id="volumeWidget_#id#"></div></div>
 		<div class="artworkBlurH"><div class="artworkBackgroundH artworkBackgroundH_#id#"></div></div>
       	<div class="haut">
 		
@@ -39,40 +39,40 @@
 			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>  
           		
           	<div id="a#id#" class="repeatBoxH">
-              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.svg' style="width:25px;"/>&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.svg' style="width:25px;"/>&nbsp;&nbsp;</a> 
-				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.svg' style="width:25px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.svg' style="width:25px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.svg' style="width:25px;;"/></a>
+              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" role="button" tabindex="0" title="#txt_shuffleOff#" aria-label="#txt_shuffleOff#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.svg' alt="" style="width:25px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" role="button" tabindex="0" title="#txt_shuffleOn#" aria-label="#txt_shuffleOn#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.svg' alt="" style="width:25px;"/>&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" role="button" tabindex="0" title="#txt_repeatOff#" aria-label="#txt_repeatOff#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.svg' alt="" style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" role="button" tabindex="0" title="#txt_repeatAll#" aria-label="#txt_repeatAll#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.svg' alt="" style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" role="button" tabindex="0" title="#txt_repeatTrack#" aria-label="#txt_repeatTrack#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.svg' alt="" style="width:25px;"/></a>
             </div>
 <!--  Partie Supérieure -->
 
-  			<a style='position:absolute;margin-top:10px;left:108px;z-index:5;'><img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:5;' aria-hidden="true"><img class='image-encoche' alt="" aria-hidden="true" style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
 
-  			<a style='position:absolute;margin-top:10px;left:108px;z-index:4;'><img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>         
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:4;' aria-hidden="true"><img class='image-clignote' alt="" aria-hidden="true" style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>         
      	</div>
       
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
           
-			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" />
-			<div class="progressH" id="progress#id#" style="display:none;"><div class="progressBarH"></div></div>
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" alt="#txt_cover#" />
+			<div class="progressH" id="progress#id#" style="display:none;" role="progressbar" aria-label="#txt_progress#" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progressBarH"></div></div>
           	     
-			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.svg' style="width:30px;" title="Vol-"/></a>
-          	<a class="btn_aTVremote_playbackH cmd play_btn" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.svg' style="width:30px"/></a>
-			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.svg' style="width:30px"/></a>
-			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.svg' style="width:30px;" title="Vol+"/></a>
+			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" role="button" tabindex="0" title="#txt_volDown#" aria-label="#txt_volDown#"><img src='plugins/aTVremote/core/template/dashboard/images/minus.svg' alt="" style="width:30px;"/></a>
+          	<a class="btn_aTVremote_playbackH cmd play_btn" data-cmd_id="#cmd_play_id#" role="button" tabindex="0" title="#txt_play#" aria-label="#txt_play#"><img src='plugins/aTVremote/core/template/dashboard/images/play.svg' alt="" style="width:30px"/></a>
+			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" role="button" tabindex="0" title="#txt_pause#" aria-label="#txt_pause#"><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.svg' alt="" style="width:30px"/></a>
+			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" role="button" tabindex="0" title="#txt_volUp#" aria-label="#txt_volUp#"><img src='plugins/aTVremote/core/template/dashboard/images/plus.svg' alt="" style="width:30px;"/></a>
 
-			<div class="downpanelH" onclick="panelDownClose#id#()" title="Fermer">
+			<div class="downpanelH" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#">
 				<div class="infoBgH" id="infoBg_#id#"></div>
-				<span class="infoCloseH">&times;</span>
+				<span class="infoCloseH" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
 				<div class="infoContentH">
 					<img src="#artwork_url#" id="artworkInfoBox_#id#" class="infoArtH" alt=""/>
 					<div class="infoTextH">
 						<div class="titre_hide infoLineH infoTitleH"><span class="infoScrollH"><span class="infoTxtH">[title]</span></span></div>
 						<div class="artist_hide infoLineH infoArtistH"><span class="infoScrollH"><span class="infoTxtH">[artist]</span></span></div>
 						<div class="album_hide infoLineH infoAlbumH"><span class="infoScrollH"><span class="infoTxtH">[album]</span></span></div>
-						<div class="infoProgressH" style="display:none;">
+						<div class="infoProgressH" style="display:none;" aria-hidden="true">
 							<div class="infoProgressBarH"><div></div></div>
 							<div class="infoTimesH"><span class="infoElapsedH">0:00</span><span class="infoRemainH">-0:00</span></div>
 						</div>
@@ -80,14 +80,14 @@
 				</div>
 			</div>
 
-			<a><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.svg" style="width:20px;" onclick="panelDown#id#()"/></a>					
+			<a class="infoBtnH" role="button" tabindex="0" title="#txt_info#" aria-label="#txt_info#" aria-haspopup="dialog" onclick="panelDown#id#()"><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.svg" alt="" style="width:20px;"/></a>					
 		</div>
 <!--  Artwork -->
       
 <!--  Statut & Info -->
 		<div class="info" style="height:20px;">
           	<br>
-			<p style='margin:0;text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
+			<p style='margin:0;text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" alt="#play_human#" role="status" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
           	
 		</div>
 <!--  Statut & Info -->   
@@ -95,8 +95,8 @@
 <!--  Control & Navigation -->  
 		<div class="gameplayH">    	
 				<div class="blocPlayH">
-					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.svg' style="width:30px"/>&nbsp;&nbsp;</a>
-					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.svg' style="width:30px"/></a>
+					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" role="button" tabindex="0" title="#txt_previous#" aria-label="#txt_previous#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.svg' alt="" style="width:30px"/>&nbsp;&nbsp;</a>
+					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" role="button" tabindex="0" title="#txt_next#" aria-label="#txt_next#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.svg' alt="" style="width:30px"/></a>
 				</div>
 
 <!--  Control & Navigation -->
@@ -159,7 +159,8 @@
 //ou chargement (après précédent / suivant jusqu'à la nouvelle chanson, ou appareil en chargement)
 		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null, devTimer: null, daemonOff: ('#deamonState#' != 'ok')};
 		var prog#id# = {pos: 0, total: 0, at: Date.now(), timer: null}; // barre de progression (voir //Position)
-		var loadingLabels#id# = ['Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
+		var txt#id# = #txt_js#;
+		var loadingLabels#id# = [txt#id#.loading, 'Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
 		// Un HomePod qui reçoit de l'AirPlay envoie souvent un dernier état « loading » quand la diffusion
 		// s'arrête, puis plus rien : l'indicateur de chargement venant de l'appareil ne dure que 20 s.
 		var devLoadingMax#id# = 20;
@@ -187,7 +188,7 @@
 			var src = 'plugins/aTVremote/core/template/dashboard/images/' + img;
 			var el = $('.eqLogic[data-eqLogic_id=#id#] #equaH#id#');
 			if (el.attr('src') != src) el.attr('src', src);
-			if (eqState#id#.daemonOff) el.attr('title', 'Démon aTVremote arrêté');
+			if (eqState#id#.daemonOff) el.attr({title: txt#id#.daemonOff, alt: txt#id#.daemonOff});
 		}
 		function startCmdLoading#id#() {
 			eqState#id#.cmdLoading = true;
@@ -203,7 +204,7 @@
 
 //Play_human
 		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
-			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
+			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop({title: _options.display_value, alt: _options.display_value});
 			setDevLoading#id#(loadingLabels#id#.indexOf(_options.display_value) != -1, playHumanAge#id#);
 			playHumanAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
 			updateEqualizer#id#();
@@ -257,8 +258,8 @@
 			if (!bar.length || !document.body.contains(bar[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
 			if (prog#id#.total <= 0) { bar.hide(); info.hide(); clearInterval(prog#id#.timer); prog#id#.timer = null; return; }
 			var pos = progCurrent#id#(), pct = (pos * 100 / prog#id#.total) + '%';
-			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + Math.round(pos * 100 / prog#id#.total) + ' % · reste ' + progFormat#id#(prog#id#.total - pos);
-			bar.show().attr('title', label).children('.progressBarH').css('width', pct);
+			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + Math.round(pos * 100 / prog#id#.total) + ' % · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos);
+			bar.show().attr({title: label, 'aria-valuenow': Math.round(pos * 100 / prog#id#.total), 'aria-valuetext': label}).children('.progressBarH').css('width', pct);
 			info.show().find('.infoProgressBarH > div').css('width', pct);
 			info.find('.infoElapsedH').text(progFormat#id#(pos));
 			info.find('.infoRemainH').text('-' + progFormat#id#(prog#id#.total - pos));
@@ -378,6 +379,7 @@
       	function panelDown#id#() {
     		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").addClass('open');
     		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
+    		setTimeout(function() { $(".eqLogic[data-eqLogic_id=#id#] .infoCloseH").focus(); }, 50); // clavier : focus dans le panneau
 		}
 
 		// Texte défilant du panneau Info (remplace <marquee>, qui ne fonctionne pas partout) :
@@ -412,6 +414,18 @@
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		})
+
+		// Clavier : Entrée / Espace activent les boutons, Échap ferme le panneau Info
+		$('.eqLogic[data-eqLogic_id=#id#] [role=button]').on('keydown', function(e) {
+			if (e.key != 'Enter' && e.key != ' ' && e.key != 'Spacebar') return;
+			e.preventDefault();
+			$(this).trigger('click');
+		});
+		$('.eqLogic[data-eqLogic_id=#id#] .downpanelH').on('keydown', function(e) {
+			if (e.key != 'Escape' && e.key != 'Esc') return;
+			panelDownClose#id#();
+			$('.eqLogic[data-eqLogic_id=#id#] .infoBtnH').focus();
+		});
 
 		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de
 		// chanson (cover ou titre), 8 s au plus. Les autres boutons ne restent pas grisés. À la souris : :hover.

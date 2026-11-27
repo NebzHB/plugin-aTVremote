@@ -1442,6 +1442,35 @@ class aTVremote extends eqLogic {
 		$cssFile = dirname(__FILE__) . '/../template/dashboard/css/style.css';
 		$replace['#cssVersion#'] = file_exists($cssFile) ? filemtime($cssFile) : 0;
 
+		// Textes du widget HomePod (infobulles et libellés lus par les lecteurs d'écran), traduits
+		$texts = array(
+			'shuffleOff' => __('Aléatoire désactivé', __FILE__),
+			'shuffleOn' => __('Aléatoire activé', __FILE__),
+			'repeatOff' => __('Répétition désactivée', __FILE__),
+			'repeatAll' => __('Répéter tout', __FILE__),
+			'repeatTrack' => __('Répéter la piste', __FILE__),
+			'volDown' => __('Baisser le volume', __FILE__),
+			'volUp' => __('Monter le volume', __FILE__),
+			'play' => __('Lecture', __FILE__),
+			'pause' => __('Pause', __FILE__),
+			'previous' => __('Précédent', __FILE__),
+			'next' => __('Suivant', __FILE__),
+			'info' => __('Informations', __FILE__),
+			'close' => __('Fermer', __FILE__),
+			'volume' => __('Volume', __FILE__),
+			'cover' => __('Pochette', __FILE__),
+			'progress' => __('Progression', __FILE__),
+		);
+		foreach ($texts as $key => $text) {
+			$replace['#txt_' . $key . '#'] = htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // &apos; plutôt que &#039; : pas de # dans les valeurs
+		}
+		// Textes utilisés dans le script du widget
+		$replace['#txt_js#'] = json_encode(array(
+			'remain' => __('reste', __FILE__),
+			'daemonOff' => __('Démon aTVremote arrêté', __FILE__),
+			'loading' => __('Chargement en cours', __FILE__),
+		), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+
 		if ($Test == "Apple TV"){
 			if($this->getConfiguration('version',0) == '3') {
 				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv3', 'aTVremote')));
