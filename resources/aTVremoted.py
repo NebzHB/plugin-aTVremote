@@ -24,6 +24,8 @@ from enum import Enum
 import aiohttp
 from aiohttp import web
 
+from urllib.parse import urlparse
+
 import pyatv
 from pyatv import exceptions as atv_exceptions
 from pyatv.const import Protocol, ShuffleState, RepeatState, InputAction, FeatureName, FeatureState
@@ -430,11 +432,35 @@ def error_code(exc: Exception) -> tuple[str, str]:
     return "error", f"{type(exc).__name__}: {exc}"
 
 
+async def launch_app_checked(atv, target: str) -> None:
+    """Lance une app en vérifiant la réponse de l'Apple TV.
+
+    pyatv (Companion) ne lève une erreur que si la réponse contient « _em ». Quand l'Apple TV ne peut pas
+    ouvrir l'app (app déchargée, pas installée…), elle répond avec « _ec » / « _ed » (ex. FBSOpenApplication-
+    ErrorDomain code 4) : pyatv le prend pour un succès (pyatv #2868). On envoie donc la même requête que
+    pyatv nous-mêmes pour lire la réponse, sans modifier la bibliothèque ; à défaut, appel normal."""
+    companion = atv.apps.get(Protocol.Companion) if hasattr(atv.apps, "get") else None
+    api = getattr(companion, "api", None)
+    if api is None or not hasattr(api, "_send_command"):
+        await atv.apps.launch_app(target)
+        return
+    key = "_urlS" if urlparse(target).scheme else "_bundleID"
+    resp = await api._send_command("_launchApp", {key: target})
+    for part in (resp, resp.get("_c") if isinstance(resp, dict) else None):
+        if isinstance(part, dict) and any(k in part for k in ("_ec", "_eu", "_ed")):
+            detail = str(part.get("_ed") or part.get("_eu") or part.get("_ec"))
+            raise CommandRefused("launchFailed", detail)
+
+
 async def dispatch_and_notify(device: "Device", name: str, args: list) -> None:
     """Run one command against the device, then (for read/informational commands)
     proactively send the matching Jeedom event using the result, mirroring what
     Node's stdout substring-parser used to do for the same CLI command."""
     check_feature(device.atv, name)
+    if name == "launch_app" and args:
+        await launch_app_checked(device.atv, str(args[0]))
+        log_fr(f"[CMD][{device.mac}] App lancée : {args[0]}", LEVEL_INFO)
+        return
     if name == "artwork_save":
         artwork = await resolve_and_call(device.atv, name, args)
         if artwork is not None:
