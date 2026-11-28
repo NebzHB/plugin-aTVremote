@@ -2,14 +2,14 @@
 	"id": "aTVremote",
 	"name": "aTV Remote",
 	"description": {
-		"fr_FR": "aTV Remote - Permet de commander votre AppleTV - restera en BETA longtemps !",
-		"en_US": "aTV Remote - to command your AppleTV - will stay in BETA for a long time!",
-		"es_ES": "aTV Remote - Controla tu AppleTV - ¡estará en BETA durante mucho tiempo!",
-		"de_DE": "aTV Remote - Ermöglicht die Steuerung Ihres AppleTV - wird lange in BETA bleiben!",
-		"it_IT": "aTV Remote - Controlla la tua AppleTV - rimarrà in BETA per molto tempo!",
-		"pt_PT": "aTV Remote - Controla a tua AppleTV - vai ficar em BETA durante muito tempo!"
+		"fr_FR": "aTV Remote - Permet de commander vos Apple TV et vos HomePod (lecture, pochette, volume, télécommande) - restera en BETA longtemps !",
+		"en_US": "aTV Remote - to command your Apple TVs and HomePods (playback, artwork, volume, remote) - will stay in BETA for a long time!",
+		"es_ES": "aTV Remote - Controla tus Apple TV y HomePod (reproducción, carátula, volumen, mando) - ¡estará en BETA durante mucho tiempo!",
+		"de_DE": "aTV Remote - Ermöglicht die Steuerung Ihrer Apple TV und HomePods (Wiedergabe, Cover, Lautstärke, Fernbedienung) - wird lange in BETA bleiben!",
+		"it_IT": "aTV Remote - Controlla le tue Apple TV e i tuoi HomePod (riproduzione, copertina, volume, telecomando) - rimarrà in BETA per molto tempo!",
+		"pt_PT": "aTV Remote - Controla as tuas Apple TV e os teus HomePod (reprodução, capa, volume, comando) - vai ficar em BETA durante muito tempo!"
 	},
-	"utilization": "ATTENTION : Non supporté : Buster&Stretch&Jessie & Docker & Jeedom Mini+ & Raspberry Pi 1-2 & Raspberry Zéro (armv6) & i386 (32bits)\n\nPas de bouton micro (Siri) Voir documentation.",
+	"utilization": "Apple TV (3, HD, 4K) et HomePod (HomePod, HomePod mini, mini 2).\n\nATTENTION : Debian 12 minimum. Non supporté : Debian 11 et plus ancien & Docker & Jeedom Mini+ & Raspberry Pi 1-2 & Raspberry Zéro (armv6) & i386 (32bits)\n\nPas de bouton micro (Siri) Voir documentation.",
 	"licence": "AGPL",
 	"author": "Nebz,Wators",
 	"hasDependency": true,
@@ -17,7 +17,7 @@
 	"display": "panel",
 	"require": "4.4",
 	"os": {
-		"min": 11
+		"min": 12
 	},
 	"category": "multimedia",
 	"issue": "https://github.com/NebzHB/plugin-aTVremote/issues",
