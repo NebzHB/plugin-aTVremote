@@ -180,6 +180,7 @@
         "Genre": "Genre",
         "Hash": "Hash",
         "Hors Veille": "Aus dem Standby",
+        "Identifiant iTunes": "iTunes-ID",
         "Indiquez la ou les commande(s) à lancer sur l'équipement (Attention risque de crash démon si erreur de syntaxe)": "Geben Sie den\/die Befehl(e) an, der\/die auf dem Gerät ausgeführt werden soll(en) (Achtung: Absturzgefahr des Dämonen bei Syntaxfehlern)",
         "Info Volume": "Info Lautstärke",
         "Lancer App": "App starten",
