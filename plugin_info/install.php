@@ -18,18 +18,20 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
+// Debian 12 (Bookworm) minimum : avertissement dans le centre de messages sinon
+function aTVremote_checkDebian() {
+	$version = (int)trim((string)shell_exec('lsb_release -r -s 2>/dev/null'));
+	if ($version > 0 && $version < 12) {
+		message::add('aTVremote', 'Attention, votre version de Debian est la ' . $version . ' et ce plugin n\'est compatible qu\'avec Debian 12 (Bookworm) et au-delà');
+	}
+}
+
 function aTVremote_install() {
-	if(trim(shell_exec("lsb_release -c | grep 'jessie' | wc -l")) == "1")
-		message::add('aTVremote', 'Attention, votre version de Debian est Jessie (8) et ce plugin n\'est compatible que avec Buster (10) et au delà');
-	if(trim(shell_exec("lsb_release -c | grep 'stretch' | wc -l")) == "1")
-		message::add('aTVremote', 'Attention, votre version de Debian est Stretch (9) et ce plugin n\'est compatible que avec Buster (10) et au delà');
+	aTVremote_checkDebian();
 }
 
 function aTVremote_update() {
-	if(trim(shell_exec("lsb_release -c | grep 'jessie' | wc -l")) == "1")
-		message::add('aTVremote', 'Attention, votre version de Debian est Jessie (8) et ce plugin n\'est compatible que avec Buster (10) et au delà');
-	if(trim(shell_exec("lsb_release -c | grep 'stretch' | wc -l")) == "1")
-		message::add('aTVremote', 'Attention, votre version de Debian est Stretch (9) et ce plugin n\'est compatible que avec Buster (10) et au delà');
+	aTVremote_checkDebian();
 	foreach (eqLogic::byType('aTVremote') as $aTVremote) {
 		$aTVremote->save();
 	}
