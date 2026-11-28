@@ -37,7 +37,12 @@ except ImportError:
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "..", "data")  # même dossier que le démon Node.js : <plugin>/data/<mac>-airplay.key
 ARTWORK_DIR = os.path.join(BASE_DIR, "..", "core", "img", "artworks")
-ARTWORK_PATH = os.path.join(ARTWORK_DIR, "artwork.png")
+
+
+def artwork_path(mac: str) -> str:
+    """Une pochette par appareil (le démon Node.js écrit un seul artwork.png commun : deux appareils qui
+    changent de morceau en même temps pouvaient s'échanger leur pochette). Même nom côté PHP."""
+    return os.path.join(ARTWORK_DIR, "artwork-" + mac.upper().replace(":", "") + ".png")
 
 LEVEL_ERROR, LEVEL_WARNING, LEVEL_INFO, LEVEL_DEBUG = 0, 1, 2, 3
 _LEVEL_NAMES = {LEVEL_ERROR: "ERROR", LEVEL_WARNING: "WARNING", LEVEL_INFO: "INFO", LEVEL_DEBUG: "DEBUG"}
@@ -320,8 +325,11 @@ async def dispatch_and_notify(device: "Device", name: str, args: list) -> None:
         artwork = await resolve_and_call(device.atv, name, args)
         if artwork is not None:
             os.makedirs(ARTWORK_DIR, exist_ok=True)
-            with open(ARTWORK_PATH, "wb") as f:
+            path = artwork_path(device.mac)
+            with open(path + ".tmp", "wb") as f:
                 f.write(artwork.bytes)
+            os.replace(path + ".tmp", path)  # fichier complet d'un coup : le PHP ne lit jamais une pochette à moitié écrite
+            log_fr(f"[CMD][{device.mac}] Pochette enregistrée ({len(artwork.bytes)} octets)", LEVEL_DEBUG)
         else:
             send_to_jeedom("reaskArtwork", device.mac)
         return
@@ -497,6 +505,13 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
             send_powerstate_event(mac, atv.power.power_state)
         except Exception as exc:
             log_fr(f"[{mac}] État d'alimentation indisponible : {exc!r}", LEVEL_DEBUG)
+        # volume initial : en mode Python, Jeedom ne l'interroge plus, les changements arrivent par le listener
+        try:
+            if atv.features.in_state(FeatureState.Available, FeatureName.Volume):
+                log_fr(f"[MSG][{mac}] Volume initial envoyé à jeedom |{atv.audio.volume}", LEVEL_DEBUG)
+                send_to_jeedom("volume", mac, data=str(atv.audio.volume))
+        except Exception as exc:
+            log_fr(f"[{mac}] Volume indisponible : {exc!r}", LEVEL_DEBUG)
         if version_num == 3:
             spawn(send_playing_event(device), f"l'envoi de la lecture de {mac}")
 

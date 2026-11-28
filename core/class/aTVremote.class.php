@@ -26,6 +26,7 @@ class aTVremote extends eqLogic {
 	}
 	public static function cron($_eqlogic_id = null) {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
+		$pythonDaemon = (self::daemonType() == 'python'); // le démon Python reçoit le volume en temps réel : pas besoin de l'interroger
 		foreach ($eqLogics as $eqLogic) {
 			try {
 				if(is_object($eqLogic)) {
@@ -42,14 +43,14 @@ class aTVremote extends eqLogic {
 						if(is_object($play_state)) {
 							$val=$play_state->getCache('value');
 							if($val) { // if playing : 1min
-								$eqLogic->aTVdaemonExecute('volume');
+								if(!$pythonDaemon) $eqLogic->aTVdaemonExecute('volume'); // démon Python : volume reçu en temps réel
 								if($eqLogic->getConfiguration('device','') != 'HomePod') {
 									$eqLogic->aTVdaemonExecute('features');
 								}
 							} else { // else : 5min
 								$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
 								if ($c->isDue()) {
-									$eqLogic->aTVdaemonExecute('volume');
+									if(!$pythonDaemon) $eqLogic->aTVdaemonExecute('volume');
 									if($eqLogic->getConfiguration('device','') != 'HomePod') {
 										$eqLogic->aTVdaemonExecute('features');
 									}
@@ -890,7 +891,9 @@ class aTVremote extends eqLogic {
 		$rel_folder = 'plugins/aTVremote/core/img/';
 		$abs_folder = realpath(dirname(__FILE__).'/../../../../'.$rel_folder).'/';
 		$artwork = $rel_folder.$id.'/'.$hash.'.jpg';
-		$src =	   $abs_folder.$id.'/'.'artwork.png';
+		// démon Python : une pochette par appareil (voir artwork_path() dans aTVremoted.py)
+		$srcName = (self::daemonType() == 'python') ? 'artwork-'.str_replace(':','',strtoupper($this->getConfiguration('mac',''))).'.png' : 'artwork.png';
+		$src =	   $abs_folder.$id.'/'.$srcName;
 		$dest =    $abs_folder.$id.'/'.$hash.'.jpg';
 	
 		if (!file_exists($abs_folder.$id.'/')) {
@@ -909,13 +912,13 @@ class aTVremote extends eqLogic {
 			
 			$t=1;
 			while(!file_exists($src) && $t < 16) {
-				log::add('aTVremote','debug',"Pas encore de artwork.png, on attend...".$t.'/15');
+				log::add('aTVremote','debug',"Pas encore de ".$srcName.", on attend...".$t.'/15');
 				usleep(0.333*1000000);
 				//sleep(1);
 				$t++;
 			}
 			if($t == 16) {
-				log::add('aTVremote','debug',"Pas de artwork.png !");
+				log::add('aTVremote','debug',"Pas de ".$srcName." !");
 				return false;
 			} else {
 				log::add('aTVremote','debug',"Artwork trouvé !");
