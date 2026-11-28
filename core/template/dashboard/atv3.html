@@ -48,7 +48,7 @@
 
 		</div>
 <!--  Artwork -->
-		<div class="aTVprogress tippied" id="progress#id#" style="display:none;" role="progressbar" aria-label="#txt_progress#" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progressBarH"></div></div>
+		<div class="aTVprogress" id="progress#id#" style="display:none;" role="progressbar" tabindex="0" aria-label="#txt_progress#" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="aTVprogressTrack"><div class="progressBarH"></div></div><span class="aTVprogressLabel" aria-hidden="true"></span></div>
 
 <!--  Statut & Info -->
 		<div class="info" style="height:calc(80px + #atvExtra#px);padding-top:calc(#atvExtra#px / 2);"><!-- place gagnée : moitié au-dessus des textes, moitié en dessous -->
@@ -60,7 +60,7 @@
 			<p class="titre_hide" style="margin: -1px 0 8px;"><a class="titre_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></a></p>
 			<p class="album_hide" style="margin: -7px 0 8px;"><a class="album_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></a></p>
 
-			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote aTVline aTVloop" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position tippied"></span></span></span></a><br></p>
+			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote aTVline aTVloop" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span></span></span></a><br></p>
 			<div style="display: block;margin: -5px 19px 10px;position: absolute;top: calc(263px + #atvExtra#px);" class="menu_action">
 				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" role="button" tabindex="0" aria-label="#txt_menu#"><img src='plugins/aTVremote/core/template/dashboard/images/menu2.svg' alt="" style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" role="button" tabindex="0" aria-label="#txt_home#"><img src='plugins/aTVremote/core/template/dashboard/images/monitor.svg' alt="" style="width:40px;"/></a>
@@ -246,7 +246,7 @@
 		jeedom.cmd.refreshValue([{cmd_id: '#genre_id#',display_value:'#genre#'}]);
 		jeedom.cmd.refreshValue([{cmd_id: '#media_type_id#',display_value:'#media_type#'}]);
 
-//Position : dans la ligne d'infos défilante.
+//Position : jauge sous la pochette ; position, durée et temps restant au survol (ou au toucher) de la jauge.
 //Le démon n'envoie la position qu'aux changements d'état (début de piste, pause, reprise…) :
 //entre deux messages, elle avance localement à partir de la dernière position reçue.
 		function progParseTime#id#(t) { // "5s", "03:50", "1:02:03"
@@ -269,9 +269,8 @@
 			prog#id#.at = Date.now();
 		}
 		function progRender#id#() {
-			var el = $('.eqLogic[data-eqLogic_id=#id#] .info_hide .position');
-			if (!el.length || !document.body.contains(el[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
 			var bar = $('#progress#id#');
+			if (!bar.length || !document.body.contains(bar[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
 			if (prog#id#.total <= 0) {
 				bar.hide();
 				clearInterval(prog#id#.timer);
@@ -280,12 +279,9 @@
 			}
 			var pos = progCurrent#id#(), pct = Math.round(pos * 100 / prog#id#.total);
 			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + pct + ' % · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos);
-			el.text(progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' (' + pct + '%)').attr('title', label);
-			// jauge sous la pochette (comme sur le HomePod)
-			bar.show().attr({title: label, 'aria-valuenow': pct, 'aria-valuetext': label}).children('.progressBarH').css('width', (pos * 100 / prog#id#.total) + '%');
-			// le texte s'allonge (ex. 9:59 → 10:00) : ne relancer le défilement que s'il ne tient plus
-			var line = el.closest('.aTVline');
-			if (!line.hasClass('scrolling') && line.children('.aTVscroll')[0].scrollWidth > line.innerWidth() + 1) fitMarquee#id#();
+			bar.show().attr({'aria-valuenow': pct, 'aria-valuetext': label});
+			bar.find('.progressBarH').css('width', (pos * 100 / prog#id#.total) + '%');
+			bar.children('.aTVprogressLabel').text(progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos)); // la barre montre déjà le %
 			if (eqState#id#.playing && !prog#id#.timer) {
 				prog#id#.timer = setInterval(progRender#id#, 1000);
 			} else if (!eqState#id#.playing && prog#id#.timer) {
@@ -299,20 +295,23 @@
 			var value = String(_options.display_value || '');
 			var m = value.match(/^\s*([^\/\s]+)\s*\/\s*([^\s(]+)/);
 			var pos = m ? progParseTime#id#(m[1]) : NaN, total = m ? progParseTime#id#(m[2]) : NaN;
-			var el = $('.eqLogic[data-eqLogic_id=#id#] .info_hide .position');
 			if (isNaN(pos) || isNaN(total) || total <= 0) {
-				prog#id#.total = 0;
-				// format inconnu : affiché tel quel
-				el.text((value == '-') ? '' : value).removeAttr('title').toggle(value != '-' && value != '');
+				prog#id#.total = 0; // pas de position (ou format inconnu) : pas de jauge
 			} else {
 				prog#id#.total = total;
 				prog#id#.pos = pos;
 				prog#id#.at = Date.now() - (positionAge#id# * 1000); // au chargement : la position date de positionAge s
-				el.show();
 			}
 			positionAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
 			progRender#id#();
-			fitMarquee#id#();
+		});
+		// toucher (ou Entrée au clavier) sur la jauge : affiche la position 3 s (pas de survol sur écran tactile)
+		var progLabelTimer#id#;
+		$('#progress#id#').on('click keydown', function(e) {
+			if (e.type == 'keydown' && e.key != 'Enter' && e.key != ' ') return;
+			var bar = $(this).addClass('showLabel');
+			clearTimeout(progLabelTimer#id#);
+			progLabelTimer#id# = setTimeout(function() { bar.removeClass('showLabel'); }, 3000);
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#position_id#',display_value:'#position#'}]);
 
@@ -348,7 +347,7 @@
 
 //Texte défilant (remplace <marquee>, qui ne fonctionne pas partout) : une seule ligne, défilement
 //seulement si le texte dépasse, selon l'option « marquee » du plugin (alternate = aller-retour,
-//scroll = boucle continue). La ligne d'infos (genre, type, position) défile toujours en boucle.
+//scroll = boucle continue). La ligne d'infos (genre, type) défile toujours en boucle.
 		function fitMarquee#id#() {
 			var loopOption = ('#marquee#' == 'scroll');
 			$('.eqLogic[data-eqLogic_id=#id#] .aTVline').each(function() {

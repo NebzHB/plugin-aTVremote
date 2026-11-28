@@ -974,15 +974,57 @@
 	outline: 2px solid rgba(255, 255, 255, 0.85);
 	outline-offset: 2px;
 }
-/* Apple TV : jauge d'avancement sous la pochette (comme sur le HomePod) */
+/* Apple TV : jauge d'avancement sous la pochette. La zone survolable fait 14px de haut autour de la barre de 3px ;
+   au survol (ou au toucher : classe showLabel) une étiquette affiche position, durée et temps restant. */
 .aTVremote .aTVprogress {
 	position: absolute;
-	top: 186px;
+	top: 180px;
 	left: 14px;
 	width: 110px;
+	height: 14px;
+	z-index: 9; /* étiquette devant les boutons du bas de la pochette */
+	cursor: default;
+}
+.aTVremote .aTVprogressTrack {
+	position: absolute;
+	top: 6px;
+	left: 0;
+	right: 0;
 	height: 3px;
 	border-radius: 2px;
 	background: rgba(255, 255, 255, 0.2);
 	overflow: hidden;
-	z-index: 3;
+}
+.aTVremote .aTVprogressLabel {
+	position: absolute;
+	top: 13px; /* sous la barre, dans l'espace vide avant les textes */
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	padding: 2px 6px;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.8);
+	color: #fff;
+	font-size: 10px;
+	line-height: 13px;
+	white-space: nowrap;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity .15s;
+}
+@media (hover: hover) {
+.aTVremote .aTVprogress:hover .aTVprogressLabel {
+	opacity: 1;
+}
+}
+.aTVremote .aTVprogress.showLabel .aTVprogressLabel,
+.aTVremote .aTVprogress:focus-visible .aTVprogressLabel {
+	opacity: 1;
+}
+.aTVremote .aTVprogress:focus {
+	outline: none;
+}
+.aTVremote .aTVprogress:focus-visible .aTVprogressTrack {
+	outline: 2px solid rgba(255, 255, 255, 0.85);
+	outline-offset: 2px;
 }
