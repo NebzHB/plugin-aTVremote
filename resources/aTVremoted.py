@@ -344,6 +344,9 @@ class Device:
         self.atv = None
         self.task: asyncio.Task | None = None
         self.give_up = False
+        # pyatv ne garde qu'une référence FAIBLE vers les listeners : sans référence ici ils sont
+        # détruits aussitôt créés et plus aucun message (lecture, veille, volume) n'arrive.
+        self.listeners: list = []
 
 
 devices: dict[str, Device] = {}
@@ -401,19 +404,26 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
         log_fr(f"[{mac}] Connecté avec succès !", LEVEL_INFO)
 
         conn_listener = _ConnDeviceListener(mac)
+        power_listener = _ConnPowerListener(mac)
+        device.listeners = [conn_listener, power_listener]
         atv.listener = conn_listener
-        atv.power.listener = _ConnPowerListener(mac)
+        atv.power.listener = power_listener
         if version_num != 3:
-            atv.push_updater.listener = _ConnPushListener(device)
+            push_listener = _ConnPushListener(device)
+            device.listeners.append(push_listener)
+            atv.push_updater.listener = push_listener
             atv.push_updater.start()
         if _ConnAudioListener is not None:
             try:
-                atv.audio.listener = _ConnAudioListener(device)
+                audio_listener = _ConnAudioListener(device)
+                device.listeners.append(audio_listener)
+                atv.audio.listener = audio_listener
             except Exception:
                 pass
 
         await conn_listener.disconnected.wait()
         device.atv = None
+        device.listeners = []
         atv.close()
         if device.give_up:
             break
