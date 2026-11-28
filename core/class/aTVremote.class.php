@@ -44,20 +44,20 @@ class aTVremote extends eqLogic {
 							$val=$play_state->getCache('value');
 							if($val) { // if playing : 1min
 								if(!$pythonDaemon) $eqLogic->aTVdaemonExecute('volume'); // démon Python : volume reçu en temps réel
-								if($eqLogic->getConfiguration('device','') != 'HomePod') {
+								if(!$pythonDaemon && $eqLogic->getConfiguration('device','') != 'HomePod') { // démon Python : features relues après chaque changement
 									$eqLogic->aTVdaemonExecute('features');
 								}
 							} else { // else : 5min
 								$c = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
 								if ($c->isDue()) {
 									if(!$pythonDaemon) $eqLogic->aTVdaemonExecute('volume');
-									if($eqLogic->getConfiguration('device','') != 'HomePod') {
+									if(!$pythonDaemon && $eqLogic->getConfiguration('device','') != 'HomePod') {
 										$eqLogic->aTVdaemonExecute('features');
 									}
 								}
 							}
 						}
-						if($eqLogic->getConfiguration('device','') != 'HomePod') {
+						if(!$pythonDaemon && $eqLogic->getConfiguration('device','') != 'HomePod') { // démon Python : veille reçue en temps réel
 							$nc = new Cron\CronExpression(checkAndFixCron('*/5 * * * *'), new Cron\FieldFactory);
 							if ($nc->isDue()) {
 								$eqLogic->aTVdaemonExecute('power_state');
@@ -424,6 +424,20 @@ class aTVremote extends eqLogic {
 				if (is_object($volume)) {
 					$changed=$eqLogic->checkAndUpdateCmd($volume, explode('.',init('data'))[0]) || $changed;
 					if(!$changed) $volume->event(explode('.',init('data'))[0]);
+				}
+			break;
+			case 'artwork': // démon Python : pochette récupérée par le démon (chemin, ou null = image par défaut)
+				$info = json_decode(init('data'), true);
+				$hash = $eqLogic->getCmd(null, 'hash');
+				if (is_array($info) && is_object($hash) && isset($info['hash']) && $hash->execCmd() == $info['hash']) {
+					$artwork_url = $eqLogic->getCmd(null, 'artwork_url');
+					if (is_object($artwork_url)) {
+						$url = (!empty($info['url'])) ? $info['url'] : $eqLogic->getImage(true);
+						log::add('aTVremote', 'debug', "--MàJ de la commande avec :" . $url . '...');
+						$changed = $eqLogic->checkAndUpdateCmd($artwork_url, $url) || $changed;
+					}
+				} else {
+					log::add('aTVremote', 'debug', "Pochette d'un morceau qui n'est plus en cours, ignorée");
 				}
 			break;
 			case 'reaskArtwork':
@@ -1193,7 +1207,9 @@ class aTVremote extends eqLogic {
 			}
 			
 			//if(isset($aTVremoteinfo['title']) && trim($aTVremoteinfo['title']) != "" && $isPlaying) {
-			if($hashChanged && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) != 'unknown') {
+			if($hashChanged && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) != 'unknown' && self::daemonType() == 'python' && $this->getConfiguration('version',0) != '3') {
+				log::add('aTVremote','debug',"Pochette récupérée par le démon Python");
+			} elseif($hashChanged && strtolower($aTVremoteinfo['device_state']) != 'idle' && strtolower($aTVremoteinfo['media_type']) != 'unknown') {
 				if(! $this->setArtwork($aTVremoteinfo['hash'])) {
 					$artwork = $this->getImage(true);
 					$artwork_url = $this->getCmd(null, 'artwork_url');

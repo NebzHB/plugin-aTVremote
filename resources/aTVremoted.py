@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -180,6 +181,61 @@ async def send_playing_event(device: "Device", playing: Playing | None = None) -
     log_fr(f"[MSG][{device.mac}] Reçu playing et envoyé à jeedom |{data}", LEVEL_DEBUG)
     send_to_jeedom("playing", device.mac, data=data)
     schedule_features(device, playing, app.identifier if app else None)
+    if device.version_num != 3:
+        maybe_fetch_artwork(device, playing)
+
+
+# ---------------------------------------------------------------------------
+# Pochette gérée par le démon (hors Apple TV 3) : à chaque nouveau morceau, il la récupère lui-même,
+# l'écrit sous son nom définitif (md5 du hash, comme setArtwork() en PHP) et envoie le chemin à Jeedom.
+# Plus de demande artwork_save, d'attente du fichier ni de renommage côté PHP.
+# ---------------------------------------------------------------------------
+
+ARTWORK_URL_DIR = "plugins/aTVremote/core/img/artworks/"
+ARTWORK_WIDTH, ARTWORK_HEIGHT = 138, -1  # mêmes valeurs que setArtwork() en PHP
+ARTWORK_TRIES = 4  # l'appareil n'a pas toujours la pochette tout de suite : 4 essais, 1 s d'écart
+
+
+def maybe_fetch_artwork(device: "Device", playing: Playing) -> None:
+    state = str(_enum_name(playing.device_state, lower=True) or "")
+    media = str(_enum_name(playing.media_type, lower=True) or "")
+    if not playing.hash or state == "idle" or media == "unknown":
+        return  # mêmes conditions que setaTVremoteInfo() en PHP : on garde la pochette précédente
+    if playing.hash == device.artwork_hash:
+        return  # déjà fait (ou en cours) pour ce morceau
+    device.artwork_hash = playing.hash
+    spawn(fetch_artwork(device, playing.hash), f"la pochette de {device.mac}")
+
+
+async def fetch_artwork(device: "Device", track_hash: str) -> None:
+    name = hashlib.md5(track_hash.encode("utf-8")).hexdigest() + ".jpg"
+    dest = os.path.join(ARTWORK_DIR, name)
+    url = ARTWORK_URL_DIR + name
+    if os.path.exists(dest):
+        os.utime(dest)  # garde la pochette dans le cache (nettoyage par date)
+        log_fr(f"[MSG][{device.mac}] Pochette déjà en cache : {name}", LEVEL_DEBUG)
+        send_to_jeedom("artwork", device.mac, data=json.dumps({"hash": track_hash, "url": url}))
+        return
+    for attempt in range(1, ARTWORK_TRIES + 1):
+        if device.atv is None or device.artwork_hash != track_hash:
+            return  # déconnecté ou morceau suivant déjà là
+        try:
+            artwork = await device.atv.metadata.artwork(ARTWORK_WIDTH, ARTWORK_HEIGHT)
+        except Exception as exc:
+            log_fr(f"[MSG][{device.mac}] Pochette indisponible ({exc!r}), essai {attempt}/{ARTWORK_TRIES}", LEVEL_DEBUG)
+            artwork = None
+        if artwork is not None and artwork.bytes and device.artwork_hash == track_hash:
+            os.makedirs(ARTWORK_DIR, exist_ok=True)
+            with open(dest + ".tmp", "wb") as f:
+                f.write(artwork.bytes)
+            os.replace(dest + ".tmp", dest)
+            log_fr(f"[MSG][{device.mac}] Pochette enregistrée et envoyée à jeedom : {name} ({len(artwork.bytes)} octets, essai {attempt})", LEVEL_DEBUG)
+            send_to_jeedom("artwork", device.mac, data=json.dumps({"hash": track_hash, "url": url}))
+            return
+        await asyncio.sleep(1)
+    if device.artwork_hash == track_hash:
+        log_fr(f"[MSG][{device.mac}] Pas de pochette pour ce morceau, image par défaut", LEVEL_DEBUG)
+        send_to_jeedom("artwork", device.mac, data=json.dumps({"hash": track_hash, "url": None}))
 
 
 def send_powerstate_event(mac: str, power_state) -> None:
@@ -493,6 +549,7 @@ class Device:
         self.features_timer: asyncio.TimerHandle | None = None
         self.features_key = None
         self.last_features: dict | None = None
+        self.artwork_hash = None  # morceau dont la pochette a été (ou est en train d'être) récupérée
 
     def cancel_features(self) -> None:
         if self.features_timer is not None:
@@ -577,6 +634,8 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
             send_powerstate_event(mac, atv.power.power_state)
         except Exception as exc:
             log_fr(f"[{mac}] État d'alimentation indisponible : {exc!r}", LEVEL_DEBUG)
+        # features initiales : en mode Python, Jeedom ne les interroge plus (relues ensuite après chaque changement)
+        spawn(send_features_event(device), f"l'envoi des features de {mac}")
         # volume initial : en mode Python, Jeedom ne l'interroge plus, les changements arrivent par le listener
         try:
             if atv.features.in_state(FeatureState.Available, FeatureName.Volume):
