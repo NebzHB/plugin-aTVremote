@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 159 89" width="159" height="89">
+<defs><filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/><feOffset dx="1" dy="2.5" result="b"/><feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="4" y="1" width="148" height="87" rx="43.5" fill="#ddd"/>
+<circle cx="48.5" cy="44.5" r="36.8" fill="#fff" filter="url(#sh)"/>
+</svg>

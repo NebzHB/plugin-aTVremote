@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<defs><pattern id="stripes" patternUnits="userSpaceOnUse" x="5.65" width="7.78" height="7.78" patternTransform="rotate(45)"><rect width="7.78" height="7.78" fill="#4c4d4f"/><rect width="3.6" height="7.78" fill="#3f3f40"/></pattern></defs>
+<circle cx="64" cy="64" r="64" fill="url(#stripes)"/>
+<path fill="#fff" fill-rule="evenodd" d="M44.05 83.93L43.00 82.86L43.00 64.00L43.00 45.14L44.05 44.07L45.10 43.00L64.00 43.00L82.90 43.00L83.95 44.07L85.00 45.14L85.00 64.02L85.00 82.90L83.93 83.95L82.86 85.00L63.98 85.00L45.10 85.00L44.05 83.93Z"/>
+</svg>
