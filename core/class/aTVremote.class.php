@@ -949,6 +949,17 @@ class aTVremote extends eqLogic {
 			log::add('aTVremote', 'info', "Appairage " . $protocol . " réussi pour " . $this->getHumanName());
 			$url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'aTVremote') . "/reconnect?mac=" . urlencode($this->getConfiguration('mac', ''));
 			@file_get_contents($url); // reconnexion avec la nouvelle clé (sans effet si l'équipement est désactivé)
+			// Appairage complet d'une Apple TV encore désactivée (ajoutée par la détection, désactivée et invisible) :
+			// on l'active et on la rend visible, c'est ce qu'on veut après l'avoir appairée
+			$complete = ($this->getConfiguration('needAirplayPairing', '0') != '1' || $this->getConfiguration('pairingKeyAirplay', '') != '')
+				&& ($this->getConfiguration('needCompanionPairing', '0') != '1' || $this->getConfiguration('pairingKeyCompanion', '') != '');
+			if ($complete && $this->getIsEnable() != 1) {
+				$this->setIsEnable(1);
+				$this->setIsVisible(1);
+				$this->save(); // postSave connecte l'appareil au démon
+				log::add('aTVremote', 'info', "Appairage terminé : " . $this->getHumanName() . " activé et rendu visible");
+				$result['activated'] = true;
+			}
 		}
 		return $result;
 	}

@@ -55,7 +55,14 @@ var aTVPairWizard = (function () {
 		});
 	}
 
+	// iOS n'ouvre le clavier que si un champ reçoit le focus pendant le geste (clic, frappe). Le code arrive
+	// après une requête : un champ relais invisible prend le focus au clic (le clavier s'ouvre) et le garde
+	// pendant l'attente, puis le champ du code le récupère (le clavier reste ouvert).
+	function keepKeyboard() {
+		$overlay.find('.apw-keep').trigger('focus');
+	}
 	function render(html, focusSelector) {
+		if ($(document.activeElement).is('.apw-pin')) keepKeyboard(); // le champ va être remplacé : garder le clavier
 		var steps = '';
 		if (state.queue.length > 1) {
 			steps = '<ol class="apw-steps">' + state.queue.map(function (proto, i) {
@@ -152,6 +159,7 @@ var aTVPairWizard = (function () {
 			'<span class="apw-big-icon"><i class="fas fa-check"></i></span>' +
 			'<h3 class="apw-title apw-center" style="margin-right:0">' + esc(state.name) + ' {{est appairée}}</h3>' +
 			'<p class="apw-text apw-center">' + esc(names) + ' : {{clé enregistrée, la connexion a été relancée. Vous pouvez fermer cette fenêtre.}}</p>' +
+			(state.activated ? '<p class="apw-text apw-center"><b>{{L\'équipement a été activé et rendu visible.}}</b></p>' : '') +
 			actions([{cls: 'btn-success', action: 'close', label: "{{Terminer}}"}])
 		);
 	}
@@ -198,6 +206,11 @@ var aTVPairWizard = (function () {
 			var proto = current();
 			state.done[proto] = true;
 			$('.eqLogicAttr[data-l1key=configuration][data-l2key=' + PROTOCOLS[proto].key + ']').value(result.credentials);
+			if (result.activated) { // l'équipement vient d'être activé et rendu visible : la page doit le refléter
+				state.activated = true;
+				$('.eqLogicAttr[data-l1key=isEnable]').value(1);
+				$('.eqLogicAttr[data-l1key=isVisible]').value(1);
+			}
 			if (typeof aTVPairStatusRefresh === 'function') aTVPairStatusRefresh();
 			if (state.index < state.queue.length - 1) {
 				state.index++;
@@ -224,12 +237,13 @@ var aTVPairWizard = (function () {
 	function build() {
 		$overlay = $('<div class="apw-overlay" hidden role="dialog" aria-modal="true" aria-label="{{Assistant d\'appairage}}">' +
 			'<div class="apw-panel"><button type="button" class="apw-close" data-apw="cancel" aria-label="{{Fermer}}">&times;</button>' +
+			'<input class="apw-keep" type="text" inputmode="numeric" tabindex="-1" aria-hidden="true" autocomplete="off" />' +
 			'<div class="apw-content"></div></div></div>').appendTo('body');
 		$overlay.on('click', '[data-apw]', function () {
 			switch ($(this).data('apw')) {
-				case 'start': begin(); break;
-				case 'validate': validate(); break;
-				case 'restart': begin(); break;
+				case 'start': keepKeyboard(); begin(); break;
+				case 'validate': keepKeyboard(); validate(); break;
+				case 'restart': keepKeyboard(); begin(); break;
 				case 'cancel':
 				case 'close': close(); break;
 			}

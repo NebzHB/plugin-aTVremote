@@ -188,22 +188,38 @@
 	font: 600 18px/32px -apple-system, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* saisie du code */
+/* saisie du code (!important : les styles d'input de Jeedom passaient devant, champ décalé à gauche et petite police,
+   et iOS zoome sur un champ de moins de 16px) */
 .apw-pin {
-	display: block;
-	box-sizing: border-box;
-	width: 100%;
-	max-width: 220px;
-	height: 56px;
-	margin: 0 auto 6px;
-	padding: 0 0 0 .5em; /* compense l'espacement après le dernier chiffre */
-	border: 2px solid rgba(127, 127, 127, .4);
-	border-radius: 10px;
-	background: var(--form-bg-color, #fff);
-	color: inherit;
-	text-align: center;
-	font: 600 30px/52px -apple-system, "Helvetica Neue", Arial, sans-serif;
-	letter-spacing: .5em;
+	display: block !important;
+	box-sizing: border-box !important;
+	width: 100% !important;
+	max-width: 220px !important;
+	height: 56px !important;
+	margin: 0 auto 6px !important;
+	padding: 0 0 0 .5em !important; /* compense l'espacement après le dernier chiffre */
+	border: 2px solid rgba(127, 127, 127, .4) !important;
+	border-radius: 10px !important;
+	background: var(--form-bg-color, #fff) !important;
+	color: var(--txt-color, #333) !important;
+	text-align: center !important;
+	font: 600 30px/52px -apple-system, "Helvetica Neue", Arial, sans-serif !important;
+	letter-spacing: .5em !important;
+	text-indent: 0 !important;
+	box-shadow: none !important;
+}
+/* champ relais du clavier (voir keepKeyboard) : invisible, 16px pour qu'iOS ne zoome pas */
+.apw-keep {
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	border: 0 !important;
+	opacity: 0;
+	font-size: 16px !important;
+	pointer-events: none;
 }
 .apw-pin::placeholder {
 	color: inherit;
@@ -211,10 +227,10 @@
 }
 .apw-pin:focus {
 	outline: none;
-	border-color: var(--al-info-color, #3a87ad);
+	border-color: var(--al-info-color, #3a87ad) !important;
 }
 .apw-pin.apw-shake {
-	border-color: var(--al-danger-color, #d9534f);
+	border-color: var(--al-danger-color, #d9534f) !important;
 	animation: apw-shake .35s;
 }
 @keyframes apw-shake {
