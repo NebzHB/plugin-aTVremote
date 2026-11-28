@@ -208,9 +208,9 @@ class aTVremote extends eqLogic {
 		return $port;
 	}
 
-	// Démon choisi dans la configuration du plugin : Node.js (par défaut) ou Python
+	// Démon choisi dans la configuration du plugin : Python (par défaut) ou Node.js (ancien démon, appelé à disparaître)
 	public static function daemonType() {
-		return (config::byKey('daemonType', 'aTVremote', 'nodejs') == 'python') ? 'python' : 'nodejs';
+		return (config::byKey('daemonType', 'aTVremote', 'python') == 'nodejs') ? 'nodejs' : 'python';
 	}
 
 	public static function daemonPattern($type = null) {
