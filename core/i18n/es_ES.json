@@ -180,6 +180,7 @@
         "Genre": "Tipo",
         "Hash": "Hash",
         "Hors Veille": "Apagado en espera",
+        "Identifiant iTunes": "ID de iTunes",
         "Indiquez la ou les commande(s) à lancer sur l'équipement (Attention risque de crash démon si erreur de syntaxe)": "Indique el comando o comandos que deben ejecutarse en el dispositivo (Advertencia: riesgo de bloqueo del demonio si se produce un error de sintaxis)",
         "Info Volume": "Información de volumen",
         "Lancer App": "Iniciar aplicación",

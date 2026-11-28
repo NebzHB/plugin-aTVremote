@@ -103,6 +103,7 @@
 		<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
 			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
 			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+			<a class="aTVpanelLink" id="appleMusic#id#" href="#" target="_blank" rel="noopener" style="display:none;" title="#txt_appleMusic#" aria-label="#txt_appleMusic#" onclick="event.stopPropagation();"><i class="fab fa-apple" aria-hidden="true"></i></a>
 			<div class="aTVpanelContent">
 				<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
 				<div class="aTVpanelText">
@@ -310,6 +311,22 @@
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 
+//Lien Apple Music du panneau Info : seulement pour un morceau de musique avec un identifiant iTunes Store
+//(Apple Music / iTunes) ; rien pour Spotify, une radio, un film ou une série (identifiants d'une autre boutique)
+		var itunesId#id# = '', mediaType#id# = '';
+		function updateAppleMusic#id#() {
+			var link = $('#appleMusic#id#');
+			if (/^[1-9][0-9]*$/.test(itunesId#id#) && mediaType#id#.toLowerCase() == 'music') {
+				link.attr('href', 'https://music.apple.com/song/' + itunesId#id#).show();
+			} else {
+				link.hide().attr('href', '#');
+			}
+		}
+		jeedom.cmd.addUpdateFunction('#itunes_id_id#', function(_options){
+			itunesId#id# = String(_options.display_value || '').trim();
+			updateAppleMusic#id#();
+		});
+
 //Genre / type de média : dans la ligne d'infos défilante
 		function setMediaInfo#id#(cls, value) {
 			value = String(value == null ? '' : value);
@@ -322,9 +339,12 @@
 		});
 		jeedom.cmd.addUpdateFunction('#media_type_id#', function(_options){
 			setMediaInfo#id#('media', _options.display_value);
+			mediaType#id# = String(_options.display_value || '');
+			updateAppleMusic#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#genre_id#',display_value:'#genre#'}]);
 		jeedom.cmd.refreshValue([{cmd_id: '#media_type_id#',display_value:'#media_type#'}]);
+		jeedom.cmd.refreshValue([{cmd_id: '#itunes_id_id#',display_value:'#itunes_id#'}]);
 
 //Position : dans la ligne d'infos défilante.
 //Le démon n'envoie la position qu'aux changements d'état (début de piste, pause, reprise…) :
