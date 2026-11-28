@@ -138,10 +138,23 @@ $pythonDaemon = (aTVremote::daemonType() == 'python'); // démon Python : appair
 								</div>
 								<input type="text" id="SSHcmdPath" class="form-control hidden" value="<?=realpath(dirname(__FILE__) . '/../../resources/atvremote/bin/atvremote')?>"/>
 								<input type="text" id="savingWithGui" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="savingWithGui" />
+<?php if ($pythonDaemon) { // démon Python : un seul bouton et un état global (toutes les clés nécessaires présentes) ?>
+								<div id="PairDaemon" style="display:none">
+								<br />
+									<div class="form-group">
+										<label class="col-sm-3 control-label help" data-help="{{Cliquez sur Appairer : un assistant vous guide, un code s'affiche sur l'Apple TV et vous le saisissez dans Jeedom. Les clés sont enregistrées automatiquement.}}">{{Appairage}}</label>
+										<div class="col-sm-8">
+											<span id="pairStatus" class="label label-default" style="font-size:12px;"></span>
+											<small id="pairDetail" class="text-muted" style="margin-left:6px;"></small>
+											<a class="btn btn-primary btn-sm bt_pairDaemon" style="margin-left:10px;"><i class="fas fa-link"></i> <span class="pairBtnLabel">{{Appairer}}</span></a>
+										</div>
+									</div>
+								</div>
+<?php } ?>
 								<div id="Airplay" style="display:none">
 								<input type="text" id="needAirplayPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needAirplayPairing" />
-								<br />
 <?php if (!$pythonDaemon) { // démon Node.js : appairage en SSH ?>
+								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Airplay}}</label>
 										<div class="col-sm-8">
@@ -159,18 +172,8 @@ $pythonDaemon = (aTVremote::daemonType() == 'python'); // démon Python : appair
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 										</div>
 									</div>
-<?php } else { // démon Python : appairage depuis Jeedom ?>
-									<div class="form-group">
-										<label class="col-sm-3 control-label help" data-help="{{Cliquez sur Appairer : un code s'affiche sur l'Apple TV, saisissez-le dans Jeedom. La clé est enregistrée automatiquement.}}">{{Appairage Airplay}}</label>
-										<div class="col-sm-8">
-											<div class="input-group">
-												<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" readonly placeholder="{{Pas encore appairé}}"/>
-												<span class="input-group-btn">
-													<a class="btn btn-primary bt_pairDaemon" data-protocol="airplay" data-key="pairingKeyAirplay"><i class="fas fa-link"></i> {{Appairer}}</a>
-												</span>
-											</div>
-										</div>
-									</div>
+<?php } else { // démon Python : clé enregistrée par l'assistant (bouton Appairage global) ?>
+								<input type="text" class="eqLogicAttr hidden" data-l1key="configuration" data-l2key="pairingKeyAirplay" />
 <?php } ?>
 								</div>
 <?php if (!$pythonDaemon) { // aide en GIF : appairage en SSH seulement ?>
@@ -186,8 +189,8 @@ $pythonDaemon = (aTVremote::daemonType() == 'python'); // démon Python : appair
 <?php } ?>
 								<div id="Companion" style="display:none">
 								<input type="text" id="needCompanionPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needCompanionPairing" />
-								<br />
 <?php if (!$pythonDaemon) { // démon Node.js : appairage en SSH ?>
+								<br />
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Companion}}</label>
 										<div class="col-sm-8">
@@ -205,18 +208,8 @@ $pythonDaemon = (aTVremote::daemonType() == 'python'); // démon Python : appair
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 										</div>
 									</div>
-<?php } else { // démon Python : appairage depuis Jeedom ?>
-									<div class="form-group">
-										<label class="col-sm-3 control-label help" data-help="{{Cliquez sur Appairer : un code s'affiche sur l'Apple TV, saisissez-le dans Jeedom. La clé est enregistrée automatiquement.}}">{{Appairage Companion}}</label>
-										<div class="col-sm-8">
-											<div class="input-group">
-												<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" readonly placeholder="{{Pas encore appairé}}"/>
-												<span class="input-group-btn">
-													<a class="btn btn-primary bt_pairDaemon" data-protocol="companion" data-key="pairingKeyCompanion"><i class="fas fa-link"></i> {{Appairer}}</a>
-												</span>
-											</div>
-										</div>
-									</div>
+<?php } else { // démon Python : clé enregistrée par l'assistant (bouton Appairage global) ?>
+								<input type="text" class="eqLogicAttr hidden" data-l1key="configuration" data-l2key="pairingKeyCompanion" />
 <?php } ?>
 								</div>
 								<div id="VolumeCmds" style="display:none">

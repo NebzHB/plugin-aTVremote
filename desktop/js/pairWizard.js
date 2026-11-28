@@ -7,6 +7,7 @@ var aTVPairWizard = (function () {
 		airplay: {
 			name: 'AirPlay',
 			key: 'pairingKeyAirplay',
+			needKey: 'needAirplayPairing',
 			icon: 'fas fa-play',
 			role: "{{Télécommande, lecture, état et pochette}}",
 			tips: [
@@ -17,6 +18,7 @@ var aTVPairWizard = (function () {
 		companion: {
 			name: 'Companion',
 			key: 'pairingKeyCompanion',
+			needKey: 'needCompanionPairing',
 			icon: 'fas fa-th',
 			role: "{{Lancement des apps, allumer / éteindre, clavier}}",
 			tips: [
@@ -196,6 +198,7 @@ var aTVPairWizard = (function () {
 			var proto = current();
 			state.done[proto] = true;
 			$('.eqLogicAttr[data-l1key=configuration][data-l2key=' + PROTOCOLS[proto].key + ']').value(result.credentials);
+			if (typeof aTVPairStatusRefresh === 'function') aTVPairStatusRefresh();
 			if (state.index < state.queue.length - 1) {
 				state.index++;
 				begin();
@@ -246,17 +249,22 @@ var aTVPairWizard = (function () {
 	}
 
 	return {
-		/* protocols : liste des protocoles à appairer (ordre AirPlay puis Companion) ; force : protocole cliqué, refait même s'il est déjà appairé */
-		open: function (force) {
-			if (!$overlay) build();
-			var queue = [], paired = {};
+		/* état d'appairage lu dans la page : protocoles nécessaires et déjà appairés */
+		status: function () {
+			var needed = [], paired = {};
 			['airplay', 'companion'].forEach(function (proto) {
 				var p = PROTOCOLS[proto];
-				var needed = $('.eqLogicAttr[data-l1key=configuration][data-l2key=need' + p.name + 'Pairing]').value() == '1';
+				if ($('.eqLogicAttr[data-l1key=configuration][data-l2key=' + p.needKey + ']').value() == '1') needed.push(proto);
 				paired[proto] = $('.eqLogicAttr[data-l1key=configuration][data-l2key=' + p.key + ']').value() != '';
-				if (proto === force || (needed && !paired[proto])) queue.push(proto);
 			});
-			if (queue.length === 0) queue.push(force || 'airplay');
+			return {needed: needed, paired: paired, complete: needed.every(function (proto) { return paired[proto]; })};
+		},
+		/* protocoles nécessaires pas encore appairés ; s'ils le sont tous, on refait tout */
+		open: function () {
+			if (!$overlay) build();
+			var st = aTVPairWizard.status(), paired = st.paired;
+			var queue = st.needed.filter(function (proto) { return !paired[proto]; });
+			if (queue.length === 0) queue = st.needed.length ? st.needed.slice() : ['airplay'];
 			state = {
 				id: $('.eqLogicAttr[data-l1key=id]').value(),
 				name: $('.eqLogicAttr[data-l1key=name]').value() || 'Apple TV',
@@ -273,6 +281,27 @@ var aTVPairWizard = (function () {
 	};
 })();
 
+// Un seul bouton et un état global : « Appairée » seulement si toutes les clés nécessaires sont là
+function aTVPairStatusRefresh() {
+	var st = aTVPairWizard.status();
+	if (st.needed.length === 0) {
+		$('#PairDaemon').hide();
+		return;
+	}
+	$('#PairDaemon').show();
+	$('#pairStatus').removeClass('label-default label-success label-warning')
+		.addClass(st.complete ? 'label-success' : 'label-warning')
+		.html(st.complete ? '<i class="fas fa-check"></i> {{Appairée}}' : '<i class="fas fa-exclamation-triangle"></i> {{À appairer}}');
+	$('#pairDetail').text(st.needed.map(function (proto) {
+		return (proto === 'airplay' ? 'AirPlay' : 'Companion') + (st.paired[proto] ? ' ✓' : ' ✗');
+	}).join(' · '));
+	$('.bt_pairDaemon').toggleClass('btn-primary', !st.complete).toggleClass('btn-default', st.complete); // déjà appairée : bouton discret
+	$('.bt_pairDaemon .pairBtnLabel').text(st.complete ? "{{Refaire l'appairage}}" : "{{Appairer}}");
+}
+
+$('.eqLogicAttr[data-l1key=configuration]').filter('[data-l2key=needAirplayPairing],[data-l2key=needCompanionPairing],[data-l2key=pairingKeyAirplay],[data-l2key=pairingKeyCompanion]')
+	.on('change', aTVPairStatusRefresh);
+
 $('.bt_pairDaemon').off('click').on('click', function () {
-	aTVPairWizard.open($(this).data('protocol'));
+	aTVPairWizard.open();
 });
