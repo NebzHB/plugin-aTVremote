@@ -486,7 +486,22 @@ class aTVremote extends eqLogic {
     public static function discover($_mode) {
 		log::add('aTVremote','info','============================');
 		log::add('aTVremote','info',"Scan en cours...");
-        	$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
+		$output = null;
+		// Démon Python démarré : il fait la recherche lui-même (même texte que « atvremote scan »)
+		if (self::daemonType() == 'python' && self::deamon_info()['state'] == 'ok') {
+			$url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'aTVremote') . "/scan";
+			$json = @file_get_contents($url, false, stream_context_create(array('http' => array('timeout' => 30))));
+			$scan = ($json !== false) ? json_decode($json, true) : null;
+			if (is_array($scan) && isset($scan['output'])) {
+				log::add('aTVremote', 'info', "Scan par le démon Python");
+				$output = $scan['output'];
+			} else {
+				log::add('aTVremote', 'warning', "Scan par le démon Python impossible, scan en ligne de commande");
+			}
+		}
+		if ($output === null) {
+			$output=shell_exec(aTVremote::getaTVremote(true,true)." scan");
+		}
 		log::add('aTVremote','debug',"Résultat brut : ".$output);
 
 		if($output) {
