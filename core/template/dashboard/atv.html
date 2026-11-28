@@ -98,28 +98,31 @@
 		</div>
 	</div>
 
-	<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
-		<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
-		<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
-		<div class="aTVpanelContent">
-			<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
-			<div class="aTVpanelText">
-				<div class="titre_hide aTVline aTVpanelTitle"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></div>
-				<div class="artist_hide aTVline aTVpanelArtist"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></div>
-				<div class="album_hide aTVline aTVpanelAlbum"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></div>
+	<!-- panneaux Info / Apps : partie haute du widget (pochette et infos), ils descendent du haut -->
+	<div class="aTVpanelClip">
+		<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
+			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
+			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+			<div class="aTVpanelContent">
+				<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
+				<div class="aTVpanelText">
+					<div class="titre_hide aTVline aTVpanelTitle"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></div>
+					<div class="artist_hide aTVline aTVpanelArtist"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></div>
+					<div class="album_hide aTVline aTVpanelAlbum"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="aTVpanel aTVappsPanel" role="dialog" aria-label="#txt_apps#" aria-hidden="true">
-		<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
-		<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#" title="#txt_close#" onclick="panelDownCloseApp#id#()">&times;</span>
-		<div class="aTVpanelContent">
-			<div class="aTVpanelHeading">#txt_apps#</div>
-			<div class="aTVpanelLabel">#txt_app#</div>
-			<div class="aTVpanelCurrent aTVappName">#txt_none#</div>
-			<label class="aTVpanelLabel" for="aTVlaunch#id#">#txt_launchApp#</label>
-			<select id="aTVlaunch#id#" class="aTVpanelSelect selectCmd"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select>
-			<a class="aTVpanelBtn cmd app_list" data-cmd_id="#cmd_app_list_id#" role="button" tabindex="0" title="#txt_refreshApps#"><i class="fas fa-sync-alt" aria-hidden="true"></i> #txt_refreshApps#</a>
+		<div class="aTVpanel aTVappsPanel" role="dialog" aria-label="#txt_apps#" aria-hidden="true">
+			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
+			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#" title="#txt_close#" onclick="panelDownCloseApp#id#()">&times;</span>
+			<div class="aTVpanelContent">
+				<div class="aTVpanelHeading">#txt_apps#</div>
+				<div class="aTVpanelLabel">#txt_app#</div>
+				<div class="aTVpanelCurrent aTVappName">#txt_none#</div>
+				<label class="aTVpanelLabel" for="aTVlaunch#id#">#txt_launchApp#</label>
+				<select id="aTVlaunch#id#" class="aTVpanelSelect selectCmd"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select>
+				<a class="aTVpanelBtn cmd app_list" data-cmd_id="#cmd_app_list_id#" role="button" tabindex="0" title="#txt_refreshApps#"><i class="fas fa-sync-alt" aria-hidden="true"></i> #txt_refreshApps#</a>
+			</div>
 		</div>
 	</div>
 
