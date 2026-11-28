@@ -656,7 +656,8 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
         log_fr(f"[{mac}] Reconnexion...", LEVEL_DEBUG)
         await asyncio.sleep(0.1)
 
-    devices.pop(mac, None)
+    if devices.get(mac) is device:  # pas une nouvelle connexion lancée entre-temps pour la même adresse
+        devices.pop(mac, None)
 
 
 def start_device_supervisor(mac: str, version_num: int | None) -> bool:
@@ -677,6 +678,8 @@ async def stop_device_supervisor(mac: str) -> None:
     if device.atv is not None:
         device.atv.close()
     else:
+        if device.task is not None:
+            device.task.cancel()  # connexion en cours ou attente avant nouvel essai
         devices.pop(mac, None)
 
 
@@ -742,6 +745,114 @@ async def handle_disconnect(request: web.Request) -> web.Response:
     return web.json_response({"result": "ok"})
 
 
+@routes.get("/reconnect")
+async def handle_reconnect(request: web.Request) -> web.Response:
+    """Ferme la connexion d'un appareil : la surveillance se reconnecte aussitôt en relisant les clés
+    d'appairage (après un appairage par exemple)."""
+    mac = request.query.get("mac", "").upper()
+    device = devices.get(mac)
+    if device is None or device.give_up:
+        return web.json_response({"result": "ko", "msg": "notConnected"})
+    log_fr(f"[{mac}] Reconnexion demandée (nouvelles clés d'appairage)", LEVEL_INFO)
+    if device.atv is not None:
+        device.atv.close()  # connection_closed -> le superviseur se reconnecte avec les nouvelles clés
+    return web.json_response({"result": "ok"})
+
+
+# ---------------------------------------------------------------------------
+# Appairage interactif (Apple TV) : /pair/begin affiche le code sur la TV, /pair/finish reçoit le code saisi
+# dans Jeedom et renvoie la clé. Remplace la commande « atvremote … pair » à taper en SSH.
+# ---------------------------------------------------------------------------
+
+PAIR_PROTOCOLS = {"airplay": Protocol.AirPlay, "companion": Protocol.Companion}
+PAIR_TIMEOUT = 180  # appairage abandonné s'il n'est pas terminé dans ce délai
+pairings: dict = {}
+
+
+async def _pair_close(key) -> None:
+    entry = pairings.pop(key, None)
+    if entry is None:
+        return
+    entry["timer"].cancel()
+    try:
+        await entry["pairing"].close()
+    except Exception as exc:
+        log_fr(f"[PAIR][{key[0]}] Erreur à la fermeture de l'appairage {key[1]} : {exc!r}", LEVEL_DEBUG)
+
+
+def _pair_key(request: web.Request):
+    return request.query.get("mac", "").upper(), request.query.get("protocol", "").lower()
+
+
+@routes.get("/pair/begin")
+async def handle_pair_begin(request: web.Request) -> web.Response:
+    key = _pair_key(request)
+    mac, proto_name = key
+    protocol = PAIR_PROTOCOLS.get(proto_name)
+    if protocol is None:
+        return web.json_response({"result": "ko", "msg": "invalid"})
+    await _pair_close(key)  # appairage précédent non terminé
+    loop = asyncio.get_event_loop()
+    log_fr(f"[PAIR][{mac}] Début de l'appairage {proto_name}", LEVEL_INFO)
+    storage = MemoryStorage()
+    results = await pyatv.scan(loop, identifier=mac, timeout=5, storage=storage)
+    if not results:
+        return web.json_response({"result": "ko", "msg": "notFound"})
+    conf = results[0]
+    if conf.get_service(protocol) is None:
+        return web.json_response({"result": "ko", "msg": "unsupported"})
+    pairing = await pyatv.pair(conf, protocol, loop, storage=storage, name="Jeedom")
+    try:
+        await pairing.begin()
+    except Exception as exc:
+        await pairing.close()
+        log_fr(f"[PAIR][{mac}] Échec du début de l'appairage {proto_name} : {exc!r}", LEVEL_ERROR)
+        return web.json_response({"result": "ko", "msg": "beginFailed", "detail": str(exc)})
+    pin = None
+    if not pairing.device_provides_pin:
+        pin = 1111 + int.from_bytes(os.urandom(2), "big") % 8888  # code à saisir sur l'appareil
+        pairing.pin(pin)
+    pairings[key] = {"pairing": pairing,
+                     "timer": loop.call_later(PAIR_TIMEOUT, lambda: spawn(_pair_close(key), f"l'abandon de l'appairage de {mac}"))}
+    return web.json_response({"result": "ok", "device_provides_pin": pairing.device_provides_pin, "pin": pin})
+
+
+@routes.get("/pair/finish")
+async def handle_pair_finish(request: web.Request) -> web.Response:
+    key = _pair_key(request)
+    mac, proto_name = key
+    entry = pairings.get(key)
+    if entry is None:
+        return web.json_response({"result": "ko", "msg": "noPairing"})
+    pairing = entry["pairing"]
+    if pairing.device_provides_pin:
+        pin = js_parse_int(request.query.get("pin", ""))
+        if pin is None:
+            return web.json_response({"result": "ko", "msg": "invalidPin"})  # on garde l'appairage : nouvel essai possible
+        pairing.pin(pin)
+    try:
+        await pairing.finish()
+        if not pairing.has_paired:
+            log_fr(f"[PAIR][{mac}] Appairage {proto_name} refusé", LEVEL_WARNING)
+            return web.json_response({"result": "ko", "msg": "failed"})
+        log_fr(f"[PAIR][{mac}] Appairage {proto_name} réussi", LEVEL_INFO)
+        return web.json_response({"result": "ok", "credentials": pairing.service.credentials})
+    except Exception as exc:
+        log_fr(f"[PAIR][{mac}] Échec de l'appairage {proto_name} : {exc!r}", LEVEL_WARNING)
+        return web.json_response({"result": "ko", "msg": "failed", "detail": str(exc)})
+    finally:
+        await _pair_close(key)  # réussi ou non, cet appairage est terminé (un échec demande de recommencer)
+
+
+@routes.get("/pair/cancel")
+async def handle_pair_cancel(request: web.Request) -> web.Response:
+    key = _pair_key(request)
+    if key in pairings:
+        log_fr(f"[PAIR][{key[0]}] Appairage {key[1]} annulé", LEVEL_INFO)
+    await _pair_close(key)
+    return web.json_response({"result": "ok"})
+
+
 @routes.get("/scan")
 async def handle_scan(request: web.Request) -> web.Response:
     """Recherche des appareils sur le réseau. Renvoie exactement le texte de « atvremote scan » (même
@@ -801,6 +912,8 @@ async def _shutdown() -> None:
                 close_tasks.extend(device.atv.close() or [])
             except Exception as exc:
                 log_fr(f"[{mac}] Erreur à la déconnexion : {exc!r}", LEVEL_DEBUG)
+    for key in list(pairings):
+        await _pair_close(key)
     if close_tasks:
         await asyncio.wait(close_tasks, timeout=3)  # connexions aux appareils fermées proprement
     if _runner is not None:

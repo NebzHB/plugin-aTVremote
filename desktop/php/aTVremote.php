@@ -5,6 +5,7 @@ if (!isConnect('admin')) {
 
 sendVarToJS('eqType', 'aTVremote');
 $eqLogics = eqLogic::byType('aTVremote');
+$pythonDaemon = (aTVremote::daemonType() == 'python'); // démon Python : appairage depuis Jeedom, plus de commande SSH ni d'aide en GIF
 ?>
 <div class="row row-overflow">
 	<div class="col-xs-12 eqLogicThumbnailDisplay">
@@ -140,6 +141,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 								<div id="Airplay" style="display:none">
 								<input type="text" id="needAirplayPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needAirplayPairing" />
 								<br />
+<?php if (!$pythonDaemon) { // démon Node.js : appairage en SSH ?>
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Airplay, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Airplay}}</label>
 										<div class="col-sm-8">
@@ -157,7 +159,21 @@ $eqLogics = eqLogic::byType('aTVremote');
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 										</div>
 									</div>
+<?php } else { // démon Python : appairage depuis Jeedom ?>
+									<div class="form-group">
+										<label class="col-sm-3 control-label help" data-help="{{Cliquez sur Appairer : un code s'affiche sur l'Apple TV, saisissez-le dans Jeedom. La clé est enregistrée automatiquement.}}">{{Appairage Airplay}}</label>
+										<div class="col-sm-8">
+											<div class="input-group">
+												<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyAirplay" readonly placeholder="{{Pas encore appairé}}"/>
+												<span class="input-group-btn">
+													<a class="btn btn-primary bt_pairDaemon" data-protocol="airplay" data-key="pairingKeyAirplay"><i class="fas fa-link"></i> {{Appairer}}</a>
+												</span>
+											</div>
+										</div>
+									</div>
+<?php } ?>
 								</div>
+<?php if (!$pythonDaemon) { // aide en GIF : appairage en SSH seulement ?>
 								<div id="HelpMe" style="display:none">
 									<br />
 									<div class="form-group">
@@ -167,9 +183,11 @@ $eqLogics = eqLogic::byType('aTVremote');
 										</div>
 									</div>
 								</div>
+<?php } ?>
 								<div id="Companion" style="display:none">
 								<input type="text" id="needCompanionPairing" class="eqLogicAttr form-control hidden" data-l1key="configuration" data-l2key="needCompanionPairing" />
 								<br />
+<?php if (!$pythonDaemon) { // démon Node.js : appairage en SSH ?>
 									<div class="form-group">
 										<label class="col-sm-3 control-label help" data-help="{{Commande à taper en SSH pour appairage Companion, un code s'affichera sur l'AppleTV, tapez-le à l'invité de commande}}">{{Commande Companion}}</label>
 										<div class="col-sm-8">
@@ -187,6 +205,19 @@ $eqLogics = eqLogic::byType('aTVremote');
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" placeholder="{{Résultat de la commande SSH ci-dessus}}"/>
 										</div>
 									</div>
+<?php } else { // démon Python : appairage depuis Jeedom ?>
+									<div class="form-group">
+										<label class="col-sm-3 control-label help" data-help="{{Cliquez sur Appairer : un code s'affiche sur l'Apple TV, saisissez-le dans Jeedom. La clé est enregistrée automatiquement.}}">{{Appairage Companion}}</label>
+										<div class="col-sm-8">
+											<div class="input-group">
+												<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="pairingKeyCompanion" readonly placeholder="{{Pas encore appairé}}"/>
+												<span class="input-group-btn">
+													<a class="btn btn-primary bt_pairDaemon" data-protocol="companion" data-key="pairingKeyCompanion"><i class="fas fa-link"></i> {{Appairer}}</a>
+												</span>
+											</div>
+										</div>
+									</div>
+<?php } ?>
 								</div>
 								<div id="VolumeCmds" style="display:none">
 								<br />
@@ -262,6 +293,7 @@ $eqLogics = eqLogic::byType('aTVremote');
 	</div>
 </div>
 <?php include_file('desktop', 'aTVremote', 'js', 'aTVremote'); ?>
+<?php if ($pythonDaemon) { include_file('desktop', 'pairWizard', 'css', 'aTVremote'); include_file('desktop', 'pairWizard', 'js', 'aTVremote'); } ?>
 <?php include_file('core', 'plugin.template', 'js'); ?>
 <script src="plugins/aTVremote/3rdparty/clipboard.min.js"></script>
 <script>

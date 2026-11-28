@@ -27,6 +27,13 @@ try {
 	if (init('action') == 'discover') {
 		aTVremote::discover(init('mode'));
 		ajax::success();
+	} elseif (init('action') == 'pairBegin' || init('action') == 'pairFinish' || init('action') == 'pairCancel') {
+		$eqLogic = aTVremote::byId(init('id'));
+		if (!is_object($eqLogic)) {
+			throw new Exception(__('Équipement introuvable', __FILE__) . ' : ' . init('id'));
+		}
+		$step = strtolower(str_replace('pair', '', init('action')));
+		ajax::success($eqLogic->daemonPair($step, init('protocol'), init('pin')));
 	} elseif (init('action') == 'reinstallNodeJS') {
 		$ret=aTVremote::reinstallNodeJS();
 		ajax::success($ret);
