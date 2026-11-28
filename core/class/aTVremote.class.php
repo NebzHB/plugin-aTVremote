@@ -485,11 +485,11 @@ class aTVremote extends eqLogic {
 // OLDSCAN
 	// Version d'une Apple TV d'après son identifiant de modèle, quand pyatv ne connaît pas encore le modèle
 	public static function appleTVVersionFromIdentifier($major, $minor) {
-		$known = array('2,1' => '2', '3,1' => '3', '3,2' => '3', '5,3' => 'HD', '6,2' => '4K', '11,1' => '4K (gen 2)', '14,1' => '4K (gen 3)');
+		$known = array('2,1' => '2', '3,1' => '3', '3,2' => '3', '5,3' => 'HD', '6,2' => '4K', '11,1' => '4K (gen 2)', '14,1' => '4K (gen 3)', '18,1' => '4K (gen 4)'); // 18,1 : Apple TV 4K de 2026, pas encore connue de pyatv 0.18
 		if (isset($known[$major . ',' . $minor])) {
 			return $known[$major . ',' . $minor];
 		}
-		return ($major > 14) ? '4K' : 'HD'; // plus récente que la 4K (gen 3) : traitée comme une 4K
+		return ($major > 18) ? '4K' : 'HD'; // plus récente que la 4K (gen 4) : traitée comme une 4K
 	}
 
     public static function discover($_mode) {
