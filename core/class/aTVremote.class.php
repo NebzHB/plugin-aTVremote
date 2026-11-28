@@ -1638,6 +1638,10 @@ class aTVremote extends eqLogic {
 		// style.css après une mise à jour du plugin et l'afficher avec le nouveau HTML.
 		$cssFile = dirname(__FILE__) . '/../template/dashboard/css/style.css';
 		$replace['#cssVersion#'] = file_exists($cssFile) ? filemtime($cssFile) : 0;
+		// Apple TV : hauteur de deux widgets HomePod (292px) l'un sur l'autre, marge Jeedom entre les deux comprise
+		$atvHeight = 2 * 292 + max(0, intval(config::byKey('widget::margin', 'core', 1)));
+		$replace['#atvHeight#'] = $atvHeight;
+		$replace['#atvExtra#'] = $atvHeight - 530; // place gagnée par rapport à l'ancien widget (530px)
 
 		// Textes des widgets (infobulles et libellés lus par les lecteurs d'écran), traduits
 		$texts = array(
