@@ -179,9 +179,7 @@ class aTVremote extends eqLogic {
 		$return = array();
 		$return['log'] = 'aTVremote_deamon';
 		$return['state'] = 'nok';
-		$daemonType = config::byKey('daemonType', 'aTVremote', 'nodejs');
-		$pattern = ($daemonType == 'python') ? 'resources/aTVremoted.py' : 'resources/aTVremoted.js';
-		$pid = trim( shell_exec ('ps ax | grep "'.$pattern.'" | grep -v "grep" | wc -l') );
+		$pid = trim( shell_exec ('ps ax | grep "'.self::daemonPattern().'" | grep -v "grep" | wc -l') );
 		if ($pid != '' && $pid != '0') {
 			$return['state'] = 'ok';
 		}
@@ -200,6 +198,16 @@ class aTVremote extends eqLogic {
 		}
 		config::save('socketport',$port,'aTVremote');
 		return $port;
+	}
+
+	// Démon choisi dans la configuration du plugin : Node.js (par défaut) ou Python
+	public static function daemonType() {
+		return (config::byKey('daemonType', 'aTVremote', 'nodejs') == 'python') ? 'python' : 'nodejs';
+	}
+
+	public static function daemonPattern($type = null) {
+		if ($type === null) $type = self::daemonType();
+		return ($type == 'python') ? 'resources/aTVremoted.py' : 'resources/aTVremoted.js';
 	}
 
 	public static function deamon_start() {
@@ -249,11 +257,25 @@ class aTVremote extends eqLogic {
 			$arrHP=join(',',$arrHP);
 		}
 		
-		$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4 . ' ' . $arrHP;
+		$args = ' ' . $url . ' ' . jeedom::getApiKey('aTVremote') .' '. $socketport . ' ' . $logLevel . ' ' . $arrATV3 . ' ' . $arrATV4 . ' ' . $arrHP;
+		if (self::daemonType() == 'python') {
+			// Python du venv des dépendances (pyatv et aiohttp y sont installés)
+			$python = $deamonPath . '/atvremote/bin/python3';
+			if (!file_exists($python)) {
+				log::add('aTVremote', 'error', __("Démon Python : environnement Python introuvable, relancez les dépendances", __FILE__) . ' (' . $python . ')', 'unableStartDeamon');
+				return false;
+			}
+			$cmd = 'nice -n 19 ' . $python . ' ' . $deamonPath . '/aTVremoted.py' . $args;
+			$env = 'PYTHONUNBUFFERED=1';
+		} else {
+			$cmd = 'nice -n 19 node ' . $deamonPath . '/aTVremoted.js' . $args;
+			$env = 'NODE_ENV=production';
+		}
 
-		log::add('aTVremote', 'debug', "Lancement démon aTVremote : " . $cmd);
+		log::add('aTVremote', 'debug', "Lancement démon aTVremote (" . self::daemonType() . ") : " . $cmd);
 
-		$result = exec('NODE_ENV=production nohup ' . $cmd . ' >> ' . log::getPathToLog('aTVremote_deamon') . ' 2>&1 &');
+		// les deux démons écrivent dans le même log aTVremote_deamon
+		$result = exec($env . ' nohup ' . $cmd . ' >> ' . log::getPathToLog('aTVremote_deamon') . ' 2>&1 &');
 		if (strpos(strtolower($result), 'error') !== false || strpos(strtolower($result), 'traceback') !== false) {
 			log::add('aTVremote', 'error', $result);
 			return false;
@@ -294,37 +316,42 @@ class aTVremote extends eqLogic {
 	private static function stopDaemonProcess() {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
-			log::add('hkControl', 'info', __("Arrêt du démon aTVremote", __FILE__));
+			log::add('aTVremote', 'info', __("Arrêt du démon aTVremote", __FILE__));
 			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/stop";
 			$request_http = new com_http($url);
 			$request_http->setNoReportError(true);
 			$request_http->exec(11,1);
 			for ($retry = 0; $retry < 5; $retry++) {
-				if (self::deamon_info()['state'] != 'ok') { 
-					return true;
+				if (self::deamon_info()['state'] != 'ok') {
+					break;
 				}
 				sleep(1);
 			}
-			
-			$pid = exec("pgrep -fo 'resources/aTVremoted.js'");
-			if($pid) {
-				exec(system::getCmdSudo().'kill -15 ' . $pid.' > /dev/null 2>&1');
-				log::add('hkControl', 'info', __("Arrêt SIGTERM du démon aTVremote", __FILE__));
+		}
+		// Les deux démons (Node.js et Python), quel que soit celui choisi : un démon de l'autre type peut encore
+		// tourner après un changement dans la configuration, et deamon_info() ne le voit pas.
+		foreach (array('nodejs', 'python') as $type) {
+			$pattern = '[' . substr(self::daemonPattern($type), 0, 1) . ']' . substr(self::daemonPattern($type), 1); // [r]esources/… : pgrep ne se trouve pas lui-même
+			foreach (array(15 => 'SIGTERM', 9 => 'SIGKILL') as $signal => $name) {
+				$pids = array();
+				exec("pgrep -f '" . $pattern . "'", $pids);
+				if (count($pids) == 0) {
+					break;
+				}
+				exec(system::getCmdSudo() . 'kill -' . $signal . ' ' . implode(' ', $pids) . ' > /dev/null 2>&1');
+				log::add('aTVremote', 'info', sprintf(__("Arrêt %s du démon aTVremote (%s)", __FILE__), $name, $type));
 				for ($retry = 0; $retry < 3; $retry++) {
-					if (self::deamon_info()['state'] != 'ok') { 
-						return true;
-					}
 					sleep(1);
+					$pids = array();
+					exec("pgrep -f '" . $pattern . "'", $pids);
+					if (count($pids) == 0) {
+						break 2;
+					}
 				}
 			}
-			
-			$pid = exec("pgrep -fo 'resources/aTVremoted.js'");
-			if($pid) {
-				exec(system::getCmdSudo().'kill -9 ' . $pid.' > /dev/null 2>&1');
-				log::add('hkControl', 'info', __("Arrêt SIGKILL du démon aTVremote", __FILE__));
-			}
 		}
-	}	
+		return true;
+	}
 
 	public static function reinstallNodeJS() { // Reinstall NODEJS from scratch (to use if there is errors in dependancy install)
 		$pluginaTVremote = plugin::byId('aTVremote');

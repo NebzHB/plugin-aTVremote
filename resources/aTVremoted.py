@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import re
 import signal
@@ -34,7 +35,7 @@ except ImportError:
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_DIR = os.path.join(BASE_DIR, "..", "data")  # même dossier que le démon Node.js : <plugin>/data/<mac>-airplay.key
 ARTWORK_DIR = os.path.join(BASE_DIR, "..", "core", "img", "artworks")
 ARTWORK_PATH = os.path.join(ARTWORK_DIR, "artwork.png")
 
@@ -53,6 +54,16 @@ def log_fr(message: str, level: int = LEVEL_INFO) -> None:
         return
     timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     print(f"[{timestamp}][{_LEVEL_NAMES[level]}] : {message}", flush=True)
+
+
+def setup_library_logging() -> None:
+    """Messages de pyatv / aiohttp / asyncio (warnings, erreurs, tracebacks) dans le même log
+    aTVremote_deamon et au même format que les nôtres et que ceux du démon Node.js."""
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(logging.Formatter("[%(asctime)s][%(levelname)s] : [%(name)s] %(message)s", "%d-%m-%Y %H:%M:%S"))
+    root = logging.getLogger()
+    root.handlers[:] = [handler]
+    root.setLevel(logging.WARNING)  # pyatv en debug est beaucoup trop bavard
 
 
 _LEADING_INT_RE = re.compile(r"\s*[+-]?\d+")
@@ -113,13 +124,16 @@ async def jeedom_sender_task() -> None:
 # Event payload builders (exact shapes consumed by core/class/aTVremote.class.php)
 # ---------------------------------------------------------------------------
 
-def _enum_name(value):
-    return value.name if isinstance(value, Enum) else value
+def _enum_name(value, lower: bool = False):
+    if isinstance(value, Enum):
+        return value.name.lower() if lower else value.name
+    return value
 
 
 def build_playing_payload(playing: Playing, app) -> str:
     commands = retrieve_commands(Playing)
-    values = {k: _enum_name(getattr(playing, k, None)) for k in commands}
+    # en minuscules comme atvscript (« paused », « music », « off »…) : le PHP compare ces valeurs
+    values = {k: _enum_name(getattr(playing, k, None), lower=True) for k in commands}
     values["app"] = app.name if app else None
     values["app_id"] = app.identifier if app else None
     return json.dumps(values)
@@ -135,7 +149,7 @@ async def send_playing_event(device: "Device") -> None:
 
 
 def send_powerstate_event(mac: str, power_state) -> None:
-    send_to_jeedom("powerstate", mac, data=json.dumps({"power_state": _enum_name(power_state)}))
+    send_to_jeedom("powerstate", mac, data=json.dumps({"power_state": _enum_name(power_state, lower=True)}))  # « on » / « off »
 
 
 async def send_app_event(device: "Device") -> None:
@@ -580,14 +594,24 @@ async def main() -> None:
         start_device_supervisor(mac.upper(), None)
 
     _install_signal_handlers(asyncio.get_event_loop())
+    log_fr("Démon prêt et à l'écoute !", LEVEL_INFO)
 
     while not _shutting_down:
         await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
+    setup_library_logging()
+    loop = asyncio.new_event_loop()  # get_event_loop() hors boucle est obsolète depuis Python 3.12
+    asyncio.set_event_loop(loop)
     try:
         loop.run_until_complete(main())
     except KeyboardInterrupt:
         pass
+    except RuntimeError as exc:
+        if "Event loop stopped" not in str(exc):  # arrêt normal via _shutdown()
+            logging.getLogger("aTVremoted").exception("Erreur fatale du démon : %s", exc)
+            sys.exit(1)
+    except Exception as exc:
+        logging.getLogger("aTVremoted").exception("Erreur fatale du démon : %s", exc)
+        sys.exit(1)
