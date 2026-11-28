@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class aTVremote extends eqLogic {
 	/***************************Attributs*******************************/	
 	public static function backupExclude() {
-		return ['resources/atvremote','resources/node_modules'];
+		return ['resources/atvremote','resources/node_modules','core/img/artworks'];
 	}
 	public static function cron($_eqlogic_id = null) {
 		$eqLogics = ($_eqlogic_id !== null) ? array(eqLogic::byId($_eqlogic_id)) : eqLogic::byType('aTVremote', true);
@@ -203,7 +203,7 @@ class aTVremote extends eqLogic {
 	}
 
 	public static function deamon_start() {
-		self::deamon_stop();
+		self::stopDaemonProcess();
 
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') {
@@ -268,15 +268,30 @@ class aTVremote extends eqLogic {
 		}
 		if ($i >= 30) {
 			log::add('aTVremote', 'error', "Impossible de lancer le démon aTVremote, relancer le démon en debug et vérifiez le log", 'unableStartDeamon');
+			self::refreshAllWidgets();
 			return false;
 		}
 		message::removeAll('aTVremote', 'unableStartDeamon');
 		log::add('aTVremote', 'info', "Démon aTVremote lancé");
+		self::refreshAllWidgets(); // les widgets n'affichent plus « démon arrêté »
 		return true;
 
 	}
 
 	public static function deamon_stop() {
+		$result = self::stopDaemonProcess();
+		self::refreshAllWidgets(); // les widgets affichent « démon arrêté »
+		return $result;
+	}
+
+	// Redessine les widgets de tous les équipements (état du démon affiché à côté de la pochette)
+	public static function refreshAllWidgets() {
+		foreach (eqLogic::byType('aTVremote', true) as $eqLogic) {
+			$eqLogic->refreshWidget();
+		}
+	}
+
+	private static function stopDaemonProcess() {
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
 			log::add('hkControl', 'info', __("Arrêt du démon aTVremote", __FILE__));
@@ -404,6 +419,13 @@ class aTVremote extends eqLogic {
 				if($features) {
 					$eqLogic->setConfiguration('features',$features);
 					$eqLogic->save(true);
+					// aléatoire / répétition utilisables avec la source en cours ? (le widget grise les boutons sinon)
+					foreach (array('shuffle_available' => 'SetShuffle', 'repeat_available' => 'SetRepeat') as $logicalId => $feature) {
+						$cmd = $eqLogic->getCmd(null, $logicalId);
+						if (is_object($cmd) && isset($features[$feature])) {
+							$eqLogic->checkAndUpdateCmd($cmd, ($features[$feature] == 'Available') ? 1 : 0);
+						}
+					}
 				}
 			break;
 		}
@@ -449,7 +471,7 @@ class aTVremote extends eqLogic {
 						log::add('aTVremote','info',"AppleTV avec mot de passe AirPlay : on ignore ".$device[1]);
 						continue;    
 					}
-					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'AppleTV') === false && strpos($device[2],'HomePod') === false && strpos($device[2],'AudioAccessory6,1') === false) {
+					if(strpos($device[2],'Apple TV') === false && strpos($device[2],'AppleTV') === false && strpos($device[2],'HomePod') === false && strpos($device[2],'AudioAccessory6,1') === false && strpos($device[2],'AudioAccessory11,1') === false) {
 						log::add('aTVremote','info',"Modèle non supporté ".$device[2]." : on ignore ".$device[1]);
 						continue;
 					}
@@ -472,9 +494,11 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'Apple TV') !== false) {
 						$res['device']="Apple TV";
 						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
-					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false) {
+					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false || strpos($res['model'],'AudioAccessory11,1') !== false) {
 						$res['device']="HomePod";
-						if(strpos($res['model'],'Mini') !== false) {
+						if(strpos($res['model'],'AudioAccessory11,1') !== false) {
+							$res['version']="Mini 2";
+						} elseif(strpos($res['model'],'Mini') !== false) {
 							$res['version']="Mini";
 						} elseif(strpos($res['model'],'AudioAccessory6,1') !== false) {
 							$res['version']="2";
@@ -738,6 +762,11 @@ class aTVremote extends eqLogic {
 			return $return;
 		}
 	}
+	// Après aléatoire / répétition : on revérifie si la source les accepte (sinon le bouton reste grisé)
+	public function recheckFeatures() {
+		return ($this->getConfiguration('version',0) != '3') ? '|features' : '';
+	}
+
 	public function aTVdaemonExecute($cmd,$params=[]) {
 		if($cmd) {
 			$deamon_info = aTVremote::deamon_info();
@@ -752,6 +781,7 @@ class aTVremote extends eqLogic {
 				return json_decode($json, true);
 			} else {
 				log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande ".ucfirst($cmd));
+				$this->refreshWidget(); // le widget affiche « démon arrêté »
 			}
 		}
 	}
@@ -1007,6 +1037,15 @@ class aTVremote extends eqLogic {
 							$changed=$this->checkAndUpdateCmd($app, '-') || $changed;
 						}
 					}
+					// identifiant iTunes Store : seulement pour Apple Music / iTunes (vide pour Spotify, radios, AirPlay…)
+					$itunes_id = $this->getCmd(null, 'itunes_id');
+					if(is_object($itunes_id)) {
+						if(!empty($aTVremoteinfo['itunes_store_identifier'])) {
+							$changed=$this->checkAndUpdateCmd($itunes_id, $aTVremoteinfo['itunes_store_identifier']) || $changed;
+						} elseif(!isset($aTVremoteinfo['simplifiedPlaying'])){
+							$changed=$this->checkAndUpdateCmd($itunes_id, '-') || $changed;
+						}
+					}
 				}
 			// end if changed hash
 			
@@ -1144,7 +1183,7 @@ class aTVremote extends eqLogic {
 			return 'plugins/aTVremote/core/template/inactive.png';
 		}
 		if($this->getConfiguration('device','') == 'HomePod') {
-			if($this->getConfiguration('version','') == 'Mini') {
+			if($this->getConfiguration('version','') == 'Mini' || $this->getConfiguration('version','') == 'Mini 2') {
 				return 'plugins/aTVremote/core/template/homepod_mini.png';
 			} else if($this->getConfiguration('version','') == '2') {
 				return 'plugins/aTVremote/core/template/homepod_2.png';
@@ -1276,6 +1315,9 @@ class aTVremote extends eqLogic {
 		foreach ($this->getCmd('info') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '#'] = htmlspecialchars($cmd->getCache('value'), ENT_QUOTES,'UTF-8');
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			// âge (s) de la dernière valeur reçue : le widget ignore un « Chargement en cours » ancien
+			$collectDate = strtotime($cmd->getCollectDate());
+			$replace['#' . $cmd->getLogicalId() . '_age#'] = ($collectDate) ? max(0, time() - $collectDate) : 999999;
 			if ($cmd->getIsHistorized() == 1) {
 				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
 			}
@@ -1376,20 +1418,89 @@ class aTVremote extends eqLogic {
 			"pathColor"=>"rgba(0,61,126,0.4)",
 			"tooltipColor"=>"#FFF"
 		];
+		$themes['lightblue'] = [
+			"handleColor"=>"#3E5C84",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(62,92,132,0.4)",
+			"pathColor"=>"rgba(62,92,132,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['green'] = [
+			"handleColor"=>"#2F6B4F",
+			"handleShadowColor"=>"#FFF",
+			"rangeColor"=>"rgba(0,0,0,0.5)",
+			"pathColor"=>"rgba(47,107,79,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
+		$themes['pink'] = [
+			"handleColor"=>"#E8A3B0",
+			"handleShadowColor"=>"#000",
+			"rangeColor"=>"rgba(232,163,176,0.4)",
+			"pathColor"=>"rgba(232,163,176,0.4)",
+			"tooltipColor"=>"#FFF"
+		];
 		
 		$theme=$this->getConfiguration('theme','black');
 		foreach($themes[$theme] as $elmt=>$value) {
 			$replace["#".$elmt."#"] = $value;
         }
     
+		// Le mobile affiche les mêmes widgets que le Dashboard : il n'y a plus de template 'mobile'
+		// dédié (ils n'étaient plus appelés depuis le passage aux templates atv / atv3 / homepod,
+		// getTemplate() renvoyait donc une chaîne vide et le widget mobile restait vide).
+		$tplVersion = 'dashboard';
+
+		// État du démon pour le widget (une seule vérification par requête, même avec plusieurs widgets)
+		static $deamonState = null;
+		if ($deamonState === null) {
+			$deamonState = self::deamon_info()['state'];
+		}
+		$replace['#deamonState#'] = $deamonState;
+
+		// Version du CSS dans son URL : sans elle, Safari (iPad, app mobile) peut garder l'ancien
+		// style.css après une mise à jour du plugin et l'afficher avec le nouveau HTML.
+		$cssFile = dirname(__FILE__) . '/../template/dashboard/css/style.css';
+		$replace['#cssVersion#'] = file_exists($cssFile) ? filemtime($cssFile) : 0;
+
+		// Textes du widget HomePod (infobulles et libellés lus par les lecteurs d'écran), traduits
+		$texts = array(
+			'shuffleOff' => __('Aléatoire désactivé', __FILE__),
+			'shuffleOn' => __('Aléatoire activé', __FILE__),
+			'repeatOff' => __('Répétition désactivée', __FILE__),
+			'repeatAll' => __('Répéter tout', __FILE__),
+			'repeatTrack' => __('Répéter la piste', __FILE__),
+			'volDown' => __('Baisser le volume', __FILE__),
+			'volUp' => __('Monter le volume', __FILE__),
+			'play' => __('Lecture', __FILE__),
+			'pause' => __('Pause', __FILE__),
+			'previous' => __('Précédent', __FILE__),
+			'next' => __('Suivant', __FILE__),
+			'info' => __('Informations', __FILE__),
+			'close' => __('Fermer', __FILE__),
+			'volume' => __('Volume', __FILE__),
+			'cover' => __('Pochette', __FILE__),
+			'progress' => __('Progression', __FILE__),
+			'appleMusic' => __('Ouvrir dans Apple Music', __FILE__),
+		);
+		foreach ($texts as $key => $text) {
+			$replace['#txt_' . $key . '#'] = htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // &apos; plutôt que &#039; : pas de # dans les valeurs
+		}
+		// Textes utilisés dans le script du widget
+		$replace['#txt_js#'] = json_encode(array(
+			'remain' => __('reste', __FILE__),
+			'daemonOff' => __('Démon aTVremote arrêté', __FILE__),
+			'loading' => __('Chargement en cours', __FILE__),
+			'unavailable' => __('indisponible avec cette source', __FILE__),
+		), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+
 		if ($Test == "Apple TV"){
 			if($this->getConfiguration('version',0) == '3') {
-				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv3', 'aTVremote')));
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv3', 'aTVremote')));
 			} else {
-				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'atv', 'aTVremote')));
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'atv', 'aTVremote')));
 			}
         }else{
-			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'homepod', 'aTVremote')));
+			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $tplVersion, 'homepod', 'aTVremote')));
         };
         
 	}  
@@ -1425,19 +1536,19 @@ class aTVremoteCmd extends cmd {
 					}
 				break;
 				case 'set_repeat_all':
-					$eqLogic->aTVdaemonExecute('set_repeat=2');
+					$eqLogic->aTVdaemonExecute('set_repeat=2'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_repeat_track':
-					$eqLogic->aTVdaemonExecute('set_repeat=1');
+					$eqLogic->aTVdaemonExecute('set_repeat=1'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_repeat_off':
-					$eqLogic->aTVdaemonExecute('set_repeat=0');
+					$eqLogic->aTVdaemonExecute('set_repeat=0'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_shuffle_on':
-					$eqLogic->aTVdaemonExecute('set_shuffle=1');
+					$eqLogic->aTVdaemonExecute('set_shuffle=1'.$eqLogic->recheckFeatures());
 				break;
 				case 'set_shuffle_off':
-					$eqLogic->aTVdaemonExecute('set_shuffle=0');
+					$eqLogic->aTVdaemonExecute('set_shuffle=0'.$eqLogic->recheckFeatures());
 				break;
 				case 'down':
 					$eqLogic->aTVdaemonExecute('down');

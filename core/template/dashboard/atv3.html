@@ -1,6 +1,6 @@
 <div class="eqLogic-widget eqLogic aTVremote" style="min-width:138px;max-width:138px;min-height:530px;max-height:530px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
 <!--  aTV3 -->
-	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css?v=#cssVersion#" />
 	<style>
 		.artworkBackground_#id# {
 			background-image: url("#artwork_url#");
@@ -152,6 +152,7 @@
 
 //Artwork
 		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
+			releasePressed#id#();
 			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
@@ -196,6 +197,7 @@
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
 		
 		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
+			releasePressed#id#();
 			//console.log('ààà title_id _options.display_value =',_options.display_value)
 			
 			if (_options.display_value == '-'){
@@ -296,6 +298,21 @@
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
+
+		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de
+		// chanson (cover ou titre), 8 s au plus. Les autres boutons ne restent pas grisés. À la souris : :hover.
+		var pressedTimer#id#;
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			if (!$(this).is('.previous, .next')) return;
+			if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+			$(this).addClass('aTVpressed');
+			clearTimeout(pressedTimer#id#);
+			pressedTimer#id# = setTimeout(releasePressed#id#, 8000);
+		});
+		function releasePressed#id#() {
+			clearTimeout(pressedTimer#id#);
+			$('.eqLogic[data-eqLogic_id=#id#] .aTVpressed').removeClass('aTVpressed');
+		}
 
 
 /* Back to the futur Sildebar */    

@@ -47,8 +47,10 @@
   	opacity:1;
     cursor: pointer;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .power:hover{
     opacity:0.7;
+}
 }
 
 .aTVremote .onoff{
@@ -76,13 +78,32 @@
 	opacity: 0.5;
 	z-index: -1;
 }
+/* Fond flouté du HomePod : le flou est appliqué à un conteneur assez grand pour contenir
+   tout le halo (154px + 3 x 15px de chaque côté), la pochette ronde est au centre.
+   Ainsi le flou ne déborde jamais de sa boîte : Safari iOS le coupait net aux bords de la boîte
+   (carré visible au chargement sur mobile). */
+.aTVremote .artworkBlurH {
+	position: absolute;
+	top: 41px;
+	left: 7px;
+	width: 244px;
+	height: 244px;
+	opacity: 0.7;
+	-webkit-filter: blur(15px);
+	filter: blur(15px);
+	pointer-events: none;
+}
+/* alterné à chaque changement de pochette pour forcer Safari à repeindre tout le halo (écart invisible) */
+.aTVremote .artworkBlurH.artworkBlurH-repaint {
+	-webkit-filter: blur(15.01px);
+	filter: blur(15.01px);
+}
 .aTVremote .artworkBackgroundH {
-	top:86px;
-	left:52px;
+	top:45px;
+	left:45px;
 	width: 154px;
 	height: 154px;
 	position: absolute;
-	opacity: 0.7;
 	border-radius:50%;
 }
 .aTVremote .gameplayH{
@@ -131,17 +152,7 @@
     z-index: 8;
     cursor:pointer;
 }
-.aTVremote .artwork_equalizerH{
-	width: 70px !important;
-	max-height: 70px;
-	position: absolute;
-	margin-left: 50%;
-	margin-top: 57%;
-    transform: translate(-50%, -50%);
-	z-index: 1;
-	cursor:pointer;
-	/*border-radius: 10%;*/
-}
+
 .aTVremote .repeatBoxH{
     top:88px;
     left:98px;
@@ -149,8 +160,6 @@
     z-index: 8;
     cursor:pointer;
 }
-
-
 
 .aTVremote .infoBox{
     top:158px;
@@ -178,15 +187,21 @@
     cursor:pointer;
 }
 
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .infoBox:hover{
     opacity:0.4;
 }
+}
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .infoBoxH:hover{
     opacity:0.4;
 }
+}
 
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .appsBox:hover{
     opacity:0.4;
+}
 }
 
 /* Statut & Info */
@@ -215,14 +230,7 @@
 	z-index: 2;
 	font-size:10px;
 }   
-.aTVremote .Statut_aTVremoteH{
-  	width: 256px;
-	text-align:center;
-	position: absolute;
-	z-index: 2;
-	font-size:10px;
-  	top: 115px;
-}    
+    
 .aTVremote .app_aTVremote{
 	font-size:10px;
   	width: 138px;
@@ -232,15 +240,7 @@
 	z-index: 2;
   	text-transform: capitalize;
 }
-.aTVremote .app_aTVremoteH{
-	font-size:10px;
-  	width: 256px;
-	text-align:center;
-	position: absolute;
-	font-weight: bold;
-	z-index: 2;
-  	text-transform: capitalize;
-}
+
 .aTVremote .artist_titre_aTVremote{
   	width: 138px;
 	text-align:center;
@@ -262,14 +262,6 @@
 	z-index: 2;
 	font-size:13px;
 }
-.aTVremote .last_titre_aTVremote{
-	font-size:12px;
-  	width: 138px;
-	text-align:center;
-	position: absolute;
-	font-weight: bold;
-	z-index: 2;
-}
 
 /* Control & Navigation */
 
@@ -278,8 +270,10 @@
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_playback:hover{
 	opacity: 0.5;
+}
 }
 
 .aTVremote .btn_aTVremote_playbackH{
@@ -299,16 +293,20 @@
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_menu:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_top_menu{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_top_menu:hover{
 	opacity: 0.5;
+}
 }
 
 .aTVremote .btn_aTVremote_up{
@@ -350,8 +348,10 @@
 .aTVremote .btn_aTVremote_left:hover{
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_leftH:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .aTVremote_left{
 	-ms-transform: rotate(180deg);
@@ -391,8 +391,10 @@
 .aTVremote .btn_aTVremote_right:hover{
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_rightH:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_down{
   	left:54px;
@@ -416,75 +418,52 @@
 	z-index: 10;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_shuffle:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_repeat{
 	cursor:pointer;
 	z-index: 10;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_repeat:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_plus{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_plus:hover{
 	opacity: 0.5;
+}
 }
 .aTVremote .btn_aTVremote_moins{
 	cursor:pointer;
 	z-index: 4;
 	opacity: 1;
 }
+@media (hover: hover) { /* pas sur écran tactile : le survol y reste collé après un toucher */
 .aTVremote .btn_aTVremote_moins:hover{
 	opacity: 0.5;
 }
-.aTVremote .btn_aTVremote_up2{
-	cursor:pointer;
-	z-index: 4;
-	opacity: 1;
-}  
+}
+  
 .aTVremote .aTVremote_up2{
   	-ms-transform: rotate(-90deg);
 	-webkit-transform: rotate(-90deg);
 	transform: rotate(-90deg);
-}
-.aTVremote .btn_aTVremote_up2:hover{
-	opacity: 1;
-}
-.aTVremote .btn_aTVremote_down2{
-	cursor:pointer;
-	z-index: 4;
-	opacity: 1;
 }
 
 .aTVremote .aTVremote_down2{
   	-ms-transform: rotate(90deg);
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
-}
-
-
-.aTVremote .downRafterA {
-    position: absolute;
-    top: 20.5px;
-    right: 118px;
-    cursor: pointer;
-    z-index: 4;
-    opacity: 0.3;
-}
-
-.aTVremote .downRafterH {
-    position: absolute;
-    top: 20.5px;
-    right: 118px;
-    cursor: pointer;
-    z-index: 4;
-    opacity: 0.3;
 }
 
 .aTVremote .downRafter2A {
@@ -496,27 +475,10 @@
     opacity: 0.6;
 }
 
-.aTVremote .downRafter2H {
-    position: absolute;
-    top: -6.5px;
-    left: 120px;
-    cursor: pointer; 
-    z-index: 4;
-    opacity: 0.6;
-}
-
-.aTVremote .downRafterA:hover {
-    opacity: 1;
-}
-.aTVremote .downRafterH:hover {
-    opacity: 1;
-}
 .aTVremote .downRafter2A:hover {
     opacity: 1;
 }
-.aTVremote .downRafter2H:hover {
-    opacity: 1;
-}
+
 .aTVremote .downpanelA {
 	width: 138px;
 	height: 276px;
@@ -527,21 +489,129 @@
 	top: -300px;
 }
 .aTVremote .downpanelH {
-	width: 256px;
-	height: 291px;
-	float: left;
 	position: absolute;
+	top: 0;
+	bottom: 0; /* toute la hauteur du widget, y compris le padding ajouté par Jeedom mobile */
+	left: 0;
+	width: 256px;
 	z-index: 10;
-	background: rgba(0, 0, 0, 0.9);
-	top: 340px;
+	overflow: hidden;
+	border-radius: 30px;
+	background: #000;
+	color: #fff;
+	cursor: pointer;
+	visibility: hidden;
+	-webkit-transform: translateY(100%);
+	transform: translateY(100%);
+	transition: transform .35s ease, visibility 0s linear .35s;
 }
-.aTVremote .downRafterApp {
-    position: absolute;
-    top: 20.5px;
-    right: 118px;
-    cursor: pointer;
-    z-index: 4;
-    opacity: 0.3;
+.aTVremote .downpanelH.open {
+	visibility: visible;
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+	transition: transform .35s ease, visibility 0s;
+}
+/* fond : pochette floutée et assombrie (dépasse du panneau, qui la coupe) */
+.aTVremote .infoBgH {
+	position: absolute;
+	top: -40px;
+	left: -40px;
+	right: -40px;
+	bottom: -40px;
+	background: center / cover no-repeat;
+	-webkit-filter: blur(24px) brightness(0.45) saturate(1.2);
+	filter: blur(24px) brightness(0.45) saturate(1.2);
+}
+.aTVremote .infoCloseH {
+	position: absolute;
+	top: 14px;
+	right: 18px;
+	z-index: 2;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
+	font-size: 20px;
+	line-height: 27px;
+	text-align: center;
+}
+.aTVremote .infoContentH {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 26px 20px 22px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	/* textes jamais coupés : si c'est trop long, le panneau défile */
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.aTVremote .infoArtH {
+	width: 128px;
+	height: 128px;
+	object-fit: cover;
+	border-radius: 10px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+	flex-shrink: 0;
+	margin-top: auto; /* centré verticalement s'il y a la place, collé en haut sinon */
+	margin-bottom: 14px;
+}
+.aTVremote .infoTextH {
+	width: 100%;
+	margin-bottom: auto;
+	line-height: 1.3;
+}
+/* une ligne par texte ; défilement (JS fitMarquee) seulement si le texte dépasse */
+.aTVremote .infoLineH {
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: center;
+}
+.aTVremote .infoScrollH {
+	display: inline-block;
+}
+.aTVremote .infoLineH.scrolling {
+	text-align: left;
+	-webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+	mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+}
+.aTVremote .infoLineH.scrolling .infoTxtH {
+	padding: 0 10px;
+}
+.aTVremote .infoLineH.scrolling.loop .infoTxtH {
+	padding: 0 30px 0 10px;
+}
+.aTVremote .infoLineH.scrolling.alt .infoScrollH {
+	-webkit-animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
+	animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
+}
+.aTVremote .infoLineH.scrolling.loop .infoScrollH {
+	-webkit-animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
+	animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
+}
+@-webkit-keyframes aTVmarqueeAlt { 0%, 15% { -webkit-transform: translateX(0); } 85%, 100% { -webkit-transform: translateX(var(--aTVshift)); } }
+@keyframes aTVmarqueeAlt { 0%, 15% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--aTVshift)); } }
+@-webkit-keyframes aTVmarqueeLoop { from { -webkit-transform: translateX(0); } to { -webkit-transform: translateX(-50%); } }
+@keyframes aTVmarqueeLoop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+	.aTVremote .infoLineH.scrolling .infoScrollH { -webkit-animation: none; animation: none; }
+}
+.aTVremote .infoTitleH {
+	font-size: 15px;
+	font-weight: bold;
+}
+.aTVremote .infoArtistH {
+	margin-top: 4px;
+	font-size: 13px;
+	opacity: 0.85;
+}
+.aTVremote .infoAlbumH {
+	margin-top: 2px;
+	font-size: 12px;
+	opacity: 0.6;
 }
 
 .aTVremote .downRafter2App {
@@ -553,9 +623,6 @@
     opacity: 0.6;
 }
 
-.aTVremote .downRafterApp:hover {
-    opacity: 1;
-}
 .aTVremote .downRafter2App:hover {
     opacity: 1;
 }
@@ -568,20 +635,6 @@
       background: rgba(0, 0, 0, 0.9);
       top: -300px;
   }
-
-.aTVremote .infoBoxApp{
-    top:181px;
-    left:117px;
-    position:absolute;
-    z-index: 8;
-    opacity: 0.8;
-    cursor:pointer;
-}
-
-
-.aTVremote .infoBoxApp:hover{
-    opacity:0.4;
-}
 
 /*.oModal {
     position: absolute;
@@ -674,3 +727,108 @@
   background: #4CAF50;
   cursor: pointer;
 }*/
+
+/* Les rangées de boutons sont calculées au pixel près : sur mobile, Jeedom impose une police
+   de 14px aux widgets, les espaces entre boutons s'élargissent et le 2e bouton passait à la ligne. */
+.aTVremote .blocPlayH,
+.aTVremote .playback,
+.aTVremote .backfor,
+.aTVremote .volume,
+.aTVremote .menu_action,
+.aTVremote .repeatBox,
+.aTVremote .repeatBoxH {
+	white-space: nowrap;
+}
+
+/* Écran tactile : précédent / suivant grisés après un toucher jusqu'au changement de chanson
+   (classe posée et retirée par le JS du widget). Les autres boutons ne restent pas grisés. */
+@media (hover: none) {
+	.aTVremote .cmd.previous.aTVpressed,
+	.aTVremote .cmd.next.aTVpressed {
+		opacity: 0.5;
+	}
+}
+
+/* Barre de progression : sous la pochette (largeur de la pochette) et dans le panneau Info */
+.aTVremote .progressH {
+	position: absolute;
+	left: 93px;
+	top: 201px;
+	width: 70px;
+	height: 3px;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.2);
+	overflow: hidden;
+	z-index: 3;
+}
+.aTVremote .progressBarH,
+.aTVremote .infoProgressBarH > div {
+	width: 0;
+	height: 100%;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.9);
+}
+.aTVremote .infoProgressH {
+	margin-top: 12px;
+	width: 100%;
+}
+.aTVremote .infoProgressBarH {
+	height: 4px;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, 0.22);
+	overflow: hidden;
+}
+.aTVremote .infoTimesH {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 4px;
+	font-size: 11px;
+	opacity: 0.7;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Navigation au clavier : contour visible sur le bouton ciblé (pas au clic souris / toucher) */
+.aTVremote [role=button]:focus {
+	outline: none;
+}
+.aTVremote [role=button]:focus-visible {
+	outline: 2px solid rgba(255,255,255,.85);
+	outline-offset: 2px;
+	border-radius: 50%;
+}
+
+/* Aléatoire / répétition non utilisables avec la source en cours (ex. Apple Music sur HomePod) */
+.aTVremote .cmd.aTVunavailable,
+.aTVremote .cmd.aTVunavailable:hover {
+	opacity: .3;
+}
+
+/* Panneau Info : lien vers le morceau dans Apple Music (si identifiant iTunes), en haut à gauche,
+   symétrique du bouton de fermeture */
+.aTVremote .infoLinkH {
+	position: absolute;
+	top: 14px;
+	left: 18px;
+	z-index: 2;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
+	color: #fff !important;
+	font-size: 15px;
+	line-height: 28px;
+	text-align: center;
+	text-decoration: none !important;
+}
+.aTVremote .infoLinkH:focus {
+	outline: none;
+}
+.aTVremote .infoLinkH:focus-visible {
+	outline: 2px solid rgba(255,255,255,.85);
+	outline-offset: 2px;
+}
+@media (hover: hover) {
+.aTVremote .infoLinkH:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
+}

@@ -35,7 +35,7 @@ step 60 "Installation des librairies du démon, veuillez patienter svp"
 silent sudo mkdir node_modules 
 silent sudo chown -R www-data:www-data . 
 tryOrStop sudo npm install --no-fund --no-package-lock --no-audit
-#silent wget https://raw.githubusercontent.com/NebzHB/nodejsToJeedom/main/jeedom.js -O $BASEDIR/utils/jeedom.js
+silent wget https://raw.githubusercontent.com/NebzHB/nodejsToJeedom/main/jeedom.js -O $BASEDIR/utils/jeedom.js
 silent sudo chown -R www-data:www-data . 
 
 VENV_DIR=$BASEDIR/atvremote
@@ -46,7 +46,7 @@ autoSetupVenv
 
 #tryOrStop python3 -m venv $VENV_DIR
 #tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir --upgrade pip wheel
-tryOrStop $VENV_DIR/bin/python3 -m pip install --upgrade --no-cache-dir -I git+https://github.com/NebzHB/pyatv@v0.17.0
+tryOrStop $VENV_DIR/bin/python3 -m pip install --upgrade --no-cache-dir -I git+https://github.com/NebzHB/pyatv@v0.18.0 "srptools==1.0.1"
 tryOrStop $VENV_DIR/bin/python3 -m pip install --no-cache-dir aiohttp
 
 step 98 "Résumé des packages installés"

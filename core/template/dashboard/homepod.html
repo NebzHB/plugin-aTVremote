@@ -1,11 +1,13 @@
 <div class="eqLogic-widget eqLogic aTVremote" style="min-width:256px;max-width:256px;min-height:292px;max-height:292px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" id="widget#id#" >
 <!--  HomePod -->
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/roundslider.min.css" />
-	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css" />
+	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css?v=#cssVersion#" />
 	<style>
+		#infoBg_#id# {
+			background-image: url("#artwork_url#");
+		}
 		.artworkBackgroundH_#id# {
 			background-image: url("#artwork_url#");
-			filter:blur(15px);
 			background-position: center;
 			background-repeat: no-repeat;
 			background-size: cover;
@@ -29,60 +31,64 @@
 	</style>
     <script src="plugins/aTVremote/core/template/dashboard/js/roundslider.min.js"></script>
   	<div class="haut_aTVremote_widH">
-		<div class="volumeWidget"><div id="volumeWidget_#id#"></div></div>
-		<div class="artworkBackgroundH artworkBackgroundH_#id#"></div>
+		<div class="volumeWidget" role="group" aria-label="#txt_volume#"><div id="volumeWidget_#id#"></div></div>
+		<div class="artworkBlurH"><div class="artworkBackgroundH artworkBackgroundH_#id#"></div></div>
       	<div class="haut">
 		
 <!--  Partie Supérieure -->
 			<a href="#eqLink#" class="titre_haut_aTVremote_widgetH" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' ></i>&nbsp;#name_display#</a>  
           		
           	<div id="a#id#" class="repeatBoxH">
-              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" title='Aléa.Off'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' style="width:25px;"/>&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" title='Aléa.On'><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' style="width:25px;"/>&nbsp;&nbsp;</a> 
-				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" title='Rep.Off'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' style="width:25px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" title='Rep.Tout'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' style="width:25px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" title='Rep.Piste'><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' style="width:25px;;"/></a>
+              			<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" role="button" tabindex="0" title="#txt_shuffleOff#" aria-label="#txt_shuffleOff#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.svg' alt="" style="width:25px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" role="button" tabindex="0" title="#txt_shuffleOn#" aria-label="#txt_shuffleOn#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.svg' alt="" style="width:25px;"/>&nbsp;&nbsp;</a> 
+				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" role="button" tabindex="0" title="#txt_repeatOff#" aria-label="#txt_repeatOff#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.svg' alt="" style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" role="button" tabindex="0" title="#txt_repeatAll#" aria-label="#txt_repeatAll#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.svg' alt="" style="width:25px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" role="button" tabindex="0" title="#txt_repeatTrack#" aria-label="#txt_repeatTrack#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.svg' alt="" style="width:25px;"/></a>
             </div>
 <!--  Partie Supérieure -->
 
-  			<a style='position:absolute;margin-top:10px;left:108px;z-index:5;'><img class='image-encoche' style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:5;' aria-hidden="true"><img class='image-encoche' alt="" aria-hidden="true" style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
 
-  			<a style='position:absolute;margin-top:10px;left:108px;z-index:4;'><img class='image-clignote' style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>         
+  			<a style='position:absolute;margin-top:10px;left:108px;z-index:4;' aria-hidden="true"><img class='image-clignote' alt="" aria-hidden="true" style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>         
      	</div>
       
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
           
-			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" />
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremoteH" title="#artist#  -  #title#  -  #album#" alt="#txt_cover#" />
+			<div class="progressH" id="progress#id#" style="display:none;" role="progressbar" aria-label="#txt_progress#" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progressBarH"></div></div>
           	     
-			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' style="width:30px;" title="Vol-"/></a>
-          	<a class="btn_aTVremote_playbackH cmd play_btn" data-cmd_id="#cmd_play_id#" title='Lecture'><img src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
-			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" title='Pause'><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' style="width:30px"/></a>
-			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" ><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' style="width:30px;" title="Vol+"/></a>
+			<a class="btn_aTVremote_leftH cmd left" data-cmd_id="#cmd_volume_down_id#" role="button" tabindex="0" title="#txt_volDown#" aria-label="#txt_volDown#"><img src='plugins/aTVremote/core/template/dashboard/images/minus.svg' alt="" style="width:30px;"/></a>
+          	<a class="btn_aTVremote_playbackH cmd play_btn" data-cmd_id="#cmd_play_id#" role="button" tabindex="0" title="#txt_play#" aria-label="#txt_play#"><img src='plugins/aTVremote/core/template/dashboard/images/play.svg' alt="" style="width:30px"/></a>
+			<a class="btn_aTVremote_playbackH cmd pause_btn" data-cmd_id="#cmd_pause_id#" role="button" tabindex="0" title="#txt_pause#" aria-label="#txt_pause#"><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.svg' alt="" style="width:30px"/></a>
+			<a class="btn_aTVremote_rightH cmd right" data-cmd_id="#cmd_volume_up_id#" role="button" tabindex="0" title="#txt_volUp#" aria-label="#txt_volUp#"><img src='plugins/aTVremote/core/template/dashboard/images/plus.svg' alt="" style="width:30px;"/></a>
 
-			<div class="downpanelH">
-				<div style="overflow: auto;height: 316px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 242px;">Info</legend>
-					<img class="downRafter2H" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" onClick="panelDownClose#id#()"/>
-					<section style="text-align: center;"> 
-						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork"/><br>
-						<br/>
-						<center><p class="artist_hide"><a class="artist_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Artiste">[artist]</a></p></center>
-						<center><p class="titre_hide"><a class="titre_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Titre">[title]</a></p></center>
-						<center><p class="album_hide"><a class="album_titre_aTVremote" style="text-decoration: none; cursor:default;color:white !important" title="Album">[album]</a></p></center>
-						<br>
-					</section>
+			<div class="downpanelH" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#">
+				<div class="infoBgH" id="infoBg_#id#"></div>
+				<span class="infoCloseH" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+				<a class="infoLinkH" id="appleMusic#id#" href="#" target="_blank" rel="noopener" style="display:none;" title="#txt_appleMusic#" aria-label="#txt_appleMusic#" onclick="event.stopPropagation();"><i class="fab fa-apple" aria-hidden="true"></i></a>
+				<div class="infoContentH">
+					<img src="#artwork_url#" id="artworkInfoBox_#id#" class="infoArtH" alt=""/>
+					<div class="infoTextH">
+						<div class="titre_hide infoLineH infoTitleH"><span class="infoScrollH"><span class="infoTxtH">[title]</span></span></div>
+						<div class="artist_hide infoLineH infoArtistH"><span class="infoScrollH"><span class="infoTxtH">[artist]</span></span></div>
+						<div class="album_hide infoLineH infoAlbumH"><span class="infoScrollH"><span class="infoTxtH">[album]</span></span></div>
+						<div class="infoProgressH" style="display:none;" aria-hidden="true">
+							<div class="infoProgressBarH"><div></div></div>
+							<div class="infoTimesH"><span class="infoElapsedH">0:00</span><span class="infoRemainH">-0:00</span></div>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<a><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" onclick="panelDown#id#()"/></a>					
+			<a class="infoBtnH" role="button" tabindex="0" title="#txt_info#" aria-label="#txt_info#" aria-haspopup="dialog" onclick="panelDown#id#()"><img class="infoBoxH" src="plugins/aTVremote/core/template/dashboard/images/info.svg" alt="" style="width:20px;"/></a>					
 		</div>
 <!--  Artwork -->
       
 <!--  Statut & Info -->
 		<div class="info" style="height:20px;">
           	<br>
-			<p style='text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
+			<p style='margin:0;text-align: center;left:100px;top: 104px;position: absolute;width: 56px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" alt="#play_human#" role="status" id="equaH#id#" style="width:20px;vertical-align:sub;"/></p>
           	
 		</div>
 <!--  Statut & Info -->   
@@ -90,19 +96,12 @@
 <!--  Control & Navigation -->  
 		<div class="gameplayH">    	
 				<div class="blocPlayH">
-					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" title='Précédent'><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' style="width:30px"/>&nbsp;&nbsp;</a>
-					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" title='Suivant'><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' style="width:30px"/></a>
-					<!--<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" title='Stop'><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' style="width:40px"/></a>-->
+					<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" role="button" tabindex="0" title="#txt_previous#" aria-label="#txt_previous#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.svg' alt="" style="width:30px"/>&nbsp;&nbsp;</a>
+					<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" role="button" tabindex="0" title="#txt_next#" aria-label="#txt_next#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.svg' alt="" style="width:30px"/></a>
 				</div>
 
 <!--  Control & Navigation -->
           
-<!--  Back to the futur Sildebar -->          
-          	<!-- <div class="slidecontainer">
- 		 		<input type="range" min="1" max="" value="" class="slider" id="myRange">
-              	<p>Value: <span id="demo"></span></p>
-			</div>--> 
-<!--  Back to the futur Sildebar -->                                      
 		</div>
      
       
@@ -157,107 +156,189 @@
 			$('.eqLogic[data-eqLogic_id=#id#] .image-clignote').fadeOut(100);
 		});
 
+//Indicateur à côté de la pochette : égaliseur animé (lecture), image fixe (pause),
+//ou chargement (après précédent / suivant jusqu'à la nouvelle chanson, ou appareil en chargement)
+		var eqState#id# = {playing: false, cmdLoading: false, devLoading: false, timer: null, devTimer: null, daemonOff: ('#deamonState#' != 'ok')};
+		var prog#id# = {pos: 0, total: 0, at: Date.now(), timer: null}; // barre de progression (voir //Position)
+		var txt#id# = #txt_js#;
+		var loadingLabels#id# = [txt#id#.loading, 'Chargement en cours', 'Loading in progress', 'Ladevorgang läuft', 'Carga en curso', 'Caricamento in corso', 'Carregamento em curso'];
+		// Un HomePod qui reçoit de l'AirPlay envoie souvent un dernier état « loading » quand la diffusion
+		// s'arrête, puis plus rien : l'indicateur de chargement venant de l'appareil ne dure que 20 s.
+		var devLoadingMax#id# = 20;
+		var playHumanAge#id# = parseInt('#play_human_age#', 10) || 0; // âge de la valeur affichée au chargement de la page
+		function setDevLoading#id#(isLoading, ageSec) {
+			clearTimeout(eqState#id#.devTimer);
+			var remain = devLoadingMax#id# - ageSec;
+			eqState#id#.devLoading = isLoading && remain > 0;
+			if (eqState#id#.devLoading) {
+				eqState#id#.devTimer = setTimeout(function() {
+					eqState#id#.devLoading = false;
+					updateEqualizer#id#();
+				}, remain * 1000);
+			}
+		}
+		function updateEqualizer#id#() {
+			var img = 'equalizer.png';
+			if (eqState#id#.daemonOff) {
+				img = 'deamon_off.gif';
+			} else if (eqState#id#.cmdLoading || eqState#id#.devLoading) {
+				img = 'loading.gif';
+			} else if (eqState#id#.playing) {
+				img = 'miniEqua.gif';
+			}
+			var src = 'plugins/aTVremote/core/template/dashboard/images/' + img;
+			var el = $('.eqLogic[data-eqLogic_id=#id#] #equaH#id#');
+			if (el.attr('src') != src) el.attr('src', src);
+			if (eqState#id#.daemonOff) el.attr({title: txt#id#.daemonOff, alt: txt#id#.daemonOff});
+		}
+		function startCmdLoading#id#() {
+			eqState#id#.cmdLoading = true;
+			clearTimeout(eqState#id#.timer);
+			eqState#id#.timer = setTimeout(stopCmdLoading#id#, 10000); // au plus 10 s (dernière piste…)
+			updateEqualizer#id#();
+		}
+		function stopCmdLoading#id#() {
+			clearTimeout(eqState#id#.timer);
+			eqState#id#.cmdLoading = false;
+			updateEqualizer#id#();
+		}
+
 //Play_human
 		jeedom.cmd.addUpdateFunction('#play_human_id#', function(_options){
-			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
-			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('title',_options.display_value);
+			$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop({title: _options.display_value, alt: _options.display_value});
+			setDevLoading#id#(loadingLabels#id#.indexOf(_options.display_value) != -1, playHumanAge#id#);
+			playHumanAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
+			updateEqualizer#id#();
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#play_human_id#',display_value:'#play_human#'}]);
 		
 //Play_state
 		jeedom.cmd.addUpdateFunction('#play_state_id#', function(_options){
-			//console.log('ààà play_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == 0){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').hide(1);
-				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/equalizer.png');
+				progFreeze#id#();
+				eqState#id#.playing = false;
+				updateEqualizer#id#();
+				progRender#id#();
 			} else if(_options.display_value == 1){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.play_btn').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.pause_btn').show(1);
-				$('.eqLogic[data-eqLogic_id=#id#] #equaH#id#').prop('src', 'plugins/aTVremote/core/template/dashboard/images/miniEqua.gif');
+				progFreeze#id#();
+				eqState#id#.playing = true;
+				updateEqualizer#id#();
+				progRender#id#();
 			}
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#play_state_id#',display_value:'#play_state#'}]);
+
+//Position : barre de progression sous la pochette et dans le panneau Info.
+//Le démon n'envoie la position qu'aux changements d'état (début de piste, pause, reprise…) :
+//entre deux messages, la barre avance localement à partir de la dernière position reçue.
+		function progParseTime#id#(t) { // "5s", "03:50", "1:02:03"
+			t = String(t || '').trim();
+			if (/^\d+s$/.test(t)) return parseInt(t, 10);
+			if (!/^\d+(:\d+){1,2}$/.test(t)) return NaN;
+			return t.split(':').reduce(function(acc, v) { return acc * 60 + parseInt(v, 10); }, 0);
+		}
+		function progFormat#id#(sec) {
+			sec = Math.max(0, Math.round(sec));
+			var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+			return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (s < 10 ? '0' : '') + s;
+		}
+		function progCurrent#id#() {
+			var pos = prog#id#.pos + (eqState#id#.playing ? (Date.now() - prog#id#.at) / 1000 : 0);
+			return Math.min(Math.max(pos, 0), prog#id#.total);
+		}
+		function progFreeze#id#() { // avant un changement lecture / pause : on fixe la position atteinte
+			prog#id#.pos = progCurrent#id#();
+			prog#id#.at = Date.now();
+		}
+		function progRender#id#() {
+			var bar = $('#progress#id#'), info = $('.eqLogic[data-eqLogic_id=#id#] .infoProgressH');
+			if (!bar.length || !document.body.contains(bar[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
+			if (prog#id#.total <= 0) { bar.hide(); info.hide(); clearInterval(prog#id#.timer); prog#id#.timer = null; return; }
+			var pos = progCurrent#id#(), pct = (pos * 100 / prog#id#.total) + '%';
+			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + Math.round(pos * 100 / prog#id#.total) + ' % · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos);
+			bar.show().attr({title: label, 'aria-valuenow': Math.round(pos * 100 / prog#id#.total), 'aria-valuetext': label}).children('.progressBarH').css('width', pct);
+			info.show().find('.infoProgressBarH > div').css('width', pct);
+			info.find('.infoElapsedH').text(progFormat#id#(pos));
+			info.find('.infoRemainH').text('-' + progFormat#id#(prog#id#.total - pos));
+			if (eqState#id#.playing && !prog#id#.timer) {
+				prog#id#.timer = setInterval(progRender#id#, 1000);
+			} else if (!eqState#id#.playing && prog#id#.timer) {
+				clearInterval(prog#id#.timer);
+				prog#id#.timer = null;
+			}
+		}
+		var positionAge#id# = parseInt('#position_age#', 10) || 0; // âge de la position affichée au chargement de la page
+		jeedom.cmd.addUpdateFunction('#position_id#', function(_options){
+			// ex. "5s/03:50 (2%)"
+			var m = String(_options.display_value || '').match(/^\s*([^\/\s]+)\s*\/\s*([^\s(]+)/);
+			var pos = m ? progParseTime#id#(m[1]) : NaN, total = m ? progParseTime#id#(m[2]) : NaN;
+			if (isNaN(pos) || isNaN(total) || total <= 0) {
+				prog#id#.total = 0;
+			} else {
+				prog#id#.total = total;
+				prog#id#.pos = pos;
+				prog#id#.at = Date.now() - (positionAge#id# * 1000); // au chargement : la position date de positionAge s
+			}
+			positionAge#id# = 0; // les mises à jour suivantes sont des événements reçus à l'instant
+			progRender#id#();
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#position_id#',display_value:'#position#'}]);
 		
 //Artwork
 		jeedom.cmd.addUpdateFunction('#artwork_url_id#', function(_options){
-			//console.log('ààà artwork_url_id _options.display_value =',_options.display_value)
+			releasePressed#id#();
+			stopCmdLoading#id#();
 			
 			$('#artworkForeground_#id#').prop('src',_options.display_value);
 			$('#artworkInfoBox_#id#').prop('src',_options.display_value);
-			$('.artworkBackgroundH_#id#').css('background-image',"url("+_options.display_value+")");
+			$('#infoBg_#id#').css('background-image', "url("+_options.display_value+")");
+			setBlurredArtwork#id#(_options.display_value);
 		});
+
+		// Fond flouté : une fois la nouvelle image chargée, on la pose puis on change très légèrement le flou
+		// du conteneur. Sinon Safari ne repeint que la boîte de la pochette (154px) et le halo autour garde
+		// l'ancienne image jusqu'au prochain défilement.
+		function setBlurredArtwork#id#(url) {
+			var bg = $('.artworkBackgroundH_#id#');
+			var apply = function() {
+				bg.css('background-image', "url("+url+")");
+				bg.closest('.artworkBlurH').toggleClass('artworkBlurH-repaint');
+			};
+			var img = new Image();
+			img.onload = apply;
+			img.onerror = apply;
+			img.src = url;
+		}
 		jeedom.cmd.refreshValue([{cmd_id: '#artwork_url_id#',display_value:'#artwork_url#'}]);
 
-//Metadonnée          
+//Métadonnées : infobulle de la pochette (artiste - titre - album) et lignes du panneau Info
+		var meta#id# = {artist: '', title: '', album: ''};
+		function setMeta#id#(field, cls, value) {
+			meta#id#[field] = (value == '-') ? '' : value;
+			$('#artworkForeground_#id#').prop('title', [meta#id#.artist, meta#id#.title, meta#id#.album].filter(Boolean).join('  -  '));
+			$('.eqLogic[data-eqLogic_id=#id#] .' + cls).toggle(value != '-');
+			$('.eqLogic[data-eqLogic_id=#id#] .' + cls + ' .infoTxtH').text(value);
+			fitMarquee#id#();
+		}
 		jeedom.cmd.addUpdateFunction('#artist_id#', function(_options){
-			//console.log('ààà artist_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',_options.display_value+'  -  '+artworkTitle[1]+'  -  '+artworkTitle[2]);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide').show(1);
-			}
-			
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .artist_hide a').html(_options.display_value);
-			}
+			setMeta#id#('artist', 'artist_hide', _options.display_value);
+		});
+		jeedom.cmd.addUpdateFunction('#album_id#', function(_options){
+			setMeta#id#('album', 'album_hide', _options.display_value);
+		});
+		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
+			releasePressed#id#();
+			stopCmdLoading#id#();
+			setMeta#id#('title', 'titre_hide', _options.display_value);
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#artist_id#',display_value:'#artist#'}]);
-		
-		jeedom.cmd.addUpdateFunction('#album_id#', function(_options){
-			//console.log('ààà album_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+artworkTitle[1]+'  -  '+_options.display_value);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide').show(1);
-			}
-			
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .album_hide a').html(_options.display_value);
-			}
-		});
 		jeedom.cmd.refreshValue([{cmd_id: '#album_id#',display_value:'#album#'}]);
-		
-		jeedom.cmd.addUpdateFunction('#title_id#', function(_options){
-			//console.log('ààà title_id _options.display_value =',_options.display_value)
-			
-			var artworkTitle=$('#artworkForeground_#id#').prop('title').split('  -  ');
-			$('#artworkForeground_#id#').prop('title',artworkTitle[0]+'  -  '+_options.display_value+'  -  '+artworkTitle[2]);
-			
-			if (_options.display_value == '-'){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').hide(1);
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide').show(1);
-			}
-
-			if (_options.display_value.length > 40){
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html('<marquee direction="left" behavior="#marquee#" scrollamount="2" scrolldelay="60" hspace="15px" loop="infinite" onmouseover="stop();" onmouseout="start();" style="font-weight: bold; font-size:12px">'+_options.display_value+'</marquee>');
-			} else {
-				$('.eqLogic[data-eqLogic_id=#id#] .titre_hide a').html(_options.display_value);
-			}
-		});
 		jeedom.cmd.refreshValue([{cmd_id: '#title_id#',display_value:'#title#'}]);
 	  
-//Position 
-	  
-		/*if('#position#' != '-'){
-			$('.eqLogic[data-eqLogic_id=#id#] #pos#id#').text('#position#');
-		} else {
-			$('.eqLogic[data-eqLogic_id=#id#] .position').hide(1);
-		}*/     
-		
 //volume
 		jeedom.cmd.addUpdateFunction('#volume_id#', function(_options){
 			$("#volumeWidget_#id#").data("roundSlider").setValue(_options.display_value);
@@ -267,7 +348,6 @@
 	  
 //Repeat
 		jeedom.cmd.addUpdateFunction('#repeat_state_id#', function(_options){
-			//console.log('ààà repeat_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '1'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_all').hide(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_repeat_track').hide(1);
@@ -286,7 +366,6 @@
 	  
 //Shuffle
 		jeedom.cmd.addUpdateFunction('#shuffle_state_id#', function(_options){
-			//console.log('ààà shuffle_state_id _options.display_value =',_options.display_value)
 			if(_options.display_value == '0'){
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_on').show(1);
 				$('.eqLogic[data-eqLogic_id=#id#] .cmd.set_shuffle_off').hide(1);  
@@ -297,45 +376,106 @@
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#shuffle_state_id#',display_value:'#shuffle_state#'}]);
 
+//Lien Apple Music du panneau Info : seulement si le morceau a un identifiant iTunes Store
+//(Apple Music / iTunes) ; rien pour Spotify, une radio, un flux AirPlay…
+		jeedom.cmd.addUpdateFunction('#itunes_id_id#', function(_options){
+			var id = String(_options.display_value || '').trim(), link = $('#appleMusic#id#');
+			if (/^[1-9][0-9]*$/.test(id)) {
+				link.attr('href', 'https://music.apple.com/song/' + id).show();
+			} else {
+				link.hide().attr('href', '#');
+			}
+		});
+		jeedom.cmd.refreshValue([{cmd_id: '#itunes_id_id#',display_value:'#itunes_id#'}]);
+
+//Aléatoire / répétition utilisables avec la source en cours (liste « features » demandée par le démon
+//à chaque changement de morceau) : sinon boutons grisés, mais toujours cliquables (un clic revérifie).
+		function setAvailable#id#(cls, value) {
+			var off = (String(value) === '0'); // valeur inconnue (commande pas encore créée…) : disponible
+			$('.eqLogic[data-eqLogic_id=#id#] .cmd.' + cls).each(function() {
+				var btn = $(this);
+				if (btn.data('baseTitle') === undefined) btn.data('baseTitle', btn.attr('title'));
+				var label = btn.data('baseTitle') + (off ? ' (' + txt#id#.unavailable + ')' : '');
+				btn.toggleClass('aTVunavailable', off).attr({title: label, 'aria-label': label}); // pas aria-disabled : le clic reste utile
+			});
+		}
+		jeedom.cmd.addUpdateFunction('#shuffle_available_id#', function(_options){
+			setAvailable#id#('btn_aTVremote_shuffle', _options.display_value);
+		});
+		jeedom.cmd.addUpdateFunction('#repeat_available_id#', function(_options){
+			setAvailable#id#('btn_aTVremote_repeat', _options.display_value);
+		});
+		setAvailable#id#('btn_aTVremote_shuffle', '#shuffle_available#');
+		setAvailable#id#('btn_aTVremote_repeat', '#repeat_available#');
+
 	  
       	function panelDown#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "24px"});
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").addClass('open');
+    		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
+    		setTimeout(function() { $(".eqLogic[data-eqLogic_id=#id#] .infoCloseH").focus(); }, 50); // clavier : focus dans le panneau
 		}
+
+		// Texte défilant du panneau Info (remplace <marquee>, qui ne fonctionne pas partout) :
+		// une seule ligne, défilement seulement si le texte dépasse, selon l'option « marquee » du plugin
+		// (alternate = aller-retour, scroll = boucle continue).
+		function fitMarquee#id#() {
+			var loop = ('#marquee#' == 'scroll');
+			$('.eqLogic[data-eqLogic_id=#id#] .infoLineH').each(function() {
+				var line = $(this), inner = line.children('.infoScrollH');
+				line.removeClass('scrolling alt loop');
+				inner.children('.infoTxtH').slice(1).remove();
+				var txt = inner.children('.infoTxtH');
+				var boxW = line.innerWidth(), txtW = inner[0].scrollWidth;
+				if (!line.is(':visible') || boxW === 0 || txtW <= boxW + 1) return;
+				if (loop) {
+					txt.clone().appendTo(inner); // 2 copies : translateX(-50%) boucle sans à-coup
+					line[0].style.setProperty('--aTVdur', Math.max(6, (txtW + 40) / 30) + 's');
+					line.addClass('scrolling loop');
+				} else {
+					line.addClass('scrolling alt'); // mesure APRÈS la classe : elle ajoute des marges au texte
+					var over = inner[0].scrollWidth - boxW;
+					line[0].style.setProperty('--aTVshift', (-over) + 'px');
+					line[0].style.setProperty('--aTVdur', Math.max(4, over / 30 / 0.7) + 's');
+				}
+			});
+		}
+		$(window).on('resize', fitMarquee#id#);
 		function panelDownClose#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").animate({top: "300px"});
+    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelH").removeClass('open');
 		}
 
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		})
 
-/* Back to the futur Sildebar */    
-      
-      	/*var time = '#position#';
-      	var split_time = time.split(['/']);
-      	var current_time = split_time[0];
-      	var total_time = split_time[1]; 
-        
-      	var split_total_time = total_time.split(['s']);
-      	var total = split_total_time[0];
-      
-      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('value', current_time);
-      	$('.eqLogic[data-eqLogic_id=#id#] #myRange').attr('max', total);
+		// Clavier : Entrée / Espace activent les boutons, Échap ferme le panneau Info
+		$('.eqLogic[data-eqLogic_id=#id#] [role=button]').on('keydown', function(e) {
+			if (e.key != 'Enter' && e.key != ' ' && e.key != 'Spacebar') return;
+			e.preventDefault();
+			$(this).trigger('click');
+		});
+		$('.eqLogic[data-eqLogic_id=#id#] .downpanelH').on('keydown', function(e) {
+			if (e.key != 'Escape' && e.key != 'Esc') return;
+			panelDownClose#id#();
+			$('.eqLogic[data-eqLogic_id=#id#] .infoBtnH').focus();
+		});
 
-      
-      	var slider = document.getElementById("myRange");
-		var output = document.getElementById("demo");
-		output.innerHTML = slider.value; // Display the default slider value
-		
-		// Update the current slider value (each time you drag the slider handle)
-		slider.oninput = function() {
-  		output.innerHTML = this.value;
-          
-       		$(".eqLogic[data-eqLogic_id=#id#] .silde").on('slidestop', function (event,ui) {
-				jeedom.cmd.execute({id: '#set_position#', value: {slider: ui.value}});
-			});
-          
-		}*/
+		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de
+		// chanson (cover ou titre), 8 s au plus. Les autres boutons ne restent pas grisés. À la souris : :hover.
+		var pressedTimer#id#;
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
+			if (!$(this).is('.previous, .next')) return;
+			if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+			$(this).addClass('aTVpressed');
+			clearTimeout(pressedTimer#id#);
+			pressedTimer#id# = setTimeout(releasePressed#id#, 8000);
+		});
+		$('.eqLogic[data-eqLogic_id=#id#] .cmd.previous, .eqLogic[data-eqLogic_id=#id#] .cmd.next').on('click', startCmdLoading#id#);
+		function releasePressed#id#() {
+			clearTimeout(pressedTimer#id#);
+			$('.eqLogic[data-eqLogic_id=#id#] .aTVpressed').removeClass('aTVpressed');
+		}
+
       
      
     </script>
