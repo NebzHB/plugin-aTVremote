@@ -483,6 +483,15 @@ class aTVremote extends eqLogic {
 		}*/
 	}
 // OLDSCAN
+	// Version d'une Apple TV d'après son identifiant de modèle, quand pyatv ne connaît pas encore le modèle
+	public static function appleTVVersionFromIdentifier($major, $minor) {
+		$known = array('2,1' => '2', '3,1' => '3', '3,2' => '3', '5,3' => 'HD', '6,2' => '4K', '11,1' => '4K (gen 2)', '14,1' => '4K (gen 3)', '18,1' => '4K (gen 4)'); // 18,1 : Apple TV 4K de 2026, pas encore connue de pyatv 0.18
+		if (isset($known[$major . ',' . $minor])) {
+			return $known[$major . ',' . $minor];
+		}
+		return ($major > 18) ? '4K' : 'HD'; // plus récente que la 4K (gen 4) : traitée comme une 4K
+	}
+
     public static function discover($_mode) {
 		log::add('aTVremote','info','============================');
 		log::add('aTVremote','info',"Scan en cours...");
@@ -558,6 +567,11 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'Apple TV') !== false) {
 						$res['device']="Apple TV";
 						$res['version']=str_replace('Apple TV ','',$modElmt[0]);
+					} elseif(preg_match('/^AppleTV(\d+),(\d+)/', $modElmt[0], $id)) {
+						// modèle trop récent pour pyatv : il ne donne que l'identifiant (ex. « AppleTV18,1, Unknown OS 27.2.1 »)
+						$res['device']="Apple TV";
+						$res['version']=self::appleTVVersionFromIdentifier((int)$id[1], (int)$id[2]);
+						log::add('aTVremote','info',"Apple TV inconnue de pyatv (".$modElmt[0].") : considérée comme Apple TV ".$res['version']);
 					} elseif(strpos($res['model'],'HomePod') !== false || strpos($res['model'],'AudioAccessory6,1') !== false || strpos($res['model'],'AudioAccessory11,1') !== false) {
 						$res['device']="HomePod";
 						if(strpos($res['model'],'AudioAccessory11,1') !== false) {
@@ -577,8 +591,8 @@ class aTVremote extends eqLogic {
 					if(strpos($res['model'],'AudioAccessory6,1') !== false) {
 						$res['os']='TvOS';
 					}
-					if($res['device']=="HomePod" && $res['os'] == 'Unknown') {
-						log::add('aTVremote','info',"HomePod avec Unknown OS détecté, conversion en TvOS");
+					if(($res['device']=="HomePod" || $res['device']=="Apple TV") && $res['os'] == 'Unknown') {
+						log::add('aTVremote','info',$res['device']." avec Unknown OS détecté, conversion en TvOS");
 						$res['os']='TvOS';
 					}
 					if($subModElmt[0] == 'tvOS' && !isset($subModElmt[1])) {
