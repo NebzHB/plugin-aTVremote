@@ -246,6 +246,7 @@ def send_powerstate_event(mac: str, power_state) -> None:
 async def send_app_event(device: "Device") -> None:
     apps = await device.atv.apps.app_list()
     text = ", ".join(f"App: {app.name} ({app.identifier})" for app in apps)
+    log_fr(f"[MSG][{device.mac}] Liste des apps envoyée à jeedom ({len(apps)} apps)", LEVEL_DEBUG)
     send_to_jeedom("app", device.mac, data=text)
 
 
@@ -645,6 +646,13 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
             log_fr(f"[{mac}] Volume indisponible : {exc!r}", LEVEL_DEBUG)
         if version_num == 3:
             spawn(send_playing_event(device), f"l'envoi de la lecture de {mac}")
+        # liste des apps (appairage Companion) : à chaque connexion, sinon le widget reste sur « Aucune »
+        # tant que personne ne lance « MàJ Liste App » (Jeedom la demandait parfois avant la fin de la connexion)
+        try:
+            if atv.features.in_state(FeatureState.Available, FeatureName.AppList):
+                spawn(send_app_event(device), f"l'envoi de la liste des apps de {mac}")
+        except Exception as exc:
+            log_fr(f"[{mac}] Liste des apps indisponible : {exc!r}", LEVEL_DEBUG)
 
         await conn_listener.disconnected.wait()
         device.cancel_features()
@@ -726,8 +734,12 @@ async def handle_connect(request: web.Request) -> web.Response:
 
     existing = devices.get(mac)
     if existing is not None and not existing.give_up:
-        log_fr(f"Connexion demandée mais déjà connecté/en cours sur {mac}", LEVEL_INFO)
-        return web.json_response({"result": "ko", "msg": "alreadyConnected"})
+        if existing.version_num == version_num:
+            log_fr(f"Connexion demandée mais déjà connecté/en cours sur {mac}", LEVEL_INFO)
+            return web.json_response({"result": "ko", "msg": "alreadyConnected"})
+        # version changée (détection après coup…) : les clés à charger ne sont plus les mêmes, on reconnecte
+        log_fr(f"[{mac}] Version changée ({existing.version_num} -> {version_num}), reconnexion", LEVEL_INFO)
+        await stop_device_supervisor(mac)
 
     log_fr(f"Connexion sur {mac} (version={version_num})...", LEVEL_INFO)
     start_device_supervisor(mac, version_num)

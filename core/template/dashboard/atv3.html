@@ -36,7 +36,7 @@
 
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
-			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" alt="#txt_cover#" />
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" alt="" />
 
 			<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" role="button" tabindex="0" title="#txt_up#" aria-label="#txt_up#"><img class="aTVremote_up" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
 			<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" role="button" tabindex="0" title="#txt_left#" aria-label="#txt_left#"><img class="aTVremote_left" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
@@ -44,20 +44,6 @@
 			<a class="btn_aTVremote_right cmd right" data-cmd_id="#cmd_right_id#" role="button" tabindex="0" title="#txt_right#" aria-label="#txt_right#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
 			<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" role="button" tabindex="0" title="#txt_down#" aria-label="#txt_down#"><img class="aTVremote_down" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
 
-			<div class="downpanelA" role="dialog" aria-label="#txt_info#">
-				<div style="overflow: auto;height: 290px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 117px;margin-top: 17px !important;">Info</legend>
-					<img class="downRafter2A" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" role="button" tabindex="0" title="#txt_close#" aria-label="#txt_close#" alt="" onClick="panelDownClose#id#()"/>
-					<section style="text-align: center;">
-						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork" alt=""/><br>
-						<br/>
-						<p class="artist_hide"><a class="artist_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_artist#"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></a></p>
-						<p class="titre_hide"><a class="titre_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_title#"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></a></p>
-						<p class="album_hide"><a class="album_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_album#"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></a></p>
-						<br>
-					</section>
-				</div>
-			</div>
 
 			<a><img class="infoBox" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" role="button" tabindex="0" title="#txt_info#" aria-label="#txt_info#" aria-haspopup="dialog" alt="" onclick="panelDown#id#()"/></a>
 
@@ -103,6 +89,22 @@
           	<div style="display: block;margin: -15px 19px 10px;" class="volume">
 				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" role="button" tabindex="0" title="#txt_volDown#" aria-label="#txt_volDown#"><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' alt="" style="width:40px;"/></a>
             </div>
+		</div>
+	</div>
+
+	<!-- panneaux Info / Apps : partie haute du widget (pochette et infos), ils descendent du haut -->
+	<div class="aTVpanelClip">
+		<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
+			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
+			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+			<div class="aTVpanelContent">
+				<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
+				<div class="aTVpanelText">
+					<div class="titre_hide aTVline aTVpanelTitle"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></div>
+					<div class="artist_hide aTVline aTVpanelArtist"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></div>
+					<div class="album_hide aTVline aTVpanelAlbum"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -212,6 +214,7 @@
 			var apply = function() {
 				$('#artworkForeground_#id#').prop('src', url);
 				$('#artworkInfoBox_#id#').prop('src', url);
+				$('.eqLogic[data-eqLogic_id=#id#] .aTVpanelBg').css('background-image', "url("+url+")");
 				$('.artworkBackground_#id#').css('background-image', "url("+url+")").toggleClass('artworkBlur-repaint');
 			};
 			var img = new Image();
@@ -387,15 +390,22 @@
 		setTimeout(fitMarquee#id#, 1000);
 		fitMarquee#id#();
 
-//Panneau Info
-      	function panelDown#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "30px"});
-    		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
-    		setTimeout(function() { $(".eqLogic[data-eqLogic_id=#id#] .downRafter2A").focus(); }, 50);
+//Panneau Info : par-dessus tout le widget (comme le panneau Info du HomePod)
+		function aTVpanelOpen#id#(cls) {
+			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
+			panel.addClass('open').attr('aria-hidden', 'false');
+			fitMarquee#id#(); // largeurs connues seulement une fois le panneau affiché
+			setTimeout(function() { panel.find('.aTVpanelClose').focus(); }, 50); // clavier : focus dans le panneau
 		}
-		function panelDownClose#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "-300px"});
+		function aTVpanelClose#id#(cls, opener) {
+			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
+			if (!panel.hasClass('open')) return;
+			var hadFocus = $.contains(panel[0], document.activeElement);
+			panel.removeClass('open').attr('aria-hidden', 'true');
+			if (hadFocus) $(".eqLogic[data-eqLogic_id=#id#] ." + opener).focus(); // le focus revient sur le bouton d'ouverture
 		}
+      	function panelDown#id#() { aTVpanelOpen#id#('aTVinfoPanel'); }
+		function panelDownClose#id#() { aTVpanelClose#id#('aTVinfoPanel', 'infoBox'); }
 
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
@@ -407,10 +417,8 @@
 			e.preventDefault();
 			$(this).trigger('click');
 		});
-		$('.eqLogic[data-eqLogic_id=#id#] .downpanelA').on('keydown', function(e) {
-			if (e.key != 'Escape' && e.key != 'Esc') return;
-			panelDownClose#id#();
-			$('.eqLogic[data-eqLogic_id=#id#] .infoBox').focus();
+		$('.eqLogic[data-eqLogic_id=#id#] .aTVinfoPanel').on('keydown', function(e) {
+			if (e.key == 'Escape' || e.key == 'Esc') panelDownClose#id#();
 		});
 
 		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de

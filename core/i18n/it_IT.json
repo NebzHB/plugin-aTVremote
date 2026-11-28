@@ -7,6 +7,7 @@
     },
     "plugins\/aTVremote\/core\/class\/aTVremote.class.php": {
         "Accueil": "Home",
+        "Actualiser la liste": "Aggiorna l'elenco",
         "Album": "Album",
         "Albums": "Album",
         "Allumer": "Accendi",

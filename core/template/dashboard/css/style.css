@@ -471,28 +471,6 @@
 	transform: rotate(90deg);
 }
 
-.aTVremote .downRafter2A {
-    position: absolute;
-    top: 0.5px;
-    left: 58px;
-    cursor: pointer; 
-    z-index: 4;
-    opacity: 0.6;
-}
-
-.aTVremote .downRafter2A:hover {
-    opacity: 1;
-}
-
-.aTVremote .downpanelA {
-	width: 138px;
-	height: 276px;
-	float: left;
-	position: absolute;
-	z-index: 10;
-	background: rgba(0, 0, 0, 0.9);
-	top: -300px;
-}
 .aTVremote .downpanelH {
 	position: absolute;
 	top: 0;
@@ -634,27 +612,6 @@
 	opacity: 0.6;
 }
 
-.aTVremote .downRafter2App {
-    position: absolute;
-    top: 0.5px;
-    left: 54px;
-    cursor: pointer; 
-    z-index: 4;
-    opacity: 0.6;
-}
-
-.aTVremote .downRafter2App:hover {
-    opacity: 1;
-}
-.aTVremote .downpanelApp {
-      width: 138px;
-      height: 276px;
-      float: left;
-      position: absolute;
-      z-index: 11;
-      background: rgba(0, 0, 0, 0.9);
-      top: -300px;
-  }
 
 /*.oModal {
     position: absolute;
@@ -855,4 +812,175 @@
 .aTVremote .infoLinkH:hover {
 	background: rgba(255, 255, 255, 0.3);
 }
+}
+
+/* Apple TV : panneaux Info et Apps sur la partie haute du widget (au-dessus des boutons de lecture, qui
+   commencent à 302px) ; ils descendent du haut. Le conteneur coupe ce qui dépasse pendant l'animation. */
+.aTVremote .aTVpanelClip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 302px;
+	z-index: 12;
+	overflow: hidden;
+	border-radius: 30px 30px 0 0;
+	pointer-events: none; /* panneaux fermés : les clics passent au widget */
+}
+.aTVremote .aTVpanel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	background: #000;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+	pointer-events: auto;
+	color: #fff;
+	visibility: hidden;
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+	transition: transform .35s ease, visibility 0s linear .35s;
+}
+.aTVremote .aTVpanel.open {
+	visibility: visible;
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+	transition: transform .35s ease, visibility 0s;
+}
+.aTVremote .aTVinfoPanel {
+	cursor: pointer;
+}
+.aTVremote .aTVpanelBg {
+	position: absolute;
+	top: -40px;
+	left: -40px;
+	right: -40px;
+	bottom: -40px;
+	background: center / cover no-repeat;
+	-webkit-filter: blur(24px) brightness(0.4) saturate(1.2);
+	filter: blur(24px) brightness(0.4) saturate(1.2);
+}
+.aTVremote .aTVpanelClose {
+	position: absolute;
+	top: 12px;
+	right: 14px;
+	z-index: 2;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
+	color: #fff;
+	font-size: 18px;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+}
+.aTVremote .aTVpanelContent {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 42px 12px 14px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.aTVremote .aTVpanelArt {
+	width: 110px;
+	height: 110px;
+	object-fit: cover;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+	flex-shrink: 0;
+	margin-top: auto; /* centré verticalement s'il y a la place */
+	margin-bottom: 12px;
+}
+.aTVremote .aTVpanelText {
+	width: 100%;
+	margin-bottom: auto;
+	line-height: 1.35;
+}
+.aTVremote .aTVpanelTitle {
+	font-size: 13px;
+	font-weight: bold;
+}
+.aTVremote .aTVpanelArtist {
+	margin-top: 3px;
+	font-size: 12px;
+	opacity: 0.85;
+}
+.aTVremote .aTVpanelAlbum {
+	margin-top: 2px;
+	font-size: 11px;
+	opacity: 0.6;
+}
+.aTVremote .aTVpanelHeading {
+	margin-bottom: 14px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.aTVremote .aTVpanelLabel {
+	display: block;
+	margin: 0 0 4px;
+	font-size: 11px;
+	font-weight: normal;
+	opacity: 0.6;
+}
+.aTVremote .aTVpanelCurrent {
+	max-width: 100%;
+	margin-bottom: 14px;
+	font-size: 13px;
+	font-weight: bold;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.aTVremote .aTVpanelSelect {
+	box-sizing: border-box;
+	width: 100%;
+	height: 34px;
+	margin-bottom: 12px;
+	padding: 0 8px;
+	border: 0;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.15);
+	color: #fff;
+	font-size: 13px;
+}
+.aTVremote .aTVpanelSelect option {
+	background: #222; /* liste déroulante lisible (Windows, Linux) */
+	color: #fff;
+}
+.aTVremote .aTVpanelBtn {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff !important;
+	font-size: 11px;
+	text-decoration: none !important;
+	cursor: pointer;
+}
+@media (hover: hover) {
+.aTVremote .aTVpanelBtn:hover,
+.aTVremote .aTVpanelClose:hover {
+	background: rgba(255, 255, 255, 0.28);
+}
+}
+.aTVremote .aTVpanel [role=button]:focus-visible,
+.aTVremote .aTVpanelSelect:focus-visible {
+	outline: 2px solid rgba(255, 255, 255, 0.85);
+	outline-offset: 2px;
+}
+.aTVremote .aTVpanelBtn:focus-visible {
+	border-radius: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+	.aTVremote .aTVpanel,
+	.aTVremote .aTVpanel.open { transition: none; }
 }

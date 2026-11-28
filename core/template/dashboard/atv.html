@@ -22,18 +22,6 @@
 
 			<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' aria-hidden="true"></i>&nbsp;#name_display#</a>
 
-			<div class="downpanelApp" role="dialog" aria-label="#txt_apps#">
-				<div style="overflow: auto;height: 276px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 117px;margin-top: 17px !important;">App</legend>
-					<img class="downRafter2App" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" role="button" tabindex="0" title="#txt_close#" aria-label="#txt_close#" alt="" onClick="panelDownCloseApp#id#()" />
-					<section style="text-align: center;">
-						<br/>
-						#txt_launchApp# :
-						<div class="cmd-widget" data-type="action" data-subtype="select" data-template="default" data-cmd_id="#cmd_launch_app_id#"><div class="content-xs"><select class="selectCmd" aria-label="#txt_launchApp#"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select></div></div>
-						<br>
-					</section>
-				</div>
-			</div>
 			<a><img class="appsBox" src="plugins/aTVremote/core/template/dashboard/images/database.png" style="width:20px;" role="button" tabindex="0" title="#txt_apps#" aria-label="#txt_apps#" aria-haspopup="dialog" alt="" onclick="panelDownApp#id#()"/></a>
           	<div id="a#id#" class="repeatBox">
               	<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" role="button" tabindex="0" title="#txt_shuffleOff#" aria-label="#txt_shuffleOff#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' alt="" style="width:20px;"/>&nbsp;&nbsp;</a>
@@ -51,7 +39,7 @@
 
 <!--  Artwork -->
 		<div class="artwork_aTVremote">
-			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" alt="#txt_cover#" />
+			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" alt="" />
 
 			<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" role="button" tabindex="0" title="#txt_up#" aria-label="#txt_up#"><img class="aTVremote_up" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
 			<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" role="button" tabindex="0" title="#txt_left#" aria-label="#txt_left#"><img class="aTVremote_left" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
@@ -59,20 +47,6 @@
 			<a class="btn_aTVremote_right cmd right" data-cmd_id="#cmd_right_id#" role="button" tabindex="0" title="#txt_right#" aria-label="#txt_right#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
 			<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" role="button" tabindex="0" title="#txt_down#" aria-label="#txt_down#"><img class="aTVremote_down" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
 
-			<div class="downpanelA" role="dialog" aria-label="#txt_info#">
-				<div style="overflow: auto;height: 290px;">
-					<legend style="color : white;margin-bottom: 4px !important;text-align: center !important;width: 117px;margin-top: 17px !important;">Info</legend>
-					<img class="downRafter2A" src="plugins/aTVremote/core/template/dashboard/images/X.png" style="width:20px;" role="button" tabindex="0" title="#txt_close#" aria-label="#txt_close#" alt="" onClick="panelDownClose#id#()"/>
-					<section style="text-align: center;">
-						<img src='#artwork_url#' style="width:100px;" id="artworkInfoBox_#id#" class="artwork" alt=""/><br>
-						<br/>
-						<p class="artist_hide"><a class="artist_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_artist#"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></a></p>
-						<p class="titre_hide"><a class="titre_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_title#"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></a></p>
-						<p class="album_hide"><a class="album_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_album#"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></a></p>
-						<br>
-					</section>
-				</div>
-			</div>
 
 			<a><img class="infoBox" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" role="button" tabindex="0" title="#txt_info#" aria-label="#txt_info#" aria-haspopup="dialog" alt="" onclick="panelDown#id#()"/></a>
 
@@ -124,6 +98,34 @@
 		</div>
 	</div>
 
+	<!-- panneaux Info / Apps : partie haute du widget (pochette et infos), ils descendent du haut -->
+	<div class="aTVpanelClip">
+		<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
+			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
+			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
+			<div class="aTVpanelContent">
+				<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
+				<div class="aTVpanelText">
+					<div class="titre_hide aTVline aTVpanelTitle"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></div>
+					<div class="artist_hide aTVline aTVpanelArtist"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></div>
+					<div class="album_hide aTVline aTVpanelAlbum"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></div>
+				</div>
+			</div>
+		</div>
+		<div class="aTVpanel aTVappsPanel" role="dialog" aria-label="#txt_apps#" aria-hidden="true">
+			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
+			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#" title="#txt_close#" onclick="panelDownCloseApp#id#()">&times;</span>
+			<div class="aTVpanelContent">
+				<div class="aTVpanelHeading">#txt_apps#</div>
+				<div class="aTVpanelLabel">#txt_app#</div>
+				<div class="aTVpanelCurrent aTVappName">#txt_none#</div>
+				<label class="aTVpanelLabel" for="aTVlaunch#id#">#txt_launchApp#</label>
+				<select id="aTVlaunch#id#" class="aTVpanelSelect selectCmd"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select>
+				<a class="aTVpanelBtn cmd app_list" data-cmd_id="#cmd_app_list_id#" role="button" tabindex="0" title="#txt_refreshApps#"><i class="fas fa-sync-alt" aria-hidden="true"></i> #txt_refreshApps#</a>
+			</div>
+		</div>
+	</div>
+
     <script>
 		if(typeof jeedom.cmd.addUpdateFunction !== 'function') { // before 4.3
 			jeedom.cmd.addUpdateFunction = function(id,func) {
@@ -131,12 +133,12 @@
 			}
 		}
 
-		$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").on('change', function () {
-			jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: $(this).value()}})
-		})
-
-		jeedom.cmd.addUpdateFunction('#cmd_launch_app_id#', function(_options) {
-			$(".cmd-widget[data-cmd_id=#cmd_launch_app_id#] .selectCmd").val(_options.display_value)
+		$('#aTVlaunch#id#').on('change', function () {
+			var app = $(this).val();
+			if (!app) return;
+			jeedom.cmd.execute({id: '#cmd_launch_app_id#', value: {select: app}});
+			$(this).val(''); // prêt pour lancer une autre app
+			panelDownCloseApp#id#();
 		});
 
 //Apple clignotante
@@ -233,9 +235,11 @@
 
 			if(typeof(app_split[1]) != "undefined" && app_split[1] !== null) {
 				$('.eqLogic[data-eqLogic_id=#id#] #sum#id#').text(app_final || '');
+				$('.eqLogic[data-eqLogic_id=#id#] .aTVappName').text(app_final || txt#id#.none);
 				$('.eqLogic[data-eqLogic_id=#id#] .app_hide').show(1);
 			} else {
 				$('.eqLogic[data-eqLogic_id=#id#] #sum#id#').text('');
+				$('.eqLogic[data-eqLogic_id=#id#] .aTVappName').text(txt#id#.none);
 				$('.eqLogic[data-eqLogic_id=#id#] .app_hide').hide(1);
 			}
 			$('.eqLogic[data-eqLogic_id=#id#] .appsBox').show(1);
@@ -274,6 +278,7 @@
 			var apply = function() {
 				$('#artworkForeground_#id#').prop('src', url);
 				$('#artworkInfoBox_#id#').prop('src', url);
+				$('.eqLogic[data-eqLogic_id=#id#] .aTVpanelBg').css('background-image', "url("+url+")");
 				$('.artworkBackground_#id#').css('background-image', "url("+url+")").toggleClass('artworkBlur-repaint');
 			};
 			var img = new Image();
@@ -482,22 +487,24 @@
 		setTimeout(fitMarquee#id#, 1000);
 		fitMarquee#id#();
 
-//Panneaux Apps et Info
-      	function panelDownApp#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelApp").animate({top: "30px"});
-    		setTimeout(function() { $(".eqLogic[data-eqLogic_id=#id#] .downRafter2App").focus(); }, 50); // clavier : focus dans le panneau
+//Panneau Info et panneau Apps : par-dessus tout le widget (comme le panneau Info du HomePod)
+		function aTVpanelOpen#id#(cls) {
+			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
+			panel.addClass('open').attr('aria-hidden', 'false');
+			fitMarquee#id#(); // largeurs connues seulement une fois le panneau affiché
+			setTimeout(function() { panel.find('.aTVpanelClose').focus(); }, 50); // clavier : focus dans le panneau
 		}
-		function panelDownCloseApp#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelApp").animate({top: "-300px"});
+		function aTVpanelClose#id#(cls, opener) {
+			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
+			if (!panel.hasClass('open')) return;
+			var hadFocus = $.contains(panel[0], document.activeElement);
+			panel.removeClass('open').attr('aria-hidden', 'true');
+			if (hadFocus) $(".eqLogic[data-eqLogic_id=#id#] ." + opener).focus(); // le focus revient sur le bouton d'ouverture
 		}
-      	function panelDown#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "30px"});
-    		fitMarquee#id#(); // si le widget était masqué, les largeurs n'étaient pas encore connues
-    		setTimeout(function() { $(".eqLogic[data-eqLogic_id=#id#] .downRafter2A").focus(); }, 50);
-		}
-		function panelDownClose#id#() {
-    		$(".eqLogic[data-eqLogic_id=#id#] .downpanelA").animate({top: "-300px"});
-		}
+      	function panelDown#id#() { aTVpanelOpen#id#('aTVinfoPanel'); }
+		function panelDownClose#id#() { aTVpanelClose#id#('aTVinfoPanel', 'infoBox'); }
+      	function panelDownApp#id#() { aTVpanelOpen#id#('aTVappsPanel'); }
+		function panelDownCloseApp#id#() { aTVpanelClose#id#('aTVappsPanel', 'appsBox'); }
 
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
@@ -509,15 +516,11 @@
 			e.preventDefault();
 			$(this).trigger('click');
 		});
-		$('.eqLogic[data-eqLogic_id=#id#] .downpanelA').on('keydown', function(e) {
-			if (e.key != 'Escape' && e.key != 'Esc') return;
-			panelDownClose#id#();
-			$('.eqLogic[data-eqLogic_id=#id#] .infoBox').focus();
+		$('.eqLogic[data-eqLogic_id=#id#] .aTVinfoPanel').on('keydown', function(e) {
+			if (e.key == 'Escape' || e.key == 'Esc') panelDownClose#id#();
 		});
-		$('.eqLogic[data-eqLogic_id=#id#] .downpanelApp').on('keydown', function(e) {
-			if (e.key != 'Escape' && e.key != 'Esc') return;
-			panelDownCloseApp#id#();
-			$('.eqLogic[data-eqLogic_id=#id#] .appsBox').focus();
+		$('.eqLogic[data-eqLogic_id=#id#] .aTVappsPanel').on('keydown', function(e) {
+			if (e.key == 'Escape' || e.key == 'Esc') panelDownCloseApp#id#();
 		});
 
 		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de

@@ -958,6 +958,11 @@ class aTVremote extends eqLogic {
 		if ($deamon_info['state'] == 'ok') {
 			$mac = $this->getConfiguration('mac','');
 			$version = $this->getConfiguration('version',0);
+			// Le démon attend le numéro de protocole (3 ou 4), comme au démarrage (deamon_start) : la version affichée
+			// (« HD », « 4K (gen 4) », vide avant détection…) ne donnait pas toujours 4, et sans 4 il ne charge pas les clés.
+			if ($this->getConfiguration('device','') == 'Apple TV') {
+				$version = ($version == '3') ? 3 : 4;
+			}
 
 			$url="http://" . config::byKey('internalAddr') . ":".config::byKey('socketport', 'aTVremote')."/connect?";
 			$url.='mac='.$mac.'&version='.urlencode($version).((count($params))?"&".http_build_query($params):'');
@@ -1658,6 +1663,7 @@ class aTVremote extends eqLogic {
 			'apps' => __('Applications', __FILE__),
 			'launchApp' => __('Lancer une app', __FILE__),
 			'none' => __('Aucune', __FILE__),
+			'refreshApps' => __('Actualiser la liste', __FILE__),
 			'app' => __('Application en cours', __FILE__),
 			'up' => __('Haut', __FILE__),
 			'down' => __('Bas', __FILE__),
@@ -1684,6 +1690,7 @@ class aTVremote extends eqLogic {
 			'daemonOff' => __('Démon aTVremote arrêté', __FILE__),
 			'loading' => __('Chargement en cours', __FILE__),
 			'unavailable' => __('indisponible avec cette source', __FILE__),
+			'none' => __('Aucune', __FILE__),
 		), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 
 		if ($Test == "Apple TV"){
