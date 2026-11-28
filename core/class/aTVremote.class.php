@@ -848,6 +848,16 @@ class aTVremote extends eqLogic {
 	// Erreurs renvoyées par le démon Python pendant la commande Jeedom en cours (affichées par aTVremoteCmd::execute)
 	public static $_daemonErrors = array(); // « _ » : ignorée par DB::save() de Jeedom
 
+	// Démon Node.js : le volume d'un HomePod ne se règle qu'en lecture (sinon le démon plante) -> on le dit au lieu de ne rien faire
+	public static function notifyNodeVolumeLimit($cmd, $whenInactive = false) {
+		event::add('jeedom::alert', array(
+			'level' => 'warning',
+			'message' => $cmd->getHumanName() . ' : ' . (($whenInactive)
+				? __("volume non réglable quand le HomePod est inactif avec le démon Node.js", __FILE__)
+				: __("volume réglable seulement pendant la lecture avec le démon Node.js", __FILE__)),
+		));
+	}
+
 	public static function daemonErrorText($code) {
 		switch ($code) {
 			case 'unavailable': return __("indisponible avec la source en cours", __FILE__);
@@ -1751,7 +1761,8 @@ class aTVremoteCmd extends cmd {
 				case 'volume_down' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
-						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
+						// démon Node.js : seulement en lecture, sinon il plante ; démon Python : toujours (erreur éventuelle renvoyée)
+						if (aTVremote::daemonType() == 'python' || (is_object($play_state) && $play_state->getCache('value') == '1')) {
 							$eqLogic->aTVdaemonExecute('volume_down|volume');
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
@@ -1763,7 +1774,8 @@ class aTVremoteCmd extends cmd {
 								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
 							}*/
 						} else {
-							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
+							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";
+							aTVremote::notifyNodeVolumeLimit($this);
 						}
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
@@ -1787,7 +1799,8 @@ class aTVremoteCmd extends cmd {
 				case 'volume_up' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
-						if (is_object($play_state) && $play_state->getCache('value') == '1') { // or the deamon crash !
+						// démon Node.js : seulement en lecture, sinon il plante ; démon Python : toujours (erreur éventuelle renvoyée)
+						if (aTVremote::daemonType() == 'python' || (is_object($play_state) && $play_state->getCache('value') == '1')) {
 							$eqLogic->aTVdaemonExecute('volume_up|volume');
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
@@ -1799,7 +1812,8 @@ class aTVremoteCmd extends cmd {
 								$changed=$eqLogic->checkAndUpdateCmd($volume, $currentVol) || $changed;
 							}*/
 						} else {
-							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";	
+							$cmds=" Annulée car pas encours de lecture et ca fait planter le démon";
+							aTVremote::notifyNodeVolumeLimit($this);
 						}
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
@@ -1823,7 +1837,8 @@ class aTVremoteCmd extends cmd {
 				case 'set_volume' :
 					if($eqLogic->getConfiguration('device','') == 'HomePod') {
 						$play_human = $eqLogic->getCmd(null, 'play_human');
-						if (is_object($play_human) && $play_human->getCache('value') != __("Inactif", __FILE__)) { // or the deamon crash !
+						// démon Node.js : pas quand le HomePod est inactif, sinon il plante ; démon Python : toujours
+						if (aTVremote::daemonType() == 'python' || (is_object($play_human) && $play_human->getCache('value') != __("Inactif", __FILE__))) {
 							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
@@ -1833,7 +1848,8 @@ class aTVremoteCmd extends cmd {
 							}*/
 						} else {
 							$eqLogic->aTVdaemonExecute('volume');
-							$cmds=" Annulée car Inactif et ca fait planter le démon";	
+							$cmds=" Annulée car Inactif et ca fait planter le démon";
+							aTVremote::notifyNodeVolumeLimit($this, true);
 						}
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
