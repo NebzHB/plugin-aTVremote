@@ -169,9 +169,11 @@ async def send_playing_event(device: "Device", playing: Playing | None = None) -
         return
     if playing is None:
         playing = await atv.metadata.playing()
-    data = build_playing_payload(playing, current_app(atv))
+    app = current_app(atv)
+    data = build_playing_payload(playing, app)
     log_fr(f"[MSG][{device.mac}] Reçu playing et envoyé à jeedom |{data}", LEVEL_DEBUG)
     send_to_jeedom("playing", device.mac, data=data)
+    schedule_features(device, playing, app.identifier if app else None)
 
 
 def send_powerstate_event(mac: str, power_state) -> None:
@@ -185,14 +187,46 @@ async def send_app_event(device: "Device") -> None:
     send_to_jeedom("app", device.mac, data=text)
 
 
-async def send_features_event(device: "Device") -> None:
+async def send_features_event(device: "Device", only_if_changed: bool = False) -> None:
+    if device.atv is None:
+        return
     try:
         features = device.atv.features.all_features()
     except Exception as exc:
         log_fr(f"[{device.mac}] Impossible de récupérer les features : {exc}", LEVEL_DEBUG)
         return
     values = {feat.name: info.state.name for feat, info in features.items()}
+    if only_if_changed and values == device.last_features:
+        log_fr(f"[MSG][{device.mac}] Features inchangées, rien à envoyer", LEVEL_DEBUG)
+        return
+    device.last_features = values
+    log_fr(f"[MSG][{device.mac}] Envoi features (SetShuffle={values.get('SetShuffle')}, SetRepeat={values.get('SetRepeat')})", LEVEL_DEBUG)
     send_to_jeedom("features", device.mac, data=json.dumps(values))
+
+
+# Fonctions utilisables (aléatoire, répétition…) : elles dépendent de la source (Apple Music, AirPlay…) et
+# l'appareil envoie plusieurs messages pendant le chargement d'un morceau. Après un changement de morceau,
+# d'app ou d'état, on relit donc la liste UNE fois, 3 s après le dernier message (comme le démon Node.js).
+# Ici la lecture est locale (pas de commande à envoyer) : on n'envoie à Jeedom que si elle a changé.
+FEATURES_DELAY = 3.0
+
+
+def schedule_features(device: "Device", playing: Playing, app_id) -> None:
+    state = str(_enum_name(playing.device_state, lower=True) or "")
+    key = (playing.hash, app_id, state)
+    if key == device.features_key and device.features_timer is None:
+        return  # rien de nouveau
+    if device.features_timer is not None:
+        device.features_timer.cancel()
+
+    def _fire() -> None:
+        device.features_timer = None
+        device.features_key = key
+        if state not in ("playing", "paused"):
+            return  # rien à lire : inutile
+        spawn(send_features_event(device, only_if_changed=True), f"l'envoi des features de {device.mac}")
+
+    device.features_timer = asyncio.get_event_loop().call_later(FEATURES_DELAY, _fire)
 
 
 # ---------------------------------------------------------------------------
@@ -375,6 +409,15 @@ class Device:
         # pyatv ne garde qu'une référence FAIBLE vers les listeners : sans référence ici ils sont
         # détruits aussitôt créés et plus aucun message (lecture, veille, volume) n'arrive.
         self.listeners: list = []
+        # relecture des features après un changement de morceau (voir schedule_features)
+        self.features_timer: asyncio.TimerHandle | None = None
+        self.features_key = None
+        self.last_features: dict | None = None
+
+    def cancel_features(self) -> None:
+        if self.features_timer is not None:
+            self.features_timer.cancel()
+            self.features_timer = None
 
 
 devices: dict[str, Device] = {}
@@ -458,6 +501,7 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
             spawn(send_playing_event(device), f"l'envoi de la lecture de {mac}")
 
         await conn_listener.disconnected.wait()
+        device.cancel_features()
         device.atv = None
         device.listeners = []
         atv.close()
@@ -586,6 +630,7 @@ async def _shutdown() -> None:
     close_tasks = []
     for mac, device in list(devices.items()):
         device.give_up = True
+        device.cancel_features()
         if device.atv is not None:
             try:
                 close_tasks.extend(device.atv.close() or [])
