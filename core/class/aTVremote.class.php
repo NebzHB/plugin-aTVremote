@@ -1632,7 +1632,7 @@ class aTVremote extends eqLogic {
 		$cssFile = dirname(__FILE__) . '/../template/dashboard/css/style.css';
 		$replace['#cssVersion#'] = file_exists($cssFile) ? filemtime($cssFile) : 0;
 
-		// Textes du widget HomePod (infobulles et libellés lus par les lecteurs d'écran), traduits
+		// Textes des widgets (infobulles et libellés lus par les lecteurs d'écran), traduits
 		$texts = array(
 			'shuffleOff' => __('Aléatoire désactivé', __FILE__),
 			'shuffleOn' => __('Aléatoire activé', __FILE__),
@@ -1651,6 +1651,27 @@ class aTVremote extends eqLogic {
 			'cover' => __('Pochette', __FILE__),
 			'progress' => __('Progression', __FILE__),
 			'appleMusic' => __('Ouvrir dans Apple Music', __FILE__),
+			'powerOn' => __('Allumer', __FILE__),
+			'powerOff' => __('Mettre en veille', __FILE__),
+			'apps' => __('Applications', __FILE__),
+			'launchApp' => __('Lancer une app', __FILE__),
+			'none' => __('Aucune', __FILE__),
+			'app' => __('Application en cours', __FILE__),
+			'up' => __('Haut', __FILE__),
+			'down' => __('Bas', __FILE__),
+			'left' => __('Gauche', __FILE__),
+			'right' => __('Droite', __FILE__),
+			'select' => __('Sélection', __FILE__),
+			'menu' => __('Menu', __FILE__),
+			'home' => __('Accueil', __FILE__),
+			'stop' => __('Stop', __FILE__),
+			'chUp' => __('Chaîne suivante', __FILE__),
+			'chDown' => __('Chaîne précédente', __FILE__),
+			'refresh' => __('Rafraîchir', __FILE__),
+			'artist' => __('Artiste', __FILE__),
+			'title' => __('Titre', __FILE__),
+			'album' => __('Album', __FILE__),
+			'mediaInfo' => __('Infos du média', __FILE__),
 		);
 		foreach ($texts as $key => $text) {
 			$replace['#txt_' . $key . '#'] = htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // &apos; plutôt que &#039; : pas de # dans les valeurs

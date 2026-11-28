@@ -335,6 +335,26 @@
 			"isVisible": 1,
 			"logicalId": "set_shuffle_off"
 		}, {
+			"name": "{{Aléatoire disponible}}",
+			"type": "info",
+			"subtype": "binary",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "shuffle_available"
+		}, {
+			"name": "{{Répétition disponible}}",
+			"type": "info",
+			"subtype": "binary",
+			"display": {
+				"generic_type": "DONT"
+			},
+			"isVisible": 0,
+			"isHistorized": 0,
+			"logicalId": "repeat_available"
+		}, {
 			"name": "{{App Active}}",
 			"type": "info",
 			"subtype": "string",
