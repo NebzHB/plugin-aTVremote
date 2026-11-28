@@ -742,6 +742,18 @@ async def handle_disconnect(request: web.Request) -> web.Response:
     return web.json_response({"result": "ok"})
 
 
+@routes.get("/scan")
+async def handle_scan(request: web.Request) -> web.Response:
+    """Recherche des appareils sur le réseau. Renvoie exactement le texte de « atvremote scan » (même
+    str() de pyatv) : le PHP garde son analyse, sans lancer un nouveau programme Python."""
+    timeout = js_parse_int(request.query.get("timeout", "")) or 3
+    log_fr(f"Recherche des appareils ({timeout} s)...", LEVEL_INFO)
+    results = await pyatv.scan(asyncio.get_event_loop(), timeout=timeout, storage=MemoryStorage())
+    output = "Scan Results\n" + "=" * 40 + "\n" + "".join(f"{conf}\n\n" for conf in results)
+    log_fr(f"Recherche terminée : {len(results)} appareil(s)", LEVEL_INFO)
+    return web.json_response({"result": "ok", "count": len(results), "output": output})
+
+
 @routes.get("/test")
 async def handle_test(request: web.Request) -> web.Response:
     return web.json_response({"result": "ok"})
