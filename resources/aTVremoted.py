@@ -392,9 +392,24 @@ if AudioListener is not None:
         def __init__(self, device: "Device"):
             self.device = device
 
+        # AudioListener est une classe abstraite : ses TROIS méthodes doivent exister, sinon Python refuse
+        # de créer l'objet (TypeError) et aucun changement de volume n'arrive.
         def volume_update(self, old_level, new_level) -> None:
             log_fr(f"[MSG][{self.device.mac}] Reçu volume et envoyé à jeedom |{new_level}", LEVEL_DEBUG)
             send_to_jeedom("volume", self.device.mac, data=str(new_level))
+
+        def volume_device_update(self, output_device, old_level, new_level) -> None:
+            # volume d'une enceinte de la sortie (groupe multiroom) : c'est le nôtre si l'identifiant de
+            # l'enceinte correspond à notre adresse (ex. 8A338CA6-A878-… pour 8A:33:8C:A6:A8:78)
+            ident = str(getattr(output_device, "identifier", "") or "").replace("-", "").upper()
+            if ident.startswith(self.device.mac.replace(":", "")):
+                self.volume_update(old_level, new_level)
+            else:
+                log_fr(f"[MSG][{self.device.mac}] Volume de l'enceinte {getattr(output_device, 'name', ident)} : {new_level}", LEVEL_DEBUG)
+
+        def outputdevices_update(self, old_devices, new_devices) -> None:
+            names = ", ".join(getattr(d, "name", "?") for d in new_devices)
+            log_fr(f"[MSG][{self.device.mac}] Sorties audio : {names or 'aucune'}", LEVEL_DEBUG)
 else:
     _ConnAudioListener = None
 
@@ -497,8 +512,8 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
                 audio_listener = _ConnAudioListener(device)
                 device.listeners.append(audio_listener)
                 atv.audio.listener = audio_listener
-            except Exception:
-                pass
+            except Exception as exc:
+                log_fr(f"[{mac}] Suivi du volume impossible : {exc!r}", LEVEL_WARNING)
 
         # état initial, comme atvscript push_updates (sinon rien n'arrive tant que rien ne change)
         try:
