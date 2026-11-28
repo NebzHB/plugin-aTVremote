@@ -159,9 +159,16 @@ class aTVremote extends eqLogic {
 		}
 
 		$path=aTVremote::getaTVremote();
-		if (file_exists($path)) {
-			$return['state'] = 'ok';
+		if (!file_exists($path)) {
+			return $return;
 		}
+
+		// aiohttp (serveur HTTP du démon Python), installé dans le venv juste après pyatv
+		if (count(glob(dirname(__FILE__) . '/../../resources/atvremote/lib/python3*/site-packages/aiohttp/__init__.py')) == 0) {
+			return $return;
+		}
+
+		$return['state'] = 'ok';
 		return $return;
 	}
 
