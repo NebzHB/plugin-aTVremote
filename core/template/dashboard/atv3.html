@@ -1,4 +1,4 @@
-<div class="eqLogic-widget eqLogic aTVremote" style="min-width:138px;max-width:138px;min-height:530px;max-height:530px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
+<div class="eqLogic-widget eqLogic aTVremote" style="min-width:138px;max-width:138px;min-height:#atvHeight#px;max-height:#atvHeight#px;border:#border#;border-radius:30px !important;background-color: black !important;color:#color#;#style#;margin:0;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
 <!--  aTV3 -->
 	<link rel="stylesheet" href="plugins/aTVremote/core/template/dashboard/css/style.css?v=#cssVersion#" />
 	<style>
@@ -13,20 +13,20 @@
 	</style>
 
   	<div class="haut_aTVremote_widget" >
-		<div class="artworkBackground artworkBackground_#id#"></div>
+		<div class="artworkBackground artworkBackground_#id#" style="height:calc(302px + #atvExtra#px);"></div>
       	<div class="haut">
 
 <!--  Partie Supérieure -->
-			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" role="button" tabindex="0" title="#txt_refresh#" aria-label="#txt_refresh#"><img class="aTVremote_refresh" alt="" src='plugins/aTVremote/core/template/dashboard/images/repeat.png' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
+			<a class="btn_aTVremote_refresh cmd refresh" data-cmd_id="#cmd_refresh_id#" role="button" tabindex="0" aria-label="#txt_refresh#"><img class="aTVremote_refresh" alt="" src='plugins/aTVremote/core/template/dashboard/images/repeat.svg' style="width:20px;position : absolute;right :4px;top : 4px;font-size : 0.9em; z-index:6; opacity:0.1;"/></a>
 
-			<a href="#eqLink#" class="titre_haut_aTVremote_widget" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' aria-hidden="true"></i>&nbsp;#name_display#</a>
+			<a href="#eqLink#" class="titre_haut_aTVremote_widget tippied" style="#hideEqLogicName#;" title="#device# #ATV# #os# #osVersion#"><i class='fab fa-apple' aria-hidden="true"></i>&nbsp;#name_display#</a>
 
           	<div id="a#id#" class="repeatBox">
-              	<a class="btn_aTVremote_shuffle cmd set_shuffle_on" data-cmd_id="#cmd_set_shuffle_on_id#" role="button" tabindex="0" title="#txt_shuffleOff#" aria-label="#txt_shuffleOff#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.png' alt="" style="width:20px;"/>&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_shuffle cmd set_shuffle_off" data-cmd_id="#cmd_set_shuffle_off_id#" role="button" tabindex="0" title="#txt_shuffleOn#" aria-label="#txt_shuffleOn#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.png' alt="" style="width:20px;"/>&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_all" data-cmd_id="#cmd_set_repeat_all_id#" role="button" tabindex="0" title="#txt_repeatOff#" aria-label="#txt_repeatOff#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.png' alt="" style="width:20px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_track" data-cmd_id="#cmd_set_repeat_track_id#" role="button" tabindex="0" title="#txt_repeatAll#" aria-label="#txt_repeatAll#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.png' alt="" style="width:20px;"/></a>
-				<a class="btn_aTVremote_repeat cmd set_repeat_off" data-cmd_id="#cmd_set_repeat_off_id#" role="button" tabindex="0" title="#txt_repeatTrack#" aria-label="#txt_repeatTrack#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.png' alt="" style="width:20px;"/></a>
+              	<a class="btn_aTVremote_shuffle cmd set_shuffle_on tippied" data-cmd_id="#cmd_set_shuffle_on_id#" role="button" tabindex="0" title="#txt_shuffleOff#" aria-label="#txt_shuffleOff#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle_off.svg' alt="" style="width:20px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_shuffle cmd set_shuffle_off tippied" data-cmd_id="#cmd_set_shuffle_off_id#" role="button" tabindex="0" title="#txt_shuffleOn#" aria-label="#txt_shuffleOn#"><img src='plugins/aTVremote/core/template/dashboard/images/shuffle.svg' alt="" style="width:20px;"/>&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_all tippied" data-cmd_id="#cmd_set_repeat_all_id#" role="button" tabindex="0" title="#txt_repeatOff#" aria-label="#txt_repeatOff#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_off.svg' alt="" style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_track tippied" data-cmd_id="#cmd_set_repeat_track_id#" role="button" tabindex="0" title="#txt_repeatAll#" aria-label="#txt_repeatAll#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_all.svg' alt="" style="width:20px;"/></a>
+				<a class="btn_aTVremote_repeat cmd set_repeat_off tippied" data-cmd_id="#cmd_set_repeat_off_id#" role="button" tabindex="0" title="#txt_repeatTrack#" aria-label="#txt_repeatTrack#"><img src='plugins/aTVremote/core/template/dashboard/images/repeat_1.svg' alt="" style="width:20px;"/></a>
             </div>
 <!--  Partie Supérieure -->
   			<a style='position:absolute;margin-top:10px;left:48px;z-index:5;' aria-hidden="true"><img class='image-encoche' alt="" style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
@@ -38,75 +38,60 @@
 		<div class="artwork_aTVremote">
 			<img src="#artwork_url#" id="artworkForeground_#id#" class="artwork_un_aTVremote" alt="" />
 
-			<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" role="button" tabindex="0" title="#txt_up#" aria-label="#txt_up#"><img class="aTVremote_up" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px"/></a>
-			<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" role="button" tabindex="0" title="#txt_left#" aria-label="#txt_left#"><img class="aTVremote_left" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
-			<a class="btn_aTVremote_select cmd select" data-cmd_id="#cmd_select_id#" role="button" tabindex="0" title="#txt_select#" aria-label="#txt_select#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/record.png' style="width:30px;"/></a>
-			<a class="btn_aTVremote_right cmd right" data-cmd_id="#cmd_right_id#" role="button" tabindex="0" title="#txt_right#" aria-label="#txt_right#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
-			<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" role="button" tabindex="0" title="#txt_down#" aria-label="#txt_down#"><img class="aTVremote_down" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.png' style="width:30px;"/></a>
+			<a class="btn_aTVremote_up cmd up" data-cmd_id="#cmd_up_id#" role="button" tabindex="0" aria-label="#txt_up#"><img class="aTVremote_up" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.svg' style="width:30px"/></a>
+			<a class="btn_aTVremote_left cmd left" data-cmd_id="#cmd_left_id#" role="button" tabindex="0" aria-label="#txt_left#"><img class="aTVremote_left" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.svg' style="width:30px;"/></a>
+			<a class="btn_aTVremote_select cmd select" data-cmd_id="#cmd_select_id#" role="button" tabindex="0" aria-label="#txt_select#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/record.svg' style="width:30px;"/></a>
+			<a class="btn_aTVremote_right cmd right" data-cmd_id="#cmd_right_id#" role="button" tabindex="0" aria-label="#txt_right#"><img alt="" src='plugins/aTVremote/core/template/dashboard/images/play.svg' style="width:30px;"/></a>
+			<a class="btn_aTVremote_down cmd down" data-cmd_id="#cmd_down_id#" role="button" tabindex="0" aria-label="#txt_down#"><img class="aTVremote_down" alt="" src='plugins/aTVremote/core/template/dashboard/images/play.svg' style="width:30px;"/></a>
 
 
-			<a><img class="infoBox" src="plugins/aTVremote/core/template/dashboard/images/info.png" style="width:20px;" role="button" tabindex="0" title="#txt_info#" aria-label="#txt_info#" aria-haspopup="dialog" alt="" onclick="panelDown#id#()"/></a>
 
 		</div>
 <!--  Artwork -->
 
 <!--  Statut & Info -->
-		<div class="info" style="height:80px;">
+		<div class="info" style="height:calc(80px + #atvExtra#px);padding-top:calc(#atvExtra#px / 2);"><!-- place gagnée : moitié au-dessus des textes, moitié en dessous -->
 
-			<p style='margin: -14px 0 0px;text-align: center;top: 189px;position: absolute;width: 138px;'><img src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" class="" title="#play_human#" alt="#play_human#" role="status" id="equa#id#" style="width:20px;vertical-align:sub;"/></p>
+			<p style='margin: -14px 0 0px;text-align: center;top: calc(189px + #atvExtra#px / 2);position: absolute;width: 138px;'><img class="tippied" src="plugins/aTVremote/core/template/dashboard/images/equalizer.png" title="#play_human#" alt="#play_human#" role="status" id="equa#id#" style="width:20px;vertical-align:sub;"/></p>
 
 			<br>
-			<p class="artist_hide" style="margin: -1px 0 1px;"><a class="artist_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_artist#"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></a></p>
-			<p class="titre_hide" style="margin: -1px 0 8px;"><a class="titre_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important" title="#txt_title#"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></a></p>
+			<p class="artist_hide" style="margin: -1px 0 1px;"><a class="artist_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></a></p>
+			<p class="titre_hide" style="margin: -1px 0 8px;"><a class="titre_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></a></p>
+			<p class="album_hide" style="margin: -7px 0 8px;"><a class="album_titre_aTVremote aTVline" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></a></p>
 
-			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote aTVline aTVloop" style="text-decoration: none; cursor:default;color:white !important" title="#txt_mediaInfo#"><span class="aTVscroll"><span class="aTVtxt"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position"></span></span></span></a><br></p>
-			<div style="display: block;margin: -5px 19px 10px;position: absolute;top: 263px;" class="menu_action">
-				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" role="button" tabindex="0" title="#txt_menu#" aria-label="#txt_menu#"><img src='plugins/aTVremote/core/template/dashboard/images/menu2.png' alt="" style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" role="button" tabindex="0" title="#txt_home#" aria-label="#txt_home#"><img src='plugins/aTVremote/core/template/dashboard/images/monitor.png' alt="" style="width:40px;"/></a>
+			<p class="info_hide" style='margin: -8px 0 8px'><a class="last_aTVremote aTVline aTVloop" style="text-decoration: none; cursor:default;color:white !important"><span class="aTVscroll"><span class="aTVtxt"><span class="genre">#genre#</span>&emsp;<span class="media">#media_type#</span>&emsp;<span class="position tippied"></span></span></span></a><br></p>
+			<div style="display: block;margin: -5px 19px 10px;position: absolute;top: calc(263px + #atvExtra#px);" class="menu_action">
+				<a class="btn_aTVremote_menu cmd menu" data-cmd_id="#cmd_menu_id#" role="button" tabindex="0" aria-label="#txt_menu#"><img src='plugins/aTVremote/core/template/dashboard/images/menu2.svg' alt="" style="width:40px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_top_menu cmd top_menu" data-cmd_id="#cmd_top_menu_id#" role="button" tabindex="0" aria-label="#txt_home#"><img src='plugins/aTVremote/core/template/dashboard/images/monitor.svg' alt="" style="width:40px;"/></a>
 			</div>
 		</div>
 <!--  Statut & Info -->
 
 <!--  Control & Navigation -->
-      <div class="gameplay" style="height: 230px;position: absolute;top: 302px;width: 138px;background-color: black;">
+      <div class="gameplay" style="height: 230px;position: absolute;top: calc(302px + #atvExtra#px);width: 138px;background-color: black;">
         <br>
 			<div style="display: block; margin: -12px 19px 10px;" class="playback">
-				<a class="btn_aTVremote_playback cmd play_btn" data-cmd_id="#cmd_play_id#" role="button" tabindex="0" title="#txt_play#" aria-label="#txt_play#"><img src='plugins/aTVremote/core/template/dashboard/images/play.png' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_playback cmd pause_btn" data-cmd_id="#cmd_pause_id#" role="button" tabindex="0" title="#txt_pause#" aria-label="#txt_pause#"><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.png' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" role="button" tabindex="0" title="#txt_stop#" aria-label="#txt_stop#"><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.png' alt="" style="width:40px"/></a>
+				<a class="btn_aTVremote_playback cmd play_btn" data-cmd_id="#cmd_play_id#" role="button" tabindex="0" aria-label="#txt_play#"><img src='plugins/aTVremote/core/template/dashboard/images/play.svg' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd pause_btn" data-cmd_id="#cmd_pause_id#" role="button" tabindex="0" aria-label="#txt_pause#"><img src='plugins/aTVremote/core/template/dashboard/images/pause-1.svg' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd stop" data-cmd_id="#cmd_stop_id#" role="button" tabindex="0" aria-label="#txt_stop#"><img src='plugins/aTVremote/core/template/dashboard/images/stop-1.svg' alt="" style="width:40px"/></a>
 			</div>
         <br>
 			<div style="display: block;margin: -15px 19px 10px;" class="backfor">
-              			<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" role="button" tabindex="0" title="#txt_previous#" aria-label="#txt_previous#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.png' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-				<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" role="button" tabindex="0" title="#txt_next#" aria-label="#txt_next#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.png' alt="" style="width:40px"/></a>
+              			<a class="btn_aTVremote_playback cmd previous" data-cmd_id="#cmd_previous_id#" role="button" tabindex="0" aria-label="#txt_previous#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_backward.svg' alt="" style="width:40px"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				<a class="btn_aTVremote_playback cmd next" data-cmd_id="#cmd_next_id#" role="button" tabindex="0" aria-label="#txt_next#"><img src='plugins/aTVremote/core/template/dashboard/images/skip_forward.svg' alt="" style="width:40px"/></a>
 			</div>
         <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="volume">
 
-				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" role="button" tabindex="0" title="#txt_volUp#" aria-label="#txt_volUp#"><img src='plugins/aTVremote/core/template/dashboard/images/plus.png' alt="" style="width:40px;"/></a>
+				<a class="btn_aTVremote_plus cmd plus" data-cmd_id="#cmd_volume_up_id#" role="button" tabindex="0" aria-label="#txt_volUp#"><img src='plugins/aTVremote/core/template/dashboard/images/plus.svg' alt="" style="width:40px;"/></a>
             </div>
         <br>
           	<div style="display: block;margin: -15px 19px 10px;" class="volume">
-				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" role="button" tabindex="0" title="#txt_volDown#" aria-label="#txt_volDown#"><img src='plugins/aTVremote/core/template/dashboard/images/minus.png' alt="" style="width:40px;"/></a>
+				<a class="btn_aTVremote_moins cmd moins" data-cmd_id="#cmd_volume_down_id#" role="button" tabindex="0" aria-label="#txt_volDown#"><img src='plugins/aTVremote/core/template/dashboard/images/minus.svg' alt="" style="width:40px;"/></a>
             </div>
 		</div>
 	</div>
 
-	<!-- panneaux Info / Apps : partie haute du widget (pochette et infos), ils descendent du haut -->
-	<div class="aTVpanelClip">
-		<div class="aTVpanel aTVinfoPanel" onclick="panelDownClose#id#()" title="#txt_close#" role="dialog" aria-label="#txt_info#" aria-hidden="true">
-			<div class="aTVpanelBg" style="background-image: url('#artwork_url#');"></div>
-			<span class="aTVpanelClose" role="button" tabindex="0" aria-label="#txt_close#">&times;</span>
-			<div class="aTVpanelContent">
-				<img src="#artwork_url#" id="artworkInfoBox_#id#" class="aTVpanelArt" alt=""/>
-				<div class="aTVpanelText">
-					<div class="titre_hide aTVline aTVpanelTitle"><span class="aTVscroll"><span class="aTVtxt">#title#</span></span></div>
-					<div class="artist_hide aTVline aTVpanelArtist"><span class="aTVscroll"><span class="aTVtxt">#artist#</span></span></div>
-					<div class="album_hide aTVline aTVpanelAlbum"><span class="aTVscroll"><span class="aTVtxt">#album#</span></span></div>
-				</div>
-			</div>
-		</div>
-	</div>
 
     <script>
 		if(typeof jeedom.cmd.addUpdateFunction !== 'function') { // before 4.3
@@ -213,9 +198,7 @@
 		function setArtwork#id#(url) {
 			var apply = function() {
 				$('#artworkForeground_#id#').prop('src', url);
-				$('#artworkInfoBox_#id#').prop('src', url);
-				$('.eqLogic[data-eqLogic_id=#id#] .aTVpanelBg').css('background-image', "url("+url+")");
-				$('.artworkBackground_#id#').css('background-image', "url("+url+")").toggleClass('artworkBlur-repaint');
+						$('.artworkBackground_#id#').css('background-image', "url("+url+")").toggleClass('artworkBlur-repaint');
 			};
 			var img = new Image();
 			img.onload = apply;
@@ -390,35 +373,15 @@
 		setTimeout(fitMarquee#id#, 1000);
 		fitMarquee#id#();
 
-//Panneau Info : par-dessus tout le widget (comme le panneau Info du HomePod)
-		function aTVpanelOpen#id#(cls) {
-			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
-			panel.addClass('open').attr('aria-hidden', 'false');
-			fitMarquee#id#(); // largeurs connues seulement une fois le panneau affiché
-			setTimeout(function() { panel.find('.aTVpanelClose').focus(); }, 50); // clavier : focus dans le panneau
-		}
-		function aTVpanelClose#id#(cls, opener) {
-			var panel = $(".eqLogic[data-eqLogic_id=#id#] ." + cls);
-			if (!panel.hasClass('open')) return;
-			var hadFocus = $.contains(panel[0], document.activeElement);
-			panel.removeClass('open').attr('aria-hidden', 'true');
-			if (hadFocus) $(".eqLogic[data-eqLogic_id=#id#] ." + opener).focus(); // le focus revient sur le bouton d'ouverture
-		}
-      	function panelDown#id#() { aTVpanelOpen#id#('aTVinfoPanel'); }
-		function panelDownClose#id#() { aTVpanelClose#id#('aTVinfoPanel', 'infoBox'); }
-
 		$('.eqLogic[data-eqLogic_id=#id#] .cmd').on('click', function() {
 			jeedom.cmd.execute({id: $(this).data('cmd_id')});
 		});
 
-		// Clavier : Entrée / Espace activent les boutons, Échap ferme le panneau Info
+		// Clavier : Entrée / Espace activent les boutons
 		$('.eqLogic[data-eqLogic_id=#id#] [role=button]').on('keydown', function(e) {
 			if (e.key != 'Enter' && e.key != ' ' && e.key != 'Spacebar') return;
 			e.preventDefault();
 			$(this).trigger('click');
-		});
-		$('.eqLogic[data-eqLogic_id=#id#] .aTVinfoPanel').on('keydown', function(e) {
-			if (e.key == 'Escape' || e.key == 'Esc') panelDownClose#id#();
 		});
 
 		// Écran tactile : précédent / suivant restent grisés après un toucher jusqu'au changement de
