@@ -849,6 +849,15 @@ class aTVremote extends eqLogic {
 	public static $_daemonErrors = array(); // « _ » : ignorée par DB::save() de Jeedom
 
 	// Démon Node.js : le volume d'un HomePod ne se règle qu'en lecture (sinon le démon plante) -> on le dit au lieu de ne rien faire
+	// Après un changement de volume, relire le volume : utile avec le démon Node.js ; le démon Python
+	// envoie déjà le nouveau volume (listener), la relecture le ferait arriver deux fois
+	public static function volumeReread() {
+		return (self::daemonType() == 'python') ? '' : '|volume';
+	}
+
+	// Commande Jeedom envoyée alors que le démon est arrêté (affiché par aTVremoteCmd::execute)
+	public static $_daemonDown = array(); // « _ » : ignorée par DB::save() de Jeedom
+
 	public static function notifyNodeVolumeLimit($cmd, $whenInactive = false) {
 		event::add('jeedom::alert', array(
 			'level' => 'warning',
@@ -893,6 +902,7 @@ class aTVremote extends eqLogic {
 				return $result;
 			} else {
 				log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande ".ucfirst($cmd));
+				self::$_daemonDown[$this->getId()] = true;
 				$this->refreshWidget(); // le widget affiche « démon arrêté »
 			}
 		}
@@ -1677,6 +1687,7 @@ class aTVremoteCmd extends cmd {
 		$logical = $this->getLogicalId();
 		$changed=false;
 		aTVremote::$_daemonErrors[$eqLogic->getId()] = array();
+		aTVremote::$_daemonDown[$eqLogic->getId()] = false;
 		
 		if ($logical != 'refresh'){
 			switch (strtolower($logical)) {
@@ -1763,7 +1774,7 @@ class aTVremoteCmd extends cmd {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
 						// démon Node.js : seulement en lecture, sinon il plante ; démon Python : toujours (erreur éventuelle renvoyée)
 						if (aTVremote::daemonType() == 'python' || (is_object($play_state) && $play_state->getCache('value') == '1')) {
-							$eqLogic->aTVdaemonExecute('volume_down|volume');
+							$eqLogic->aTVdaemonExecute('volume_down'.aTVremote::volumeReread());
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
@@ -1780,7 +1791,7 @@ class aTVremoteCmd extends cmd {
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
 						if($features && $features['Volume']=="Available") {
-							$eqLogic->aTVdaemonExecute('volume_down|volume');
+							$eqLogic->aTVdaemonExecute('volume_down'.aTVremote::volumeReread());
 						} else {
 							$cmds=$eqLogic->getConfiguration('LessVol');
 							if(!$cmds) {return;}
@@ -1801,7 +1812,7 @@ class aTVremoteCmd extends cmd {
 						$play_state = $eqLogic->getCmd(null, 'play_state');
 						// démon Node.js : seulement en lecture, sinon il plante ; démon Python : toujours (erreur éventuelle renvoyée)
 						if (aTVremote::daemonType() == 'python' || (is_object($play_state) && $play_state->getCache('value') == '1')) {
-							$eqLogic->aTVdaemonExecute('volume_up|volume');
+							$eqLogic->aTVdaemonExecute('volume_up'.aTVremote::volumeReread());
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
@@ -1818,7 +1829,7 @@ class aTVremoteCmd extends cmd {
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
 						if($features && $features['Volume']=="Available") {
-							$eqLogic->aTVdaemonExecute('volume_up|volume');
+							$eqLogic->aTVdaemonExecute('volume_up'.aTVremote::volumeReread());
 						} else {
 							$cmds=$eqLogic->getConfiguration('MoreVol');
 							if(!$cmds) {return;}
@@ -1839,7 +1850,7 @@ class aTVremoteCmd extends cmd {
 						$play_human = $eqLogic->getCmd(null, 'play_human');
 						// démon Node.js : pas quand le HomePod est inactif, sinon il plante ; démon Python : toujours
 						if (aTVremote::daemonType() == 'python' || (is_object($play_human) && $play_human->getCache('value') != __("Inactif", __FILE__))) {
-							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
+							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].aTVremote::volumeReread());
 							// pre-set volume
 							/*$volume = $eqLogic->getCmd(null, 'volume');
 							if (is_object($volume)) {
@@ -1854,7 +1865,7 @@ class aTVremoteCmd extends cmd {
 					} else if($eqLogic->getConfiguration('version',0) != '3'){
 						$features=$eqLogic->getConfiguration('features',null);
 						if($features && $features['Volume']=="Available") {
-							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].'|volume');
+							$eqLogic->aTVdaemonExecute('set_volume='.$_options['slider'].aTVremote::volumeReread());
 						}
 					}
 				break;
@@ -1886,6 +1897,15 @@ class aTVremoteCmd extends cmd {
 		
 		if($eqLogic->getConfiguration('device','') == 'Apple TV' && $eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
+		}
+
+		// Démon arrêté (Node.js ou Python) : la commande n'a pas pu partir, on le dit au lieu de ne rien faire
+		if (!empty(aTVremote::$_daemonDown[$eqLogic->getId()])) {
+			aTVremote::$_daemonDown[$eqLogic->getId()] = false;
+			event::add('jeedom::alert', array(
+				'level' => 'warning',
+				'message' => $this->getHumanName() . ' : ' . __("démon aTVremote arrêté, commande non envoyée", __FILE__),
+			));
 		}
 
 		// Démon Python : la commande a échoué sur l'appareil
