@@ -355,26 +355,6 @@
 		});
 		jeedom.cmd.refreshValue([{cmd_id: '#shuffle_state_id#',display_value:'#shuffle_state#'}]);
 
-//Aléatoire / répétition utilisables avec la source en cours (liste « features » demandée par le démon
-//à chaque changement de morceau) : sinon boutons grisés, mais toujours cliquables (un clic revérifie).
-		function setAvailable#id#(cls, value) {
-			var off = (String(value) === '0'); // valeur inconnue (commande pas encore créée…) : disponible
-			$('.eqLogic[data-eqLogic_id=#id#] .cmd.' + cls).each(function() {
-				var btn = $(this);
-				if (btn.data('baseTitle') === undefined) btn.data('baseTitle', btn.attr('title'));
-				var label = btn.data('baseTitle') + (off ? ' (' + txt#id#.unavailable + ')' : '');
-				btn.toggleClass('aTVunavailable', off).attr({title: label, 'aria-label': label}); // pas aria-disabled : le clic reste utile
-			});
-		}
-		jeedom.cmd.addUpdateFunction('#shuffle_available_id#', function(_options){
-			setAvailable#id#('btn_aTVremote_shuffle', _options.display_value);
-		});
-		jeedom.cmd.addUpdateFunction('#repeat_available_id#', function(_options){
-			setAvailable#id#('btn_aTVremote_repeat', _options.display_value);
-		});
-		setAvailable#id#('btn_aTVremote_shuffle', '#shuffle_available#');
-		setAvailable#id#('btn_aTVremote_repeat', '#repeat_available#');
-
 //Texte défilant (remplace <marquee>, qui ne fonctionne pas partout) : une seule ligne, défilement
 //seulement si le texte dépasse, selon l'option « marquee » du plugin (alternate = aller-retour,
 //scroll = boucle continue). La ligne d'infos (genre, type, position) défile toujours en boucle.

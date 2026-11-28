@@ -469,7 +469,9 @@ class aTVremote extends eqLogic {
 					$eqLogic->setConfiguration('features',$features);
 					$eqLogic->save(true);
 					// aléatoire / répétition utilisables avec la source en cours ? (le widget grise les boutons sinon)
-					foreach (array('shuffle_available' => 'SetShuffle', 'repeat_available' => 'SetRepeat') as $logicalId => $feature) {
+					// Pas pour l'Apple TV 3 : sans abonnement aux mises à jour (il la sortirait de veille), la liste
+					// n'est lue qu'à la connexion, souvent sans lecture en cours : les boutons resteraient grisés.
+					if ($eqLogic->getConfiguration('version', 0) != '3') foreach (array('shuffle_available' => 'SetShuffle', 'repeat_available' => 'SetRepeat') as $logicalId => $feature) {
 						$cmd = $eqLogic->getCmd(null, $logicalId);
 						if (is_object($cmd) && isset($features[$feature])) {
 							$eqLogic->checkAndUpdateCmd($cmd, ($features[$feature] == 'Available') ? 1 : 0);

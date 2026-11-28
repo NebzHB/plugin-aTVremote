@@ -42,6 +42,15 @@ function aTVremote_update() {
 		config::save('daemonTypePythonDefault', '1', 'aTVremote');
 	}
 	foreach (eqLogic::byType('aTVremote') as $aTVremote) {
+		// Apple TV 3 : « Aléatoire / Répétition disponible » n'y sont pas utilisables (créées par erreur en beta)
+		if ($aTVremote->getConfiguration('version', 0) == '3') {
+			foreach (array('shuffle_available', 'repeat_available') as $logicalId) {
+				$cmd = $aTVremote->getCmd(null, $logicalId);
+				if (is_object($cmd)) {
+					$cmd->remove();
+				}
+			}
+		}
 		$aTVremote->save();
 	}
 	message::add('aTVremote', 'Attention, cette version est toujours une beta ! relancez les dépendances après mise à jour !');
