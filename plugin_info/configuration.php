@@ -37,6 +37,18 @@ pre#pre_eventlog {
 			<a class="btn btn-danger btn-sm" id="bt_reinstallNodeJS"><i class="fas fa-recycle"></i> {{Réparation de NodeJS}} </a>
 		</center>
 		<legend>
+			<i class="fas fa-cogs"></i> {{Démon}}
+		</legend>
+		<div class="form-group">
+			<label class="col-lg-6 control-label">{{Type de démon}}</label>
+			<div class="col-lg-3">
+				<select class="configKey form-control" data-l1key="daemonType">
+					<option value="nodejs">Node.js</option>
+					<option value="python">Python (bêta, expérimental)</option>
+				</select>
+			</div>
+		</div>
+		<legend>
 			<i class="fas fa-palette"></i> {{Personnalisation Widget}}
 		</legend>
 		<br />

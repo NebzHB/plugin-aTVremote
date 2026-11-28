@@ -179,7 +179,9 @@ class aTVremote extends eqLogic {
 		$return = array();
 		$return['log'] = 'aTVremote_deamon';
 		$return['state'] = 'nok';
-		$pid = trim( shell_exec ('ps ax | grep "resources/aTVremoted.js" | grep -v "grep" | wc -l') );
+		$daemonType = config::byKey('daemonType', 'aTVremote', 'nodejs');
+		$pattern = ($daemonType == 'python') ? 'resources/aTVremoted.py' : 'resources/aTVremoted.js';
+		$pid = trim( shell_exec ('ps ax | grep "'.$pattern.'" | grep -v "grep" | wc -l') );
 		if ($pid != '' && $pid != '0') {
 			$return['state'] = 'ok';
 		}
