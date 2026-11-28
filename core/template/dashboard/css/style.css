@@ -98,6 +98,11 @@
 	-webkit-filter: blur(15.01px);
 	filter: blur(15.01px);
 }
+/* Apple TV : même astuce de repeinte du fond flouté (classe alternée par le widget) */
+.aTVremote .artworkBackground.artworkBlur-repaint {
+	-webkit-filter: blur(15.01px);
+	filter: blur(15.01px);
+}
 .aTVremote .artworkBackgroundH {
 	top:45px;
 	left:45px;
@@ -565,30 +570,44 @@
 	line-height: 1.3;
 }
 /* une ligne par texte ; défilement (JS fitMarquee) seulement si le texte dépasse */
-.aTVremote .infoLineH {
+.aTVremote .infoLineH,
+.aTVremote .aTVline {
 	overflow: hidden;
 	white-space: nowrap;
 	text-align: center;
 }
-.aTVremote .infoScrollH {
+.aTVremote .aTVline {
+	display: block; /* lien <a> des widgets Apple TV : la ligne prend toute la largeur */
+}
+/* Apple TV : titre / artiste / album en 12px quand ils défilent, comme avec l'ancien <marquee> */
+.aTVremote .aTVline.scrolling:not(.aTVloop) .aTVscroll {
+	font-size: 12px;
+}
+.aTVremote .infoScrollH,
+.aTVremote .aTVscroll {
 	display: inline-block;
 }
-.aTVremote .infoLineH.scrolling {
+.aTVremote .infoLineH.scrolling,
+.aTVremote .aTVline.scrolling {
 	text-align: left;
 	-webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
 	mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
 }
-.aTVremote .infoLineH.scrolling .infoTxtH {
+.aTVremote .infoLineH.scrolling .infoTxtH,
+.aTVremote .aTVline.scrolling .aTVtxt {
 	padding: 0 10px;
 }
-.aTVremote .infoLineH.scrolling.loop .infoTxtH {
+.aTVremote .infoLineH.scrolling.loop .infoTxtH,
+.aTVremote .aTVline.scrolling.loop .aTVtxt {
 	padding: 0 30px 0 10px;
 }
-.aTVremote .infoLineH.scrolling.alt .infoScrollH {
+.aTVremote .infoLineH.scrolling.alt .infoScrollH,
+.aTVremote .aTVline.scrolling.alt .aTVscroll {
 	-webkit-animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
 	animation: aTVmarqueeAlt var(--aTVdur) ease-in-out infinite alternate;
 }
-.aTVremote .infoLineH.scrolling.loop .infoScrollH {
+.aTVremote .infoLineH.scrolling.loop .infoScrollH,
+.aTVremote .aTVline.scrolling.loop .aTVscroll {
 	-webkit-animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
 	animation: aTVmarqueeLoop var(--aTVdur) linear infinite;
 }
@@ -597,7 +616,8 @@
 @-webkit-keyframes aTVmarqueeLoop { from { -webkit-transform: translateX(0); } to { -webkit-transform: translateX(-50%); } }
 @keyframes aTVmarqueeLoop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-	.aTVremote .infoLineH.scrolling .infoScrollH { -webkit-animation: none; animation: none; }
+	.aTVremote .infoLineH.scrolling .infoScrollH,
+	.aTVremote .aTVline.scrolling .aTVscroll { -webkit-animation: none; animation: none; }
 }
 .aTVremote .infoTitleH {
 	font-size: 15px;
@@ -795,6 +815,10 @@
 	outline: 2px solid rgba(255,255,255,.85);
 	outline-offset: 2px;
 	border-radius: 50%;
+}
+/* Apple TV : les flèches de la télécommande sur la pochette n'apparaissent qu'au survol ; au clavier aussi */
+.aTVremote .artwork_aTVremote .cmd:focus-visible {
+	opacity: 1;
 }
 
 /* Aléatoire / répétition non utilisables avec la source en cours (ex. Apple Music sur HomePod) */
