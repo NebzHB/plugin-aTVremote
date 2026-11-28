@@ -874,6 +874,7 @@ class aTVremote extends eqLogic {
 			case 'unavailable': return __("indisponible avec la source en cours", __FILE__);
 			case 'unsupported': return __("non prise en charge par l'appareil", __FILE__);
 			case 'refused': return __("refusée par l'appareil", __FILE__);
+			case 'launchFailed': return __("l'Apple TV n'a pas pu ouvrir l'app (app déchargée ou pas installée ?)", __FILE__);
 			case 'timeout': return __("pas de réponse de l'appareil", __FILE__);
 			case 'unknown': return __("commande inconnue", __FILE__);
 			case 'invalid': return __("paramètre invalide", __FILE__);
