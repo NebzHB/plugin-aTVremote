@@ -42,7 +42,14 @@
         "Tout": "Alles",
         "Veuillez vérifier la configuration": "Bitte überprüfen Sie die Konfiguration",
         "Volume": "Lautstärke",
+        "commande inconnue": "unbekannter Befehl",
+        "erreur de l'appareil": "Gerätefehler",
         "indisponible avec cette source": "mit dieser Quelle nicht verfügbar",
+        "indisponible avec la source en cours": "mit der aktuellen Quelle nicht verfügbar",
+        "non prise en charge par l'appareil": "vom Gerät nicht unterstützt",
+        "paramètre invalide": "ungültiger Parameter",
+        "pas de réponse de l'appareil": "keine Antwort vom Gerät",
+        "refusée par l'appareil": "vom Gerät abgelehnt",
         "reste": "verbleibend"
     },
     "plugins\/aTVremote\/core\/config\/devices\/ATV\/ATV.json": {

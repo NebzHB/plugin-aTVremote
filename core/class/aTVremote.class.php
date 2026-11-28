@@ -802,6 +802,21 @@ class aTVremote extends eqLogic {
 		return ($this->getConfiguration('version',0) != '3') ? '|features' : '';
 	}
 
+	// Erreurs renvoyées par le démon Python pendant la commande Jeedom en cours (affichées par aTVremoteCmd::execute)
+	public static $_daemonErrors = array(); // « _ » : ignorée par DB::save() de Jeedom
+
+	public static function daemonErrorText($code) {
+		switch ($code) {
+			case 'unavailable': return __("indisponible avec la source en cours", __FILE__);
+			case 'unsupported': return __("non prise en charge par l'appareil", __FILE__);
+			case 'refused': return __("refusée par l'appareil", __FILE__);
+			case 'timeout': return __("pas de réponse de l'appareil", __FILE__);
+			case 'unknown': return __("commande inconnue", __FILE__);
+			case 'invalid': return __("paramètre invalide", __FILE__);
+			default: return __("erreur de l'appareil", __FILE__);
+		}
+	}
+
 	public function aTVdaemonExecute($cmd,$params=[]) {
 		if($cmd) {
 			$deamon_info = aTVremote::deamon_info();
@@ -813,7 +828,16 @@ class aTVremote extends eqLogic {
 				$json = @file_get_contents($url);
 				if($json === false) log::add('aTVremote','error',"Problème de communication avec le démon : ".$url);
 				log::add('aTVremote','debug',ucfirst($cmd).' brut : '.$json);
-				return json_decode($json, true);
+				$result = json_decode($json, true);
+				// Démon Python seulement : erreurs réelles par commande (le démon Node.js répond toujours « ok »)
+				if (is_array($result) && isset($result['errors']) && is_array($result['errors'])) {
+					foreach ($result['errors'] as $error) {
+						$text = $error['cmd'] . ' : ' . self::daemonErrorText($error['code'] ?? 'error') . ((!empty($error['detail'])) ? ' (' . $error['detail'] . ')' : '');
+						log::add('aTVremote', 'warning', $this->getHumanName() . ' : ' . $text);
+						self::$_daemonErrors[$this->getId()][] = self::daemonErrorText($error['code'] ?? 'error');
+					}
+				}
+				return $result;
 			} else {
 				log::add('aTVremote','info',"Démon pas démarré, impossible de lui envoyer la commande ".ucfirst($cmd));
 				$this->refreshWidget(); // le widget affiche « démon arrêté »
@@ -1553,6 +1577,7 @@ class aTVremoteCmd extends cmd {
 
 		$logical = $this->getLogicalId();
 		$changed=false;
+		aTVremote::$_daemonErrors[$eqLogic->getId()] = array();
 		
 		if ($logical != 'refresh'){
 			switch (strtolower($logical)) {
@@ -1756,6 +1781,13 @@ class aTVremoteCmd extends cmd {
 		
 		if($eqLogic->getConfiguration('device','') == 'Apple TV' && $eqLogic->getConfiguration('version',0) == '3') {
 			$eqLogic->setaTVremoteInfo();
+		}
+
+		// Démon Python : la commande a échoué sur l'appareil -> erreur visible (notification du Dashboard, log du scénario)
+		$errors = array_unique(aTVremote::$_daemonErrors[$eqLogic->getId()] ?? array());
+		aTVremote::$_daemonErrors[$eqLogic->getId()] = array();
+		if (count($errors) > 0) {
+			throw new Exception($eqLogic->getHumanName() . ' : ' . $this->getName() . ' ' . implode(', ', $errors));
 		}
 		/* if ($changed) {
 			$eqLogic->refreshWidget();
