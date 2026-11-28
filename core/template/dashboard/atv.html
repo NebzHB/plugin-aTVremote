@@ -34,7 +34,7 @@
   			<a style='position:absolute;margin-top:10px;left:48px;z-index:5;' aria-hidden="true"><img class='image-encoche' alt="" style='width:40px;' src='plugins/aTVremote/core/template/dashboard/images/encoche.png'/></a>
   			<a style='position:absolute;margin-top:10px;left:48px;z-index:4;' aria-hidden="true"><img class='image-clignote' alt="" style='width:40px;display:none;' src='plugins/aTVremote/core/template/dashboard/images/encoche - rouge.png'/></a>
 
-          	<p class="app_hide" style='position: absolute;margin-top: 29px;'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important"><span id="sum#id#"></span></a><br></p>
+          	<p class="app_hide" style='position: absolute;margin-top: 25px;'><a class="app_aTVremote noRefresh" style="text-decoration: none; cursor:default;color:white !important"><span id="sum#id#"></span></a><br></p>
      	</div>
 
 <!--  Artwork -->
@@ -52,6 +52,7 @@
 
 		</div>
 <!--  Artwork -->
+		<div class="aTVprogress tippied" id="progress#id#" style="display:none;" role="progressbar" aria-label="#txt_progress#" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progressBarH"></div></div>
 
 <!--  Statut & Info -->
 		<div class="info" style="height:calc(80px + #atvExtra#px);padding-top:calc(#atvExtra#px / 2);"><!-- place gagnée : moitié au-dessus des textes, moitié en dessous -->
@@ -109,7 +110,7 @@
 				<div class="aTVpanelLabel">#txt_app#</div>
 				<div class="aTVpanelCurrent aTVappName">#txt_none#</div>
 				<label class="aTVpanelLabel" for="aTVlaunch#id#">#txt_launchApp#</label>
-				<select id="aTVlaunch#id#" class="aTVpanelSelect selectCmd"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select>
+				<select id="aTVlaunch#id#" class="aTVpanelSelect selectCmd" data-role="none"><option value="">#txt_none#</option>#cmd_launch_app_opt#</select>
 				<a class="aTVpanelBtn cmd app_list" data-cmd_id="#cmd_app_list_id#" role="button" tabindex="0"><i class="fas fa-sync-alt" aria-hidden="true"></i> #txt_refreshApps#</a>
 			</div>
 		</div>
@@ -358,14 +359,18 @@
 		function progRender#id#() {
 			var el = $('.eqLogic[data-eqLogic_id=#id#] .info_hide .position');
 			if (!el.length || !document.body.contains(el[0])) { clearInterval(prog#id#.timer); return; } // widget redessiné
+			var bar = $('#progress#id#');
 			if (prog#id#.total <= 0) {
+				bar.hide();
 				clearInterval(prog#id#.timer);
 				prog#id#.timer = null;
 				return;
 			}
 			var pos = progCurrent#id#(), pct = Math.round(pos * 100 / prog#id#.total);
-			el.text(progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' (' + pct + '%)')
-				.attr('title', pct + ' % · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos));
+			var label = progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' · ' + pct + ' % · ' + txt#id#.remain + ' ' + progFormat#id#(prog#id#.total - pos);
+			el.text(progFormat#id#(pos) + ' / ' + progFormat#id#(prog#id#.total) + ' (' + pct + '%)').attr('title', label);
+			// jauge sous la pochette (comme sur le HomePod)
+			bar.show().attr({title: label, 'aria-valuenow': pct, 'aria-valuetext': label}).children('.progressBarH').css('width', (pos * 100 / prog#id#.total) + '%');
 			// le texte s'allonge (ex. 9:59 → 10:00) : ne relancer le défilement que s'il ne tient plus
 			var line = el.closest('.aTVline');
 			if (!line.hasClass('scrolling') && line.children('.aTVscroll')[0].scrollWidth > line.innerWidth() + 1) fitMarquee#id#();
