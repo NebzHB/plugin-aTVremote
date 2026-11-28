@@ -873,6 +873,50 @@ class aTVremote extends eqLogic {
 			}
 		}
 	}
+	// Appairage interactif par le démon Python (Apple TV) : begin affiche le code sur la TV, finish envoie le code
+	// saisi dans Jeedom, enregistre la clé (fichier data/<mac>-<protocole>.key via postSave) et reconnecte
+	public function daemonPair($step, $protocol, $pin = '') {
+		if (self::daemonType() != 'python') {
+			throw new Exception(__("L'appairage depuis Jeedom demande le démon Python", __FILE__));
+		}
+		if (self::deamon_info()['state'] != 'ok') {
+			throw new Exception(__("Le démon n'est pas démarré", __FILE__));
+		}
+		if (!in_array($protocol, array('airplay', 'companion')) || !in_array($step, array('begin', 'finish', 'cancel'))) {
+			throw new Exception(__("Paramètre invalide", __FILE__));
+		}
+		$url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'aTVremote') . "/pair/" . $step . "?"
+			. http_build_query(array('mac' => $this->getConfiguration('mac', ''), 'protocol' => $protocol, 'pin' => $pin));
+		$json = @file_get_contents($url, false, stream_context_create(array('http' => array('timeout' => 60))));
+		log::add('aTVremote', 'debug', "Appairage " . $protocol . " (" . $step . ") brut : " . preg_replace('/"credentials": "[^"]*"/', '"credentials": "***"', (string)$json));
+		$result = ($json !== false) ? json_decode($json, true) : null;
+		if (!is_array($result)) {
+			throw new Exception(__("Problème de communication avec le démon", __FILE__));
+		}
+		if ($result['result'] != 'ok') {
+			$messages = array(
+				'notFound' => __("Apple TV introuvable sur le réseau", __FILE__),
+				'unsupported' => __("Ce protocole n'est pas proposé par l'appareil", __FILE__),
+				'beginFailed' => __("L'Apple TV a refusé de commencer l'appairage", __FILE__),
+				'noPairing' => __("Pas d'appairage en cours (délai dépassé ?), recommencez", __FILE__),
+				'invalidPin' => __("Code invalide", __FILE__),
+				'failed' => __("Code refusé, recommencez l'appairage", __FILE__),
+			);
+			$message = $messages[$result['msg'] ?? ''] ?? __("Erreur d'appairage", __FILE__);
+			// détail technique dans le message seulement quand il aide (le refus d'un code n'en a pas besoin, il est dans le log)
+			throw new Exception($message . ((!empty($result['detail']) && ($result['msg'] ?? '') == 'beginFailed') ? ' (' . $result['detail'] . ')' : ''));
+		}
+		if ($step == 'finish') {
+			$key = ($protocol == 'airplay') ? 'pairingKeyAirplay' : 'pairingKeyCompanion';
+			$this->setConfiguration($key, $result['credentials']);
+			$this->save(); // postSave écrit data/<mac>-<protocole>.key
+			log::add('aTVremote', 'info', "Appairage " . $protocol . " réussi pour " . $this->getHumanName());
+			$url = "http://" . config::byKey('internalAddr') . ":" . config::byKey('socketport', 'aTVremote') . "/reconnect?mac=" . urlencode($this->getConfiguration('mac', ''));
+			@file_get_contents($url); // reconnexion avec la nouvelle clé (sans effet si l'équipement est désactivé)
+		}
+		return $result;
+	}
+
 	public function aTVdaemonConnectATV($params=[]) {
 		$deamon_info = aTVremote::deamon_info();
 		if ($deamon_info['state'] == 'ok') {
