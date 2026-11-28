@@ -24,7 +24,7 @@ import aiohttp
 from aiohttp import web
 
 import pyatv
-from pyatv.const import Protocol, ShuffleState, RepeatState, InputAction
+from pyatv.const import Protocol, ShuffleState, RepeatState, InputAction, FeatureName, FeatureState
 from pyatv.interface import DeviceListener, PushListener, PowerListener, Playing, retrieve_commands
 from pyatv.storage.memory_storage import MemoryStorage
 
@@ -139,16 +139,43 @@ def build_playing_payload(playing: Playing, app) -> str:
     return json.dumps(values)
 
 
-async def send_playing_event(device: "Device") -> None:
+def spawn(coro, what: str) -> asyncio.Task:
+    """Lance une tâche et journalise son erreur éventuelle (sinon une exception dans une tâche
+    lancée depuis un listener disparaît sans laisser de trace)."""
+    task = asyncio.ensure_future(coro)
+
+    def _done(t: asyncio.Task) -> None:
+        if not t.cancelled() and t.exception() is not None:
+            log_fr(f"Erreur dans {what} : {t.exception()!r}", LEVEL_ERROR)
+
+    task.add_done_callback(_done)
+    return task
+
+
+def current_app(atv):
+    """App en cours, seulement si la fonction « App » est disponible (comme atvscript) : sur un
+    HomePod au repos, atv.metadata.app lève une exception."""
+    try:
+        if atv.features.in_state(FeatureState.Available, FeatureName.App):
+            return atv.metadata.app
+    except Exception as exc:
+        log_fr(f"App indisponible : {exc!r}", LEVEL_DEBUG)
+    return None
+
+
+async def send_playing_event(device: "Device", playing: Playing | None = None) -> None:
     atv = device.atv
     if atv is None:
         return
-    playing = await atv.metadata.playing()
-    app = atv.metadata.app
-    send_to_jeedom("playing", device.mac, data=build_playing_payload(playing, app))
+    if playing is None:
+        playing = await atv.metadata.playing()
+    data = build_playing_payload(playing, current_app(atv))
+    log_fr(f"[MSG][{device.mac}] Reçu playing et envoyé à jeedom |{data}", LEVEL_DEBUG)
+    send_to_jeedom("playing", device.mac, data=data)
 
 
 def send_powerstate_event(mac: str, power_state) -> None:
+    log_fr(f"[MSG][{mac}] Reçu power_state et envoyé à jeedom |{_enum_name(power_state, lower=True)}", LEVEL_DEBUG)
     send_to_jeedom("powerstate", mac, data=json.dumps({"power_state": _enum_name(power_state, lower=True)}))  # « on » / « off »
 
 
@@ -304,7 +331,7 @@ class _ConnPushListener(PushListener):
         self.device = device
 
     def playstatus_update(self, updater, playstatus: Playing) -> None:
-        asyncio.ensure_future(send_playing_event(self.device))
+        spawn(send_playing_event(self.device, playstatus), f"l'envoi de la lecture de {self.device.mac}")
 
     def playstatus_error(self, updater, exception: Exception) -> None:
         log_fr(f"[{self.device.mac}] Erreur de mise à jour : {exception}", LEVEL_DEBUG)
@@ -324,6 +351,7 @@ if AudioListener is not None:
             self.device = device
 
         def volume_update(self, old_level, new_level) -> None:
+            log_fr(f"[MSG][{self.device.mac}] Reçu volume et envoyé à jeedom |{new_level}", LEVEL_DEBUG)
             send_to_jeedom("volume", self.device.mac, data=str(new_level))
 else:
     _ConnAudioListener = None
@@ -420,6 +448,14 @@ async def _supervisor(mac: str, version_num: int | None) -> None:
                 atv.audio.listener = audio_listener
             except Exception:
                 pass
+
+        # état initial, comme atvscript push_updates (sinon rien n'arrive tant que rien ne change)
+        try:
+            send_powerstate_event(mac, atv.power.power_state)
+        except Exception as exc:
+            log_fr(f"[{mac}] État d'alimentation indisponible : {exc!r}", LEVEL_DEBUG)
+        if version_num == 3:
+            spawn(send_playing_event(device), f"l'envoi de la lecture de {mac}")
 
         await conn_listener.disconnected.wait()
         device.atv = None
@@ -537,6 +573,8 @@ async def error_middleware(request, handler):
 
 _runner: web.AppRunner | None = None
 _shutting_down = False
+_stop_event: asyncio.Event | None = None
+_server_port: int | None = None
 
 
 async def _shutdown() -> None:
@@ -545,13 +583,21 @@ async def _shutdown() -> None:
         return
     _shutting_down = True
     log_fr("Arrêt du démon en cours...", LEVEL_INFO)
+    close_tasks = []
     for mac, device in list(devices.items()):
         device.give_up = True
         if device.atv is not None:
-            device.atv.close()
+            try:
+                close_tasks.extend(device.atv.close() or [])
+            except Exception as exc:
+                log_fr(f"[{mac}] Erreur à la déconnexion : {exc!r}", LEVEL_DEBUG)
+    if close_tasks:
+        await asyncio.wait(close_tasks, timeout=3)  # connexions aux appareils fermées proprement
     if _runner is not None:
-        await _runner.cleanup()
-    asyncio.get_event_loop().call_later(0.2, lambda: asyncio.get_event_loop().stop())
+        await _runner.cleanup()  # ferme le port d'écoute HTTP
+        log_fr(f"Port {_server_port} fermé", LEVEL_DEBUG)
+    if _stop_event is not None:
+        _stop_event.set()
 
 
 def _install_signal_handlers(loop: asyncio.AbstractEventLoop) -> None:
@@ -565,11 +611,13 @@ def _install_signal_handlers(loop: asyncio.AbstractEventLoop) -> None:
 
 
 async def main() -> None:
-    global JEEDOM_URL, API_KEY, _runner
+    global JEEDOM_URL, API_KEY, _runner, _stop_event, _server_port
 
     url_jeedom = sys.argv[1]
     API_KEY = sys.argv[2]
     server_port = int(sys.argv[3])
+    _server_port = server_port
+    _stop_event = asyncio.Event()
     log_level_str = sys.argv[4]
     pre_connect_3 = [] if sys.argv[5] == "None" else [m for m in sys.argv[5].split(",") if m]
     pre_connect_4 = [] if sys.argv[6] == "None" else [m for m in sys.argv[6].split(",") if m]
@@ -579,7 +627,8 @@ async def main() -> None:
     set_log_level(log_level_str)
 
     log_fr(
-        f"Démarrage du démon aTVremote (Python) sur le port {server_port}, "
+        f"Démarrage du démon aTVremote (Python, fichier du {datetime.fromtimestamp(os.path.getmtime(__file__)):%d-%m-%Y %H:%M}, "
+        f"pyatv {pyatv.const.__version__}) sur le port {server_port}, "
         f"preConnect3={pre_connect_3}, preConnect4={pre_connect_4}, preConnectHP={pre_connect_hp}",
         LEVEL_INFO,
     )
@@ -606,22 +655,28 @@ async def main() -> None:
     _install_signal_handlers(asyncio.get_event_loop())
     log_fr("Démon prêt et à l'écoute !", LEVEL_INFO)
 
-    while not _shutting_down:
-        await asyncio.sleep(1)
+    await _stop_event.wait()
 
 
 if __name__ == "__main__":
     setup_library_logging()
     loop = asyncio.new_event_loop()  # get_event_loop() hors boucle est obsolète depuis Python 3.12
     asyncio.set_event_loop(loop)
+    exit_code = 0
     try:
         loop.run_until_complete(main())
     except KeyboardInterrupt:
-        pass
-    except RuntimeError as exc:
-        if "Event loop stopped" not in str(exc):  # arrêt normal via _shutdown()
-            logging.getLogger("aTVremoted").exception("Erreur fatale du démon : %s", exc)
-            sys.exit(1)
+        loop.run_until_complete(_shutdown())
     except Exception as exc:
         logging.getLogger("aTVremoted").exception("Erreur fatale du démon : %s", exc)
-        sys.exit(1)
+        exit_code = 1
+    finally:
+        # tâches restantes (envoi vers Jeedom, surveillance des appareils) annulées proprement
+        pending = [t for t in asyncio.all_tasks(loop) if not t.done()]
+        for task in pending:
+            task.cancel()
+        if pending:
+            loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+        loop.close()
+        log_fr("Démon arrêté", LEVEL_INFO)
+    sys.exit(exit_code)

@@ -43,8 +43,8 @@ pre#pre_eventlog {
 			<label class="col-lg-6 control-label">{{Type de démon}}</label>
 			<div class="col-lg-3">
 				<select class="configKey form-control" data-l1key="daemonType">
-					<option value="nodejs">Node.js</option>
-					<option value="python">Python (bêta, expérimental)</option>
+					<option value="nodejs" selected>{{Node.js (par défaut)}}</option>
+					<option value="python">{{Python (bêta, expérimental)}}</option>
 				</select>
 			</div>
 		</div>
