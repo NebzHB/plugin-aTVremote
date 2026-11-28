@@ -24,6 +24,7 @@ import aiohttp
 from aiohttp import web
 
 import pyatv
+from pyatv import exceptions as atv_exceptions
 from pyatv.const import Protocol, ShuffleState, RepeatState, InputAction, FeatureName, FeatureState
 from pyatv.interface import DeviceListener, PushListener, PowerListener, Playing, retrieve_commands
 from pyatv.storage.memory_storage import MemoryStorage
@@ -317,10 +318,66 @@ async def resolve_and_call(atv, name: str, args: list):
 _INFO_COMMANDS = {"playing", "hash", "power_state", "app_list", "volume", "features"}
 
 
+# ---------------------------------------------------------------------------
+# Vrais retours d'erreur : le démon Node.js répond toujours « ok » (il écrit dans le stdin d'atvremote sans
+# attendre le résultat). Ici chaque commande est attendue : on renvoie au PHP un code par commande en
+# erreur, que le PHP traduit et affiche (exception sur la commande Jeedom).
+# ---------------------------------------------------------------------------
+
+class CommandRefused(Exception):
+    def __init__(self, code: str, detail: str = ""):
+        super().__init__(detail or code)
+        self.code = code
+        self.detail = detail
+
+
+# commandes que l'appareil accepte sans rien faire quand la fonction est indisponible : on refuse avant
+_REFUSE_WHEN_UNAVAILABLE = {FeatureName.SetShuffle, FeatureName.SetRepeat}
+
+
+def _feature_for(name: str):
+    """set_shuffle -> FeatureName.SetShuffle, volume_up -> FeatureName.VolumeUp… (None si pas de fonction)."""
+    return getattr(FeatureName, "".join(part.capitalize() for part in name.split("_")), None)
+
+
+def check_feature(atv, name: str) -> None:
+    if name in _INFO_COMMANDS:
+        return
+    feature = _feature_for(name)
+    if feature is None:
+        return
+    try:
+        state = atv.features.get_feature(feature).state
+    except Exception:
+        return
+    if state == FeatureState.Unsupported:
+        raise CommandRefused("unsupported", feature.name)
+    if state == FeatureState.Unavailable and feature in _REFUSE_WHEN_UNAVAILABLE:
+        raise CommandRefused("unavailable", feature.name)
+
+
+def error_code(exc: Exception) -> tuple[str, str]:
+    """Code (traduit côté PHP) et détail technique d'une erreur de commande."""
+    if isinstance(exc, CommandRefused):
+        return exc.code, exc.detail
+    if isinstance(exc, asyncio.TimeoutError):
+        return "timeout", ""
+    if isinstance(exc, atv_exceptions.NotSupportedError):
+        return "unsupported", str(exc)
+    if isinstance(exc, (atv_exceptions.CommandError, atv_exceptions.BlockedStateError)):
+        return "refused", str(exc)
+    if isinstance(exc, AttributeError):
+        return "unknown", str(exc)
+    if isinstance(exc, (ValueError, TypeError, IndexError)):
+        return "invalid", str(exc)
+    return "error", f"{type(exc).__name__}: {exc}"
+
+
 async def dispatch_and_notify(device: "Device", name: str, args: list) -> None:
     """Run one command against the device, then (for read/informational commands)
     proactively send the matching Jeedom event using the result, mirroring what
     Node's stdout substring-parser used to do for the same CLI command."""
+    check_feature(device.atv, name)
     if name == "artwork_save":
         artwork = await resolve_and_call(device.atv, name, args)
         if artwork is not None:
@@ -583,13 +640,20 @@ async def handle_cmd(request: web.Request) -> web.Response:
     if device is None or device.atv is None:
         return web.json_response({"result": "ko", "msg": "notConnectedATM"})
 
-    for sub in cmd_str.split("|"):
+    errors = []
+    for sub in cmd_str.split("|"):  # comme Node.js : les commandes suivantes sont envoyées même après une erreur
         name, args = parse_command(sub)
         try:
             await asyncio.wait_for(dispatch_and_notify(device, name, args), timeout=10)
         except Exception as exc:
-            log_fr(f"[CMD][{mac}] Erreur sur la commande '{sub}' : {exc}", LEVEL_ERROR)
+            code, detail = error_code(exc)
+            level = LEVEL_WARNING if code in ("unavailable", "unsupported") else LEVEL_ERROR
+            log_fr(f"[CMD][{mac}] Commande '{sub}' en erreur ({code}){' : ' + detail if detail else ''}", level)
+            errors.append({"cmd": sub, "code": code, "detail": detail})
 
+    if errors:
+        # « errors » n'existe qu'avec ce démon : le PHP ne change rien pour le démon Node.js
+        return web.json_response({"result": "ko", "msg": errors[0]["code"], "errors": errors})
     return web.json_response({"result": "ok"})
 
 
