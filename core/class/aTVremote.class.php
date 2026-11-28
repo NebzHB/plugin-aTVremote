@@ -848,7 +848,7 @@ class aTVremote extends eqLogic {
 					foreach ($result['errors'] as $error) {
 						$text = $error['cmd'] . ' : ' . self::daemonErrorText($error['code'] ?? 'error') . ((!empty($error['detail'])) ? ' (' . $error['detail'] . ')' : '');
 						log::add('aTVremote', 'warning', $this->getHumanName() . ' : ' . $text);
-						self::$_daemonErrors[$this->getId()][] = self::daemonErrorText($error['code'] ?? 'error');
+						self::$_daemonErrors[$this->getId()][] = $error['code'] ?? 'error';
 					}
 				}
 				return $result;
@@ -1799,11 +1799,21 @@ class aTVremoteCmd extends cmd {
 			$eqLogic->setaTVremoteInfo();
 		}
 
-		// Démon Python : la commande a échoué sur l'appareil -> erreur visible (notification du Dashboard, log du scénario)
-		$errors = array_unique(aTVremote::$_daemonErrors[$eqLogic->getId()] ?? array());
+		// Démon Python : la commande a échoué sur l'appareil
+		$codes = array_unique(aTVremote::$_daemonErrors[$eqLogic->getId()] ?? array());
 		aTVremote::$_daemonErrors[$eqLogic->getId()] = array();
-		if (count($errors) > 0) {
-			throw new Exception($eqLogic->getHumanName() . ' : ' . $this->getName() . ' ' . implode(', ', $errors));
+		// fonction indisponible avec la source / non prise en charge : situation normale (bouton grisé), simple
+		// notification sur le Dashboard, sans erreur dans le log ni message dans le centre de messages
+		$soft = array_intersect($codes, array('unavailable', 'unsupported'));
+		$hard = array_diff($codes, $soft);
+		if (count($hard) > 0) { // vraie erreur : exception (log, centre de messages, log du scénario)
+			throw new Exception(implode(', ', array_map(array('aTVremote', 'daemonErrorText'), $hard)));
+		}
+		if (count($soft) > 0) {
+			event::add('jeedom::alert', array(
+				'level' => 'warning',
+				'message' => $this->getHumanName() . ' : ' . implode(', ', array_map(array('aTVremote', 'daemonErrorText'), $soft)),
+			));
 		}
 		/* if ($changed) {
 			$eqLogic->refreshWidget();
